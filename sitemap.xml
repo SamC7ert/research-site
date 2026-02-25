@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://research.syvertsen.com/projects/sport-cost-gradient/blog/00-how-this-started/</loc>
+    <lastmod>2026-02-12T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://research.syvertsen.com/tags/economics/</loc>
     <lastmod>2026-02-23T00:00:00+00:00</lastmod>
   </url><url>
@@ -29,11 +32,15 @@
     <loc>https://research.syvertsen.com/tags/</loc>
     <lastmod>2026-02-23T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>https://research.syvertsen.com/projects/sport-cost-gradient/blog/</loc>
+    <lastmod>2026-02-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/research-journey/</loc>
+    <lastmod>2026-02-12T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://research.syvertsen.com/about/</loc>
   </url><url>
     <loc>https://research.syvertsen.com/categories/</loc>
-  </url><url>
-    <loc>https://research.syvertsen.com/projects/sport-cost-gradient/blog/</loc>
   </url><url>
     <loc>https://research.syvertsen.com/projects/sport-cost-gradient/viz/</loc>
   </url>
