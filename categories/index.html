@@ -71,7 +71,155 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script><meta property="og:url" content="https://research.syvertsen.com/categories/">
+</script><style>
+ 
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+  .bio-box {
+    order: -1;  
+  }
+}
+
+ 
+.bio-box {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  position: sticky;
+  top: 5rem;
+}
+
+.bio-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  background: var(--tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--primary);
+  overflow: hidden;
+}
+
+.bio-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bio-box h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.4rem;
+}
+
+.bio-box .bio-affiliation {
+  font-size: 0.85rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+
+.bio-box .bio-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--secondary);
+  text-align: left;
+}
+
+.bio-box .bio-links {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.bio-box .bio-links a {
+  font-size: 0.82rem;
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+.bio-box .bio-links a:hover {
+  color: var(--primary);
+}
+
+ 
+.project-list h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+}
+
+.project-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s;
+}
+
+.project-card:hover {
+  border-color: var(--primary);
+}
+
+.project-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card h3 {
+  font-size: 1.05rem;
+  margin: 0 0 0.3rem;
+  font-weight: 600;
+}
+
+.project-card .project-meta {
+  font-size: 0.8rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+
+.project-card .project-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--secondary);
+}
+
+.project-card .project-status {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.project-card .status-active {
+  background: rgba(34, 139, 34, 0.1);
+  color: forestgreen;
+}
+
+.project-card .status-archive {
+  background: var(--tertiary);
+  color: var(--secondary);
+}
+</style>
+<meta property="og:url" content="https://research.syvertsen.com/categories/">
   <meta property="og:site_name" content="Sam Syvertsen — Research">
   <meta property="og:title" content="Categories">
   <meta property="og:description" content="Research on Olympic performance, sport cost inequality, and the Gini coefficient">

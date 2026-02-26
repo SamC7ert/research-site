@@ -71,7 +71,155 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script><meta property="og:url" content="https://research.syvertsen.com/projects/">
+</script><style>
+ 
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+  .bio-box {
+    order: -1;  
+  }
+}
+
+ 
+.bio-box {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  position: sticky;
+  top: 5rem;
+}
+
+.bio-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  background: var(--tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--primary);
+  overflow: hidden;
+}
+
+.bio-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bio-box h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.4rem;
+}
+
+.bio-box .bio-affiliation {
+  font-size: 0.85rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+
+.bio-box .bio-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--secondary);
+  text-align: left;
+}
+
+.bio-box .bio-links {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.bio-box .bio-links a {
+  font-size: 0.82rem;
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+.bio-box .bio-links a:hover {
+  color: var(--primary);
+}
+
+ 
+.project-list h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+}
+
+.project-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s;
+}
+
+.project-card:hover {
+  border-color: var(--primary);
+}
+
+.project-card a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card h3 {
+  font-size: 1.05rem;
+  margin: 0 0 0.3rem;
+  font-weight: 600;
+}
+
+.project-card .project-meta {
+  font-size: 0.8rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+
+.project-card .project-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--secondary);
+}
+
+.project-card .project-status {
+  display: inline-block;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.project-card .status-active {
+  background: rgba(34, 139, 34, 0.1);
+  color: forestgreen;
+}
+
+.project-card .status-archive {
+  background: var(--tertiary);
+  color: var(--secondary);
+}
+</style>
+<meta property="og:url" content="https://research.syvertsen.com/projects/">
   <meta property="og:site_name" content="Sam Syvertsen — Research">
   <meta property="og:title" content="Research Projects">
   <meta property="og:description" content="Current and past research projects">
@@ -162,6 +310,57 @@ Abstract Geloso and Kufenko (2021) hypothesised that income inequality affects O
   </div>
   <footer class="entry-footer"><span title='2026-02-23 00:00:00 +0000 UTC'>February 23, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Sam Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Income Inequality, Sport Cost, and Olympic Performance" href="https://research.syvertsen.com/projects/sport-cost-gradient/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spotting the Difference: Forward Price vs Expected Spot Price
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Publication Journal: Energy Power and Risk Management (EPRM) — Electricity section
+Date: March 2001
+Download PDF
+Summary This article examines whether forward electricity prices in the Nordic market (Nord Pool) are unbiased predictors of future spot prices, or whether systematic risk premiums exist. Drawing on data from the Norwegian and Nordic power exchanges, the analysis explores the theoretical relationship between forward and expected spot prices and tests whether the forward premium varies with seasonality, contract duration, and market conditions.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2001-03-01 00:00:00 +0000 UTC'>March 1, 2001</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Spotting the Difference: Forward Price vs Expected Spot Price" href="https://research.syvertsen.com/projects/forward-price-spot-price/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Spotting the Difference: Forward Price vs Expected Spot Price
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Publication Journal: Energy Power and Risk Management (EPRM) — Electricity section
+Date: March 2001
+Author: Sam Syvertsen
+Download PDF
+Summary This article examines whether forward electricity prices in the Nordic market (Nord Pool) are unbiased predictors of future spot prices, or whether systematic risk premiums exist. Drawing on data from the Norwegian and Nordic power exchanges, the analysis explores the theoretical relationship between forward and expected spot prices and tests whether the forward premium varies with seasonality, contract duration, and market conditions.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2001-03-01 00:00:00 +0000 UTC'>March 1, 2001</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Spotting the Difference: Forward Price vs Expected Spot Price" href="https://research.syvertsen.com/projects/forward-spot-electricity/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Finansieringsforutsetninger ved prosjektvurdering
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Dissertation Institution: NHH Norwegian School of Economics (Norges Handelshøyskole)
+Programme: Høyere Avdelings Studium i Bedriftsøkonomi (doctoral-level programme)
+Supervisor: Professor Steinar Ekern
+Year: 1985
+Front page (scan)
+Summary A discussion of different methods for evaluating the advantages associated with debt financing in project appraisal, illustrated with examples from the Norwegian continental shelf. The dissertation examines how financing assumptions — the choice between APV (Adjusted Present Value), WACC, and equity residual approaches — affect investment decisions in capital-intensive petroleum projects where tax shields, government participation, and project-specific debt structures create significant valuation differences depending on the method applied.
+</p>
+  </div>
+  <footer class="entry-footer"><span title='1985-01-01 00:00:00 +0000 UTC'>January 1, 1985</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Finansieringsforutsetninger ved prosjektvurdering" href="https://research.syvertsen.com/projects/nhh-dissertation/"></a>
 </article>
     </main>
     

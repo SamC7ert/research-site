@@ -2,16 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://research.syvertsen.com/projects/sport-cost-gradient/</loc>
+    <lastmod>2026-02-23T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://research.syvertsen.com/projects/sport-cost-gradient/blog/00-how-this-started/</loc>
     <lastmod>2026-02-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/projects/forward-price-spot-price/</loc>
+    <lastmod>2001-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/projects/forward-spot-electricity/</loc>
+    <lastmod>2001-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/projects/nhh-dissertation/</loc>
+    <lastmod>1985-01-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://research.syvertsen.com/tags/economics/</loc>
     <lastmod>2026-02-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://research.syvertsen.com/tags/gini/</loc>
-    <lastmod>2026-02-23T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://research.syvertsen.com/projects/sport-cost-gradient/</loc>
     <lastmod>2026-02-23T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://research.syvertsen.com/tags/inequality/</loc>
@@ -37,6 +46,33 @@
   </url><url>
     <loc>https://research.syvertsen.com/tags/research-journey/</loc>
     <lastmod>2026-02-12T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/electricity/</loc>
+    <lastmod>2001-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/energy/</loc>
+    <lastmod>2001-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/finance/</loc>
+    <lastmod>2001-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/forward-pricing/</loc>
+    <lastmod>2001-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/nordic/</loc>
+    <lastmod>2001-03-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/debt-financing/</loc>
+    <lastmod>1985-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/norwegian-shelf/</loc>
+    <lastmod>1985-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/petroleum/</loc>
+    <lastmod>1985-01-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://research.syvertsen.com/tags/project-evaluation/</loc>
+    <lastmod>1985-01-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://research.syvertsen.com/about/</loc>
   </url><url>
