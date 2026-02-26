@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F4a</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        const { useState } = React;
+
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+
+// ── T5a: Facility tier slopes ──
+const FAC = [
+  {tier:1,label:"Minimal",sub:"<€0.5M",b:0.163,se:0.127,p:0.198},
+  {tier:2,label:"Moderate",sub:"€0.5–2M",b:0.083,se:0.104,p:0.426},
+  {tier:3,label:"High",sub:"€2–10M",b:0.013,se:0.122,p:0.916},
+  {tier:4,label:"Very High",sub:">€10M",b:0.158,se:0.202,p:0.434},
+];
+const FAC_F={f:2.43,p:0.072},FAC_TREND={delta:-0.005,t:-0.03,p:0.975};
+
+// ── T5b: Equipment tier slopes ──
+const EQ = [
+  {tier:1,label:"Low",sub:"<€3K/yr",b:0.218,se:0.134,p:0.104},
+  {tier:2,label:"Medium",sub:"€3–10K/yr",b:-0.045,se:0.110,p:0.685},
+  {tier:3,label:"High",sub:">€10K/yr",b:-0.057,se:0.113,p:0.612},
+];
+const EQ_F={f:4.78,p:0.011},EQ_TREND={delta:-0.275,t:-3.06,p:0.002};
+
+// ── Quartile decomposition ──
+const QUART_FULL = [
+  {q:"Q1",label:"Poorest",gdp:"≤$10K",n:17,t1:-0.010,t2:-0.067,t3:-0.075,p1:0.93,p2:0.43,p3:0.40},
+  {q:"Q2",label:"",gdp:"$11–20K",n:17,t1:0.042,t2:0.016,t3:0.083,p1:0.46,p2:0.72,p3:0.16},
+  {q:"Q3",label:"",gdp:"$20–35K",n:17,t1:0.666,t2:-0.160,t3:0.204,p1:0.21,p2:0.65,p3:0.52},
+  {q:"Q4",label:"Richest",gdp:"$36–68K",n:20,t1:0.906,t2:-1.395,t3:-0.422,p1:0.15,p2:0.10,p3:0.60},
+];
+
+// ── Galton test: region × tier slopes ──
+const GALTON = [
+  {reg:"Africa",t1:0.120,t2:-0.184,t3:-0.037,u:true,n:6,fp:0.092},
+  {reg:"Eastern Asia",t1:1.660,t2:1.285,t3:1.263,u:false,n:6,fp:0.129},
+  {reg:"Eastern Europe",t1:0.562,t2:0.269,t3:0.389,u:true,n:10,fp:0.449},
+  {reg:"Latin Am. & Carib.",t1:-0.507,t2:-0.775,t3:-0.642,u:true,n:10,fp:0.076},
+  {reg:"NA & Oceania",t1:3.767,t2:2.980,t3:3.579,u:true,n:4,fp:0.0002},
+  {reg:"Northern Europe",t1:0.692,t2:0.360,t3:0.793,u:true,n:9,fp:0.124},
+  {reg:"S & SE Asia",t1:0.907,t2:0.621,t3:0.743,u:true,n:4,fp:0.236},
+  {reg:"Southern Europe",t1:-0.422,t2:-0.702,t3:-0.442,u:true,n:7,fp:0.094},
+  {reg:"W & Central Asia",t1:-0.407,t2:-0.782,t3:-0.597,u:true,n:9,fp:0.079},
+  {reg:"Western Europe",t1:0.771,t2:0.544,t3:1.048,u:true,n:6,fp:0.008},
+];
+
+// ── Components ──
+function CoefPlot({data,title,subtitle,fTest,trend,width=520,height=200}){
+  const pad={top:36,right:30,bottom:42,left:120};
+  const w=width-pad.left-pad.right,h=height-pad.top-pad.bottom;
+  const rowH=h/data.length;
+  const maxAbs=Math.max(...data.map(d=>Math.abs(d.b)+1.96*d.se))*1.2;
+  const sx=v=>pad.left+((v+maxAbs)/(2*maxAbs))*w;
+  const ticks=[];const step=maxAbs>0.5?0.2:0.1;
+  for(let v=-Math.floor(maxAbs/step)*step;v<=maxAbs+0.001;v+=step)ticks.push(Math.round(v*100)/100);
+  return <svg width={width} height={height} style={{fontFamily:font}}>
+    <text x={pad.left+w/2} y={14} textAnchor="middle" style={{fontSize:12,fontWeight:600,fill:"#1a1a2e"}}>{title}</text>
+    <text x={pad.left+w/2} y={27} textAnchor="middle" style={{fontSize:9,fill:"#999"}}>{subtitle}</text>
+    <line x1={sx(0)} y1={pad.top-4} x2={sx(0)} y2={pad.top+h+2} stroke="#ccc" strokeWidth={1}/>
+    {ticks.map(v=><g key={v}><line x1={sx(v)} y1={pad.top+h+2} x2={sx(v)} y2={pad.top+h+6} stroke="#999" strokeWidth={0.5}/><text x={sx(v)} y={pad.top+h+16} textAnchor="middle" style={{fontSize:8.5,fill:"#888"}}>{v.toFixed(1)}</text></g>)}
+    <text x={pad.left+w/2} y={height-4} textAnchor="middle" style={{fontSize:9.5,fill:"#666"}}>Gini → Points (β per sport-period)</text>
+    {data.map((d,i)=>{const y=pad.top+i*rowH+rowH/2,lo=d.b-1.96*d.se,hi=d.b+1.96*d.se,sig=d.p<0.1;
+      return <g key={d.tier}>
+        <text x={pad.left-8} y={y+1} textAnchor="end" style={{fontSize:10.5,fill:"#333",fontWeight:500}}>{d.label}</text>
+        <text x={pad.left-8} y={y+12} textAnchor="end" style={{fontSize:8,fill:"#aaa"}}>{d.sub}</text>
+        <line x1={sx(lo)} y1={y} x2={sx(hi)} y2={y} stroke={sig?"#1a1a2e":"#bbb"} strokeWidth={1.5}/>
+        <line x1={sx(lo)} y1={y-4} x2={sx(lo)} y2={y+4} stroke={sig?"#1a1a2e":"#bbb"} strokeWidth={1}/>
+        <line x1={sx(hi)} y1={y-4} x2={sx(hi)} y2={y+4} stroke={sig?"#1a1a2e":"#bbb"} strokeWidth={1}/>
+        <circle cx={sx(d.b)} cy={y} r={4} fill={sig?"#1a1a2e":"#fff"} stroke="#1a1a2e" strokeWidth={1.5}/>
+        <text x={sx(hi)+6} y={y+3.5} style={{fontSize:8.5,fill:"#888"}}>{d.b>=0?"+":""}{d.b.toFixed(3)}{d.p<0.05?"**":d.p<0.1?"*":""}</text>
+      </g>;})}
+    <text x={pad.left} y={pad.top+h+32} style={{fontSize:8.5,fill:"#888"}}>
+      F-test: p={fTest.p<0.001?"<0.001":fTest.p.toFixed(3)}{trend?` | High−Low: Δβ=${trend.delta>=0?"+":""}${trend.delta.toFixed(3)}, p=${trend.p<0.001?"<0.001":trend.p.toFixed(3)}`:""}
+    </text>
+  </svg>;
+}
+
+function QuartileChart(){
+  const W=480,H=340;
+  const pad={top:30,right:50,bottom:50,left:70};
+  const w=W-pad.left-pad.right,h=H-pad.top-pad.bottom;
+  const sx=i=>pad.left+(i/2)*w;
+  const allB=QUART_FULL.flatMap(q=>[q.t1,q.t2,q.t3]);
+  const yMin=Math.min(...allB,-0.2)*1.15,yMax=Math.max(...allB,0.2)*1.15;
+  const sy=v=>pad.top+h-((v-yMin)/(yMax-yMin))*h;
+  const yStep=yMax-yMin>2?0.5:0.2;const yTicks=[];
+  for(let v=Math.ceil(yMin/yStep)*yStep;v<=yMax;v+=yStep)yTicks.push(Math.round(v*100)/100);
+  const colors=["#bbb","#888","#4a7ccc","#1a1a2e"];
+  const widths=[1.2,1.5,2,2.5];const dashes=["6,4","4,3","",""];
+  const items=QUART_FULL.map((q,i)=>({i,b:q.t3}));items.sort((a,b)=>b.b-a.b);
+  const labelY={};let lastY=-999;
+  for(const{i,b}of items){let yp=sy(b);if(Math.abs(yp-lastY)<16)yp=lastY+16;labelY[i]=yp;lastY=yp;}
+
+  return <svg width={W} height={H} style={{fontFamily:font}}>
+    <line x1={pad.left} y1={sy(0)} x2={pad.left+w} y2={sy(0)} stroke="#ddd" strokeWidth={1}/>
+    <text x={pad.left-8} y={sy(0)+3.5} textAnchor="end" style={{fontSize:9,fill:"#aaa",fontWeight:500}}>0</text>
+    <line x1={pad.left} y1={pad.top} x2={pad.left} y2={pad.top+h} stroke="#333" strokeWidth={1}/>
+    {yTicks.map(v=><g key={v}><line x1={pad.left-4} y1={sy(v)} x2={pad.left} y2={sy(v)} stroke="#999" strokeWidth={0.5}/><text x={pad.left-8} y={sy(v)+3.5} textAnchor="end" style={{fontSize:8.5,fill:"#888"}}>{v.toFixed(1)}</text></g>)}
+    <text x={12} y={pad.top+h/2} textAnchor="middle" style={{fontSize:10.5,fill:"#333",fontWeight:500}} transform={`rotate(-90,12,${pad.top+h/2})`}>Gini → Points (β)</text>
+    <line x1={pad.left} y1={pad.top+h} x2={pad.left+w} y2={pad.top+h} stroke="#333" strokeWidth={1}/>
+    {["Tier 1\nLow (<€3K)","Tier 2\nMed (€3–10K)","Tier 3\nHigh (>€10K)"].map((label,i)=>{
+      const lines=label.split("\n");
+      return <g key={i}><line x1={sx(i)} y1={pad.top+h} x2={sx(i)} y2={pad.top+h+5} stroke="#333" strokeWidth={0.5}/><text x={sx(i)} y={pad.top+h+16} textAnchor="middle" style={{fontSize:9.5,fill:"#333",fontWeight:500}}>{lines[0]}</text><text x={sx(i)} y={pad.top+h+27} textAnchor="middle" style={{fontSize:8,fill:"#999"}}>{lines[1]}</text></g>;
+    })}
+    <text x={pad.left+w/2} y={H-4} textAnchor="middle" style={{fontSize:10.5,fill:"#333",fontWeight:500}}>Equipment Cost Tier</text>
+    {QUART_FULL.map((q,qi)=>{
+      const betas=[q.t1,q.t2,q.t3];
+      const pts=betas.map((b,i)=>[sx(i),sy(b)]);
+      const pathD=pts.map((p,i)=>`${i===0?"M":"L"}${p[0]},${p[1]}`).join(" ");
+      const isQ1=qi===0;
+      return <g key={q.q}>
+        <path d={pathD} fill="none" stroke={colors[qi]} strokeWidth={widths[qi]}
+          strokeDasharray={dashes[qi]} opacity={isQ1?0.4:1}/>
+        {betas.map((b,i)=>{const grey=isQ1&&i>0;
+          return <circle key={i} cx={sx(i)} cy={sy(b)} r={grey?3:4}
+            fill={grey?"#ddd":colors[qi]} stroke="#fff" strokeWidth={1.5} opacity={isQ1?0.5:1}/>;
+        })}
+        {betas.map((b,i)=>{if(isQ1&&i>0)return null;
+          return <text key={`v${i}`} x={sx(i)+(qi<=1?-8:8)} y={sy(b)+(b>=0?-8:14)}
+            textAnchor={qi<=1?"end":"start"} style={{fontSize:8,fill:colors[qi],fontWeight:500}}>
+            {b>=0?"+":""}{b.toFixed(2)}</text>;
+        })}
+        <text x={sx(2)+10} y={labelY[qi]+4} textAnchor="start"
+          style={{fontSize:10,fill:colors[qi],fontWeight:600,opacity:isQ1?0.4:1}}>{q.q}</text>
+      </g>;
+    })}
+  </svg>;
+}
+
+function GaltonChart(){
+  const cols=5,rows=2;const cellW=150,cellH=110;
+  const W=cols*cellW+20,H=rows*cellH+50;
+  const pad={top:8,right:6,bottom:20,left:26};
+  const allB=GALTON.flatMap(g=>[g.t1,g.t2,g.t3]);
+  const yMin=Math.min(...allB)*1.15,yMax=Math.max(...allB)*1.15;
+  return <svg width={W} height={H} style={{fontFamily:font}}>
+    {GALTON.map((g,gi)=>{
+      const col=gi%cols,row=Math.floor(gi/cols);
+      const ox=10+col*cellW,oy=row*cellH;
+      const cw=cellW-pad.left-pad.right,ch=cellH-pad.top-pad.bottom-18;
+      const sx=i=>ox+pad.left+(i/2)*cw;
+      const sy=v=>oy+pad.top+18+ch-((v-yMin)/(yMax-yMin))*ch;
+      const betas=[g.t1,g.t2,g.t3];
+      const pts=betas.map((b,i)=>[sx(i),sy(b)]);
+      const pathD=pts.map((p,i)=>`${i===0?"M":"L"}${p[0]},${p[1]}`).join(" ");
+      return <g key={g.reg}>
+        <rect x={ox+2} y={oy+2} width={cellW-4} height={cellH-4} rx={3} fill={g.u?"#fafaf9":"#fff5f5"} stroke={g.u?"#e5e5e5":"#fca5a5"} strokeWidth={0.5}/>
+        <text x={ox+cellW/2} y={oy+14} textAnchor="middle" style={{fontSize:8.5,fontWeight:600,fill:"#333"}}>{g.reg}</text>
+        <text x={ox+cellW/2} y={oy+23} textAnchor="middle" style={{fontSize:7,fill:"#aaa"}}>{g.n}c · {g.u?"U ✓":"no U"} · F p={g.fp<0.001?"<.001":g.fp.toFixed(3)}</text>
+        <line x1={sx(0)} y1={sy(0)} x2={sx(2)} y2={sy(0)} stroke="#ddd" strokeWidth={0.5}/>
+        <path d={pathD} fill="none" stroke={g.u?"#1a1a2e":"#dc2626"} strokeWidth={1.8}/>
+        {betas.map((b,i)=>{const isMin=b===Math.min(...betas);
+          return <g key={i}><circle cx={sx(i)} cy={sy(b)} r={3.5} fill={isMin?(g.u?"#1a1a2e":"#dc2626"):"#fff"} stroke={g.u?"#1a1a2e":"#dc2626"} strokeWidth={1.2}/>
+          <text x={sx(i)} y={sy(b)+(b>=0?-7:12)} textAnchor="middle" style={{fontSize:7,fill:"#666",fontWeight:isMin?600:400}}>{b>=0?"+":""}{b.toFixed(2)}</text></g>;})}
+        {row===rows-1&&["T1","T2","T3"].map((l,i)=><text key={l} x={sx(i)} y={oy+cellH-6} textAnchor="middle" style={{fontSize:7,fill:"#aaa"}}>{l}</text>)}
+      </g>;
+    })}
+  </svg>;
+}
+
+// ── Main ──
+function F4a(){
+  const [tab,setTab]=useState("equipment");
+  const tabs=[
+    {id:"equipment",label:"T5b: Equipment × Gini"},
+    {id:"facility",label:"T5a: Facility × Gini"},
+    {id:"quartiles",label:"T5c: GDP Quartiles"},
+    {id:"galton",label:"T5d: Galton Test"},
+  ];
+
+  return <div style={{fontFamily:font,maxWidth:860,margin:"0 auto",padding:"18px 14px",color:"#1a1a2e",background:"#fefefe"}}>
+    <div style={{borderBottom:"2px solid #1a1a2e",paddingBottom:7,marginBottom:14}}>
+      <h2 style={{fontSize:16,margin:0,fontWeight:700,letterSpacing:"-0.3px"}}>Sport-Cost Decomposition: Establishing the Gradient</h2>
+      <p style={{fontSize:11,color:"#666",margin:"3px 0 0",lineHeight:1.5}}>D1 panel: 71 countries × 41 sports × 2 periods (N = 5,822). Gini × cost-tier interactions. Controls: ln(GDP), ln(Pop), Period, Soviet-legacy, Region FE, Sport FE. Clustered SEs (country).</p>
+    </div>
+    <div style={{display:"flex",gap:1,marginBottom:14,flexWrap:"wrap"}}>
+      {tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"5px 12px",border:"none",borderBottom:tab===t.id?"2px solid #1a1a2e":"2px solid transparent",background:"none",color:tab===t.id?"#1a1a2e":"#999",fontSize:10.5,fontWeight:tab===t.id?600:400,cursor:"pointer",fontFamily:"inherit"}}>{t.label}</button>)}
+    </div>
+
+    {tab==="equipment"&&<div>
+      <CoefPlot data={EQ} title="Gini Effect by Equipment Cost Tier" subtitle="Personal equipment cost (annual, competitive level)" fTest={EQ_F} trend={EQ_TREND} width={520} height={180}/>
+      <div style={{marginTop:14,padding:"9px 12px",background:"#f8f8f5",borderLeft:"3px solid #1a1a2e",fontSize:11,lineHeight:1.6,color:"#333"}}>
+        <strong>The gradient:</strong> In cheap sports (Tier 1), inequality has a weakly positive effect (β = +0.22). In expensive sports (Tier 3), it turns negative (β = −0.06). The difference is significant: Δβ = −0.28, p = 0.002.</div>
+    </div>}
+
+    {tab==="facility"&&<div>
+      <CoefPlot data={FAC} title="Gini Effect by Facility Cost Tier" subtitle="Training facility cost (Central Europe benchmark)" fTest={FAC_F} trend={FAC_TREND} width={520} height={210}/>
+      <div style={{marginTop:14,padding:"9px 12px",background:"#f8f8f5",borderLeft:"3px solid #1a1a2e",fontSize:11,lineHeight:1.6,color:"#333"}}>
+        <strong>No gradient:</strong> All four slopes are positive and insignificant (0.16, 0.08, 0.01, 0.16). The binding constraint is personal equipment cost, not facility cost.</div>
+    </div>}
+
+    {tab==="quartiles"&&<div>
+      <p style={{fontSize:11,color:"#555",margin:"0 0 4px",lineHeight:1.6}}>
+        Countries split by GDP/capita: Q1 = poorest 17 (≤$10K), Q2 = 17 ($11–20K), Q3 = 17 ($20–35K), Q4 = richest 20 ($36–68K).</p>
+      <p style={{fontSize:11,color:"#555",margin:"0 0 12px",lineHeight:1.6}}>
+        <strong>Reading the β:</strong> positive = more inequality → more points. Q4 Tier 1 β = +0.91 means among rich countries, a 10-point Gini gap predicts ~9 extra points per cheap sport per period. Q1 Tier 2/3 greyed out (10–11 countries scoring).</p>
+      <QuartileChart/>
+      <div style={{marginTop:14,padding:"9px 12px",background:"#f8f8f5",borderLeft:"3px solid #1a1a2e",fontSize:11,lineHeight:1.6,color:"#333"}}>
+        <strong>Two patterns.</strong> Tier 1 Gini effect rises monotonically with wealth: −0.01 → +0.04 → +0.67 → +0.91. The U-shape (Tier 2 dip) appears in Q2–Q4.</div>
+    </div>}
+
+    {tab==="galton"&&<div>
+      <p style={{fontSize:11,color:"#555",margin:"0 0 4px",lineHeight:1.6}}>Region × Equipment Tier × Gini triple interaction (30 slopes). Each panel: one region's Gini slopes across tiers. Filled dot = tier with lowest slope.</p>
+      <p style={{fontSize:11,color:"#555",margin:"0 0 12px",lineHeight:1.6}}><strong>9 of 10 regions show the U-shape</strong> (Tier 2 lowest). Only Eastern Asia diverges (red border).</p>
+      <GaltonChart/>
+      <div style={{marginTop:14,padding:"9px 12px",background:"#f8f8f5",borderLeft:"3px solid #1a1a2e",fontSize:11,lineHeight:1.6,color:"#333"}}>
+        <strong>Regional F-tests:</strong> significant in NA & Oceania (p &lt; 0.001) and Western Europe (p = 0.008), borderline in 4 others. The U-shape is cross-regional.</div>
+    </div>}
+  </div>;
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(F4a));
+    </script>
+</body>
+</html>

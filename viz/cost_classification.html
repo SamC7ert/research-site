@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        import { useState, useMemo } from "react";
+
+const SPORTS_DATA = [
+  {name:"Equestrian",v91:200000,v93:18000,eq:5000,co:3000,fa:6000,cp:4000,type:"individual",q:"A",r91:1,r93:1},
+  {name:"Sailing",v91:32500,v93:10500,eq:4000,co:1500,fa:3000,cp:2000,type:"individual",q:"A",r91:2,r93:2},
+  {name:"Triathlon",v91:10000,v93:6800,eq:3000,co:1500,fa:1500,cp:800,type:"individual",q:"B",r91:10,r93:3},
+  {name:"Tennis",v91:10000,v93:5500,eq:1000,co:2500,fa:1500,cp:500,type:"duel",q:"A",r91:7,r93:4},
+  {name:"Rowing",v91:10000,v93:5300,eq:1000,co:1000,fa:2500,cp:800,type:"individual",q:"A",r91:6,r93:5},
+  {name:"Road Cycling",v91:20000,v93:5200,eq:3000,co:600,fa:800,cp:800,type:"individual",q:"B",r91:3,r93:6},
+  {name:"Golf",v91:6500,v93:5000,eq:1500,co:1000,fa:2000,cp:500,type:"individual",q:"B",r91:11,r93:7},
+  {name:"Mountain Biking",v91:10000,v93:5000,eq:3000,co:600,fa:600,cp:800,type:"individual",q:"B",r91:9,r93:8},
+  {name:"Swimming",v91:1250,v93:4800,eq:800,co:1500,fa:2000,cp:500,type:"individual",q:"A",r91:26,r93:9},
+  {name:"Marathon Swimming",v91:750,v93:4800,eq:800,co:1500,fa:2000,cp:500,type:"individual",q:"C",r91:33,r93:10},
+  {name:"Artistic Swimming",v91:2000,v93:4400,eq:500,co:1500,fa:2000,cp:400,type:"team",q:"C",r91:21,r93:11},
+  {name:"Diving",v91:750,v93:4200,eq:300,co:1500,fa:2000,cp:400,type:"individual",q:"C",r91:32,r93:12},
+  {name:"Artistic Gymnastics",v91:1250,v93:4100,eq:300,co:1500,fa:2000,cp:300,type:"individual",q:"B",r91:29,r93:13},
+  {name:"Water Polo",v91:650,v93:4000,eq:400,co:1200,fa:2000,cp:400,type:"team",q:"C",r91:41,r93:14},
+  {name:"Canoe Slalom",v91:5500,v93:3800,eq:1200,co:600,fa:1200,cp:800,type:"individual",q:"C",r91:13,r93:15},
+  {name:"BMX Racing",v91:3500,v93:3600,eq:2000,co:600,fa:500,cp:500,type:"individual",q:"C",r91:17,r93:16},
+  {name:"Track Cycling",v91:20000,v93:3500,eq:2000,co:600,fa:400,cp:500,type:"individual",q:"C",r91:4,r93:17},
+  {name:"Modern Pentathlon",v91:10000,v93:3400,eq:1000,co:1000,fa:1000,cp:400,type:"individual",q:"C",r91:8,r93:18},
+  {name:"Rhythmic Gymnastics",v91:2000,v93:3300,eq:600,co:1500,fa:800,cp:400,type:"individual",q:"C",r91:20,r93:19},
+  {name:"Canoe Sprint",v91:5500,v93:3200,eq:800,co:600,fa:1200,cp:600,type:"individual",q:"C",r91:12,r93:20},
+  {name:"Shooting",v91:12500,v93:3100,eq:1800,co:400,fa:500,cp:400,type:"individual",q:"A",r91:5,r93:21},
+  {name:"Trampoline",v91:650,v93:2950,eq:200,co:1200,fa:1200,cp:350,type:"individual",q:"C",r91:40,r93:22},
+  {name:"Fencing",v91:3500,v93:2300,eq:800,co:800,fa:400,cp:300,type:"duel",q:"B",r91:14,r93:23},
+  {name:"Archery",v91:3500,v93:2300,eq:1200,co:400,fa:400,cp:300,type:"individual",q:"B",r91:16,r93:24},
+  {name:"Baseball/Softball",v91:2000,v93:2300,eq:800,co:800,fa:400,cp:300,type:"team",q:"B",r91:23,r93:25},
+  {name:"Hockey (Field)",v91:2000,v93:2200,eq:600,co:800,fa:500,cp:300,type:"team",q:"B",r91:22,r93:26},
+  {name:"Beach Volleyball",v91:750,v93:2000,eq:300,co:800,fa:500,cp:400,type:"team",q:"C",r91:34,r93:27},
+  {name:"Athletics — Field",v91:1500,v93:1850,eq:500,co:700,fa:250,cp:400,type:"individual",q:"A",r91:25,r93:28},
+  {name:"Football (Soccer)",v91:2000,v93:1800,eq:600,co:800,fa:200,cp:200,type:"team",q:"A",r91:18,r93:29},
+  {name:"Badminton",v91:3500,v93:1800,eq:500,co:800,fa:400,cp:100,type:"duel",q:"B",r91:15,r93:30},
+  {name:"Basketball",v91:1250,v93:1800,eq:300,co:800,fa:400,cp:300,type:"team",q:"B",r91:31,r93:31},
+  {name:"Handball",v91:750,v93:1700,eq:200,co:800,fa:400,cp:300,type:"team",q:"B",r91:35,r93:32},
+  {name:"Athletics — Track",v91:1750,v93:1650,eq:650,co:600,fa:100,cp:300,type:"individual",q:"A",r91:24,r93:33},
+  {name:"Boxing",v91:1250,v93:1650,eq:400,co:700,fa:250,cp:300,type:"duel",q:"B",r91:27,r93:34},
+  {name:"Rugby Sevens",v91:750,v93:1600,eq:300,co:800,fa:200,cp:300,type:"team",q:"B",r91:37,r93:35},
+  {name:"Volleyball",v91:750,v93:1550,eq:200,co:800,fa:300,cp:250,type:"team",q:"B",r91:36,r93:36},
+  {name:"Taekwondo",v91:1250,v93:1450,eq:350,co:600,fa:200,cp:300,type:"duel",q:"B",r91:28,r93:37},
+  {name:"Weightlifting",v91:1250,v93:1450,eq:400,co:500,fa:300,cp:250,type:"individual",q:"C",r91:30,r93:38},
+  {name:"Judo",v91:650,v93:1400,eq:300,co:600,fa:200,cp:300,type:"duel",q:"A",r91:38,r93:39},
+  {name:"Table Tennis",v91:2000,v93:1350,eq:500,co:500,fa:250,cp:100,type:"duel",q:"B",r91:19,r93:41},
+  {name:"Wrestling",v91:650,v93:1350,eq:250,co:600,fa:200,cp:300,type:"duel",q:"B",r91:39,r93:40},
+];
+
+const COLORS = {
+  equipment: "#c45d3e",
+  coaching: "#4a7c6f",
+  facility: "#3b6b9e",
+  competition: "#9e8a5e",
+};
+
+const TYPE_COLORS = {
+  individual: "#6b7280",
+  team: "#2563eb",
+  duel: "#9333ea",
+};
+
+const QUALITY_STYLE = {
+  A: { bg: "#166534", fg: "#fff" },
+  B: { bg: "#a16207", fg: "#fff" },
+  C: { bg: "#991b1b", fg: "#fff" },
+};
+
+function StackedBarChart() {
+  const sorted = [...SPORTS_DATA].sort((a, b) => b.v93 - a.v93);
+  const maxCost = sorted[0].v93;
+  const barH = 18;
+  const gap = 3;
+  const labelW = 160;
+  const chartW = 520;
+  const rightPad = 70;
+  const totalW = labelW + chartW + rightPad;
+  const totalH = sorted.length * (barH + gap) + 60;
+
+  const ticks = [0, 2000, 4000, 6000, 8000, 10000, 12000, 14000, 16000, 18000];
+  const scale = (v) => (v / maxCost) * chartW;
+
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <svg width={totalW} height={totalH} style={{ fontFamily: "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace", fontSize: 10 }}>
+        {/* Tick lines and labels */}
+        {ticks.map((t) => (
+          <g key={t}>
+            <line x1={labelW + scale(t)} y1={24} x2={labelW + scale(t)} y2={totalH - 20} stroke="#e5e5e5" strokeWidth={0.5} />
+            <text x={labelW + scale(t)} y={16} textAnchor="middle" fill="#999" fontSize={9}>€{(t / 1000).toFixed(0)}k</text>
+          </g>
+        ))}
+
+        {sorted.map((d, i) => {
+          const y = 30 + i * (barH + gap);
+          let x = labelW;
+          const segments = [
+            { key: "equipment", val: d.eq },
+            { key: "coaching", val: d.co },
+            { key: "facility", val: d.fa },
+            { key: "competition", val: d.cp },
+          ];
+
+          return (
+            <g key={d.name}>
+              {/* Sport type dot */}
+              <circle cx={6} cy={y + barH / 2} r={3.5} fill={TYPE_COLORS[d.type]} opacity={0.85} />
+              {/* Sport name */}
+              <text x={16} y={y + barH / 2 + 3.5} fill="#333" fontSize={10} fontWeight={500}>{d.name}</text>
+              {/* Stacked bars */}
+              {segments.map((seg) => {
+                const w = scale(seg.val);
+                const rect = (
+                  <rect key={seg.key} x={x} y={y} width={w} height={barH} fill={COLORS[seg.key]} rx={1} opacity={0.88} />
+                );
+                x += w;
+                return rect;
+              })}
+              {/* Total label */}
+              <text x={labelW + scale(d.v93) + 5} y={y + barH / 2 + 3.5} fill="#666" fontSize={9}>€{d.v93.toLocaleString()}</text>
+              {/* Quality badge */}
+              <rect x={totalW - 30} y={y + 2} width={16} height={barH - 4} rx={3} fill={QUALITY_STYLE[d.q].bg} />
+              <text x={totalW - 22} y={y + barH / 2 + 3} textAnchor="middle" fill={QUALITY_STYLE[d.q].fg} fontSize={8} fontWeight={700}>{d.q}</text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function SlopeChart() {
+  const data = [...SPORTS_DATA];
+  const n = data.length;
+  const leftX = 180;
+  const rightX = 560;
+  const topY = 40;
+  const rowH = 16.5;
+  const totalH = topY + n * rowH + 30;
+
+  const yScale = (rank) => topY + (rank - 1) * rowH;
+
+  const bigMovers = data.filter((d) => Math.abs(d.r91 - d.r93) >= 7);
+  const bigMoverNames = new Set(bigMovers.map((d) => d.name));
+
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <svg width={740} height={totalH} style={{ fontFamily: "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace", fontSize: 10 }}>
+        {/* Headers */}
+        <text x={leftX - 5} y={24} textAnchor="end" fill="#666" fontSize={11} fontWeight={700}>v0.91 Equipment-only</text>
+        <text x={rightX + 5} y={24} textAnchor="start" fill="#666" fontSize={11} fontWeight={700}>v0.93 Four-component</text>
+
+        {/* Rank numbers */}
+        {Array.from({ length: n }, (_, i) => i + 1).map((r) => (
+          <g key={`rank-${r}`}>
+            <text x={leftX - 130} y={yScale(r) + 4} fill="#ccc" fontSize={8} textAnchor="end">{r}</text>
+            <text x={rightX + 165} y={yScale(r) + 4} fill="#ccc" fontSize={8} textAnchor="start">{r}</text>
+          </g>
+        ))}
+
+        {/* Lines and labels */}
+        {data.map((d) => {
+          const isBig = bigMoverNames.has(d.name);
+          const delta = d.r91 - d.r93;
+          const lineColor = !isBig ? "#ddd" : delta > 0 ? "#2563eb" : "#dc2626";
+          const lineW = isBig ? 1.8 : 0.6;
+          const textOpacity = isBig ? 1 : 0.45;
+          const fontW = isBig ? 600 : 400;
+
+          return (
+            <g key={d.name}>
+              <line
+                x1={leftX}
+                y1={yScale(d.r91)}
+                x2={rightX}
+                y2={yScale(d.r93)}
+                stroke={lineColor}
+                strokeWidth={lineW}
+                opacity={isBig ? 0.7 : 0.3}
+              />
+              {/* Left label */}
+              <text x={leftX - 5} y={yScale(d.r91) + 3.5} textAnchor="end" fill="#333" opacity={textOpacity} fontWeight={fontW} fontSize={9.5}>
+                {d.name}
+              </text>
+              {/* Right label */}
+              <text x={rightX + 5} y={yScale(d.r93) + 3.5} textAnchor="start" fill="#333" opacity={textOpacity} fontWeight={fontW} fontSize={9.5}>
+                {d.name}
+              </text>
+              {/* Delta badge for big movers */}
+              {isBig && (
+                <g>
+                  <text
+                    x={rightX + 155}
+                    y={yScale(d.r93) + 3.5}
+                    textAnchor="end"
+                    fill={delta > 0 ? "#2563eb" : "#dc2626"}
+                    fontSize={8}
+                    fontWeight={700}
+                  >
+                    {delta > 0 ? `↑${delta}` : `↓${Math.abs(delta)}`}
+                  </text>
+                </g>
+              )}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function Legend({ type }) {
+  if (type === "bar") {
+    return (
+      <div style={{ display: "flex", gap: 24, flexWrap: "wrap", padding: "8px 0", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 14 }}>
+          {Object.entries(COLORS).map(([key, color]) => (
+            <div key={key} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <div style={{ width: 10, height: 10, background: color, borderRadius: 2, opacity: 0.88 }} />
+              <span style={{ fontSize: 11, color: "#555", textTransform: "capitalize" }}>{key}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ borderLeft: "1px solid #ddd", paddingLeft: 14, display: "flex", gap: 12 }}>
+          {Object.entries(TYPE_COLORS).map(([key, color]) => (
+            <div key={key} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: color }} />
+              <span style={{ fontSize: 11, color: "#555", textTransform: "capitalize" }}>{key}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ borderLeft: "1px solid #ddd", paddingLeft: 14, display: "flex", gap: 8 }}>
+          {Object.entries(QUALITY_STYLE).map(([key, style]) => (
+            <div key={key} style={{ display: "flex", alignItems: "center", gap: 3 }}>
+              <span style={{ background: style.bg, color: style.fg, fontSize: 9, fontWeight: 700, padding: "1px 4px", borderRadius: 3 }}>{key}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: "flex", gap: 18, padding: "8px 0", fontSize: 11, color: "#666" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+        <div style={{ width: 20, height: 2, background: "#2563eb" }} />
+        <span>Moved up ≥7 ranks</span>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+        <div style={{ width: 20, height: 2, background: "#dc2626" }} />
+        <span>Moved down ≥7 ranks</span>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+        <div style={{ width: 20, height: 2, background: "#ddd" }} />
+        <span>Stable (±6)</span>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tab, setTab] = useState("bar");
+
+  return (
+    <div style={{
+      fontFamily: "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace",
+      maxWidth: 800,
+      margin: "0 auto",
+      padding: 20,
+      background: "#fafaf8",
+      minHeight: "100vh",
+    }}>
+      <h1 style={{ fontSize: 16, fontWeight: 700, color: "#222", margin: "0 0 2px" }}>
+        v0.93.5 Sport Cost Classification
+      </h1>
+      <p style={{ fontSize: 11, color: "#888", margin: "0 0 16px" }}>
+        41 main-sample sports · Four-component household cost · Central Europe benchmark · Youth pathway (ages 12–16)
+      </p>
+
+      <div style={{ display: "flex", gap: 0, marginBottom: 12, borderBottom: "2px solid #e5e5e5" }}>
+        {[
+          { id: "bar", label: "Cost Breakdown" },
+          { id: "slope", label: "Rank Change v0.91 → v0.93" },
+        ].map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            style={{
+              padding: "8px 16px",
+              fontSize: 11,
+              fontWeight: tab === t.id ? 700 : 400,
+              color: tab === t.id ? "#222" : "#999",
+              background: "none",
+              border: "none",
+              borderBottom: tab === t.id ? "2px solid #222" : "2px solid transparent",
+              cursor: "pointer",
+              marginBottom: -2,
+              fontFamily: "inherit",
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <Legend type={tab} />
+
+      {tab === "bar" ? <StackedBarChart /> : <SlopeChart />}
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>

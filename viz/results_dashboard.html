@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V095Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        const { useState } = React;
+
+// v0.95 Results Dashboard — Full analysis with continuous facility costs
+// Two specifications: marginal (primary) and max-component (robustness)
+
+const F = "'IBM Plex Mono','JetBrains Mono',monospace";
+
+// ============================================================
+// DATA FROM PIPELINE OUTPUT
+// ============================================================
+
+const HORSE_RACE = {
+  marginal: {
+    equipment: {
+      full: { gini_alone: -0.6755, gini_alone_p: 0.054, gini_joint: -0.7236, gini_joint_p: 0.039, gdp_fac: 3.7158, gdp_fac_p: 0.017, atten: -7.1 },
+      upper: { gini_alone: -2.5372, gini_alone_p: 0.012, gini_joint: -2.5381, gini_joint_p: 0.012, gdp_fac: 5.0434, gdp_fac_p: 0.056, atten: 0.0 },
+    },
+    ecco: {
+      full: { gini_alone: -0.7642, gini_alone_p: 0.069, gini_joint: -0.7416, gini_joint_p: 0.078, gdp_fac: 3.5561, gdp_fac_p: 0.020, atten: 3.0 },
+      upper: { gini_alone: -2.6316, gini_alone_p: 0.026, gini_joint: -2.5941, gini_joint_p: 0.028, gdp_fac: 4.9122, gdp_fac_p: 0.068, atten: 1.4 },
+    },
+    total: {
+      full: { gini_alone: -0.5756, gini_alone_p: 0.075, gini_joint: -0.5036, gini_joint_p: 0.107, gdp_fac: 3.4895, gdp_fac_p: 0.022, atten: 12.5 },
+      upper: { gini_alone: -1.8152, gini_alone_p: 0.054, gini_joint: -1.7454, gini_joint_p: 0.064, gdp_fac: 4.8328, gdp_fac_p: 0.078, atten: 3.8 },
+    },
+  },
+  maxcomp: {
+    equipment: {
+      full: { gini_alone: -0.6755, gini_alone_p: 0.054, gini_joint: -0.7041, gini_joint_p: 0.043, gdp_fac: 3.1709, gdp_fac_p: 0.003, atten: -4.2 },
+      upper: { gini_alone: -2.5372, gini_alone_p: 0.012, gini_joint: -2.5398, gini_joint_p: 0.012, gdp_fac: 3.2627, gdp_fac_p: 0.013, atten: -0.1 },
+    },
+    ecco: {
+      full: { gini_alone: -0.7642, gini_alone_p: 0.069, gini_joint: -0.7184, gini_joint_p: 0.088, gdp_fac: 3.0217, gdp_fac_p: 0.004, atten: 6.0 },
+      upper: { gini_alone: -2.6316, gini_alone_p: 0.026, gini_joint: -2.6037, gini_joint_p: 0.029, gdp_fac: 3.1091, gdp_fac_p: 0.016, atten: 1.1 },
+    },
+    total: {
+      full: { gini_alone: -0.5756, gini_alone_p: 0.075, gini_joint: -0.4862, gini_joint_p: 0.125, gdp_fac: 2.9611, gdp_fac_p: 0.004, atten: 15.5 },
+      upper: { gini_alone: -1.8152, gini_alone_p: 0.054, gini_joint: -1.7573, gini_joint_p: 0.064, gdp_fac: 2.9968, gdp_fac_p: 0.022, atten: 3.2 },
+    },
+  },
+};
+
+const FOUR_WAY = {
+  marginal: {
+    gini_x_cost: { beta: -2.3287, p: 0.022 },
+    gini_x_fac: { beta: 0.8949, p: 0.028 },
+    gdp_x_cost: { beta: -0.7267, p: 0.895 },
+    gdp_x_fac: { beta: 6.4465, p: 0.008 },
+  },
+  maxcomp: {
+    gini_x_cost: { beta: -2.4868, p: 0.022 },
+    gini_x_fac: { beta: 0.5456, p: 0.026 },
+    gdp_x_cost: { beta: -1.3057, p: 0.814 },
+    gdp_x_fac: { beta: 4.1923, p: 0.004 },
+  },
+};
+
+const VERSION_COMPARE = [
+  { label: "Gini×equip Ind Full", v93: { b: -0.679, p: 0.048 }, v95m: { b: -0.724, p: 0.039 }, v95x: { b: -0.704, p: 0.043 } },
+  { label: "Gini×equip Ind Upper", v93: { b: -2.537, p: 0.011 }, v95m: { b: -2.538, p: 0.012 }, v95x: { b: -2.540, p: 0.012 } },
+  { label: "GDP×fac Ind Full equip", v93: { b: 5.86, p: 0.005 }, v95m: { b: 3.72, p: 0.017 }, v95x: { b: 3.17, p: 0.003 } },
+  { label: "GDP×fac Ind Upper equip", v93: { b: 5.01, p: 0.035 }, v95m: { b: 5.04, p: 0.056 }, v95x: { b: 3.26, p: 0.013 } },
+  { label: "Atten equip Full", v93: { b: -0.6 }, v95m: { b: -7.1 }, v95x: { b: -4.2 } },
+  { label: "Atten E+C+Co Full", v93: { b: 16.6 }, v95m: { b: 3.0 }, v95x: { b: 6.0 } },
+  { label: "Atten total Full", v93: { b: 30.0 }, v95m: { b: 12.5 }, v95x: { b: 15.5 } },
+];
+
+const GINI_FAC_INVEST = [
+  { label: "Base (4-way upper)", beta: 0.5456, p: 0.026 },
+  { label: "Excl China+Russia", beta: 0.6380, p: 0.011 },
+  { label: "Excl China only", beta: 0.5456, p: 0.026 },
+  { label: "Excl Russia only", beta: 0.6380, p: 0.011 },
+  { label: "+ Soviet×facility", beta: 0.5443, p: 0.028 },
+  { label: "Standalone (upper)", beta: 0.5122, p: 0.109 },
+  { label: "Standalone (full)", beta: 0.0039, p: 0.967 },
+];
+
+const POOL_SENS = {
+  marginal: [
+    { label: "All 23 sports, Full", gdp: 3.72, gdp_p: 0.017, gini: -0.72, gini_p: 0.039 },
+    { label: "All 23 sports, Upper", gdp: 5.04, gdp_p: 0.056, gini: -2.54, gini_p: 0.012 },
+    { label: "Excl pool (19), Full", gdp: 1.60, gdp_p: 0.054, gini: -0.61, gini_p: 0.034 },
+    { label: "Excl pool (19), Upper", gdp: 2.30, gdp_p: 0.051, gini: -1.92, gini_p: 0.007 },
+  ],
+  maxcomp: [
+    { label: "All 23 sports, Full", gdp: 3.17, gdp_p: 0.003, gini: -0.70, gini_p: 0.043 },
+    { label: "All 23 sports, Upper", gdp: 3.26, gdp_p: 0.013, gini: -2.54, gini_p: 0.012 },
+    { label: "Excl pool (19), Full", gdp: 1.60, gdp_p: 0.054, gini: -0.61, gini_p: 0.034 },
+    { label: "Excl pool (19), Upper", gdp: 2.30, gdp_p: 0.051, gini: -1.92, gini_p: 0.007 },
+  ],
+};
+
+const GENDER = [
+  { label: "Men (marginal)", gini: -1.304, gini_p: 0.078, gdp: 2.256, gdp_p: 0.133 },
+  { label: "Men (maxcomp)", gini: -1.308, gini_p: 0.078, gdp: 1.390, gdp_p: 0.093 },
+  { label: "Women (marginal)", gini: -1.592, gini_p: 0.007, gdp: 2.994, gdp_p: 0.065 },
+  { label: "Women (maxcomp)", gini: -1.588, gini_p: 0.008, gdp: 2.109, gdp_p: 0.013 },
+];
+
+// ============================================================
+// COMPONENTS
+// ============================================================
+
+const pFmt = (p) => {
+  if (p === undefined) return "";
+  if (p < 0.001) return "<0.001";
+  if (p < 0.01) return p.toFixed(3);
+  return p.toFixed(3);
+};
+
+const sigColor = (p) => {
+  if (p === undefined) return "#64748b";
+  if (p < 0.01) return "#166534";
+  if (p < 0.05) return "#15803d";
+  if (p < 0.10) return "#a16207";
+  return "#991b1b";
+};
+
+const sigBg = (p) => {
+  if (p === undefined) return "#f8fafc";
+  if (p < 0.01) return "#f0fdf4";
+  if (p < 0.05) return "#f0fdf4";
+  if (p < 0.10) return "#fffbeb";
+  return "#fef2f2";
+};
+
+const Cell = ({ children, align = "left", bg, bold, mono, width }) => (
+  <td style={{ padding: "4px 8px", textAlign: align, fontFamily: mono ? F : "inherit", fontWeight: bold ? 700 : 400, background: bg || "transparent", fontSize: 12, whiteSpace: "nowrap", width }}>
+    {children}
+  </td>
+);
+
+const Section = ({ title, children }) => (
+  <div style={{ marginBottom: 24 }}>
+    <div style={{ fontFamily: F, fontSize: 13, fontWeight: 700, color: "#1e293b", borderBottom: "2px solid #334155", paddingBottom: 4, marginBottom: 8 }}>{title}</div>
+    {children}
+  </div>
+);
+
+const Badge = ({ p }) => (
+  <span style={{ display: "inline-block", padding: "1px 6px", borderRadius: 3, fontSize: 10, fontFamily: F, color: sigColor(p), background: sigBg(p), fontWeight: 600 }}>
+    {pFmt(p)}
+  </span>
+);
+
+// ============================================================
+// FOUR-WAY MATRIX
+// ============================================================
+const FourWayMatrix = ({ spec }) => {
+  const d = FOUR_WAY[spec];
+  const cells = [
+    ["", "Equipment (household)", "Facility (infrastructure)"],
+    ["Gini (inequality)", d.gini_x_cost, d.gini_x_fac],
+    ["GDP (wealth)", d.gdp_x_cost, d.gdp_x_fac],
+  ];
+
+  return (
+    <table style={{ borderCollapse: "collapse", fontSize: 12 }}>
+      <tbody>
+        {cells.map((row, ri) => (
+          <tr key={ri}>
+            {row.map((cell, ci) => {
+              if (ri === 0 || ci === 0) {
+                return (
+                  <td key={ci} style={{ padding: "6px 12px", fontFamily: F, fontWeight: 700, fontSize: 11, color: "#475569", background: ri === 0 && ci > 0 ? "#f1f5f9" : ci === 0 && ri > 0 ? "#f1f5f9" : "#e2e8f0", textAlign: "center", border: "1px solid #e2e8f0" }}>
+                    {cell}
+                  </td>
+                );
+              }
+              const isNull = cell.p > 0.15;
+              return (
+                <td key={ci} style={{ padding: "8px 12px", textAlign: "center", background: isNull ? "#fafafa" : sigBg(cell.p), border: "1px solid #e2e8f0" }}>
+                  <div style={{ fontFamily: F, fontSize: 14, fontWeight: 700, color: isNull ? "#94a3b8" : "#0f172a" }}>
+                    {cell.beta > 0 ? "+" : ""}{cell.beta.toFixed(2)}
+                  </div>
+                  <Badge p={cell.p} />
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
+
+// ============================================================
+// MAIN
+// ============================================================
+function V095Dashboard() {
+  const [facSpec, setFacSpec] = useState("marginal");
+  const [costMeasure, setCostMeasure] = useState("equipment");
+
+  const hr = HORSE_RACE[facSpec][costMeasure];
+  const ps = POOL_SENS[facSpec];
+
+  return (
+    <div style={{ fontFamily: "system-ui, -apple-system, sans-serif", maxWidth: 880, margin: "0 auto", padding: 16, color: "#1e293b" }}>
+      <div style={{ fontFamily: F, fontSize: 16, fontWeight: 700, marginBottom: 4 }}>v0.95 Results Dashboard</div>
+      <div style={{ fontSize: 12, color: "#64748b", marginBottom: 16 }}>
+        Full analysis rerun with continuous facility costs · Individual sports · Scoring-only
+      </div>
+
+      {/* Spec selector */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+        <div style={{ fontSize: 11, fontFamily: F, color: "#64748b", alignSelf: "center" }}>FACILITY SPEC:</div>
+        {["marginal", "maxcomp"].map((s) => (
+          <button key={s} onClick={() => setFacSpec(s)} style={{ padding: "4px 12px", borderRadius: 4, border: facSpec === s ? "2px solid #2563eb" : "1px solid #cbd5e1", background: facSpec === s ? "#eff6ff" : "#fff", fontFamily: F, fontSize: 11, fontWeight: facSpec === s ? 700 : 400, cursor: "pointer", color: facSpec === s ? "#1d4ed8" : "#64748b" }}>
+            {s === "marginal" ? "Marginal (primary)" : "Max-component (robustness)"}
+          </button>
+        ))}
+        <div style={{ width: 16 }} />
+        <div style={{ fontSize: 11, fontFamily: F, color: "#64748b", alignSelf: "center" }}>COST:</div>
+        {["equipment", "ecco", "total"].map((c) => (
+          <button key={c} onClick={() => setCostMeasure(c)} style={{ padding: "4px 12px", borderRadius: 4, border: costMeasure === c ? "2px solid #2563eb" : "1px solid #cbd5e1", background: costMeasure === c ? "#eff6ff" : "#fff", fontFamily: F, fontSize: 11, fontWeight: costMeasure === c ? 700 : 400, cursor: "pointer", color: costMeasure === c ? "#1d4ed8" : "#64748b" }}>
+            {c === "ecco" ? "E+C+Co" : c === "total" ? "Total" : "Equipment"}
+          </button>
+        ))}
+      </div>
+
+      {/* Horse Race */}
+      <Section title="1. Horse Race: Gini × cost + GDP × facility">
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr style={{ background: "#f1f5f9" }}>
+              <Cell bold>Sample</Cell>
+              <Cell bold align="center">Gini×cost alone</Cell>
+              <Cell bold align="center">Gini×cost (joint)</Cell>
+              <Cell bold align="center">Attenuation</Cell>
+              <Cell bold align="center">GDP×facility</Cell>
+            </tr>
+          </thead>
+          <tbody>
+            {[["Full (71)", hr.full], ["Upper (35)", hr.upper]].map(([label, d]) => (
+              <tr key={label} style={{ borderBottom: "1px solid #e2e8f0" }}>
+                <Cell bold mono>{label}</Cell>
+                <Cell align="center" mono bg={sigBg(d.gini_alone_p)}>
+                  {d.gini_alone.toFixed(3)} <Badge p={d.gini_alone_p} />
+                </Cell>
+                <Cell align="center" mono bg={sigBg(d.gini_joint_p)}>
+                  {d.gini_joint.toFixed(3)} <Badge p={d.gini_joint_p} />
+                </Cell>
+                <Cell align="center" mono>
+                  <span style={{ color: Math.abs(d.atten) < 5 ? "#166534" : d.atten > 10 ? "#991b1b" : "#a16207", fontWeight: 600 }}>
+                    {d.atten > 0 ? "+" : ""}{d.atten.toFixed(1)}%
+                  </span>
+                </Cell>
+                <Cell align="center" mono bg={sigBg(d.gdp_fac_p)}>
+                  +{d.gdp_fac.toFixed(3)} <Badge p={d.gdp_fac_p} />
+                </Cell>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Section>
+
+      {/* Four-Way */}
+      <Section title="2. Four-Way Model (Upper half, equipment)">
+        <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+          <div>
+            <div style={{ fontSize: 11, fontFamily: F, color: "#64748b", marginBottom: 4 }}>{facSpec === "marginal" ? "MARGINAL" : "MAX-COMPONENT"}</div>
+            <FourWayMatrix spec={facSpec} />
+          </div>
+          <div style={{ fontSize: 12, color: "#475569", maxWidth: 300, lineHeight: 1.5 }}>
+            <p style={{ margin: "0 0 8px" }}>Two-channel separation confirmed: GDP operates through facility cost, Gini through equipment cost. Off-diagonal cells are null (GDP×equip ≈ 0).</p>
+            <p style={{ margin: 0 }}>Gini×facility is positive and significant in the 4-way — see investigation below.</p>
+          </div>
+        </div>
+      </Section>
+
+      {/* Version Comparison */}
+      <Section title="3. Version Comparison: v0.93 (ordinal) → v0.95 (continuous)">
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr style={{ background: "#f1f5f9" }}>
+              <Cell bold>Metric</Cell>
+              <Cell bold align="center">v0.93 (ordinal)</Cell>
+              <Cell bold align="center">v0.95 marginal</Cell>
+              <Cell bold align="center">v0.95 maxcomp</Cell>
+            </tr>
+          </thead>
+          <tbody>
+            {VERSION_COMPARE.map((row) => (
+              <tr key={row.label} style={{ borderBottom: "1px solid #e2e8f0" }}>
+                <Cell mono bold>{row.label}</Cell>
+                <Cell align="center" mono bg={row.v93.p !== undefined ? sigBg(row.v93.p) : undefined}>
+                  {row.v93.b > 0 && row.v93.p !== undefined ? "+" : ""}{typeof row.v93.b === "number" ? (row.label.includes("Atten") ? row.v93.b.toFixed(1) + "%" : row.v93.b.toFixed(3)) : row.v93.b}
+                  {row.v93.p !== undefined && <> <Badge p={row.v93.p} /></>}
+                </Cell>
+                <Cell align="center" mono bg={row.v95m.p !== undefined ? sigBg(row.v95m.p) : undefined}>
+                  {row.v95m.b > 0 && row.v95m.p !== undefined ? "+" : ""}{typeof row.v95m.b === "number" ? (row.label.includes("Atten") ? row.v95m.b.toFixed(1) + "%" : row.v95m.b.toFixed(3)) : row.v95m.b}
+                  {row.v95m.p !== undefined && <> <Badge p={row.v95m.p} /></>}
+                </Cell>
+                <Cell align="center" mono bg={row.v95x.p !== undefined ? sigBg(row.v95x.p) : undefined}>
+                  {row.v95x.b > 0 && row.v95x.p !== undefined ? "+" : ""}{typeof row.v95x.b === "number" ? (row.label.includes("Atten") ? row.v95x.b.toFixed(1) + "%" : row.v95x.b.toFixed(3)) : row.v95x.b}
+                  {row.v95x.p !== undefined && <> <Badge p={row.v95x.p} /></>}
+                </Cell>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Section>
+
+      {/* Gini × facility investigation */}
+      <Section title="4. Gini × Facility Positive Sign — Investigation">
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr style={{ background: "#f1f5f9" }}>
+              <Cell bold>Test</Cell>
+              <Cell bold align="center">Gini×fac β</Cell>
+              <Cell bold align="center">p-value</Cell>
+              <Cell bold>Note</Cell>
+            </tr>
+          </thead>
+          <tbody>
+            {GINI_FAC_INVEST.map((row) => (
+              <tr key={row.label} style={{ borderBottom: "1px solid #e2e8f0" }}>
+                <Cell mono>{row.label}</Cell>
+                <Cell align="center" mono bg={sigBg(row.p)}>+{row.beta.toFixed(4)}</Cell>
+                <Cell align="center"><Badge p={row.p} /></Cell>
+                <Cell>
+                  {row.label.includes("China+Russia") && <span style={{ fontSize: 11, color: "#dc2626" }}>Strengthens without them</span>}
+                  {row.label.includes("Soviet") && <span style={{ fontSize: 11, color: "#64748b" }}>Soviet×fac = −0.10 (p=0.96)</span>}
+                  {row.label === "Standalone (full)" && <span style={{ fontSize: 11, color: "#64748b" }}>Disappears in full sample</span>}
+                  {row.label === "Standalone (upper)" && <span style={{ fontSize: 11, color: "#a16207" }}>Borderline without controls</span>}
+                </Cell>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div style={{ fontSize: 11, color: "#475569", marginTop: 8, lineHeight: 1.5, background: "#fffbeb", padding: 8, borderRadius: 4 }}>
+          Finding: The positive Gini×facility is NOT driven by China/Russia — it actually strengthens without them. Soviet×facility is null. The effect is real in the upper half 4-way model but absent in the full sample and weak as a standalone. Interpretation: among wealthy countries, inequality may proxy for state concentration of resources in prestige facility-intensive sports.
+        </div>
+      </Section>
+
+      {/* Pool sensitivity */}
+      <Section title="5. Pool-Dependent Sensitivity (horse race, equipment)">
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr style={{ background: "#f1f5f9" }}>
+              <Cell bold>Sample</Cell>
+              <Cell bold align="center">Gini×equip β</Cell>
+              <Cell bold align="center">p</Cell>
+              <Cell bold align="center">GDP×fac β</Cell>
+              <Cell bold align="center">p</Cell>
+            </tr>
+          </thead>
+          <tbody>
+            {ps.map((row) => (
+              <tr key={row.label} style={{ borderBottom: "1px solid #e2e8f0", background: row.label.includes("Excl") ? "#faf5ff" : "transparent" }}>
+                <Cell mono>{row.label}</Cell>
+                <Cell align="center" mono bg={sigBg(row.gini_p)}>{row.gini.toFixed(2)} <Badge p={row.gini_p} /></Cell>
+                <Cell align="center"><Badge p={row.gini_p} /></Cell>
+                <Cell align="center" mono bg={sigBg(row.gdp_p)}>+{row.gdp.toFixed(2)} <Badge p={row.gdp_p} /></Cell>
+                <Cell align="center"><Badge p={row.gdp_p} /></Cell>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div style={{ fontSize: 11, color: "#475569", marginTop: 8, lineHeight: 1.5 }}>
+          Dropping 4 pool-dependent individual sports (Swimming, Marathon Swimming, Triathlon, Modern Pentathlon): GDP×facility weakens but stays borderline significant (p≈0.05). The Gini×equipment gradient actually strengthens (p=0.007 in upper half). The GDP channel is not solely driven by pool sports.
+        </div>
+      </Section>
+
+      {/* Gender */}
+      <Section title="6. Gender Decomposition (Upper, individual, Paper 2 preview)">
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr style={{ background: "#f1f5f9" }}>
+              <Cell bold>Sample</Cell>
+              <Cell bold align="center">Gini×equip β</Cell>
+              <Cell bold align="center">p</Cell>
+              <Cell bold align="center">GDP×fac β</Cell>
+              <Cell bold align="center">p</Cell>
+            </tr>
+          </thead>
+          <tbody>
+            {GENDER.map((row) => (
+              <tr key={row.label} style={{ borderBottom: "1px solid #e2e8f0" }}>
+                <Cell mono>{row.label}</Cell>
+                <Cell align="center" mono bg={sigBg(row.gini_p)}>{row.gini.toFixed(3)} <Badge p={row.gini_p} /></Cell>
+                <Cell align="center"><Badge p={row.gini_p} /></Cell>
+                <Cell align="center" mono bg={sigBg(row.gdp_p)}>+{row.gdp.toFixed(3)} <Badge p={row.gdp_p} /></Cell>
+                <Cell align="center"><Badge p={row.gdp_p} /></Cell>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div style={{ fontSize: 11, color: "#475569", marginTop: 8, lineHeight: 1.5 }}>
+          Women's Gini gradient is stronger (p=0.007–0.008) vs men's (p=0.078). Women's GDP×facility is significant with maxcomp (p=0.013). Gender asymmetry holds with continuous facility costs.
+        </div>
+      </Section>
+
+      {/* Spec decision */}
+      <Section title="7. Specification Decision Summary">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div style={{ background: "#f0fdf4", padding: 12, borderRadius: 6, border: "1px solid #86efac" }}>
+            <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#166534", marginBottom: 6 }}>MARGINAL (primary)</div>
+            <div style={{ fontSize: 11, color: "#475569", lineHeight: 1.5 }}>
+              ✓ Conservative — prices only sport-specific infrastructure<br/>
+              ✓ No judgement calls on pool dependency<br/>
+              ✗ GDP×fac borderline in upper half (p=0.056 equip)<br/>
+              ✗ Larger absolute coefficients, wider CIs
+            </div>
+          </div>
+          <div style={{ background: "#f8fafc", padding: 12, borderRadius: 6, border: "1px solid #cbd5e1" }}>
+            <div style={{ fontFamily: F, fontSize: 12, fontWeight: 700, color: "#334155", marginBottom: 6 }}>MAX-COMPONENT (robustness)</div>
+            <div style={{ fontSize: 11, color: "#475569", lineHeight: 1.5 }}>
+              ✓ GDP×fac significant everywhere (p=0.003–0.013)<br/>
+              ✓ Better attenuation patterns<br/>
+              ✓ Substantively defensible (pool IS the barrier)<br/>
+              ✗ Choosing stronger spec as primary invites scrutiny
+            </div>
+          </div>
+        </div>
+      </Section>
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(V095Dashboard));
+    </script>
+</body>
+</html>

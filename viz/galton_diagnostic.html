@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F2Galton</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        import { useState, useMemo } from "react";
+
+// ── Data (v0.91: China non-legacy, soviet_legacy variable) ──────────
+
+const REGIONS = [
+  {region:"Africa",n:6,pop_m:334.5,gdp:7164,pts_m:2.1,gini:40.7,ggi:0.648,sov:1,
+   gc:1.21,gp:0.7583,gc2:0.521,gp2:0.8919,
+   countries:"Egypt, Ethiopia, Kenya, Morocco, South Africa, Tunisia"},
+  {region:"Eastern Asia",n:6,pop_m:1581.9,gdp:22332,pts_m:2.1,gini:33.6,ggi:0.666,sov:2,
+   gc:61.468,gp:0.0014,gc2:-16.381,gp2:0.7662,
+   countries:"China, Japan, Mongolia, North Korea, South Korea, Taiwan"},
+  {region:"Eastern Europe",n:10,pop_m:294.4,gdp:20466,pts_m:12.2,gini:30.6,ggi:0.703,sov:10,
+   gc:19.27,gp:0.282,gc2:20.169,gp2:0.2761,
+   countries:"Belarus, Bulgaria, Czech Rep., Hungary, Moldova, Poland, Romania, Russia, Slovakia, Ukraine"},
+  {region:"Latin America & Caribbean",n:10,pop_m:484.1,gdp:12690,pts_m:2.9,gini:46.7,ggi:0.701,sov:1,
+   gc:-24.006,gp:0.0108,gc2:-23.993,gp2:0.0071,
+   countries:"Argentina, Brazil, Chile, Colombia, Cuba, Dom. Rep., Ecuador, Jamaica, Mexico, Venezuela"},
+  {region:"NA & Oceania (Anglosphere)",n:4,pop_m:374.5,gdp:43160,pts_m:11.0,gini:34.8,ggi:0.739,sov:0,
+   gc:147.055,gp:0.0,gc2:20.315,gp2:0.7878,
+   countries:"Australia, Canada, New Zealand, USA"},
+  {region:"Northern Europe",n:9,pop_m:100.1,gdp:41734,pts_m:20.9,gini:31.0,ggi:0.770,sov:3,
+   gc:27.046,gp:0.1174,gc2:27.767,gp2:0.1302,
+   countries:"Denmark, Estonia, Finland, Great Britain, Ireland, Latvia, Lithuania, Norway, Sweden"},
+  {region:"South & SE Asia",n:4,pop_m:1668.2,gdp:10666,pts_m:0.3,gini:35.2,ggi:0.647,sov:0,
+   gc:33.537,gp:0.0,gc2:28.896,gp2:0.0003,
+   countries:"India, Indonesia, Iran, Thailand"},
+  {region:"Southern Europe",n:7,pop_m:138.3,gdp:27696,pts_m:13.1,gini:31.9,ggi:0.712,sov:3,
+   gc:-19.451,gp:0.1081,gc2:-16.088,gp2:0.2183,
+   countries:"Croatia, Greece, Italy, Portugal, Serbia, Slovenia, Spain"},
+  {region:"Western & Central Asia",n:9,pop_m:154.6,gdp:18210,pts_m:6.1,gini:33.3,ggi:0.670,sov:6,
+   gc:-21.227,gp:0.1291,gc2:-20.395,gp2:0.1099,
+   countries:"Armenia, Azerbaijan, Bahrain, Georgia, Israel, Kazakhstan, Kyrgyzstan, Turkey, Uzbekistan"},
+  {region:"Western Europe",n:6,pop_m:192.4,gdp:46733,pts_m:16.1,gini:30.2,ggi:0.734,sov:0,
+   gc:32.781,gp:0.501,gc2:34.1,gp2:0.5041,
+   countries:"Austria, Belgium, France, Germany, Netherlands, Switzerland"},
+];
+
+const SPECS = {
+  A:{b:-5.725,p:0.2077,r2:0.4253},
+  B:{b:-0.153,p:0.9776,r2:0.4723},
+  C:{b:3.754,p:0.4483,r2:0.6511},
+  D:{b:4.337,p:0.3816,r2:0.6601},
+};
+
+const PTS=[{c:"Argentina",p:1,r:"Latin America & Caribbean",m:false,A:[11.632,-292.61],B:[9.796,-226.57],C:[-0.087,-119.38],D:[0.03,-131.92]},{c:"Argentina",p:2,r:"Latin America & Caribbean",m:false,A:[6.944,-385.9],B:[5.049,-317.75],C:[-4.578,-224.35],D:[-4.486,-234.12]},{c:"Armenia",p:1,r:"Western & Central Asia",m:true,A:[2.561,271.01],B:[3.382,241.48],C:[5.33,193.58],D:[5.336,193.02]},{c:"Armenia",p:2,r:"Western & Central Asia",m:true,A:[-2.341,148.91],B:[-0.762,92.14],C:[-1.198,162.62],D:[-0.94,135.09]},{c:"Australia",p:1,r:"NA & Oceania (Anglosphere)",m:false,A:[-1.422,563.32],B:[-2.279,594.13],C:[-2.22,121.35],D:[-2.238,123.28]},{c:"Australia",p:2,r:"NA & Oceania (Anglosphere)",m:false,A:[1.031,434.74],B:[0.08,468.95],C:[0.7,-35.67],D:[0.627,-27.87]},{c:"Austria",p:1,r:"Western Europe",m:false,A:[-3.422,-205.32],B:[-5.149,-143.2],C:[-0.4,-188.92],D:[-0.481,-180.19]},{c:"Austria",p:2,r:"Western Europe",m:false,A:[-2.405,-296.25],B:[-4.361,-225.91],C:[0.963,-297.95],D:[0.818,-282.47]},{c:"Azerbaijan",p:1,r:"Western & Central Asia",m:true,A:[-9.394,126.11],B:[-7.212,47.63],C:[-6.876,39.77],D:[-6.655,16.16]},{c:"Azerbaijan",p:2,r:"Western & Central Asia",m:true,A:[-8.278,51.29],B:[-5.322,-55.02],C:[-6.865,22.14],D:[-6.436,-23.73]},{c:"Bahrain",p:1,r:"Western & Central Asia",m:false,A:[1.406,20.23],B:[-2.228,150.93],C:[-3.163,367.3],D:[-3.551,408.87]},{c:"Bahrain",p:2,r:"Western & Central Asia",m:false,A:[1.631,-10.79],B:[-2.428,135.22],C:[-1.228,233.63],D:[-1.829,297.91]},{c:"Belarus",p:1,r:"Eastern Europe",m:true,A:[-6.799,251.12],B:[-3.601,136.11],C:[-1.799,108.65],D:[-2.028,133.1]},{c:"Belarus",p:2,r:"Eastern Europe",m:true,A:[-8.643,-7.39],B:[-4.896,-142.18],C:[-4.86,-81.37],D:[-4.903,-76.83]},{c:"Belgium",p:1,r:"Western Europe",m:false,A:[-3.121,-253.26],B:[-4.664,-197.77],C:[0.103,-253.34],D:[0.03,-245.49]},{c:"Belgium",p:2,r:"Western Europe",m:false,A:[-4.921,-198.6],B:[-6.672,-135.61],C:[-1.354,-216.94],D:[-1.488,-202.67]},{c:"Brazil",p:1,r:"Latin America & Caribbean",m:false,A:[17.298,-379.47],B:[16.886,-364.64],C:[6.448,-288.71],D:[6.69,-314.6]},{c:"Brazil",p:2,r:"Latin America & Caribbean",m:false,A:[14.056,-217.21],B:[13.232,-187.56],C:[3.954,-167.2],D:[4.071,-179.71]},{c:"Bulgaria",p:1,r:"Eastern Europe",m:true,A:[-6.217,138.64],B:[-3.193,29.9],C:[-1.412,11.97],D:[-1.648,37.22]},{c:"Bulgaria",p:2,r:"Eastern Europe",m:true,A:[7.802,-55.21],B:[11.224,-178.29],C:[11.376,-109.66],D:[11.306,-102.17]},{c:"Canada",p:1,r:"NA & Oceania (Anglosphere)",m:false,A:[-1.274,-169.56],B:[-1.508,-161.13],C:[-2.123,-619.72],D:[-2.048,-627.72]},{c:"Canada",p:2,r:"NA & Oceania (Anglosphere)",m:false,A:[-2.271,49.79],B:[-2.988,75.61],C:[-2.166,-453.12],D:[-2.244,-444.72]},{c:"Chile",p:1,r:"Latin America & Caribbean",m:false,A:[16.469,-201.04],B:[13.614,-98.36],C:[4.619,-0.52],D:[4.603,1.16]},{c:"Chile",p:2,r:"Latin America & Caribbean",m:false,A:[10.89,-329.82],B:[8.299,-236.63],C:[-1.245,-115.74],D:[-1.198,-120.78]},{c:"China",p:1,r:"Eastern Asia",m:false,A:[-2.248,584.36],B:[-2.04,576.86],C:[3.985,187.58],D:[3.542,234.97]},{c:"China",p:2,r:"Eastern Asia",m:false,A:[-3.279,1055.11],B:[-1.819,1002.59],C:[0.819,773.23],D:[0.743,781.31]},{c:"Colombia",p:1,r:"Latin America & Caribbean",m:false,A:[17.406,-257.58],B:[14.892,-167.17],C:[6.963,-154.3],D:[6.87,-144.42]},{c:"Colombia",p:2,r:"Latin America & Caribbean",m:false,A:[15.444,-250.87],B:[13.027,-163.92],C:[5.035,-151.58],D:[4.953,-142.83]},{c:"Croatia",p:1,r:"Southern Europe",m:true,A:[-3.922,33.18],B:[-0.706,-82.5],C:[-1.707,50.95],D:[-1.131,-10.67]},{c:"Croatia",p:2,r:"Southern Europe",m:true,A:[-2.678,82.31],B:[0.442,-29.91],C:[-0.722,118.59],D:[-0.136,55.97]},{c:"Cuba",p:1,r:"Latin America & Caribbean",m:true,A:[2.019,433.44],B:[5.034,324.99],C:[-8.449,568.31],D:[-7.34,449.74]},{c:"Cuba",p:2,r:"Latin America & Caribbean",m:true,A:[3.65,179.12],B:[6.293,84.07],C:[-6.448,297.02],D:[-5.426,187.61]},{c:"Czech Republic",p:1,r:"Eastern Europe",m:true,A:[-6.72,-87.13],B:[-1.877,-261.3],C:[-4.372,-88.53],D:[-4.132,-114.27]},{c:"Czech Republic",p:2,r:"Eastern Europe",m:true,A:[-6.15,-108.56],B:[-1.223,-285.75],C:[-4.063,-94.69],D:[-3.787,-124.18]},{c:"Denmark",p:1,r:"Northern Europe",m:false,A:[-7.777,-84.22],B:[-9.977,-5.1],C:[-7.381,-52.51],D:[-7.727,-15.52]},{c:"Denmark",p:2,r:"Northern Europe",m:false,A:[-2.82,-26.77],B:[-5.114,55.71],C:[-2.329,0.49],D:[-2.696,39.81]},{c:"Dominican Republic",p:1,r:"Latin America & Caribbean",m:false,A:[15.985,-21.36],B:[11.71,132.39],C:[5.302,129.94],D:[4.981,164.27]},{c:"Dominican Republic",p:2,r:"Latin America & Caribbean",m:false,A:[5.938,-140.74],B:[2.229,-7.36],C:[-5.514,49.82],D:[-5.686,68.24]},{c:"Ecuador",p:1,r:"Latin America & Caribbean",m:false,A:[17.352,-86.31],B:[13.414,55.33],C:[6.949,40.67],D:[6.651,72.55]},{c:"Ecuador",p:2,r:"Latin America & Caribbean",m:false,A:[9.957,-130.93],B:[5.873,15.98],C:[0.112,-37.32],D:[-0.256,2.09]},{c:"Egypt",p:1,r:"Africa",m:false,A:[-6.843,-342.7],B:[-9.083,-262.14],C:[-10.934,-183.37],D:[-10.842,-193.2]},{c:"Egypt",p:2,r:"Africa",m:false,A:[-5.639,-448.21],B:[-7.259,-389.95],C:[-10.319,-262.28],D:[-10.087,-287.13]},{c:"Estonia",p:1,r:"Northern Europe",m:true,A:[1.997,193.72],B:[4.022,120.91],C:[4.403,149.64],D:[4.892,97.32]},{c:"Estonia",p:2,r:"Northern Europe",m:true,A:[2.166,55.23],B:[4.671,-34.85],C:[3.498,71.77],D:[4.15,1.94]},{c:"Ethiopia",p:1,r:"Africa",m:true,A:[-12.555,233.68],B:[-11.928,211.11],C:[-9.569,14.69],D:[-9.285,-15.66]},{c:"Ethiopia",p:2,r:"Africa",m:true,A:[-8.891,-29.72],B:[-6.512,-115.27],C:[-8.115,-138.12],D:[-7.387,-216.07]},{c:"Finland",p:1,r:"Northern Europe",m:false,A:[-4.815,-151.7],B:[-7.151,-67.71],C:[-4.262,-127.65],D:[-4.641,-87.11]},{c:"Finland",p:2,r:"Northern Europe",m:false,A:[-3.788,-235.47],B:[-6.424,-140.66],C:[-2.835,-231.73],D:[-3.292,-182.82]},{c:"France",p:1,r:"Western Europe",m:false,A:[-5.636,147.41],B:[-5.424,139.76],C:[-1.582,61.26],D:[-1.48,50.36]},{c:"France",p:2,r:"Western Europe",m:false,A:[-3.133,453.32],B:[-3.198,455.66],C:[1.322,346.35],D:[1.349,343.48]},{c:"Georgia",p:1,r:"Western & Central Asia",m:true,A:[1.05,284.58],B:[2.205,243.04],C:[3.714,207.79],D:[3.776,201.16]},{c:"Georgia",p:2,r:"Western & Central Asia",m:true,A:[2.142,166.14],B:[4.201,92.09],C:[2.962,191.86],D:[3.316,153.97]},{c:"Germany",p:1,r:"Western Europe",m:false,A:[-6.274,341.63],B:[-5.601,317.42],C:[-2.415,259.54],D:[-2.23,239.8]},{c:"Germany",p:2,r:"Western Europe",m:false,A:[-3.064,399.88],B:[-2.605,383.38],C:[0.95,311.75],D:[1.09,296.74]},{c:"Great Britain",p:1,r:"Northern Europe",m:false,A:[-0.423,87.06],B:[-0.077,74.64],C:[0.766,20.46],D:[0.711,26.36]},{c:"Great Britain",p:2,r:"Northern Europe",m:false,A:[0.347,917.87],B:[0.223,922.33],C:[2.324,808.96],D:[2.132,829.49]},{c:"Greece",p:1,r:"Southern Europe",m:false,A:[-0.469,-90.06],B:[-2.408,-20.32],C:[0.363,-19.78],D:[-0.084,27.99]},{c:"Greece",p:2,r:"Southern Europe",m:false,A:[0.131,-143.13],B:[-2.832,-36.57],C:[2.405,-147.17],D:[1.685,-70.14]},{c:"Hungary",p:1,r:"Eastern Europe",m:true,A:[-4.687,141.21],B:[-0.304,-16.42],C:[-1.589,99.81],D:[-1.481,88.19]},{c:"Hungary",p:2,r:"Eastern Europe",m:true,A:[-1.954,188.12],B:[2.457,29.48],C:[0.784,169.45],D:[0.928,153.98]},{c:"India",p:1,r:"South & SE Asia",m:false,A:[-16.037,-629.62],B:[-16.883,-599.18],C:[-8.936,-368.46],D:[-9.166,-343.85]},{c:"India",p:2,r:"South & SE Asia",m:false,A:[-16.3,-680.84],B:[-16.543,-672.11],C:[-9.987,-379.94],D:[-10.061,-371.98]},{c:"Indonesia",p:1,r:"South & SE Asia",m:false,A:[-6.415,-452.41],B:[-7.668,-407.35],C:[-2.004,-9.85],D:[-2.052,-4.65]},{c:"Indonesia",p:2,r:"South & SE Asia",m:false,A:[-0.892,-573.33],B:[-1.977,-534.31],C:[3.411,-126.84],D:[3.396,-125.22]},{c:"Iran",p:1,r:"South & SE Asia",m:false,A:[6.176,-410.22],B:[5.287,-378.24],C:[7.51,224.6],D:[7.787,194.99]},{c:"Iran",p:2,r:"South & SE Asia",m:false,A:[-1.049,-290.19],B:[-2.919,-222.91],C:[2.172,240.78],D:[2.142,244.03]},{c:"Ireland",p:1,r:"Northern Europe",m:false,A:[-0.351,-194.65],B:[-2.576,-114.63],C:[-0.508,-126.73],D:[-0.808,-94.63]},{c:"Ireland",p:2,r:"Northern Europe",m:false,A:[0.439,-261.3],B:[-1.228,-201.32],C:[-0.421,-158.19],D:[-0.58,-141.23]},{c:"Israel",p:1,r:"Western & Central Asia",m:false,A:[4.456,-193.83],B:[2.091,-108.75],C:[2.198,-19.53],D:[1.784,24.75]},{c:"Israel",p:2,r:"Western & Central Asia",m:false,A:[6.321,-233.43],B:[3.772,-141.77],C:[4.782,-102.32],D:[4.278,-48.41]},{c:"Italy",p:1,r:"Southern Europe",m:false,A:[-1.792,-5.42],B:[-1.627,-11.35],C:[-0.988,27.78],D:[-1.133,43.36]},{c:"Italy",p:2,r:"Southern Europe",m:false,A:[0.084,339.08],B:[-0.309,353.22],C:[1.658,332.78],D:[1.365,364.16]},{c:"Jamaica",p:1,r:"Latin America & Caribbean",m:false,A:[11.66,310.37],B:[6.173,507.72],C:[0.433,519.28],D:[-0.012,566.83]},{c:"Jamaica",p:2,r:"Latin America & Caribbean",m:false,A:[2.214,377.54],B:[-4.132,605.77],C:[-7.677,515.93],D:[-8.362,589.22]},{c:"Japan",p:1,r:"Eastern Asia",m:false,A:[-2.518,-209.19],B:[-1.425,-248.5],C:[-2.625,-212.44],D:[-2.378,-238.78]},{c:"Japan",p:2,r:"Eastern Asia",m:false,A:[-2.918,260.86],B:[-2.58,248.69],C:[-2.008,205.8],D:[-1.959,200.59]},{c:"Kazakhstan",p:1,r:"Western & Central Asia",m:true,A:[-3.882,-39.39],B:[0.42,-194.11],C:[-3.553,-23.36],D:[-2.837,-99.97]},{c:"Kazakhstan",p:2,r:"Western & Central Asia",m:true,A:[-4.816,-167.58],B:[-0.007,-340.54],C:[-5.123,-119.82],D:[-4.279,-210.18]},{c:"Kenya",p:1,r:"Africa",m:false,A:[7.062,160.4],B:[1.992,342.74],C:[5.966,178.42],D:[5.39,240.03]},{c:"Kenya",p:2,r:"Africa",m:false,A:[0.86,91.35],B:[-3.592,251.48],C:[-0.633,123.63],D:[-1.086,172.07]},{c:"Kyrgyzstan",p:1,r:"Western & Central Asia",m:true,A:[-6.221,287.13],B:[-5.984,278.6],C:[-1.473,92.52],D:[-1.726,119.65]},{c:"Kyrgyzstan",p:2,r:"Western & Central Asia",m:true,A:[-5.914,173.76],B:[-5.287,151.21],C:[-1.459,-9.08],D:[-1.631,9.34]},{c:"Latvia",p:1,r:"Northern Europe",m:true,A:[2.43,167.18],B:[4.561,90.52],C:[5.721,63.88],D:[6.147,18.37]},{c:"Latvia",p:2,r:"Northern Europe",m:true,A:[3.855,36.5],B:[6.363,-53.72],C:[5.929,4.92],D:[6.516,-57.89]},{c:"Lithuania",p:1,r:"Northern Europe",m:true,A:[1.54,102.42],B:[4.293,3.42],C:[4.633,0.53],D:[5.164,-56.31]},{c:"Lithuania",p:2,r:"Northern Europe",m:true,A:[6.261,-36.75],B:[9.599,-156.8],C:[7.769,-47.05],D:[8.524,-127.84]},{c:"Mexico",p:1,r:"Latin America & Caribbean",m:false,A:[12.139,-461.46],B:[11.448,-436.58],C:[0.582,-319.84],D:[0.847,-348.21]},{c:"Mexico",p:2,r:"Latin America & Caribbean",m:false,A:[6.512,-420.02],B:[5.474,-382.68],C:[-4.278,-321.61],D:[-4.13,-337.42]},{c:"Moldova",p:1,r:"Eastern Europe",m:true,A:[1.383,268.2],B:[2.109,242.1],C:[7.974,68.53],D:[7.253,145.64]},{c:"Moldova",p:2,r:"Eastern Europe",m:true,A:[-6.204,129.83],B:[-4.899,82.87],C:[-1.001,9.16],D:[-1.516,64.27]},{c:"Mongolia",p:1,r:"Eastern Asia",m:true,A:[-1.44,280.4],B:[-0.656,252.21],C:[2.689,141.25],D:[2.929,115.58]},{c:"Mongolia",p:2,r:"Eastern Asia",m:true,A:[0.194,135.44],B:[1.772,78.66],C:[3.366,43.44],D:[3.804,-3.39]},{c:"Morocco",p:1,r:"Africa",m:false,A:[3.082,-113.35],B:[-0.583,18.46],C:[-0.673,50.62],D:[-0.813,65.6]},{c:"Morocco",p:2,r:"Africa",m:false,A:[2.852,-200.89],B:[-1.149,-57.0],C:[-0.143,-79.89],D:[-0.398,-52.58]},{c:"Netherlands",p:1,r:"Western Europe",m:false,A:[-5.663,-12.33],B:[-6.522,18.57],C:[-2.646,-11.65],D:[-2.604,-16.15]},{c:"Netherlands",p:2,r:"Western Europe",m:false,A:[-4.026,266.66],B:[-5.139,306.7],C:[-0.659,249.48],D:[-0.685,252.16]},{c:"New Zealand",p:1,r:"NA & Oceania (Anglosphere)",m:false,A:[0.901,4.52],B:[-2.081,111.76],C:[0.334,-413.06],D:[-0.006,-376.69]},{c:"New Zealand",p:2,r:"NA & Oceania (Anglosphere)",m:false,A:[0.696,240.78],B:[-2.311,348.93],C:[0.403,-194.09],D:[0.035,-154.73]},{c:"North Korea",p:1,r:"Eastern Asia",m:true,A:[-8.051,153.04],B:[-6.595,100.71],C:[-0.284,-233.69],D:[-0.272,-234.94]},{c:"North Korea",p:2,r:"Eastern Asia",m:true,A:[-7.428,216.52],B:[-7.296,211.79],C:[2.489,-284.76],D:[2.121,-245.47]},{c:"Norway",p:1,r:"Northern Europe",m:false,A:[-4.473,-106.2],B:[-6.397,-36.99],C:[-4.879,-27.7],D:[-5.115,-2.53]},{c:"Norway",p:2,r:"Northern Europe",m:false,A:[-3.109,-158.0],B:[-5.369,-76.71],C:[-2.842,-116.83],D:[-3.184,-80.15]},{c:"Poland",p:1,r:"Eastern Europe",m:true,A:[-1.395,-73.92],B:[4.085,-271.0],C:[2.657,-197.3],D:[2.837,-216.49]},{c:"Poland",p:2,r:"Eastern Europe",m:true,A:[-3.952,-186.13],B:[1.994,-400.01],C:[-0.939,-251.0],D:[-0.601,-287.16]},{c:"Portugal",p:1,r:"Southern Europe",m:false,A:[4.276,-220.88],B:[2.035,-140.26],C:[5.522,-171.76],D:[4.996,-115.46]},{c:"Portugal",p:2,r:"Southern Europe",m:false,A:[1.176,-226.99],B:[-1.481,-131.42],C:[2.858,-198.45],D:[2.234,-131.68]},{c:"Romania",p:1,r:"Eastern Europe",m:true,A:[-5.554,155.77],B:[-1.468,8.81],C:[-0.381,-14.33],D:[-0.499,-1.7]},{c:"Romania",p:2,r:"Eastern Europe",m:true,A:[1.153,-223.92],B:[6.132,-403.0],C:[4.386,-285.12],D:[4.567,-304.5]},{c:"Russia",p:1,r:"Eastern Europe",m:true,A:[1.381,920.31],B:[7.816,688.85],C:[6.621,702.49],D:[6.83,680.09]},{c:"Russia",p:2,r:"Eastern Europe",m:true,A:[-0.452,454.28],B:[6.667,198.21],C:[3.44,310.93],D:[3.866,265.33]},{c:"Serbia",p:1,r:"Southern Europe",m:true,A:[-2.151,-19.54],B:[0.741,-123.55],C:[1.761,-105.48],D:[2.14,-146.03]},{c:"Serbia",p:2,r:"Southern Europe",m:true,A:[0.34,31.63],B:[3.354,-76.77],C:[3.663,-18.47],D:[4.111,-66.48]},{c:"Slovakia",p:1,r:"Eastern Europe",m:true,A:[-7.522,22.57],B:[-3.943,-106.16],C:[-4.407,-5.14],D:[-4.414,-4.4]},{c:"Slovakia",p:2,r:"Eastern Europe",m:true,A:[-6.58,-103.06],B:[-2.799,-239.04],C:[-3.989,-100.62],D:[-3.92,-107.92]},{c:"Slovenia",p:1,r:"Southern Europe",m:true,A:[-8.474,80.86],B:[-5.261,-34.68],C:[-7.863,202.45],D:[-7.145,125.63]},{c:"Slovenia",p:2,r:"Southern Europe",m:true,A:[-5.823,27.68],B:[-2.777,-81.88],C:[-5.046,141.6],D:[-4.366,68.89]},{c:"South Africa",p:1,r:"Africa",m:false,A:[27.285,-281.55],B:[25.311,-210.56],C:[21.734,-32.74],D:[21.993,-60.5]},{c:"South Africa",p:2,r:"Africa",m:false,A:[26.398,-242.46],B:[23.817,-149.63],C:[22.087,-62.6],D:[22.15,-69.35]},{c:"South Korea",p:1,r:"Eastern Asia",m:false,A:[-4.408,-10.31],B:[-4.763,2.45],C:[-4.144,-10.79],D:[-4.136,-11.63]},{c:"South Korea",p:2,r:"Eastern Asia",m:false,A:[-3.017,31.05],B:[-3.427,45.78],C:[-2.724,29.71],D:[-2.727,29.97]},{c:"Spain",p:1,r:"Southern Europe",m:false,A:[-3.265,-150.52],B:[-3.638,-137.1],C:[-2.187,-125.11],D:[-2.433,-98.76]},{c:"Spain",p:2,r:"Southern Europe",m:false,A:[-1.585,-71.21],B:[-2.438,-40.52],C:[0.282,-87.93],D:[-0.103,-46.79]},{c:"Sweden",p:1,r:"Northern Europe",m:false,A:[-9.041,-119.32],B:[-10.649,-61.47],C:[-8.565,-103.7],D:[-8.834,-74.93]},{c:"Sweden",p:2,r:"Northern Europe",m:false,A:[-1.936,-119.85],B:[-3.762,-54.18],C:[-1.022,-128.56],D:[-1.361,-92.32]},{c:"Switzerland",p:1,r:"Western Europe",m:false,A:[-1.215,-179.38],B:[-2.732,-124.82],C:[1.245,-130.51],D:[1.243,-130.32]},{c:"Switzerland",p:2,r:"Western Europe",m:false,A:[1.766,-163.45],B:[0.165,-105.87],C:[4.474,-129.06],D:[4.438,-125.23]},{c:"Taiwan",p:1,r:"Eastern Asia",m:false,A:[-1.856,-359.38],B:[-2.757,-326.98],C:[-2.253,-307.02],D:[-2.264,-305.86]},{c:"Taiwan",p:2,r:"Eastern Asia",m:false,A:[0.673,-363.7],B:[-0.548,-319.78],C:[0.692,-332.32],D:[0.599,-322.34]},{c:"Thailand",p:1,r:"South & SE Asia",m:false,A:[4.061,-325.12],B:[2.369,-264.26],C:[6.589,247.31],D:[6.646,241.26]},{c:"Thailand",p:2,r:"South & SE Asia",m:false,A:[-1.219,-403.85],B:[-2.891,-343.73],C:[1.244,172.39],D:[1.309,165.42]},{c:"Tunisia",p:1,r:"Africa",m:false,A:[1.992,-52.88],B:[-2.094,94.09],C:[-3.325,219.88],D:[-3.386,226.4]},{c:"Tunisia",p:2,r:"Africa",m:false,A:[-1.469,-61.49],B:[-5.907,98.13],C:[-6.075,171.76],D:[-6.249,190.39]},{c:"Turkey",p:1,r:"Western & Central Asia",m:false,A:[1.574,-332.04],B:[0.144,-280.57],C:[2.599,-387.26],D:[2.025,-325.93]},{c:"Turkey",p:2,r:"Western & Central Asia",m:false,A:[5.598,-451.46],B:[4.831,-423.9],C:[5.7,-459.35],D:[5.303,-416.88]},{c:"Ukraine",p:1,r:"Eastern Europe",m:true,A:[-9.946,181.61],B:[-5.451,19.96],C:[-3.768,-61.02],D:[-3.917,-45.04]},{c:"Ukraine",p:2,r:"Eastern Europe",m:true,A:[-10.282,16.7],B:[-5.678,-148.9],C:[-4.657,-192.18],D:[-4.742,-183.13]},{c:"United States",p:1,r:"NA & Oceania (Anglosphere)",m:false,A:[2.693,946.01],B:[5.214,855.35],C:[1.885,442.29],D:[2.347,392.85]},{c:"United States",p:2,r:"NA & Oceania (Anglosphere)",m:false,A:[3.276,1694.74],B:[5.391,1618.68],C:[3.187,1152.03],D:[3.528,1115.59]},{c:"Uzbekistan",p:1,r:"Western & Central Asia",m:true,A:[-2.939,16.96],B:[-0.33,-76.88],C:[1.26,-185.99],D:[1.392,-200.09]},{c:"Uzbekistan",p:2,r:"Western & Central Asia",m:true,A:[-1.094,-36.37],B:[2.131,-152.34],C:[2.391,-204.5],D:[2.674,-234.73]},{c:"Venezuela",p:1,r:"Latin America & Caribbean",m:false,A:[9.356,-333.25],B:[7.448,-264.64],C:[-3.057,-113.86],D:[-2.888,-131.91]},{c:"Venezuela",p:2,r:"Latin America & Caribbean",m:false,A:[7.525,-14.41],B:[2.099,180.74],C:[0.937,-106.56],D:[0.088,-15.8]}];
+
+// ── Shared ───────────────────────────────────────────────────────────
+
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+
+const RC = {
+  "Africa":"#78716c","NA & Oceania (Anglosphere)":"#059669","Eastern Asia":"#e76f51",
+  "Eastern Europe":"#2563eb","Latin America & Caribbean":"#d97706",
+  "Northern Europe":"#dc2626","South & SE Asia":"#8b5cf6","Southern Europe":"#0891b2",
+  "Western & Central Asia":"#64748b","Western Europe":"#457b9d",
+};
+
+function Toggle({options, value, onChange}) {
+  return <div style={{display:"flex",gap:6}}>
+    {options.map(([label, val])=>(
+      <button key={val} onClick={()=>onChange(val)} style={{
+        padding:"4px 12px", border:value===val?"1.5px solid #1a1a2e":"1px solid #ccc", borderRadius:3,
+        background:value===val?"#1a1a2e":"#fff", color:value===val?"#fff":"#666",
+        fontSize:10.5, cursor:"pointer", fontFamily:"inherit"
+      }}>{label}</button>
+    ))}
+  </div>;
+}
+
+function Legend() {
+  const items = [["NA & Oceania","#059669"],["N. Europe","#dc2626"],["W. Europe","#457b9d"],
+    ["S. Europe","#0891b2"],["E. Europe","#2563eb"],["E. Asia","#e76f51"],
+    ["LatAm","#d97706"],["W.&C. Asia","#64748b"],["S.&SE Asia","#8b5cf6"],["Africa","#78716c"]];
+  return <div style={{display:"flex",flexWrap:"wrap",gap:"3px 12px",fontSize:9.5,color:"#666",marginTop:6}}>
+    {items.map(([l,c])=><span key={l} style={{display:"flex",alignItems:"center",gap:3}}>
+      <span style={{width:7,height:7,borderRadius:"50%",background:c,display:"inline-block"}}/>{l}
+    </span>)}
+  </div>;
+}
+
+function GiniCell({val, pv, maxAbs}) {
+  if (val===null||val===undefined) return <td style={{padding:"5px 8px",fontSize:11,borderBottom:"1px solid #eee",textAlign:"right"}}>—</td>;
+  const col = val>=0?"#2563eb":"#dc2626";
+  const sig = pv<0.1;
+  const pct = Math.abs(val)/maxAbs*100;
+  return <td style={{padding:"5px 8px",fontSize:11,borderBottom:"1px solid #eee",textAlign:"right",position:"relative",minWidth:80,fontVariantNumeric:"tabular-nums"}}>
+    <div style={{position:"absolute",...(val>=0?{left:"50%"}:{right:"50%"}),top:3,bottom:3,width:`${pct/2}%`,background:col,opacity:sig?0.25:0.1,borderRadius:2}}/>
+    <span style={{position:"relative",color:col,fontWeight:sig?600:400}}>
+      {val>=0?"+":""}{val.toFixed(1)}{pv<0.05?"**":pv<0.1?"*":""}
+    </span>
+  </td>;
+}
+
+// ── T1: Region table ─────────────────────────────────────────────────
+
+function RegionTable({data, exclUSCN, expanded, setExpanded}) {
+  const th = {padding:"6px 8px",fontSize:10.5,fontWeight:600,borderBottom:"2px solid #1a1a2e",textAlign:"right",whiteSpace:"nowrap",color:"#333"};
+  const td = {padding:"5px 8px",fontSize:11,borderBottom:"1px solid #eee",textAlign:"right",fontVariantNumeric:"tabular-nums"};
+  const maxPM = Math.max(...data.map(x=>x.pts_m));
+  const maxAbsGc = Math.max(...data.filter(r=>(exclUSCN?r.gc2:r.gc)!==null).map(r=>Math.abs(exclUSCN?r.gc2:r.gc)));
+
+  return <div style={{overflowX:"auto"}}>
+    <table style={{borderCollapse:"collapse",width:"100%",fontFamily:font}}>
+      <thead><tr>
+        <th style={{...th,textAlign:"left"}}>Region</th>
+        <th style={th}>N</th>
+        <th style={th}>Pop (M)</th>
+        <th style={th}>GDP/cap</th>
+        <th style={th}>Pts/M</th>
+        <th style={{...th,minWidth:85}}>Gini β</th>
+        <th style={th}>Gini</th>
+        <th style={th}>GGI</th>
+        <th style={th}>Sov.</th>
+      </tr></thead>
+      <tbody>
+        {data.map((r,i)=>{
+          const isExp = expanded===r.region;
+          const gv = exclUSCN ? r.gc2 : r.gc;
+          const gp = exclUSCN ? r.gp2 : r.gp;
+          return [
+            <tr key={r.region} style={{background:i%2===0?"#fafaf9":"#fff"}}>
+              <td style={{...td,textAlign:"left",fontWeight:500,cursor:"pointer"}} onClick={()=>setExpanded(isExp?null:r.region)}>
+                <span style={{color:RC[r.region]||"#888",marginRight:4,fontSize:9}}>{isExp?"▼":"▶"}</span>
+                {r.region}
+              </td>
+              <td style={td}>{r.n}</td>
+              <td style={td}>{r.pop_m.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
+              <td style={td}>{r.gdp.toLocaleString(undefined,{maximumFractionDigits:0})}</td>
+              <td style={{...td,position:"relative"}}>
+                <div style={{position:"absolute",left:0,top:2,bottom:2,width:`${r.pts_m/maxPM*100}%`,background:RC[r.region]||"#888",opacity:0.1,borderRadius:2}}/>
+                <span style={{position:"relative"}}>{r.pts_m.toFixed(1)}</span>
+              </td>
+              <GiniCell val={gv} pv={gp} maxAbs={maxAbsGc}/>
+              <td style={td}>{r.gini.toFixed(1)}</td>
+              <td style={td}>{r.ggi.toFixed(3)}</td>
+              <td style={td}>{r.sov>0?r.sov:"—"}</td>
+            </tr>,
+            isExp&&<tr key={r.region+"_e"}><td colSpan={9} style={{padding:"5px 10px 6px 28px",fontSize:10,color:"#666",borderBottom:"1px solid #eee",background:"#f5f5f2"}}>{r.countries}</td></tr>
+          ];
+        })}
+      </tbody>
+    </table>
+    <p style={{fontSize:10,color:"#777",margin:"10px 0 0",lineHeight:1.6}}>
+      Sorted by GDP/cap (PPP). Gini β = within-region partial effect on Olympic points (controlling GDP, Pop, Period, Soviet-legacy).
+      {exclUSCN?" Excluding USA and China.":""} Bold = p &lt; 0.10. v0.91: China classified as non-legacy.
+    </p>
+  </div>;
+}
+
+// ── T4: Regional Gini bars ───────────────────────────────────────────
+
+function RegionBars({data, exclUSCN, sortBy}) {
+  const sorted = useMemo(()=>{
+    const mapped = data.map(d=>({...d, val:exclUSCN?d.gc2:d.gc, pv:exclUSCN?d.gp2:d.gp}));
+    if (sortBy==="gini_b") return mapped.sort((a,b)=>b.val-a.val);
+    if (sortBy==="gdp") return mapped.sort((a,b)=>b.gdp-a.gdp);
+    if (sortBy==="ggi") return mapped.sort((a,b)=>b.ggi-a.ggi);
+    return mapped;
+  },[data,exclUSCN,sortBy]);
+
+  const fLabel = exclUSCN ? "excl. USA+China: F(9,114) = 2.66, p = 0.008" : "F(9,118) = 6.75, p < 0.001";
+
+  const W=520, H=310;
+  const pad={top:30,right:20,bottom:14,left:185};
+  const w=W-pad.left-pad.right, h=H-pad.top-pad.bottom;
+  const rowH=h/sorted.length, barH=rowH-4;
+  const maxAbs=Math.max(...sorted.map(d=>Math.abs(d.val)))*1.15;
+  const bx=v=>pad.left+((v+maxAbs)/(2*maxAbs))*w;
+  const rowY=i=>pad.top+i*rowH+2;
+
+  return <svg width={W} height={H} style={{fontFamily:font}}>
+    <text x={pad.left+w/2} y={14} textAnchor="middle" style={{fontSize:11.5,fontWeight:600,fill:"#1a1a2e"}}>
+      Within-region Gini → Points coefficient
+    </text>
+    <text x={pad.left+w/2} y={25} textAnchor="middle" style={{fontSize:8.5,fill:"#aaa"}}>
+      controlling GDP, Pop, Period, Soviet-legacy | {fLabel}
+    </text>
+    <line x1={bx(0)} y1={pad.top-2} x2={bx(0)} y2={H-pad.bottom} stroke="#999" strokeWidth={1}/>
+    {sorted.map((d,i)=>{
+      const y=rowY(i);
+      const bw=Math.abs(bx(d.val)-bx(0));
+      const x=d.val>=0?bx(0):bx(0)-bw;
+      const col=d.val>=0?"#2563eb":"#dc2626";
+      const sig=d.pv<0.1;
+      return <g key={d.region}>
+        <text x={pad.left-6} y={y+barH/2+4} textAnchor="end" style={{fontSize:10,fill:"#333"}}>
+          {d.region} <tspan style={{fontSize:8.5,fill:"#aaa"}}>({d.n})</tspan>
+        </text>
+        <rect x={x} y={y} width={Math.max(bw,1)} height={barH} rx={2} fill={col} opacity={sig?0.75:0.3}/>
+        <text x={d.val>=0?bx(d.val)+4:bx(0)-bw-4} y={y+barH/2+3.5} textAnchor={d.val>=0?"start":"end"}
+          style={{fontSize:9,fill:"#555"}}>
+          {d.val.toFixed(1)}{d.pv<0.05?"**":d.pv<0.1?"*":""}
+        </text>
+      </g>;
+    })}
+  </svg>;
+}
+
+// ── F2: FWL Scatter ──────────────────────────────────────────────────
+
+function FWLScatter({data,specKey,slope,label,stats,width=370,height=290}) {
+  const pad={top:30,right:16,bottom:40,left:52};
+  const w=width-pad.left-pad.right, h=height-pad.top-pad.bottom;
+  const xs=data.map(d=>d[specKey][0]), ys=data.map(d=>d[specKey][1]);
+  const xA=Math.max(...xs.map(Math.abs))*1.15, yA=Math.max(...ys.map(Math.abs))*1.15;
+  const sx=v=>pad.left+((v+xA)/(2*xA))*w, sy=v=>pad.top+(1-(v+yA)/(2*yA))*h;
+  const lx0=-xA*0.9,lx1=xA*0.9;
+  const mx=xs.reduce((a,b)=>a+b,0)/xs.length, my=ys.reduce((a,b)=>a+b,0)/ys.length;
+  const num=xs.reduce((s,x,i)=>s+(x-mx)*(ys[i]-my),0);
+  const den=Math.sqrt(xs.reduce((s,x)=>s+(x-mx)**2,0))*Math.sqrt(ys.reduce((s,y)=>s+(y-my)**2,0));
+  const r=den>0?num/den:0;
+
+  return <svg width={width} height={height} style={{fontFamily:font}}>
+    <text x={pad.left+w/2} y={14} textAnchor="middle" style={{fontSize:11.5,fontWeight:600,fill:"#1a1a2e"}}>{label}</text>
+    <text x={pad.left+w/2} y={26} textAnchor="middle" style={{fontSize:9.5,fill:"#888"}}>{stats}</text>
+    <line x1={sx(0)} y1={pad.top} x2={sx(0)} y2={pad.top+h} stroke="#ddd" strokeWidth={0.5}/>
+    <line x1={pad.left} y1={sy(0)} x2={pad.left+w} y2={sy(0)} stroke="#ddd" strokeWidth={0.5}/>
+    <line x1={sx(lx0)} y1={sy(slope*lx0)} x2={sx(lx1)} y2={sy(slope*lx1)} stroke="#1a1a2e" strokeWidth={1.5} strokeDasharray="6,3" opacity={0.6}/>
+    {data.map((d,i)=><circle key={i} cx={sx(d[specKey][0])} cy={sy(d[specKey][1])} r={3} fill={RC[d.r]||"#888"} opacity={0.6} stroke="#fff" strokeWidth={0.3}/>)}
+    <text x={pad.left+4} y={pad.top+13} style={{fontSize:9.5,fill:"#555"}}>r = {r.toFixed(3)}</text>
+    <text x={pad.left+w/2} y={height-6} textAnchor="middle" style={{fontSize:9.5,fill:"#777"}}>Gini residual</text>
+    <text x={10} y={pad.top+h/2} textAnchor="middle" style={{fontSize:9.5,fill:"#777"}} transform={`rotate(-90,10,${pad.top+h/2})`}>Points residual</text>
+  </svg>;
+}
+
+// ── Model table ──────────────────────────────────────────────────────
+
+function ModelTable() {
+  const models=[
+    {id:"M1",label:"GDP + Pop + Period",r2:0.416,gb:null,gp:null},
+    {id:"M2",label:"+ Gini",r2:0.425,gb:-5.73,gp:0.208},
+    {id:"M3",label:"+ Soviet-legacy",r2:0.472,gb:-0.15,gp:0.978,sb:256.2,sp:0.014},
+    {id:"M4",label:"+ Region FE",r2:0.660,gb:4.34,gp:0.382},
+  ];
+  const td={padding:"5px 10px",fontSize:11.5,borderBottom:"1px solid #eee",textAlign:"right",fontVariantNumeric:"tabular-nums"};
+  return <table style={{borderCollapse:"collapse",width:"100%",fontFamily:font}}>
+    <thead><tr>
+      <th style={{...td,fontWeight:600,borderBottom:"2px solid #1a1a2e",textAlign:"left"}}>Model</th>
+      <th style={{...td,fontWeight:600,borderBottom:"2px solid #1a1a2e"}}>R²</th>
+      <th style={{...td,fontWeight:600,borderBottom:"2px solid #1a1a2e"}}>Gini β</th>
+      <th style={{...td,fontWeight:600,borderBottom:"2px solid #1a1a2e"}}>p-value</th>
+    </tr></thead>
+    <tbody>{models.map((m,i)=>{
+      const last=i===models.length-1;
+      return <tr key={m.id} style={last?{background:"#f8f8f5"}:{}}>
+        <td style={{...td,textAlign:"left",fontWeight:last?600:400}}>{m.label}</td>
+        <td style={td}>{m.r2.toFixed(3)}</td>
+        <td style={td}>{m.gb!==null?m.gb.toFixed(2):"—"}</td>
+        <td style={td}>{m.gp!==null?<span style={{color:m.gp<0.05?"#059669":m.gp<0.1?"#d97706":"#999"}}>{m.gp.toFixed(3)}</span>:"—"}</td>
+      </tr>;
+    })}</tbody>
+  </table>;
+}
+
+// ── Main ─────────────────────────────────────────────────────────────
+
+function F2Galton() {
+  const [tab,setTab] = useState("models");
+  const [exclUSCN,setExclUSCN] = useState(false);
+  const [useSov,setUseSov] = useState(false);
+  const [expanded,setExpanded] = useState(null);
+  const [t4Sort,setT4Sort] = useState("gini_b");
+
+  const byGdp = useMemo(()=>[...REGIONS].sort((a,b)=>b.gdp-a.gdp),[]);
+
+  const tabs = [
+    {id:"models", label:"T2–T3: Model Ladder"},
+    {id:"scatter", label:"F2: FWL Scatter"},
+    {id:"regions", label:"T4: Regional Gini Signs"},
+    {id:"table", label:"T1: Region Overview"},
+  ];
+
+  const sortBtn = (active,label,val) => (
+    <button onClick={()=>setT4Sort(val)} style={{
+      padding:"3px 10px", border:active?"1.5px solid #1a1a2e":"1px solid #ccc", borderRadius:3,
+      background:active?"#1a1a2e":"#fff", color:active?"#fff":"#666",
+      fontSize:10, cursor:"pointer", fontFamily:"inherit"
+    }}>{label}</button>
+  );
+
+  return <div style={{fontFamily:font,maxWidth:860,margin:"0 auto",padding:"18px 14px",color:"#1a1a2e",background:"#fefefe"}}>
+    <div style={{borderBottom:"2px solid #1a1a2e",paddingBottom:7,marginBottom:14}}>
+      <h2 style={{fontSize:16,margin:0,fontWeight:700,letterSpacing:"-0.3px"}}>
+        Galton's Problem: Inequality and Olympic Performance
+      </h2>
+      <p style={{fontSize:11,color:"#666",margin:"3px 0 0",lineHeight:1.5}}>
+        71 countries × 2 periods (2000–2008, 2012–2024). DV = total Olympic points (6-5-4-3-2-1). Clustered SEs. v0.91: China non-legacy.
+      </p>
+    </div>
+
+    <div style={{display:"flex",gap:1,marginBottom:14,flexWrap:"wrap"}}>
+      {tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{
+        padding:"5px 12px",border:"none",borderBottom:tab===t.id?"2px solid #1a1a2e":"2px solid transparent",
+        background:"none",color:tab===t.id?"#1a1a2e":"#999",fontSize:10.5,fontWeight:tab===t.id?600:400,
+        cursor:"pointer",fontFamily:"inherit"
+      }}>{t.label}</button>)}
+    </div>
+
+    {tab==="models"&&<div>
+      <p style={{fontSize:11,color:"#555",margin:"0 0 10px",lineHeight:1.5}}>
+        Progressive addition of controls. DV = total Olympic points. Clustered SEs (71 countries).
+      </p>
+      <ModelTable/>
+      <div style={{marginTop:12,fontSize:10.5,color:"#555",lineHeight:1.6}}>
+        <p style={{margin:"0 0 5px"}}><strong>M1→M2:</strong> Gini barely moves R². Negative but p = 0.21.</p>
+        <p style={{margin:"0 0 5px"}}><strong>M2→M3:</strong> Soviet-legacy dummy (β = +256, p = 0.014) absorbs 5 pp of R². Gini collapses to −0.15 (p = 0.98).</p>
+        <p style={{margin:0}}><strong>M3→M4:</strong> Region FE add 19 pp. Aggregate inequality tells us nothing once geography is controlled.</p>
+      </div>
+    </div>}
+
+    {tab==="scatter"&&<div>
+      <Toggle options={[["Base model",false],["+ Soviet-legacy control",true]]} value={useSov} onChange={setUseSov}/>
+      <p style={{fontSize:11,color:"#555",margin:"8px 0",lineHeight:1.5}}>
+        Frisch-Waugh-Lovell partial residuals. Left: without region FE. Right: with region FE. n = 142.
+      </p>
+      <div style={{display:"flex",flexWrap:"wrap",gap:10,justifyContent:"center"}}>
+        <FWLScatter data={PTS} specKey={useSov?"B":"A"} slope={useSov?SPECS.B.b:SPECS.A.b}
+          label="Without region controls"
+          stats={`β = ${(useSov?SPECS.B.b:SPECS.A.b).toFixed(1)}, p = ${(useSov?SPECS.B.p:SPECS.A.p).toFixed(3)}`}/>
+        <FWLScatter data={PTS} specKey={useSov?"D":"C"} slope={useSov?SPECS.D.b:SPECS.C.b}
+          label="With region controls"
+          stats={`β = ${(useSov?SPECS.D.b:SPECS.C.b).toFixed(1)}, p = ${(useSov?SPECS.D.p:SPECS.C.p).toFixed(3)}`}/>
+      </div>
+      <Legend/>
+    </div>}
+
+    {tab==="regions"&&<div>
+      <div style={{display:"flex",gap:16,flexWrap:"wrap",alignItems:"center",marginBottom:10}}>
+        <Toggle options={[["Full sample",false],["Excl. USA + China",true]]} value={exclUSCN} onChange={setExclUSCN}/>
+        <div style={{display:"flex",gap:4,alignItems:"center"}}>
+          <span style={{fontSize:10,color:"#888",marginRight:2}}>Sort:</span>
+          {sortBtn(t4Sort==="gini_b","Gini β","gini_b")}
+          {sortBtn(t4Sort==="gdp","GDP/cap","gdp")}
+          {sortBtn(t4Sort==="ggi","GGI","ggi")}
+        </div>
+      </div>
+      <RegionBars data={REGIONS} exclUSCN={exclUSCN} sortBy={t4Sort}/>
+      <div style={{marginTop:10,padding:"9px 12px",background:"#f8f8f5",borderLeft:"3px solid #1a1a2e",fontSize:11,lineHeight:1.6,color:"#333"}}>
+        {!exclUSCN?<>
+          <strong>The puzzle:</strong> Aggregate Gini is dead after regional controls, but within-region slopes
+          are significantly heterogeneous (F(9,118) = 6.75, p &lt; 0.001). NA & Oceania (+147) and
+          Eastern Asia (+61) are driven by USA and China leverage in small regions.
+        </>:<>
+          <strong>Robustness:</strong> Dropping USA and China, heterogeneity persists (F(9,114) = 2.66, p = 0.008).
+          NA & Oceania and Eastern Asia collapse to noise. The robust contrast is S&SE Asia (+29, p &lt; 0.001) vs
+          Latin America (−24, p = 0.007) — inequality has opposite effects in these regions.
+        </>}
+      </div>
+    </div>}
+
+    {tab==="table"&&<div>
+      <Toggle options={[["Full sample",false],["Excl. USA + China",true]]} value={exclUSCN} onChange={setExclUSCN}/>
+      <div style={{marginTop:8}}/>
+      <RegionTable data={byGdp} exclUSCN={exclUSCN} expanded={expanded} setExpanded={setExpanded}/>
+    </div>}
+  </div>;
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(F2Galton));
+    </script>
+</body>
+</html>

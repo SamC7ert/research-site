@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RegionHeterogeneity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        import { useState, useMemo } from "react";
+
+const medalData = [
+  {c:"United States",g:40,s:44,b:42},{c:"China",g:40,s:27,b:24},
+  {c:"Japan",g:20,s:12,b:13},{c:"Australia",g:18,s:19,b:16},
+  {c:"France",g:16,s:26,b:22},{c:"Netherlands",g:15,s:7,b:12},
+  {c:"Great Britain",g:14,s:22,b:29},{c:"South Korea",g:13,s:9,b:10},
+  {c:"Italy",g:12,s:13,b:15},{c:"Germany",g:12,s:13,b:8},
+  {c:"New Zealand",g:10,s:7,b:3},{c:"Canada",g:9,s:7,b:11},
+  {c:"Uzbekistan",g:8,s:2,b:3},{c:"Hungary",g:6,s:7,b:6},
+  {c:"Spain",g:5,s:4,b:9},{c:"Sweden",g:4,s:4,b:3},
+  {c:"Kenya",g:4,s:2,b:5},{c:"Norway",g:4,s:1,b:3},
+  {c:"Ireland",g:4,s:0,b:3},{c:"Brazil",g:3,s:7,b:10},
+  {c:"Georgia",g:3,s:6,b:3},{c:"Belgium",g:3,s:5,b:4},
+  {c:"Ukraine",g:3,s:4,b:2},{c:"Romania",g:3,s:3,b:1},
+  {c:"Cuba",g:3,s:1,b:6},{c:"Croatia",g:3,s:1,b:3},
+  {c:"Bahrain",g:3,s:1,b:1},{c:"Czech Republic",g:3,s:0,b:2},
+  {c:"Denmark",g:2,s:2,b:5},{c:"Ethiopia",g:2,s:2,b:3},
+  {c:"Iran",g:2,s:2,b:3},{c:"Jamaica",g:2,s:1,b:6},
+  {c:"South Africa",g:2,s:1,b:1},{c:"Thailand",g:2,s:1,b:0},
+  {c:"Serbia",g:2,s:0,b:5},{c:"Indonesia",g:2,s:0,b:3},
+  {c:"Switzerland",g:2,s:0,b:2},{c:"Ecuador",g:2,s:0,b:2},
+  {c:"Botswana",g:2,s:0,b:1},{c:"Guatemala",g:2,s:0,b:1},
+  {c:"Philippines",g:1,s:5,b:1},{c:"Poland",g:1,s:4,b:5},
+  {c:"Slovenia",g:1,s:3,b:3},{c:"Azerbaijan",g:1,s:3,b:2},
+  {c:"Mexico",g:1,s:3,b:2},{c:"Turkey",g:1,s:3,b:2},
+  {c:"North Korea",g:1,s:3,b:0},{c:"Chinese Taipei",g:1,s:2,b:5},
+  {c:"India",g:1,s:2,b:2},{c:"Colombia",g:1,s:2,b:1},
+  {c:"Bulgaria",g:1,s:1,b:6},{c:"Dominican Republic",g:1,s:1,b:1},
+  {c:"Austria",g:1,s:1,b:1},{c:"Greece",g:1,s:1,b:1},
+  {c:"Dominica",g:1,s:1,b:0},{c:"Saint Lucia",g:1,s:1,b:0},
+  {c:"Chile",g:1,s:1,b:0},{c:"Pakistan",g:1,s:1,b:0},
+  {c:"Morocco",g:1,s:0,b:2},{c:"Tajikistan",g:1,s:0,b:1},
+  {c:"Algeria",g:1,s:0,b:1},{c:"Israel",g:0,s:3,b:5},
+  {c:"Egypt",g:0,s:3,b:2},{c:"Lithuania",g:0,s:3,b:1},
+  {c:"Portugal",g:0,s:3,b:1},{c:"Tunisia",g:0,s:2,b:4},
+  {c:"Kazakhstan",g:0,s:2,b:4},{c:"Argentina",g:0,s:2,b:2},
+  {c:"Finland",g:0,s:1,b:5},{c:"Moldova",g:0,s:1,b:3},
+  {c:"Mongolia",g:0,s:1,b:1},{c:"Latvia",g:0,s:1,b:0},
+  {c:"Cape Verde",g:0,s:1,b:0},{c:"Kyrgyzstan",g:0,s:1,b:0},
+  {c:"Kosovo",g:0,s:1,b:0},{c:"Puerto Rico",g:0,s:1,b:0},
+  {c:"Zambia",g:0,s:0,b:3},{c:"Armenia",g:0,s:0,b:2},
+  {c:"Estonia",g:0,s:0,b:2},{c:"Slovakia",g:0,s:0,b:2},
+  {c:"Qatar",g:0,s:0,b:2},{c:"Albania",g:0,s:0,b:1},
+  {c:"Bahamas",g:0,s:0,b:1},{c:"Cameroon",g:0,s:0,b:1},
+  {c:"Cyprus",g:0,s:0,b:1},{c:"Fiji",g:0,s:0,b:1},
+  {c:"Jordan",g:0,s:0,b:1},{c:"Malaysia",g:0,s:0,b:1},
+  {c:"Peru",g:0,s:0,b:1},{c:"Panama",g:0,s:0,b:1},
+  {c:"Uganda",g:0,s:0,b:1},
+];
+const popMap = {
+  "United States":333.3,"China":1412,"Japan":123.3,"Australia":26.6,"France":68.2,
+  "Netherlands":17.8,"Great Britain":67.7,"South Korea":51.7,"Italy":58.9,"Germany":84.5,
+  "New Zealand":5.2,"Canada":40.1,"Uzbekistan":35.6,"Hungary":9.6,"Spain":48.1,
+  "Sweden":10.5,"Kenya":54.0,"Norway":5.5,"Ireland":5.2,"Brazil":216.4,
+  "Georgia":3.7,"Belgium":11.7,"Ukraine":37.0,"Romania":19.0,"Cuba":11.1,
+  "Croatia":3.9,"Bahrain":1.5,"Czech Republic":10.9,"Denmark":5.9,"Ethiopia":126.5,
+  "Iran":87.9,"Jamaica":2.8,"South Africa":60.4,"Thailand":71.8,"Serbia":6.6,
+  "Indonesia":277.5,"Switzerland":8.8,"Ecuador":18.0,"Botswana":2.6,"Guatemala":17.6,
+  "Philippines":117.3,"Poland":36.8,"Slovenia":2.1,"Azerbaijan":10.2,"Mexico":128.9,
+  "Turkey":85.3,"North Korea":26.1,"Chinese Taipei":23.9,"India":1428.6,"Colombia":52.1,
+  "Bulgaria":6.4,"Dominican Republic":11.3,"Austria":9.1,"Greece":10.3,
+  "Chile":19.5,"Pakistan":231.4,"Morocco":37.1,"Tajikistan":10.1,"Algeria":45.6,
+  "Israel":9.8,"Egypt":104.5,"Lithuania":2.9,"Portugal":10.3,"Tunisia":12.5,
+  "Kazakhstan":19.8,"Argentina":46.7,"Finland":5.6,"Moldova":2.5,"Mongolia":3.4,
+  "Latvia":1.8,"Kyrgyzstan":7.0,"Armenia":2.8,"Estonia":1.4,
+  "Slovakia":5.4,"Albania":2.8,"Jordan":11.3,"Malaysia":33.9,
+  "Peru":34.0,"Panama":4.4,"Uganda":48.6,
+  "Cameroon":28.6,"Qatar":2.7,"Zambia":20.6,"Cyprus":1.3,
+  "Cape Verde":0.6,"Kosovo":1.8,"Bahamas":0.41,"Fiji":0.93,
+  "Dominica":0.072,"Saint Lucia":0.18,"Puerto Rico":3.2,
+};
+const gdpMap = {
+  "United States":85.3,"China":23.4,"Japan":52.1,"Australia":65.4,"France":58.8,
+  "Netherlands":72.0,"Great Britain":56.8,"South Korea":56.7,"Italy":51.8,"Germany":63.1,
+  "New Zealand":51.4,"Canada":57.8,"Uzbekistan":10.4,"Hungary":43.7,"Spain":48.5,
+  "Sweden":67.6,"Kenya":6.4,"Norway":82.8,"Ireland":112.2,"Brazil":20.8,
+  "Georgia":22.0,"Belgium":65.1,"Ukraine":16.0,"Romania":40.8,"Cuba":12.0,
+  "Croatia":40.0,"Bahrain":60.7,"Czech Republic":52.5,"Denmark":73.4,"Ethiopia":3.7,
+  "Iran":16.2,"Jamaica":13.7,"South Africa":16.1,"Thailand":21.8,"Serbia":26.1,
+  "Indonesia":15.6,"Switzerland":84.5,"Ecuador":13.1,"Botswana":19.4,"Guatemala":11.1,
+  "Philippines":11.6,"Poland":46.8,"Slovenia":53.5,"Azerbaijan":19.2,"Mexico":22.7,
+  "Turkey":40.4,"North Korea":1.8,"Chinese Taipei":73.3,"India":10.1,"Colombia":20.5,
+  "Bulgaria":33.3,"Dominican Republic":24.9,"Austria":68.4,"Greece":39.5,
+  "Chile":30.4,"Pakistan":7.6,"Morocco":10.2,"Tajikistan":5.0,"Algeria":13.5,
+  "Israel":55.4,"Egypt":16.0,"Lithuania":48.9,"Portugal":43.2,"Tunisia":13.5,
+  "Kazakhstan":32.7,"Argentina":28.4,"Finland":58.0,"Moldova":17.5,"Mongolia":16.0,
+  "Latvia":40.0,"Kyrgyzstan":6.4,"Armenia":20.4,"Estonia":46.7,
+  "Slovakia":38.0,"Albania":19.4,"Jordan":12.1,"Malaysia":35.1,
+  "Peru":16.3,"Panama":34.8,"Uganda":2.8,
+  "Cameroon":4.7,"Qatar":112.8,"Zambia":3.9,"Cyprus":54.5,
+  "Cape Verde":9.6,"Kosovo":16.3,"Bahamas":37.4,"Fiji":14.8,
+  "Dominica":12.5,"Saint Lucia":18.0,"Puerto Rico":39.0,
+};
+const ggiMap = {
+  "United States":0.747,"China":0.740,"Japan":0.663,"Australia":0.780,"France":0.781,
+  "Netherlands":0.775,"Great Britain":0.789,"South Korea":0.696,"Italy":0.703,"Germany":0.810,
+  "New Zealand":0.835,"Canada":0.761,"Uzbekistan":0.681,"Hungary":0.686,"Spain":0.797,
+  "Sweden":0.816,"Kenya":0.712,"Norway":0.875,"Ireland":0.802,"Brazil":0.716,
+  "Georgia":0.716,"Belgium":0.793,"Ukraine":0.722,"Romania":0.717,"Cuba":0.746,
+  "Croatia":0.723,"Bahrain":0.666,"Czech Republic":0.684,"Denmark":0.789,"Ethiopia":0.709,
+  "Iran":0.579,"Jamaica":0.758,"South Africa":0.772,"Thailand":0.714,"Serbia":0.779,
+  "Indonesia":0.697,"Switzerland":0.785,"Ecuador":0.788,"Botswana":0.740,"Guatemala":0.667,
+  "Philippines":0.791,"Poland":0.740,"Slovenia":0.766,"Azerbaijan":0.685,"Mexico":0.765,
+  "Turkey":0.645,"North Korea":0.650,"Chinese Taipei":0.710,"India":0.641,"Colombia":0.745,
+  "Bulgaria":0.723,"Dominican Republic":0.744,"Austria":0.743,"Greece":0.714,
+  "Chile":0.781,"Pakistan":0.570,"Morocco":0.652,"Tajikistan":0.659,"Algeria":0.637,
+  "Israel":0.699,"Egypt":0.615,"Lithuania":0.793,"Portugal":0.787,"Tunisia":0.668,
+  "Kazakhstan":0.710,"Argentina":0.772,"Finland":0.875,"Moldova":0.791,"Mongolia":0.705,
+  "Latvia":0.773,"Kyrgyzstan":0.700,"Armenia":0.721,"Estonia":0.774,
+  "Slovakia":0.731,"Albania":0.770,"Jordan":0.635,"Malaysia":0.688,
+  "Peru":0.757,"Panama":0.751,"Uganda":0.717,
+  "Cameroon":0.673,"Qatar":0.631,"Zambia":0.745,"Cyprus":0.733,
+  "Cape Verde":0.742,"Kosovo":0.700,"Bahamas":0.760,"Fiji":0.648,
+  "Dominica":0.750,"Saint Lucia":0.760,
+};
+const giniMap = {
+  "United States":39.8,"China":37.8,"Japan":32.9,"Australia":34.3,"France":31.6,
+  "Netherlands":28.5,"Great Britain":35.1,"South Korea":31.4,"Italy":34.8,"Germany":31.7,
+  "New Zealand":32.0,"Canada":31.7,"Uzbekistan":35.3,"Hungary":30.6,"Spain":33.0,
+  "Sweden":30.0,"Kenya":38.7,"Norway":27.7,"Ireland":30.6,"Brazil":52.0,
+  "Georgia":34.5,"Belgium":27.2,"Ukraine":25.6,"Romania":34.8,"Cuba":38.0,
+  "Croatia":28.9,"Bahrain":31.0,"Czech Republic":26.2,"Denmark":28.2,"Ethiopia":35.0,
+  "Iran":40.9,"Jamaica":35.0,"South Africa":63.0,"Thailand":34.9,"Serbia":33.3,
+  "Indonesia":37.9,"Switzerland":33.1,"Ecuador":45.0,"Botswana":53.3,"Guatemala":48.3,
+  "Philippines":42.3,"Poland":30.4,"Slovenia":24.4,"Azerbaijan":25.6,"Mexico":43.5,
+  "Turkey":41.4,"North Korea":31.0,"Chinese Taipei":34.0,"India":35.7,"Colombia":51.5,
+  "Bulgaria":40.3,"Dominican Republic":39.6,"Austria":29.3,"Greece":33.1,
+  "Chile":44.9,"Pakistan":29.6,"Morocco":39.5,"Tajikistan":34.0,"Algeria":27.6,
+  "Israel":38.6,"Egypt":31.5,"Lithuania":36.9,"Portugal":33.8,"Tunisia":33.0,
+  "Kazakhstan":29.0,"Argentina":42.3,"Finland":27.4,"Moldova":26.0,"Mongolia":32.7,
+  "Latvia":34.3,"Kyrgyzstan":29.0,"Armenia":29.9,"Estonia":31.8,
+  "Slovakia":25.2,"Albania":29.4,"Jordan":33.7,"Malaysia":41.2,
+  "Peru":40.3,"Panama":49.8,"Uganda":42.7,
+  "Cameroon":46.6,"Qatar":30.0,"Zambia":57.1,"Cyprus":32.7,
+  "Cape Verde":42.4,"Kosovo":29.0,"Bahamas":33.0,"Fiji":36.7,
+  "Dominica":42.0,"Saint Lucia":51.2,
+};
+
+// UN M49 merged regions (same as previous artifact)
+const unRegionMap = {
+  "Norway":"N.Europe","Sweden":"N.Europe","Finland":"N.Europe","Denmark":"N.Europe",
+  "Ireland":"N.Europe","Great Britain":"N.Europe","Lithuania":"N.Europe",
+  "Latvia":"N.Europe","Estonia":"N.Europe",
+  "France":"W.Europe","Germany":"W.Europe","Netherlands":"W.Europe",
+  "Belgium":"W.Europe","Switzerland":"W.Europe","Austria":"W.Europe",
+  "Spain":"S.Europe","Italy":"S.Europe","Portugal":"S.Europe","Greece":"S.Europe",
+  "Croatia":"S.Europe","Slovenia":"S.Europe","Serbia":"S.Europe",
+  "Albania":"S.Europe","Kosovo":"S.Europe","Cyprus":"S.Europe",
+  "Poland":"E.Europe","Czech Republic":"E.Europe","Slovakia":"E.Europe",
+  "Hungary":"E.Europe","Romania":"E.Europe","Bulgaria":"E.Europe",
+  "Ukraine":"E.Europe","Moldova":"E.Europe",
+  "United States":"N.America","Canada":"N.America",
+  "Cuba":"Caribbean","Jamaica":"Caribbean","Dominican Republic":"Caribbean",
+  "Bahamas":"Caribbean","Dominica":"Caribbean","Saint Lucia":"Caribbean","Puerto Rico":"Caribbean",
+  "Brazil":"S.America","Argentina":"S.America","Colombia":"S.America",
+  "Ecuador":"S.America","Chile":"S.America","Peru":"S.America",
+  "Mexico":"C.America","Guatemala":"C.America","Panama":"C.America",
+  "China":"E.Asia","Japan":"E.Asia","South Korea":"E.Asia",
+  "North Korea":"E.Asia","Mongolia":"E.Asia","Chinese Taipei":"E.Asia",
+  "Thailand":"SE.Asia","Indonesia":"SE.Asia","Philippines":"SE.Asia","Malaysia":"SE.Asia",
+  "India":"S.Asia","Pakistan":"S.Asia","Iran":"S.Asia",
+  "Turkey":"W.Asia","Israel":"W.Asia","Bahrain":"W.Asia","Qatar":"W.Asia",
+  "Jordan":"W.Asia","Georgia":"W.Asia","Armenia":"W.Asia","Azerbaijan":"W.Asia",
+  "Morocco":"N.Africa","Algeria":"N.Africa","Tunisia":"N.Africa","Egypt":"N.Africa",
+  "Kenya":"SS.Africa","Ethiopia":"SS.Africa","South Africa":"SS.Africa",
+  "Botswana":"SS.Africa","Cameroon":"SS.Africa","Uganda":"SS.Africa",
+  "Zambia":"SS.Africa","Cape Verde":"SS.Africa",
+  "Australia":"Oceania","New Zealand":"Oceania","Fiji":"Oceania",
+  "Kazakhstan":"C.Asia","Uzbekistan":"C.Asia","Kyrgyzstan":"C.Asia","Tajikistan":"C.Asia",
+};
+const regMerge = r => {
+  if (r==="C.America"||r==="Caribbean"||r==="S.America") return "LatAm+Carib";
+  if (r==="SE.Asia"||r==="S.Asia") return "S+SE.Asia";
+  if (r==="N.Africa"||r==="SS.Africa") return "Africa";
+  return r;
+};
+
+const regionColors = {
+  "N.Europe":"#e63946","W.Europe":"#1d3557","S.Europe":"#457b9d",
+  "E.Europe":"#2563eb","N.America":"#059669","LatAm+Carib":"#f59e0b",
+  "E.Asia":"#e76f51","S+SE.Asia":"#fb923c","W.Asia":"#a855f7",
+  "Africa":"#94a3b8","Oceania":"#10b981","C.Asia":"#7c3aed",
+};
+
+function buildData() {
+  return medalData
+    .filter(d => popMap[d.c] && gdpMap[d.c] && ggiMap[d.c] && giniMap[d.c] && unRegionMap[d.c])
+    .map(d => {
+      const pts = d.g*6 + d.s*5 + d.b*4;
+      const pop = popMap[d.c];
+      const ptsPC = pts / pop;
+      return {
+        c:d.c, pts, pop, ptsPC,
+        logPtsPC: Math.log10(Math.max(ptsPC, 0.01)),
+        gdppc: gdpMap[d.c], logGdp: Math.log10(gdpMap[d.c]),
+        ggi: ggiMap[d.c], gini: giniMap[d.c],
+        reg: regMerge(unRegionMap[d.c]),
+      };
+    });
+}
+
+// --- Stats ---
+function corr(xs, ys) {
+  const n=xs.length; if(n<3) return 0;
+  let sx=0,sy=0; for(let i=0;i<n;i++){sx+=xs[i];sy+=ys[i]}
+  const mx=sx/n,my=sy/n;
+  let cov=0,vx=0,vy=0;
+  for(let i=0;i<n;i++){cov+=(xs[i]-mx)*(ys[i]-my);vx+=(xs[i]-mx)**2;vy+=(ys[i]-my)**2}
+  return (vx&&vy)?cov/Math.sqrt(vx*vy):0;
+}
+
+// Partial correlation of x with y controlling z (simple case: one control)
+function partialCorr(xs, ys, zs) {
+  const n = xs.length; if(n<4) return 0;
+  // Residualize both x and y on z
+  const resid = (vals, ctrl) => {
+    let sc=0,sv=0,cc=0;
+    for(let i=0;i<n;i++){sc+=ctrl[i];sv+=vals[i];cc+=ctrl[i]*ctrl[i]}
+    const mc=sc/n, mv=sv/n;
+    let cov=0,varz=0;
+    for(let i=0;i<n;i++){cov+=(vals[i]-mv)*(ctrl[i]-mc);varz+=(ctrl[i]-mc)**2}
+    const b=varz?cov/varz:0;
+    return vals.map((v,i)=>(v-mv)-b*(ctrl[i]-mc));
+  };
+  const rx = resid(xs, zs);
+  const ry = resid(ys, zs);
+  return corr(rx, ry);
+}
+
+// Fisher z-transform
+function fisherZ(r) { return 0.5 * Math.log((1+r)/(1-r)); }
+function fisherZinv(z) { return (Math.exp(2*z)-1)/(Math.exp(2*z)+1); }
+
+// Cochran's Q test for heterogeneity of correlations
+// Tests H0: all population correlations are equal
+function cochranQ(rs, ns) {
+  const k = rs.length;
+  if(k<2) return {Q:0,df:0,p:1};
+  const zs = rs.map(r => fisherZ(r));
+  const ws = ns.map(n => n - 3); // Fisher z variance ≈ 1/(n-3)
+  const wSum = ws.reduce((a,b)=>a+b,0);
+  const zBar = ws.reduce((s,w,i)=>s+w*zs[i],0) / wSum;
+  const Q = ws.reduce((s,w,i)=>s+w*(zs[i]-zBar)**2, 0);
+  const df = k - 1;
+  // Chi-squared p-value approximation
+  const p = 1 - chiSqCDF(Q, df);
+  return {Q, df, p, zBar, rBar: fisherZinv(zBar)};
+}
+
+// Chi-squared CDF using regularized lower incomplete gamma function
+function lnGamma(x) {
+  const c=[76.18009172947146,-86.50532032941677,24.01409824083091,
+    -1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];
+  let y=x, tmp=x+5.5; tmp-=(x+0.5)*Math.log(tmp);
+  let ser=1.000000000190015;
+  for(let j=0;j<6;j++) ser+=c[j]/(++y);
+  return -tmp+Math.log(2.5066282746310005*ser/x);
+}
+function gammaPSeries(a, x) {
+  // Lower incomplete gamma P(a,x) via series expansion — works well for x < a+1
+  let sum = 1/a, term = 1/a;
+  for(let n=1; n<300; n++) {
+    term *= x/(a+n);
+    sum += term;
+    if(Math.abs(term) < sum*1e-14) break;
+  }
+  return sum * Math.exp(-x + a*Math.log(x) - lnGamma(a));
+}
+function gammaPCF(a, x) {
+  // Upper incomplete gamma Q(a,x) via continued fraction (Lentz), return P = 1-Q
+  // Works well for x >= a+1
+  let b=x+1-a, c=1e30, d=1/b, h=d;
+  for(let i=1;i<300;i++){
+    const an = -i*(i-a);
+    b += 2;
+    d = an*d+b; if(Math.abs(d)<1e-30) d=1e-30;
+    c = b+an/c; if(Math.abs(c)<1e-30) c=1e-30;
+    d = 1/d;
+    const del = d*c;
+    h *= del;
+    if(Math.abs(del-1)<1e-14) break;
+  }
+  const Q = Math.exp(-x + a*Math.log(x) - lnGamma(a)) * h;
+  return 1 - Q;
+}
+function chiSqCDF(x, k) {
+  if(x<=0||k<=0) return 0;
+  const a=k/2, xh=x/2;
+  return xh < a+1 ? gammaPSeries(a, xh) : gammaPCF(a, xh);
+}
+
+// Permutation test: shuffle region labels, recompute within-region correlations,
+// measure variance of correlations. Compare observed variance to null distribution.
+function permTest(data, regions, xKey, yKey, controlKey, nPerm) {
+  // Observed within-region partial correlations
+  const observed = [];
+  for (const r of regions) {
+    const sub = data.filter(d => d.reg === r);
+    if (sub.length < 4) continue;
+    const pc = partialCorr(sub.map(d=>d[xKey]), sub.map(d=>d[yKey]), sub.map(d=>d[controlKey]));
+    observed.push({region:r, n:sub.length, r:pc});
+  }
+  
+  // Observed heterogeneity: variance of Fisher-z transformed correlations, weighted by n
+  const obsQ = cochranQ(observed.map(o=>o.r), observed.map(o=>o.n)).Q;
+  
+  // Also compute I² (proportion of variance that's real, not sampling error)
+  const df = observed.length - 1;
+  const I2 = df > 0 ? Math.max(0, (obsQ - df) / obsQ) : 0;
+  
+  // Observed spread: SD of the within-region correlations
+  const obsRs = observed.map(o=>o.r);
+  const obsMean = obsRs.reduce((a,b)=>a+b,0)/obsRs.length;
+  const obsVar = obsRs.reduce((s,r)=>s+(r-obsMean)**2,0)/obsRs.length;
+  
+  // Permutation: shuffle region labels, preserving region sizes
+  const regionSizes = {};
+  for (const r of regions) {
+    const n = data.filter(d=>d.reg===r).length;
+    if(n>=4) regionSizes[r] = n;
+  }
+  const activeRegs = Object.keys(regionSizes);
+  
+  let countQ = 0;
+  let countVar = 0;
+  const permQs = [];
+  
+  for (let p = 0; p < nPerm; p++) {
+    // Shuffle all data indices
+    const indices = data.map((_,i)=>i);
+    for(let i=indices.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [indices[i],indices[j]]=[indices[j],indices[i]];
+    }
+    // Assign shuffled data to region groups (preserving sizes)
+    const permRs = [];
+    const permNs = [];
+    let offset = 0;
+    for (const r of activeRegs) {
+      const sz = regionSizes[r];
+      const subIdx = indices.slice(offset, offset+sz);
+      if(subIdx.length < 4) { offset+=sz; continue; }
+      const xs = subIdx.map(i=>data[i][xKey]);
+      const ys = subIdx.map(i=>data[i][yKey]);
+      const zs = subIdx.map(i=>data[i][controlKey]);
+      permRs.push(partialCorr(xs, ys, zs));
+      permNs.push(sz);
+      offset += sz;
+    }
+    
+    if(permRs.length >= 2) {
+      const pQ = cochranQ(permRs, permNs).Q;
+      permQs.push(pQ);
+      if(pQ >= obsQ) countQ++;
+      
+      const pMean = permRs.reduce((a,b)=>a+b,0)/permRs.length;
+      const pVar = permRs.reduce((s,r)=>s+(r-pMean)**2,0)/permRs.length;
+      if(pVar >= obsVar) countVar++;
+    }
+  }
+  
+  return {
+    observed,
+    obsQ, 
+    I2,
+    obsVar,
+    obsMean,
+    permPvalQ: (countQ+1)/(nPerm+1),
+    permPvalVar: (countVar+1)/(nPerm+1),
+    cochranP: cochranQ(observed.map(o=>o.r), observed.map(o=>o.n)).p,
+    nPerm,
+    permQs,
+  };
+}
+
+// Individual region significance test using Fisher z
+function regionSig(r, n) {
+  if(n<4) return {z:0,p:1};
+  const z = fisherZ(r) * Math.sqrt(n-3);
+  // Two-tailed p from standard normal
+  const p = 2*(1-normalCDF(Math.abs(z)));
+  return {z, p};
+}
+function normalCDF(x) {
+  // Approximation
+  const t=1/(1+0.2316419*Math.abs(x));
+  const d=0.3989422804014327;
+  const p=d*Math.exp(-x*x/2)*(t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.8212560+t*1.3302744)))));
+  return x>0?1-p:p;
+}
+
+function RegionHeterogeneity() {
+  const [nPerm] = useState(2000);
+  const allData = useMemo(() => buildData(), []);
+  const regions = useMemo(() => [...new Set(allData.map(d=>d.reg))].sort(), [allData]);
+
+  // Run permutation tests for both Gini and GGI
+  const giniTest = useMemo(() =>
+    permTest(allData, regions, "gini", "logPtsPC", "logGdp", nPerm),
+    [allData, regions, nPerm]);
+  const ggiTest = useMemo(() =>
+    permTest(allData, regions, "ggi", "logPtsPC", "logGdp", nPerm),
+    [allData, regions, nPerm]);
+
+  // Raw (no GDP control) within-region correlations for comparison
+  const rawGini = useMemo(() => {
+    return regions.map(r => {
+      const sub = allData.filter(d=>d.reg===r);
+      if(sub.length<3) return null;
+      return {region:r, n:sub.length, r:corr(sub.map(d=>d.gini), sub.map(d=>d.logPtsPC))};
+    }).filter(Boolean);
+  }, [allData, regions]);
+  const rawGgi = useMemo(() => {
+    return regions.map(r => {
+      const sub = allData.filter(d=>d.reg===r);
+      if(sub.length<3) return null;
+      return {region:r, n:sub.length, r:corr(sub.map(d=>d.ggi), sub.map(d=>d.logPtsPC))};
+    }).filter(Boolean);
+  }, [allData, regions]);
+
+  const [view, setView] = useState("test");
+  const tabs = [
+    {id:"test",label:"Heterogeneity Test"},
+    {id:"individual",label:"Individual Regions"},
+    {id:"visual",label:"Funnel Plot"},
+    {id:"interpret",label:"Interpretation"},
+  ];
+
+  // For funnel plot
+  const funnelData = (test) => test.observed.map(o => ({
+    ...o, z:fisherZ(o.r), se:1/Math.sqrt(o.n-3),
+    sig: regionSig(o.r, o.n),
+  }));
+
+  return (
+    <div style={{fontFamily:"'Georgia',serif",maxWidth:960,margin:"0 auto",padding:"16px 12px",color:"#1a1a2e",background:"#fafaf8"}}>
+      <h2 style={{fontSize:18,margin:"0 0 4px",fontWeight:700}}>
+        Are the Regional Reversals Real or Just Noise?
+      </h2>
+      <p style={{fontSize:12,color:"#555",margin:"0 0 12px"}}>
+        Testing whether within-region correlations (Gini→performance, GGI→performance)
+        vary more than expected by chance. Partial correlations controlling GDP.
+        Permutation test: {nPerm.toLocaleString()} shuffles.
+      </p>
+      <div style={{display:"flex",gap:6,marginBottom:14,flexWrap:"wrap"}}>
+        {tabs.map(t=>(
+          <button key={t.id} onClick={()=>setView(t.id)}
+            style={{padding:"5px 12px",border:view===t.id?"2px solid #1a1a2e":"1px solid #ccc",
+              borderRadius:4,background:view===t.id?"#1a1a2e":"#fff",
+              color:view===t.id?"#fff":"#333",fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {view==="test"&&(
+        <div>
+          <h3 style={{fontSize:14,margin:"0 0 10px"}}>Cochran's Q + Permutation Test for Heterogeneity</h3>
+          <p style={{fontSize:12,color:"#555",margin:"0 0 12px",lineHeight:1.6}}>
+            <b>Cochran's Q</b> tests whether the within-region correlations are more spread out
+            than expected from sampling variability alone. <b>I²</b> estimates what fraction of the
+            observed variance is "real" (not sampling error). The <b>permutation p-value</b> shuffles
+            country-to-region assignments {nPerm.toLocaleString()} times to build a null distribution — 
+            no distributional assumptions.
+          </p>
+
+          <table style={{fontSize:12,borderCollapse:"collapse",width:"100%",marginBottom:16}}>
+            <thead><tr style={{borderBottom:"2px solid #333"}}>
+              <th style={{textAlign:"left",padding:"6px 8px"}}>Predictor</th>
+              <th style={{padding:"6px 8px"}}>Regions (n≥4)</th>
+              <th style={{padding:"6px 8px"}}>Weighted mean r</th>
+              <th style={{padding:"6px 8px"}}>SD of r's</th>
+              <th style={{padding:"6px 8px"}}>Cochran's Q</th>
+              <th style={{padding:"6px 8px"}}>I²</th>
+              <th style={{padding:"6px 8px"}}>Q p-value (χ²)</th>
+              <th style={{padding:"6px 8px",fontWeight:700}}>Permutation p</th>
+            </tr></thead>
+            <tbody>
+              {[
+                {name:"Gini | GDP",t:giniTest},
+                {name:"GGI | GDP",t:ggiTest},
+              ].map((row,i)=>(
+                <tr key={i} style={{borderBottom:"1px solid #ddd"}}>
+                  <td style={{padding:"6px 8px",fontWeight:600}}>{row.name}</td>
+                  <td style={{padding:"6px 8px",textAlign:"center"}}>{row.t.observed.length}</td>
+                  <td style={{padding:"6px 8px",textAlign:"center"}}>{row.t.obsMean.toFixed(3)}</td>
+                  <td style={{padding:"6px 8px",textAlign:"center"}}>{Math.sqrt(row.t.obsVar).toFixed(3)}</td>
+                  <td style={{padding:"6px 8px",textAlign:"center"}}>{row.t.obsQ.toFixed(2)}</td>
+                  <td style={{padding:"6px 8px",textAlign:"center",fontWeight:600,
+                    color:row.t.I2>0.5?"#dc2626":row.t.I2>0.25?"#f59e0b":"#059669"}}>
+                    {(row.t.I2*100).toFixed(0)}%
+                  </td>
+                  <td style={{padding:"6px 8px",textAlign:"center"}}>{row.t.cochranP.toFixed(3)}</td>
+                  <td style={{padding:"6px 8px",textAlign:"center",fontWeight:700,
+                    color:row.t.permPvalVar<0.05?"#dc2626":row.t.permPvalVar<0.10?"#f59e0b":"#059669"}}>
+                    {row.t.permPvalVar.toFixed(3)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div style={{padding:12,background:"#f0f0e8",borderRadius:6,fontSize:12,lineHeight:1.7,marginBottom:16}}>
+            <b>Reading the results:</b><br/>
+            • I² &lt; 25% = low heterogeneity (differences are just sampling noise)<br/>
+            • I² 25-75% = moderate (some real variation, some noise)<br/>
+            • I² &gt; 75% = high (regional differences are mostly real)<br/>
+            • Permutation p &lt; 0.05 = the spread of correlations across regions is
+            significantly wider than what random grouping would produce
+          </div>
+
+          <h4 style={{fontSize:13,margin:"0 0 6px"}}>Within-Region Partial Correlations (GDP-controlled)</h4>
+          <table style={{fontSize:12,borderCollapse:"collapse",width:"100%"}}>
+            <thead><tr style={{borderBottom:"2px solid #333"}}>
+              <th style={{textAlign:"left",padding:"4px 8px"}}>Region</th>
+              <th style={{padding:"4px 8px"}}>n</th>
+              <th style={{padding:"4px 8px"}}>Gini|GDP → Perf</th>
+              <th style={{padding:"4px 8px"}}>GGI|GDP → Perf</th>
+            </tr></thead>
+            <tbody>
+              {giniTest.observed.map((gRow,i) => {
+                const ggiRow = ggiTest.observed.find(g=>g.region===gRow.region);
+                const gc=gRow.r<-0.15?"#059669":gRow.r>0.15?"#dc2626":"#888";
+                const ggc=ggiRow&&ggiRow.r>0.15?"#059669":ggiRow&&ggiRow.r<-0.15?"#dc2626":"#888";
+                return (
+                  <tr key={i} style={{borderBottom:"1px solid #ddd"}}>
+                    <td style={{padding:"4px 8px"}}>
+                      <span style={{display:"inline-block",width:10,height:10,borderRadius:"50%",
+                        background:regionColors[gRow.region]||"#888",marginRight:6,verticalAlign:"middle"}}/>
+                      {gRow.region}
+                    </td>
+                    <td style={{padding:"4px 8px",textAlign:"center"}}>{gRow.n}</td>
+                    <td style={{padding:"4px 8px",textAlign:"center",color:gc,fontWeight:600}}>{gRow.r.toFixed(3)}</td>
+                    <td style={{padding:"4px 8px",textAlign:"center",color:ggc,fontWeight:600}}>{ggiRow?ggiRow.r.toFixed(3):"—"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <p style={{fontSize:11,color:"#666",margin:"6px 0"}}>
+            Green = direction consistent with equality hypothesis (Gini negative, GGI positive). Red = reversed.
+            These are partial correlations: Gini→performance after removing GDP effect within each region.
+          </p>
+        </div>
+      )}
+
+      {view==="individual"&&(
+        <div>
+          <h3 style={{fontSize:14,margin:"0 0 10px"}}>Individual Region Significance (Fisher z-test)</h3>
+          <p style={{fontSize:12,color:"#555",margin:"0 0 12px",lineHeight:1.6}}>
+            For each region: is the within-region partial correlation significantly different from zero,
+            given the sample size? Uses Fisher z-transformation. With n=4-16 per region,
+            most individual tests will lack power even if the true effect is moderate.
+          </p>
+
+          <table style={{fontSize:12,borderCollapse:"collapse",width:"100%"}}>
+            <thead><tr style={{borderBottom:"2px solid #333"}}>
+              <th style={{textAlign:"left",padding:"4px 8px"}}>Region</th>
+              <th style={{padding:"4px 8px"}}>n</th>
+              <th colSpan={3} style={{padding:"4px 8px",borderBottom:"1px solid #999"}}>Gini | GDP</th>
+              <th colSpan={3} style={{padding:"4px 8px",borderBottom:"1px solid #999"}}>GGI | GDP</th>
+            </tr>
+            <tr style={{borderBottom:"1px solid #ccc"}}>
+              <th></th><th></th>
+              <th style={{padding:"3px 6px",fontSize:11}}>r</th>
+              <th style={{padding:"3px 6px",fontSize:11}}>z</th>
+              <th style={{padding:"3px 6px",fontSize:11}}>p (2-tail)</th>
+              <th style={{padding:"3px 6px",fontSize:11}}>r</th>
+              <th style={{padding:"3px 6px",fontSize:11}}>z</th>
+              <th style={{padding:"3px 6px",fontSize:11}}>p (2-tail)</th>
+            </tr>
+            </thead>
+            <tbody>
+              {giniTest.observed.map((gRow,i)=>{
+                const ggiRow = ggiTest.observed.find(g=>g.region===gRow.region);
+                const gSig = regionSig(gRow.r, gRow.n);
+                const ggSig = ggiRow ? regionSig(ggiRow.r, ggiRow.n) : {z:0,p:1};
+                return (
+                  <tr key={i} style={{borderBottom:"1px solid #ddd"}}>
+                    <td style={{padding:"4px 8px"}}>
+                      <span style={{display:"inline-block",width:10,height:10,borderRadius:"50%",
+                        background:regionColors[gRow.region]||"#888",marginRight:6,verticalAlign:"middle"}}/>
+                      {gRow.region}
+                    </td>
+                    <td style={{padding:"4px 6px",textAlign:"center"}}>{gRow.n}</td>
+                    <td style={{padding:"4px 6px",textAlign:"center",
+                      color:gRow.r<-0.15?"#059669":gRow.r>0.15?"#dc2626":"#888",fontWeight:600}}>
+                      {gRow.r.toFixed(3)}
+                    </td>
+                    <td style={{padding:"4px 6px",textAlign:"center",fontFamily:"monospace",fontSize:11}}>
+                      {gSig.z.toFixed(2)}
+                    </td>
+                    <td style={{padding:"4px 6px",textAlign:"center",
+                      fontWeight:gSig.p<0.05?700:400,
+                      color:gSig.p<0.05?"#dc2626":gSig.p<0.10?"#f59e0b":"#888"}}>
+                      {gSig.p<0.001?"<.001":gSig.p.toFixed(3)}
+                    </td>
+                    <td style={{padding:"4px 6px",textAlign:"center",
+                      color:ggiRow&&ggiRow.r>0.15?"#059669":ggiRow&&ggiRow.r<-0.15?"#dc2626":"#888",fontWeight:600}}>
+                      {ggiRow?ggiRow.r.toFixed(3):"—"}
+                    </td>
+                    <td style={{padding:"4px 6px",textAlign:"center",fontFamily:"monospace",fontSize:11}}>
+                      {ggSig.z.toFixed(2)}
+                    </td>
+                    <td style={{padding:"4px 6px",textAlign:"center",
+                      fontWeight:ggSig.p<0.05?700:400,
+                      color:ggSig.p<0.05?"#dc2626":ggSig.p<0.10?"#f59e0b":"#888"}}>
+                      {ggSig.p<0.001?"<.001":ggSig.p.toFixed(3)}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <p style={{fontSize:11,color:"#666",margin:"8px 0",lineHeight:1.5}}>
+            <b>Note on power:</b> With n=4 you need |r| &gt; 0.95 for p &lt; 0.05.
+            With n=8 you need |r| &gt; 0.71. With n=16 you need |r| &gt; 0.50.
+            Most regions simply don't have enough countries to detect moderate effects.
+            The heterogeneity test (previous tab) is more informative because it pools information across regions.
+          </p>
+        </div>
+      )}
+
+      {view==="visual"&&(
+        <div>
+          <h3 style={{fontSize:14,margin:"0 0 10px"}}>Funnel Plots</h3>
+          <p style={{fontSize:12,color:"#555",margin:"0 0 12px",lineHeight:1.6}}>
+            Each dot is a region. X-axis = partial correlation (GDP-controlled). Y-axis = precision (√(n-3)).
+            Larger regions (higher precision) should cluster near zero if there's no real effect.
+            If the spread is wider than the funnel boundaries, heterogeneity is real.
+          </p>
+          {[{name:"Gini | GDP → Performance",t:giniTest},{name:"GGI | GDP → Performance",t:ggiTest}].map((item,idx)=>{
+            const fd = funnelData(item.t);
+            const maxSE = Math.max(...fd.map(d=>d.se));
+            const maxPrec = Math.max(...fd.map(d=>1/d.se));
+            const W=420, H=280, P=50, PR=20, PT=30, PB=30;
+            const plotW=W-P-PR, plotH=H-PT-PB;
+            const xMin=-1, xMax=1;
+            const sx=v=>P+(v-xMin)/(xMax-xMin)*plotW;
+            const sy=v=>PT+(1-v/maxPrec)*plotH;
+            // 95% CI funnel lines
+            const funnelPts = [];
+            for(let prec=0.5;prec<=maxPrec;prec+=0.5){
+              const se=1/prec;
+              funnelPts.push({prec,lo:-1.96*se,hi:1.96*se});
+            }
+            return (
+              <svg key={idx} width={W} height={H} style={{fontSize:10,fontFamily:"system-ui",display:"block",marginBottom:12}}>
+                <text x={W/2} y={14} textAnchor="middle" style={{fontSize:12,fontWeight:600}}>{item.name}</text>
+                {/* Zero line */}
+                <line x1={sx(0)} y1={PT} x2={sx(0)} y2={PT+plotH} stroke="#ccc" strokeWidth={1}/>
+                {/* Funnel */}
+                {funnelPts.length>1&&(
+                  <>
+                    <polyline fill="none" stroke="#ddd" strokeWidth={1} strokeDasharray="3,3"
+                      points={funnelPts.map(f=>`${sx(f.lo)},${sy(f.prec)}`).join(" ")}/>
+                    <polyline fill="none" stroke="#ddd" strokeWidth={1} strokeDasharray="3,3"
+                      points={funnelPts.map(f=>`${sx(f.hi)},${sy(f.prec)}`).join(" ")}/>
+                  </>
+                )}
+                {/* Points */}
+                {fd.map((d,i)=>(
+                  <circle key={i} cx={sx(d.r)} cy={sy(1/d.se)} r={5}
+                    fill={regionColors[d.region]||"#888"} opacity={0.8} stroke="#fff" strokeWidth={1}>
+                    <title>{d.region} (n={d.n}, r={d.r.toFixed(3)}, p={d.sig.p.toFixed(3)})</title>
+                  </circle>
+                ))}
+                {/* Labels for outliers */}
+                {fd.filter(d=>Math.abs(d.r)>0.4).map((d,i)=>(
+                  <text key={`l${i}`} x={sx(d.r)+(d.r>0?8:-8)} y={sy(1/d.se)+3}
+                    textAnchor={d.r>0?"start":"end"} style={{fontSize:9,fill:"#333"}}>
+                    {d.region}
+                  </text>
+                ))}
+                {/* Axes */}
+                <text x={W/2} y={H-4} textAnchor="middle" style={{fontSize:10,fill:"#666"}}>
+                  Partial correlation (r)
+                </text>
+                <text x={8} y={H/2} textAnchor="middle" transform={`rotate(-90,8,${H/2})`}
+                  style={{fontSize:10,fill:"#666"}}>
+                  Precision (√(n-3))
+                </text>
+                {/* x-axis ticks */}
+                {[-0.8,-0.4,0,0.4,0.8].map(v=>(
+                  <text key={v} x={sx(v)} y={PT+plotH+14} textAnchor="middle" style={{fontSize:9,fill:"#888"}}>
+                    {v.toFixed(1)}
+                  </text>
+                ))}
+              </svg>
+            );
+          })}
+          <div style={{display:"flex",flexWrap:"wrap",gap:8,fontSize:11,marginTop:4}}>
+            {Object.entries(regionColors).filter(([k])=>allData.some(d=>d.reg===k)).map(([r,c])=>(
+              <span key={r} style={{display:"flex",alignItems:"center",gap:3}}>
+                <span style={{width:10,height:10,borderRadius:"50%",background:c,display:"inline-block"}}/>
+                {r}
+              </span>
+            ))}
+          </div>
+          <p style={{fontSize:11,color:"#666",margin:"8px 0",lineHeight:1.5}}>
+            Dashed lines = 95% CI funnel. Points outside the funnel have correlations
+            larger than expected from their sample size alone.
+          </p>
+        </div>
+      )}
+
+      {view==="interpret"&&(
+        <div style={{fontSize:13,lineHeight:1.7,maxWidth:750}}>
+          <h3 style={{fontSize:15,margin:"0 0 10px"}}>What This Tells Us</h3>
+
+          <h4 style={{fontSize:13,margin:"16px 0 6px"}}>If heterogeneity is significant (I² high, p &lt; 0.05):</h4>
+          <p>
+            The regional reversals are <b>not random noise</b>. Something genuinely differs
+            between regions that makes equality help in some places and not others.
+            The overall null result (r ≈ 0 globally) is a <b>Simpson's Paradox</b>: real but
+            opposing effects cancel when pooled. The unmeasured moderator is real —
+            we just haven't identified it yet.
+          </p>
+          <p>
+            This would mean Berdahl wasn't wrong that equality matters — they were
+            wrong that it matters <em>everywhere</em>. And K&P weren't wrong that the effect
+            disappears with controls — but it disappears because of cancellation, not absence.
+          </p>
+
+          <h4 style={{fontSize:13,margin:"16px 0 6px"}}>If heterogeneity is NOT significant (I² low, p &gt; 0.05):</h4>
+          <p>
+            The regional differences are <b>just what you'd expect from small samples</b>.
+            With n=4-16 per region, correlations of ±0.3-0.7 arise routinely by chance.
+            The "pattern" we saw — negative in Western regions, positive in post-Soviet —
+            was pareidolia. We were reading meaning into noise.
+          </p>
+          <p>
+            This would strengthen the null conclusion: equality simply doesn't predict
+            Olympic performance at any level, in any region, once GDP is controlled.
+          </p>
+
+          <h4 style={{fontSize:13,margin:"16px 0 6px"}}>Important caveat</h4>
+          <p>
+            Even the heterogeneity test has limited power here. With only ~10 regions
+            and 4-16 countries each, detecting moderate heterogeneity requires large
+            true differences. The test can rule out "trivially noise" but can't definitively
+            confirm "definitely real."
+          </p>
+        </div>
+      )}
+
+      <div style={{marginTop:14,fontSize:10,color:"#888",lineHeight:1.5}}>
+        Within-region partial correlations: Gini or GGI → log(pts/cap), controlling log(GDP/cap).
+        Regions: UN M49, merged where n&lt;3.
+        Heterogeneity: Cochran's Q (χ² approximation) + permutation test ({nPerm.toLocaleString()} shuffles).
+        I² = (Q-df)/Q, bounded at 0.
+        <br/>Paris 2024 medals. GGI: WEF 2024. Gini: World Bank. GDP: IMF PPP 2024.
+      </div>
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(RegionHeterogeneity));
+    </script>
+</body>
+</html>

@@ -520,6 +520,160 @@ button#theme-toggle:hover {
 }
 
  
+.project-card-static {
+  cursor: default;
+}
+
+.project-card-static:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.project-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.7rem;
+}
+
+.pdf-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.pdf-link:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+ 
+.viz-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .viz-grid {
+    grid-template-columns: 1fr;
+  }
+  .viz-sidebar {
+    order: -1;
+  }
+}
+
+.viz-content .post-header {
+  margin-bottom: 1.5rem;
+}
+
+.viz-sidebar {
+  position: sticky;
+  top: 5rem;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+ 
+.viz-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.viz-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.viz-sidebar-header {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+.viz-card {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.6rem;
+  margin-bottom: 0.8rem;
+  transition: box-shadow 0.15s;
+}
+
+.viz-card:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.viz-frame-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 65%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.viz-frame-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  border: none;
+  transform: scale(0.5);
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+.viz-card-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--primary);
+  margin-top: 0.4rem;
+  padding: 0 0.3rem;
+}
+
+.viz-version {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: var(--tertiary, #e5e7eb);
+  color: var(--secondary);
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.viz-fullscreen {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 0 0.3rem;
+  margin-top: 0.2rem;
+  transition: color 0.15s;
+}
+
+.viz-fullscreen:hover {
+  color: var(--primary);
+}
+
+ 
 .dark .project-card .status-active {
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -619,38 +773,54 @@ button#theme-toggle:hover {
     
       
       
+
+      
+      
       <div class="project-card">
         <a href="/projects/sport-cost-gradient/">
           <h3>Income Inequality, Sport Cost, and Olympic Performance</h3>
           <div class="project-meta">2026 · Working paper</div>
           <div class="project-desc">Does income inequality affect Olympic performance differently depending on what it costs to participate in a sport?</div>
-          
           <span class="project-status status-active">Active</span>
-          
         </a>
       </div>
+
       
-      <div class="project-card">
-        <a href="/projects/forward-price-spot-price/">
-          <h3>Spotting the Difference: Forward Price vs Expected Spot Price</h3>
-          <div class="project-meta">2001 · EPRM Electricity</div>
-          <div class="project-desc">An analysis of the relationship between forward electricity prices and expected spot prices in the Nordic power market.</div>
-          
+
+      
+
+      
+      
+      <div class="project-card project-card-static">
+        <h3>Spotting the Difference: Forward Price vs Expected Spot Price</h3>
+        <div class="project-meta">2001 · EPRM Electricity</div>
+        <div class="project-desc">An analysis of the relationship between forward electricity prices and expected spot prices in the Nordic power market.</div>
+        <div class="project-card-footer">
           <span class="project-status status-archive">Archive</span>
           
-        </a>
+          <a href="/papers/syvertsen-eprm-2001-forward-spot.pdf" class="pdf-link" target="_blank">PDF ↗</a>
+          
+        </div>
       </div>
       
-      <div class="project-card">
-        <a href="/projects/nhh-dissertation/">
-          <h3>Finansieringsforutsetninger ved prosjektvurdering</h3>
-          <div class="project-meta">1985 · NHH — Spesialoppgave, Høyere Avdelings Studium</div>
-          <div class="project-desc">Financing assumptions in project evaluation — methods for assessing debt financing advantages, illustrated with examples from the Norwegian continental shelf.</div>
-          
+
+      
+
+      
+      
+      <div class="project-card project-card-static">
+        <h3>Finansieringsforutsetninger ved prosjektvurdering</h3>
+        <div class="project-meta">1985 · NHH — Spesialoppgave, Høyere Avdelings Studium</div>
+        <div class="project-desc">Financing assumptions in project evaluation — methods for assessing debt financing advantages, illustrated with examples from the Norwegian continental shelf.</div>
+        <div class="project-card-footer">
           <span class="project-status status-archive">Archive</span>
           
-        </a>
+          <a href="/papers/syvertsen-nhh-1985-dissertation-frontpage.pdf" class="pdf-link" target="_blank">PDF ↗</a>
+          
+        </div>
       </div>
+      
+
       
     
 

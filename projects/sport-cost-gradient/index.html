@@ -519,6 +519,160 @@ button#theme-toggle:hover {
 }
 
  
+.project-card-static {
+  cursor: default;
+}
+
+.project-card-static:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.project-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.7rem;
+}
+
+.pdf-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.pdf-link:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+ 
+.viz-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .viz-grid {
+    grid-template-columns: 1fr;
+  }
+  .viz-sidebar {
+    order: -1;
+  }
+}
+
+.viz-content .post-header {
+  margin-bottom: 1.5rem;
+}
+
+.viz-sidebar {
+  position: sticky;
+  top: 5rem;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+ 
+.viz-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.viz-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.viz-sidebar-header {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+.viz-card {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.6rem;
+  margin-bottom: 0.8rem;
+  transition: box-shadow 0.15s;
+}
+
+.viz-card:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.viz-frame-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 65%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.viz-frame-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  border: none;
+  transform: scale(0.5);
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+.viz-card-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--primary);
+  margin-top: 0.4rem;
+  padding: 0 0.3rem;
+}
+
+.viz-version {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: var(--tertiary, #e5e7eb);
+  color: var(--secondary);
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.viz-fullscreen {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 0 0.3rem;
+  margin-top: 0.2rem;
+  transition: color 0.15s;
+}
+
+.viz-fullscreen:hover {
+  color: var(--primary);
+}
+
+ 
 .dark .project-card .status-active {
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -614,24 +768,31 @@ button#theme-toggle:hover {
         </ul>
     </nav>
 </header>
-<main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/">Research Projects</a></div>
-  <h1>
-    Income Inequality, Sport Cost, and Olympic Performance
-  </h1>
-  <div class="post-description">
-    Does income inequality affect Olympic performance differently depending on what it costs to participate in a sport?
-  </div>
-</header>
-<div class="post-content"><h2 id="working-paper">Working Paper<a hidden class="anchor" aria-hidden="true" href="#working-paper">#</a></h2>
+<main class="main">
+<article class="viz-page">
+  <div class="viz-grid">
+
+    
+    <div class="viz-content">
+      <header class="post-header">
+        <h1 class="post-title">Income Inequality, Sport Cost, and Olympic Performance</h1>
+        
+        <div class="post-description">Does income inequality affect Olympic performance differently depending on what it costs to participate in a sport?</div>
+        
+        
+        <span class="project-status status-active">Active</span>
+        
+      </header>
+      <div class="post-content">
+        <h2 id="working-paper">Working Paper</h2>
 <p><strong>Status:</strong> Draft v0.95 (February 2026)</p>
 <hr>
-<h2 id="abstract">Abstract<a hidden class="anchor" aria-hidden="true" href="#abstract">#</a></h2>
+<h2 id="abstract">Abstract</h2>
 <p>Geloso and Kufenko (2021) hypothesised that income inequality affects Olympic performance through sport-specific cost barriers, but could not test this due to the absence of reliable sport-cost data. We construct a two-dimensional cost classification &ndash; household equipment cost and training facility cost &ndash; for 41 Olympic sports and test whether inequality&rsquo;s effect varies with cost, using a panel of 71 countries across seven Summer Games (2000&ndash;2024), scoring the top six finishers per event.</p>
 <p>The aggregate Gini&ndash;performance relationship is zero after regional controls &ndash; a textbook instance of Galton&rsquo;s Problem. But this null conceals a systematic gradient: inequality increasingly hurts performance as personal participation cost rises.</p>
 <p>The two cost dimensions capture distinct mechanisms. Income inequality interacts with household equipment cost but not with facility cost. GDP per capita interacts with facility cost but not with equipment cost. In a joint specification, both channels survive with near-zero mutual attenuation (8%). Inequality operates through household cost barriers; absolute wealth operates through infrastructure provision.</p>
 <hr>
-<h2 id="key-findings">Key Findings<a hidden class="anchor" aria-hidden="true" href="#key-findings">#</a></h2>
+<h2 id="key-findings">Key Findings</h2>
 <ol>
 <li>
 <p><strong>The Aggregate Puzzle (Galton&rsquo;s Problem):</strong> The Gini&ndash;performance relationship is zero after regional controls. But this null hides real heterogeneity &ndash; 7 regions show positive effects, 3 negative.</p>
@@ -647,44 +808,58 @@ button#theme-toggle:hover {
 </li>
 </ol>
 <hr>
-<h2 id="explore-this-research">Explore This Research<a hidden class="anchor" aria-hidden="true" href="#explore-this-research">#</a></h2>
+<h2 id="explore-this-research">Explore This Research</h2>
 <ul>
 <li><a href="/projects/sport-cost-gradient/blog/">Research Journal</a> &ndash; Blog posts documenting how this research developed</li>
-<li><a href="/projects/sport-cost-gradient/viz/">Visualizations by Version</a> &ndash; Interactive charts from each stage of analysis</li>
+<li><a href="/projects/sport-cost-gradient/viz/">All Visualizations by Version</a> &ndash; Interactive charts from each stage of analysis</li>
 <li>Data &amp; Code &ndash; <em>Coming soon</em></li>
 </ul>
 <hr>
-<h2 id="license">License<a hidden class="anchor" aria-hidden="true" href="#license">#</a></h2>
+<h2 id="license">License</h2>
 <p>This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. Code and scripts under <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
 
+      </div>
+    </div>
 
-</div>
+    
+    <aside class="viz-sidebar">
+      <div class="viz-sidebar-header">Key Figures</div>
+      
+      <div class="viz-card">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/paper_figures.html" loading="lazy" title="Paper Figures — Scatter plots and gradients"></iframe>
+        </div>
+        <div class="viz-card-label">Paper Figures — Scatter plots and gradients</div>
+        <a href="/viz/paper_figures.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/results_dashboard.html" loading="lazy" title="Results Dashboard — All model specifications"></iframe>
+        </div>
+        <div class="viz-card-label">Results Dashboard — All model specifications</div>
+        <a href="/viz/results_dashboard.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/f6_channels.html" loading="lazy" title="Two-Channel Separation (F6)"></iframe>
+        </div>
+        <div class="viz-card-label">Two-Channel Separation (F6)</div>
+        <a href="/viz/f6_channels.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/cost_classification.html" loading="lazy" title="Cost Classification Explorer"></iframe>
+        </div>
+        <div class="viz-card-label">Cost Classification Explorer</div>
+        <a href="/viz/cost_classification.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+    </aside>
 
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Research Journal
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Follow the research journey from the initial question through data collection, analysis, and discoveries.
-</p>
   </div>
-  <footer class="entry-footer"><span title='2026-02-12 00:00:00 +0000 UTC'>February 12, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Research Journal" href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Visualizations
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>By Version (Research Story) Newest first — scroll down to see how the analysis evolved. All visualizations are React (JSX) components viewable in claude.ai artifacts.
-v0.95 — Paper Figures Paper figures — Publication-ready versions of all key charts (v095_paper_figures.jsx) Results dashboard — Interactive overview of all model results (v095_results_dashboard.jsx) v0.94 — Facility Cost Facility cost visualization — Continuous facility cost estimates and their GDP interaction (v094_facility_viz.jsx) v0.93 — Cost Classification Cost classification explorer — Four-component cost breakdown for 41 sports: equipment, coaching, facility, competition (v093_cost_classification_visualization.jsx) v0.92 — Channel Separation F6 — GDP and Gini cost channels — The central finding: two independent mechanisms with near-zero cross-terms (v0_92_F6_gdp_gini_cost_channels.jsx) F7 — Robustness — Three-tab explorer: period stability, regional Galton analysis, Tobit comparison (v0_92_F7_robustness.jsx) {#v092-robustness} v0.91 — Interaction Models F3 — Sport-cost segmentation — How inequality’s effect varies across equipment-cost tiers (v_0.91_F3_sport_cost_segmentation.jsx) F4a — Cost gradient — The core gradient visualization for individual sports (v_0.91_F4a_cost_gradient.jsx) F4b — U-shape exploration — Why the U-shape appears and how team/duel/individual sports differ (v0_91_F4b_u_shape_exploration.jsx) F4d — Combined decomposition — Sport-type and cost interactions together (v0_91_F4d_combined.jsx) Galton diagnostic — Galton’s Problem visualization with regional partial correlations (v0.91 Visualization 1 Galton.jsx) v0.90 — Transition Visualization 1 — First structured chart after initial exploration (v0.90 Visualization 1.jsx) v0.8 — Early Exploration Gini vs sporting performance — The original scatter (gini_sporting.jsx) Gini vs gold ratio — The Norway question that started everything (gini_vs_gold.jsx) Galton diagnostic — First visualization of Galton’s Problem (gsn_galton.jsx) Gender and GDP — Gender equality interaction with GDP (gsn_gender_gdp.jsx) Democracy and Olympics — Regime type exploration (olympic_democracy.jsx) Regional heterogeneity — Within-region Gini patterns (olympic_heterogeneity.jsx) Communist legacy — Soviet-era effects on sport infrastructure (olympic_legacy.jsx, olympic_legacy_fading.jsx) By Chapter (Paper Structure) The final versions of key figures, organized by paper section.
-...</p>
-  </div>
-  <footer class="entry-footer"><span>2 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Visualizations" href="https://research.syvertsen.com/projects/sport-cost-gradient/viz/"></a>
 </article>
     </main>
     

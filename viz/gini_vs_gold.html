@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        import { useState, useMemo } from "react";
+
+// Medal data: Last 8 Winter Olympics (1994-2022) and Last 8 Summer Olympics (1996-2024)
+// Sources: Olympics.com, Wikipedia medal tables, World Bank Gini index (latest available)
+// Gold and Silver totals aggregated across the 8 editions
+
+const winterData = [
+  // country, gold, silver, gini (World Bank latest), iso
+  { country: "Norway", gold: 85, silver: 69, gini: 27.7 },
+  { country: "Germany", gold: 78, silver: 72, gini: 31.7 },
+  { country: "Canada", gold: 52, silver: 44, gini: 31.7 },
+  { country: "USA", gold: 49, silver: 52, gini: 39.8 },
+  { country: "Netherlands", gold: 42, silver: 36, gini: 28.5 },
+  { country: "Austria", gold: 33, silver: 38, gini: 29.3 },
+  { country: "South Korea", gold: 31, silver: 18, gini: 31.4 },
+  { country: "Sweden", gold: 29, silver: 22, gini: 30.0 },
+  { country: "Switzerland", gold: 27, silver: 22, gini: 33.1 },
+  { country: "Russia", gold: 26, silver: 28, gini: 36.0 },
+  { country: "France", gold: 24, silver: 22, gini: 31.6 },
+  { country: "China", gold: 22, silver: 20, gini: 37.1 },
+  { country: "Italy", gold: 18, silver: 16, gini: 34.8 },
+  { country: "Finland", gold: 14, silver: 14, gini: 27.4 },
+  { country: "Japan", gold: 14, silver: 11, gini: 32.9 },
+  { country: "Czech Republic", gold: 12, silver: 13, gini: 26.2 },
+  { country: "Australia", gold: 11, silver: 7, gini: 34.3 },
+  { country: "Belarus", gold: 9, silver: 7, gini: 24.4 },
+  { country: "Great Britain", gold: 6, silver: 5, gini: 35.1 },
+  { country: "Poland", gold: 4, silver: 6, gini: 30.4 },
+  { country: "Croatia", gold: 4, silver: 4, gini: 28.9 },
+  { country: "Estonia", gold: 4, silver: 2, gini: 31.8 },
+  { country: "Slovenia", gold: 3, silver: 4, gini: 24.4 },
+  { country: "Ukraine", gold: 3, silver: 1, gini: 25.6 },
+  { country: "Latvia", gold: 2, silver: 3, gini: 34.3 },
+  { country: "Spain", gold: 2, silver: 1, gini: 33.0 },
+  { country: "Uzbekistan", gold: 1, silver: 0, gini: 35.3 },
+  { country: "Kazakhstan", gold: 1, silver: 3, gini: 29.0 },
+  { country: "New Zealand", gold: 1, silver: 0, gini: 32.0 },
+];
+
+const summerData = [
+  { country: "USA", gold: 293, silver: 217, gini: 39.8 },
+  { country: "China", gold: 199, silver: 147, gini: 37.1 },
+  { country: "Great Britain", gold: 119, silver: 102, gini: 35.1 },
+  { country: "Russia", gold: 72, silver: 75, gini: 36.0 },
+  { country: "Australia", gold: 68, silver: 65, gini: 34.3 },
+  { country: "France", gold: 64, silver: 72, gini: 31.6 },
+  { country: "Germany", gold: 62, silver: 62, gini: 31.7 },
+  { country: "Japan", gold: 61, silver: 49, gini: 32.9 },
+  { country: "South Korea", gold: 55, silver: 39, gini: 31.4 },
+  { country: "Italy", gold: 42, silver: 38, gini: 34.8 },
+  { country: "Netherlands", gold: 39, silver: 30, gini: 28.5 },
+  { country: "Kenya", gold: 36, silver: 21, gini: 38.7 },
+  { country: "Cuba", gold: 33, silver: 22, gini: 38.0 },
+  { country: "Hungary", gold: 30, silver: 24, gini: 30.6 },
+  { country: "Jamaica", gold: 27, silver: 18, gini: 35.0 },
+  { country: "Romania", gold: 24, silver: 16, gini: 34.8 },
+  { country: "Brazil", gold: 23, silver: 22, gini: 52.0 },
+  { country: "Ethiopia", gold: 23, silver: 14, gini: 35.0 },
+  { country: "Spain", gold: 22, silver: 25, gini: 33.0 },
+  { country: "New Zealand", gold: 21, silver: 11, gini: 32.0 },
+  { country: "Canada", gold: 18, silver: 24, gini: 31.7 },
+  { country: "Sweden", gold: 18, silver: 16, gini: 30.0 },
+  { country: "Norway", gold: 24, silver: 14, gini: 27.7 },
+  { country: "Ukraine", gold: 18, silver: 15, gini: 25.6 },
+  { country: "Poland", gold: 16, silver: 22, gini: 30.4 },
+  { country: "Czech Republic", gold: 16, silver: 11, gini: 26.2 },
+  { country: "Croatia", gold: 15, silver: 10, gini: 28.9 },
+  { country: "Switzerland", gold: 14, silver: 13, gini: 33.1 },
+  { country: "Turkey", gold: 14, silver: 5, gini: 41.4 },
+  { country: "Denmark", gold: 13, silver: 12, gini: 28.2 },
+  { country: "Colombia", gold: 12, silver: 6, gini: 51.5 },
+  { country: "Iran", gold: 12, silver: 8, gini: 40.9 },
+  { country: "Greece", gold: 11, silver: 8, gini: 33.1 },
+  { country: "South Africa", gold: 10, silver: 8, gini: 63.0 },
+  { country: "Georgia", gold: 10, silver: 5, gini: 34.5 },
+  { country: "Belarus", gold: 10, silver: 9, gini: 24.4 },
+  { country: "Thailand", gold: 9, silver: 5, gini: 34.9 },
+  { country: "Bahrain", gold: 6, silver: 1, gini: 31.0 },
+  { country: "Serbia", gold: 6, silver: 7, gini: 33.3 },
+  { country: "North Korea", gold: 8, silver: 7, gini: 31.0 },
+  { country: "Indonesia", gold: 8, silver: 8, gini: 38.3 },
+  { country: "Finland", gold: 5, silver: 4, gini: 27.4 },
+  { country: "Slovenia", gold: 5, silver: 5, gini: 24.4 },
+  { country: "Austria", gold: 4, silver: 8, gini: 29.3 },
+  { country: "Argentina", gold: 5, silver: 6, gini: 42.3 },
+  { country: "Mexico", gold: 4, silver: 3, gini: 45.4 },
+  { country: "Uzbekistan", gold: 8, silver: 5, gini: 35.3 },
+  { country: "Kazakhstan", gold: 6, silver: 7, gini: 29.0 },
+  { country: "Azerbaijan", gold: 6, silver: 6, gini: 25.6 },
+];
+
+function computeRatio(gold, silver) {
+  if (silver === 0) return gold > 0 ? gold : null;
+  return gold / silver;
+}
+
+function combineData(winter, summer) {
+  const map = {};
+  [...winter, ...summer].forEach((d) => {
+    if (!map[d.country]) {
+      map[d.country] = { country: d.country, gold: 0, silver: 0, gini: d.gini };
+    }
+    map[d.country].gold += d.gold;
+    map[d.country].silver += d.silver;
+  });
+  return Object.values(map);
+}
+
+function prepData(data, minGold = 3) {
+  return data
+    .filter((d) => d.gold >= minGold && d.gini > 0)
+    .map((d) => ({
+      ...d,
+      ratio: computeRatio(d.gold, d.silver),
+    }))
+    .filter((d) => d.ratio !== null);
+}
+
+function linearRegression(points) {
+  const n = points.length;
+  if (n < 3) return null;
+  let sx = 0, sy = 0, sxy = 0, sxx = 0;
+  points.forEach(({ x, y }) => { sx += x; sy += y; sxy += x * y; sxx += x * x; });
+  const denom = n * sxx - sx * sx;
+  if (denom === 0) return null;
+  const slope = (n * sxy - sx * sy) / denom;
+  const intercept = (sy - slope * sx) / n;
+  const yMean = sy / n;
+  let ssRes = 0, ssTot = 0;
+  points.forEach(({ x, y }) => {
+    const pred = slope * x + intercept;
+    ssRes += (y - pred) ** 2;
+    ssTot += (y - yMean) ** 2;
+  });
+  const r2 = ssTot === 0 ? 0 : 1 - ssRes / ssTot;
+  const r = Math.sqrt(r2) * (slope >= 0 ? 1 : -1);
+  return { slope, intercept, r2, r };
+}
+
+function ScatterPlot({ data, title, color, width = 700, height = 420 }) {
+  const [hoveredIdx, setHoveredIdx] = useState(null);
+  const pad = { top: 50, right: 30, bottom: 60, left: 70 };
+  const w = width - pad.left - pad.right;
+  const h = height - pad.top - pad.bottom;
+
+  const points = data.map((d) => ({ x: d.gini, y: d.ratio, label: d.country, gold: d.gold, silver: d.silver }));
+  const xMin = Math.floor(Math.min(...points.map((p) => p.x)) - 2);
+  const xMax = Math.ceil(Math.max(...points.map((p) => p.x)) + 2);
+  const yMin = 0;
+  const yMax = Math.ceil(Math.max(...points.map((p) => p.y)) * 10) / 10 + 0.3;
+
+  const sx = (v) => pad.left + ((v - xMin) / (xMax - xMin)) * w;
+  const sy = (v) => pad.top + h - ((v - yMin) / (yMax - yMin)) * h;
+
+  const reg = linearRegression(points);
+
+  const xTicks = [];
+  for (let t = Math.ceil(xMin / 5) * 5; t <= xMax; t += 5) xTicks.push(t);
+  const yTicks = [];
+  for (let t = 0; t <= yMax; t += 0.25) yTicks.push(Math.round(t * 100) / 100);
+
+  return (
+    <svg width={width} height={height} style={{ fontFamily: "system-ui, sans-serif" }}>
+      <rect x={0} y={0} width={width} height={height} fill="#fafafa" rx={8} />
+      <text x={width / 2} y={28} textAnchor="middle" fontSize={15} fontWeight={700} fill="#1a1a2e">
+        {title}
+      </text>
+
+      {/* Grid */}
+      {xTicks.map((t) => (
+        <g key={"x" + t}>
+          <line x1={sx(t)} y1={pad.top} x2={sx(t)} y2={pad.top + h} stroke="#e0e0e0" strokeWidth={0.5} />
+          <text x={sx(t)} y={pad.top + h + 18} textAnchor="middle" fontSize={11} fill="#666">{t}</text>
+        </g>
+      ))}
+      {yTicks.map((t) => (
+        <g key={"y" + t}>
+          <line x1={pad.left} y1={sy(t)} x2={pad.left + w} y2={sy(t)} stroke="#e0e0e0" strokeWidth={0.5} />
+          <text x={pad.left - 8} y={sy(t) + 4} textAnchor="end" fontSize={11} fill="#666">{t.toFixed(2)}</text>
+        </g>
+      ))}
+
+      {/* 1.0 reference line */}
+      {yMin <= 1 && yMax >= 1 && (
+        <line x1={pad.left} y1={sy(1)} x2={pad.left + w} y2={sy(1)} stroke="#aaa" strokeWidth={1} strokeDasharray="6,3" />
+      )}
+
+      {/* Regression line */}
+      {reg && (
+        <>
+          <line
+            x1={sx(xMin)} y1={sy(reg.slope * xMin + reg.intercept)}
+            x2={sx(xMax)} y2={sy(reg.slope * xMax + reg.intercept)}
+            stroke={color} strokeWidth={2} strokeDasharray="8,4" opacity={0.7}
+          />
+          <text x={pad.left + 8} y={pad.top + 16} fontSize={11} fill={color} fontWeight={600}>
+            r = {reg.r.toFixed(3)} (R² = {reg.r2.toFixed(3)}) slope = {reg.slope.toFixed(4)}
+          </text>
+        </>
+      )}
+
+      {/* Points */}
+      {points.map((p, i) => (
+        <g key={i} onMouseEnter={() => setHoveredIdx(i)} onMouseLeave={() => setHoveredIdx(null)} style={{ cursor: "pointer" }}>
+          <circle
+            cx={sx(p.x)} cy={sy(p.y)} r={hoveredIdx === i ? 7 : 5}
+            fill={color} stroke="#fff" strokeWidth={1.5} opacity={hoveredIdx === i ? 1 : 0.75}
+          />
+          {hoveredIdx === i && (
+            <>
+              <rect
+                x={sx(p.x) + 10} y={sy(p.y) - 38} width={180} height={52}
+                fill="white" stroke="#ccc" rx={4} filter="drop-shadow(0 1px 3px rgba(0,0,0,0.15))"
+              />
+              <text x={sx(p.x) + 18} y={sy(p.y) - 20} fontSize={12} fontWeight={700} fill="#222">{p.label}</text>
+              <text x={sx(p.x) + 18} y={sy(p.y) - 5} fontSize={11} fill="#555">
+                Gini: {p.x} | G/S: {p.ratio.toFixed(2)}
+              </text>
+              <text x={sx(p.x) + 18} y={sy(p.y) + 10} fontSize={11} fill="#555">
+                Gold: {p.gold} Silver: {p.silver}
+              </text>
+            </>
+          )}
+        </g>
+      ))}
+
+      {/* Axis labels */}
+      <text x={width / 2} y={height - 8} textAnchor="middle" fontSize={12} fill="#444">Gini Coefficient (lower = more equal)</text>
+      <text x={16} y={height / 2} textAnchor="middle" fontSize={12} fill="#444" transform={`rotate(-90, 16, ${height / 2})`}>
+        Gold / Silver Ratio
+      </text>
+    </svg>
+  );
+}
+
+function App() {
+  const [minGold, setMinGold] = useState(5);
+  const [tab, setTab] = useState("winter");
+
+  const winterPrep = useMemo(() => prepData(winterData, minGold), [minGold]);
+  const summerPrep = useMemo(() => prepData(summerData, minGold), [minGold]);
+  const combinedRaw = useMemo(() => combineData(winterData, summerData), []);
+  const combinedPrep = useMemo(() => prepData(combinedRaw, minGold), [combinedRaw, minGold]);
+
+  const wReg = linearRegression(winterPrep.map((d) => ({ x: d.gini, y: d.ratio })));
+  const sReg = linearRegression(summerPrep.map((d) => ({ x: d.gini, y: d.ratio })));
+  const cReg = linearRegression(combinedPrep.map((d) => ({ x: d.gini, y: d.ratio })));
+
+  const tabs = [
+    { key: "winter", label: "Winter", color: "#2563eb" },
+    { key: "summer", label: "Summer", color: "#dc2626" },
+    { key: "combined", label: "Combined", color: "#7c3aed" },
+  ];
+
+  const current = tab === "winter" ? winterPrep : tab === "summer" ? summerPrep : combinedPrep;
+  const currentColor = tabs.find((t) => t.key === tab).color;
+  const currentTitle =
+    tab === "winter"
+      ? "Winter Olympics (1994–2022): Gold/Silver Ratio vs Gini"
+      : tab === "summer"
+      ? "Summer Olympics (1996–2024): Gold/Silver Ratio vs Gini"
+      : "Combined (Summer + Winter): Gold/Silver Ratio vs Gini";
+
+  return (
+    <div style={{ padding: 24, fontFamily: "system-ui, sans-serif", maxWidth: 760 }}>
+      <h2 style={{ marginBottom: 4, color: "#1a1a2e" }}>Does Equality Produce Winners?</h2>
+      <p style={{ color: "#555", fontSize: 14, marginBottom: 16, lineHeight: 1.5 }}>
+        Gold/Silver ratio as a proxy for "finishing power" plotted against national income inequality (Gini coefficient).
+        If egalitarian societies produce more winners, we'd expect <strong>higher ratios on the left</strong> (negative slope).
+        Dashed line = linear regression. Hover for details.
+      </p>
+
+      <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap", alignItems: "center" }}>
+        {tabs.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            style={{
+              padding: "6px 16px",
+              borderRadius: 6,
+              border: tab === t.key ? `2px solid ${t.color}` : "2px solid #ddd",
+              background: tab === t.key ? t.color : "#fff",
+              color: tab === t.key ? "#fff" : "#333",
+              fontWeight: 600,
+              cursor: "pointer",
+              fontSize: 13,
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
+        <span style={{ marginLeft: 16, fontSize: 13, color: "#666" }}>Min golds:</span>
+        <input
+          type="range" min={1} max={20} value={minGold}
+          onChange={(e) => setMinGold(Number(e.target.value))}
+          style={{ width: 100 }}
+        />
+        <span style={{ fontSize: 13, fontWeight: 600 }}>{minGold}</span>
+        <span style={{ fontSize: 12, color: "#999", marginLeft: 4 }}>({current.length} nations)</span>
+      </div>
+
+      <ScatterPlot data={current} title={currentTitle} color={currentColor} />
+
+      <div style={{ marginTop: 20, padding: 16, background: "#f8f8fc", borderRadius: 8, fontSize: 13, lineHeight: 1.6 }}>
+        <strong>Summary statistics:</strong>
+        <table style={{ marginTop: 8, borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr style={{ borderBottom: "2px solid #ddd" }}>
+              <th style={{ textAlign: "left", padding: "4px 8px" }}>Dataset</th>
+              <th style={{ textAlign: "right", padding: "4px 8px" }}>Nations</th>
+              <th style={{ textAlign: "right", padding: "4px 8px" }}>r</th>
+              <th style={{ textAlign: "right", padding: "4px 8px" }}>R²</th>
+              <th style={{ textAlign: "right", padding: "4px 8px" }}>Slope</th>
+              <th style={{ textAlign: "right", padding: "4px 8px" }}>Direction</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { name: "Winter", d: winterPrep, reg: wReg, c: "#2563eb" },
+              { name: "Summer", d: summerPrep, reg: sReg, c: "#dc2626" },
+              { name: "Combined", d: combinedPrep, reg: cReg, c: "#7c3aed" },
+            ].map((row) => (
+              <tr key={row.name} style={{ borderBottom: "1px solid #eee" }}>
+                <td style={{ padding: "4px 8px", fontWeight: 600, color: row.c }}>{row.name}</td>
+                <td style={{ textAlign: "right", padding: "4px 8px" }}>{row.d.length}</td>
+                <td style={{ textAlign: "right", padding: "4px 8px" }}>{row.reg ? row.reg.r.toFixed(3) : "—"}</td>
+                <td style={{ textAlign: "right", padding: "4px 8px" }}>{row.reg ? row.reg.r2.toFixed(3) : "—"}</td>
+                <td style={{ textAlign: "right", padding: "4px 8px" }}>{row.reg ? row.reg.slope.toFixed(4) : "—"}</td>
+                <td style={{ textAlign: "right", padding: "4px 8px" }}>
+                  {row.reg ? (row.reg.slope < 0 ? "↙ Supports hypothesis" : "↗ Against hypothesis") : "—"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ marginTop: 16, fontSize: 12, color: "#888", lineHeight: 1.5 }}>
+        <strong>Notes:</strong> Gini coefficients from World Bank (latest available, mostly 2019–2023). Medal data aggregated from Olympics.com and Wikipedia.
+        The gold/silver ratio above 1.0 means a nation converts more golds than silvers; below 1.0 means more "almost won" outcomes.
+        The slider filters out nations with fewer golds to reduce noise from small samples.
+      </div>
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>

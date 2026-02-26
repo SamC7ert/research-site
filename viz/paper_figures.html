@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaperFigures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        const { useState } = React;
+
+// v0.95 Paper Figures — Updated for continuous facility costs
+// Figures 1, 3a, 4, 5 from paper draft
+
+const F = "'IBM Plex Mono','JetBrains Mono',monospace";
+const TYPE_COLORS = { individual: "#1e293b", team: "#2563eb", duel: "#8b5cf6" };
+const TYPE_SHAPES = { individual: "circle", team: "square", duel: "diamond" };
+
+// ============================================================
+// SCATTER DATA — Per-sport Gini betas
+// ============================================================
+const FULL_ALL = [
+  {sport:"Trampoline",type:"individual",equip:200,facMax:250000,facMarg:250000,beta:-1.513,se:1.695,p:0.387,n:15},
+  {sport:"Wrestling",type:"duel",equip:250,facMax:80000,facMarg:80000,beta:0.290,se:1.108,p:0.795,n:52},
+  {sport:"Beach Volleyball",type:"team",equip:300,facMax:150000,facMarg:150000,beta:1.431,se:0.208,p:0.000,n:21},
+  {sport:"Diving",type:"individual",equip:300,facMax:20000000,facMarg:20000000,beta:-2.673,se:2.721,p:0.338,n:21},
+  {sport:"Judo",type:"duel",equip:300,facMax:80000,facMarg:80000,beta:-0.242,se:0.734,p:0.743,n:52},
+  {sport:"Volleyball",type:"team",equip:300,facMax:80000,facMarg:80000,beta:0.941,se:0.326,p:0.012,n:15},
+  {sport:"Handball",type:"team",equip:350,facMax:80000,facMarg:80000,beta:1.570,se:0.467,p:0.004,n:16},
+  {sport:"Taekwondo",type:"duel",equip:350,facMax:80000,facMarg:80000,beta:-0.001,se:0.274,p:0.996,n:46},
+  {sport:"Art. Gymnastics",type:"individual",equip:400,facMax:500000,facMarg:500000,beta:1.334,se:1.457,p:0.365,n:42},
+  {sport:"Basketball",type:"team",equip:400,facMax:100000,facMarg:100000,beta:1.267,se:1.158,p:0.287,n:20},
+  {sport:"Boxing",type:"duel",equip:400,facMax:100000,facMarg:100000,beta:0.014,se:0.747,p:0.985,n:56},
+  {sport:"Table Tennis",type:"duel",equip:400,facMax:80000,facMarg:80000,beta:-0.380,se:1.230,p:0.760,n:28},
+  {sport:"Water Polo",type:"team",equip:400,facMax:25000000,facMarg:25000000,beta:1.453,se:1.843,p:0.447,n:12},
+  {sport:"Weightlifting",type:"individual",equip:400,facMax:100000,facMarg:100000,beta:1.208,se:0.642,p:0.065,n:54},
+  {sport:"Art. Swimming",type:"team",equip:500,facMax:25000000,facMarg:25000000,beta:0.131,se:1.310,p:0.922,n:14},
+  {sport:"Badminton",type:"duel",equip:500,facMax:100000,facMarg:100000,beta:1.573,se:1.313,p:0.245,n:21},
+  {sport:"Football",type:"team",equip:600,facMax:150000,facMarg:150000,beta:0.374,se:0.403,p:0.367,n:18},
+  {sport:"Hockey",type:"team",equip:600,facMax:1100000,facMarg:1100000,beta:-0.889,se:2.299,p:0.707,n:12},
+  {sport:"Rhy. Gymnastics",type:"individual",equip:600,facMax:150000,facMarg:150000,beta:1.015,se:0.764,p:0.203,n:16},
+  {sport:"Ath. Track",type:"individual",equip:650,facMax:1500000,facMarg:1500000,beta:-1.749,se:0.982,p:0.081,n:51},
+  {sport:"Fencing",type:"duel",equip:700,facMax:150000,facMarg:150000,beta:0.652,se:1.274,p:0.613,n:30},
+  {sport:"Ath. Field",type:"individual",equip:800,facMax:800000,facMarg:800000,beta:0.055,se:0.616,p:0.929,n:53},
+  {sport:"Canoe Sprint",type:"individual",equip:800,facMax:2000000,facMarg:2000000,beta:-0.629,se:0.854,p:0.466,n:40},
+  {sport:"Mar. Swimming",type:"individual",equip:800,facMax:25000000,facMarg:50000,beta:-0.096,se:1.202,p:0.937,n:17},
+  {sport:"Swimming",type:"individual",equip:800,facMax:25000000,facMarg:25000000,beta:-1.648,se:1.414,p:0.250,n:43},
+  {sport:"Golf",type:"individual",equip:1000,facMax:2700000,facMarg:2700000,beta:0.006,se:0.300,p:0.983,n:20},
+  {sport:"Mod. Pentathlon",type:"individual",equip:1000,facMax:25000000,facMarg:800000,beta:0.558,se:0.442,p:0.220,n:23},
+  {sport:"Rowing",type:"individual",equip:1000,facMax:3000000,facMarg:3000000,beta:-0.187,se:0.832,p:0.824,n:39},
+  {sport:"Tennis",type:"duel",equip:1000,facMax:2000000,facMarg:2000000,beta:0.415,se:0.327,p:0.212,n:41},
+  {sport:"Archery",type:"individual",equip:1200,facMax:200000,facMarg:200000,beta:-1.760,se:1.245,p:0.172,n:22},
+  {sport:"Canoe Slalom",type:"individual",equip:1200,facMax:20000000,facMarg:20000000,beta:-4.797,se:1.089,p:0.000,n:21},
+  {sport:"Shooting",type:"individual",equip:1800,facMax:4000000,facMarg:4000000,beta:0.715,se:0.743,p:0.341,n:52},
+  {sport:"BMX Racing",type:"individual",equip:2000,facMax:800000,facMarg:800000,beta:0.913,se:1.008,p:0.380,n:16},
+  {sport:"Equestrian",type:"individual",equip:2000,facMax:3000000,facMarg:3000000,beta:0.873,se:1.020,p:0.403,n:20},
+  {sport:"Track Cycling",type:"individual",equip:2000,facMax:15000000,facMarg:15000000,beta:-0.844,se:1.396,p:0.550,n:32},
+  {sport:"Mtn Biking",type:"individual",equip:3500,facMax:100000,facMarg:100000,beta:1.022,se:1.716,p:0.558,n:22},
+  {sport:"Triathlon",type:"individual",equip:3500,facMax:25000000,facMarg:500000,beta:1.650,se:1.049,p:0.132,n:21},
+  {sport:"Road Cycling",type:"individual",equip:4000,facMax:50000,facMarg:50000,beta:-0.054,se:0.410,p:0.896,n:28},
+  {sport:"Sailing",type:"individual",equip:4000,facMax:2500000,facMarg:2500000,beta:-0.554,se:0.732,p:0.455,n:33},
+];
+
+const UPPER_IND = [
+  {sport:"Trampoline",type:"individual",equip:200,beta:-2.953,se:3.267,p:0.390,n:10},
+  {sport:"Diving",type:"individual",equip:300,beta:2.168,se:1.675,p:0.217,n:15},
+  {sport:"Art. Gymnastics",type:"individual",equip:400,beta:5.495,se:2.074,p:0.015,n:23},
+  {sport:"Weightlifting",type:"individual",equip:400,beta:1.891,se:1.086,p:0.094,n:25},
+  {sport:"Rhy. Gymnastics",type:"individual",equip:600,beta:1.547,se:1.588,p:0.375,n:10},
+  {sport:"Ath. Track",type:"individual",equip:650,beta:2.682,se:2.375,p:0.268,n:30},
+  {sport:"Ath. Field",type:"individual",equip:800,beta:0.639,se:1.163,p:0.587,n:32},
+  {sport:"Canoe Sprint",type:"individual",equip:800,beta:-0.107,se:2.623,p:0.968,n:25},
+  {sport:"Mar. Swimming",type:"individual",equip:800,beta:-0.132,se:2.223,p:0.954,n:13},
+  {sport:"Swimming",type:"individual",equip:800,beta:0.810,se:3.457,p:0.817,n:30},
+  {sport:"Golf",type:"individual",equip:1000,beta:-0.112,se:2.117,p:0.959,n:15},
+  {sport:"Mod. Pentathlon",type:"individual",equip:1000,beta:-0.032,se:0.683,p:0.964,n:16},
+  {sport:"Rowing",type:"individual",equip:1000,beta:-1.047,se:1.362,p:0.449,n:29},
+  {sport:"Archery",type:"individual",equip:1200,beta:-3.653,se:6.437,p:0.581,n:13},
+  {sport:"Canoe Slalom",type:"individual",equip:1200,beta:-5.394,se:1.346,p:0.001,n:19},
+  {sport:"Shooting",type:"individual",equip:1800,beta:0.829,se:1.659,p:0.621,n:29},
+  {sport:"BMX Racing",type:"individual",equip:2000,beta:0.760,se:1.987,p:0.709,n:12},
+  {sport:"Equestrian",type:"individual",equip:2000,beta:1.106,se:1.506,p:0.473,n:18},
+  {sport:"Track Cycling",type:"individual",equip:2000,beta:0.714,se:3.315,p:0.831,n:25},
+  {sport:"Mtn Biking",type:"individual",equip:3500,beta:1.022,se:1.796,p:0.577,n:19},
+  {sport:"Triathlon",type:"individual",equip:3500,beta:1.650,se:1.103,p:0.153,n:18},
+  {sport:"Road Cycling",type:"individual",equip:4000,beta:0.057,se:0.522,p:0.913,n:24},
+  {sport:"Sailing",type:"individual",equip:4000,beta:-1.049,se:0.993,p:0.300,n:29},
+];
+
+// ============================================================
+// BUBBLE CHART DATA — Figure 1: Sport Cost Segmentation
+// ============================================================
+const BUBBLE_DATA = FULL_ALL.map(s => ({
+  ...s,
+  lnEquip: Math.log(s.equip),
+  lnFacMarg: Math.log(s.facMarg),
+  lnFacMax: Math.log(s.facMax),
+}));
+
+// ============================================================
+// SVG SCATTER COMPONENT
+// ============================================================
+const ScatterPlot = ({ data, width = 520, height = 380, title, xLabel, yLabel, showFit = false, xAccessor = "equip", yAccessor = "beta", logX = true }) => {
+  const margin = { top: 32, right: 16, bottom: 48, left: 56 };
+  const pw = width - margin.left - margin.right;
+  const ph = height - margin.top - margin.bottom;
+
+  const xVals = data.map(d => logX ? Math.log(d[xAccessor]) : d[xAccessor]);
+  const yVals = data.map(d => d[yAccessor]);
+  const xMin = Math.min(...xVals) - 0.3;
+  const xMax = Math.max(...xVals) + 0.3;
+  const yAbs = Math.max(Math.abs(Math.min(...yVals)), Math.abs(Math.max(...yVals)));
+  const yMin = -yAbs * 1.2;
+  const yMax = yAbs * 1.2;
+
+  const sx = (v) => margin.left + ((v - xMin) / (xMax - xMin)) * pw;
+  const sy = (v) => margin.top + ph - ((v - yMin) / (yMax - yMin)) * ph;
+
+  // WLS fit line (individual sports only)
+  let fitLine = null;
+  if (showFit) {
+    const ind = data.filter(d => d.type === "individual");
+    const xs = ind.map(d => logX ? Math.log(d[xAccessor]) : d[xAccessor]);
+    const ys = ind.map(d => d[yAccessor]);
+    const ws = ind.map(d => d.n || 1);
+    const wSum = ws.reduce((a, b) => a + b, 0);
+    const xMean = xs.reduce((s, x, i) => s + x * ws[i], 0) / wSum;
+    const yMean = ys.reduce((s, y, i) => s + y * ws[i], 0) / wSum;
+    const num = xs.reduce((s, x, i) => s + ws[i] * (x - xMean) * (ys[i] - yMean), 0);
+    const den = xs.reduce((s, x, i) => s + ws[i] * (x - xMean) ** 2, 0);
+    const slope = num / den;
+    const intercept = yMean - slope * xMean;
+    fitLine = { slope, intercept };
+  }
+
+  // X-axis tick labels
+  const xTicks = logX
+    ? [200, 500, 1000, 2000, 4000].map(v => ({ val: Math.log(v), label: `€${v >= 1000 ? (v/1000) + "K" : v}` }))
+    : [];
+
+  return (
+    <svg width={width} height={height} style={{ display: "block" }}>
+      <rect width={width} height={height} fill="#fafafa" rx={4} />
+
+      {/* Title */}
+      <text x={width / 2} y={18} textAnchor="middle" style={{ fontFamily: F, fontSize: 12, fontWeight: 700, fill: "#1e293b" }}>{title}</text>
+
+      {/* Zero line */}
+      <line x1={margin.left} x2={width - margin.right} y1={sy(0)} y2={sy(0)} stroke="#94a3b8" strokeWidth={1} strokeDasharray="4,3" />
+
+      {/* Grid */}
+      {[-4, -2, 2, 4].filter(v => v > yMin && v < yMax).map(v => (
+        <g key={v}>
+          <line x1={margin.left} x2={width - margin.right} y1={sy(v)} y2={sy(v)} stroke="#e2e8f0" strokeWidth={0.5} />
+          <text x={margin.left - 4} y={sy(v) + 3} textAnchor="end" style={{ fontFamily: F, fontSize: 9, fill: "#94a3b8" }}>{v > 0 ? "+" : ""}{v}</text>
+        </g>
+      ))}
+
+      {/* X ticks */}
+      {xTicks.filter(t => t.val > xMin && t.val < xMax).map(t => (
+        <g key={t.label}>
+          <line x1={sx(t.val)} x2={sx(t.val)} y1={margin.top} y2={height - margin.bottom} stroke="#f1f5f9" strokeWidth={0.5} />
+          <text x={sx(t.val)} y={height - margin.bottom + 14} textAnchor="middle" style={{ fontFamily: F, fontSize: 9, fill: "#64748b" }}>{t.label}</text>
+        </g>
+      ))}
+
+      {/* Fit line */}
+      {fitLine && (
+        <line
+          x1={sx(xMin)} y1={sy(fitLine.intercept + fitLine.slope * xMin)}
+          x2={sx(xMax)} y2={sy(fitLine.intercept + fitLine.slope * xMax)}
+          stroke="#dc2626" strokeWidth={1.5} strokeDasharray="6,3" opacity={0.6}
+        />
+      )}
+
+      {/* Points */}
+      {data.map((d, i) => {
+        const x = sx(logX ? Math.log(d[xAccessor]) : d[xAccessor]);
+        const y = sy(d[yAccessor]);
+        const r = d.type === "individual" ? 4.5 : 3.5;
+        const color = TYPE_COLORS[d.type];
+        const opacity = d.p < 0.1 ? 1 : 0.45;
+
+        if (d.type === "team") {
+          return <rect key={i} x={x - r} y={y - r} width={r * 2} height={r * 2} fill={color} opacity={opacity} stroke="#fff" strokeWidth={0.5} />;
+        }
+        if (d.type === "duel") {
+          const pts = `${x},${y - r - 1} ${x + r + 1},${y} ${x},${y + r + 1} ${x - r - 1},${y}`;
+          return <polygon key={i} points={pts} fill={color} opacity={opacity} stroke="#fff" strokeWidth={0.5} />;
+        }
+        return <circle key={i} cx={x} cy={y} r={r} fill={color} opacity={opacity} stroke="#fff" strokeWidth={0.5} />;
+      })}
+
+      {/* Sport labels for extreme points */}
+      {data.filter(d => Math.abs(d.beta) > 3 || d.p < 0.02).map((d, i) => {
+        const x = sx(logX ? Math.log(d[xAccessor]) : d[xAccessor]);
+        const y = sy(d.beta);
+        return (
+          <text key={`label-${i}`} x={x + 6} y={y - 6} style={{ fontFamily: F, fontSize: 8, fill: "#475569" }}>
+            {d.sport}
+          </text>
+        );
+      })}
+
+      {/* Axes labels */}
+      <text x={width / 2} y={height - 4} textAnchor="middle" style={{ fontFamily: F, fontSize: 10, fill: "#64748b" }}>{xLabel}</text>
+      <text x={14} y={height / 2} textAnchor="middle" transform={`rotate(-90, 14, ${height / 2})`} style={{ fontFamily: F, fontSize: 10, fill: "#64748b" }}>{yLabel}</text>
+    </svg>
+  );
+};
+
+// ============================================================
+// BUBBLE CHART — Figure 1
+// ============================================================
+const BubbleChart = ({ facSpec = "facMarg", width = 560, height = 420 }) => {
+  const margin = { top: 32, right: 20, bottom: 52, left: 60 };
+  const pw = width - margin.left - margin.right;
+  const ph = height - margin.top - margin.bottom;
+
+  const facKey = facSpec === "facMarg" ? "lnFacMarg" : "lnFacMax";
+  const xVals = BUBBLE_DATA.map(d => d[facKey]);
+  const yVals = BUBBLE_DATA.map(d => d.lnEquip);
+  const xMin = Math.min(...xVals) - 0.5;
+  const xMax = Math.max(...xVals) + 0.5;
+  const yMin = Math.min(...yVals) - 0.3;
+  const yMax = Math.max(...yVals) + 0.3;
+
+  const sx = (v) => margin.left + ((v - xMin) / (xMax - xMin)) * pw;
+  const sy = (v) => margin.top + ph - ((v - yMin) / (yMax - yMin)) * ph;
+
+  const facTicks = [50000, 500000, 2000000, 10000000, 25000000];
+  const equipTicks = [200, 500, 1000, 2000, 4000];
+  const fmt = (v) => v >= 1e6 ? `€${(v / 1e6).toFixed(0)}M` : v >= 1e3 ? `€${(v / 1e3).toFixed(0)}K` : `€${v}`;
+
+  return (
+    <svg width={width} height={height} style={{ display: "block" }}>
+      <rect width={width} height={height} fill="#fafafa" rx={4} />
+      <text x={width / 2} y={18} textAnchor="middle" style={{ fontFamily: F, fontSize: 12, fontWeight: 700, fill: "#1e293b" }}>
+        Figure 1: Sport Cost Segmentation ({facSpec === "facMarg" ? "Marginal" : "Max-component"})
+      </text>
+
+      {/* Grid */}
+      {facTicks.map(v => {
+        const x = sx(Math.log(v));
+        if (x < margin.left || x > width - margin.right) return null;
+        return (
+          <g key={v}>
+            <line x1={x} x2={x} y1={margin.top} y2={height - margin.bottom} stroke="#e2e8f0" strokeWidth={0.5} />
+            <text x={x} y={height - margin.bottom + 14} textAnchor="middle" style={{ fontFamily: F, fontSize: 8, fill: "#64748b" }}>{fmt(v)}</text>
+          </g>
+        );
+      })}
+      {equipTicks.map(v => {
+        const y = sy(Math.log(v));
+        if (y < margin.top || y > height - margin.bottom) return null;
+        return (
+          <g key={v}>
+            <line x1={margin.left} x2={width - margin.right} y1={y} y2={y} stroke="#e2e8f0" strokeWidth={0.5} />
+            <text x={margin.left - 4} y={y + 3} textAnchor="end" style={{ fontFamily: F, fontSize: 8, fill: "#64748b" }}>{fmt(v)}</text>
+          </g>
+        );
+      })}
+
+      {/* Bubbles */}
+      {BUBBLE_DATA.map((d, i) => {
+        const x = sx(d[facKey]);
+        const y = sy(d.lnEquip);
+        const r = Math.max(3, Math.sqrt(d.n) * 1.2);
+        const color = TYPE_COLORS[d.type];
+
+        return (
+          <g key={i}>
+            <circle cx={x} cy={y} r={r} fill={color} opacity={0.5} stroke={color} strokeWidth={0.8} />
+            {r > 4 && <text x={x + r + 2} y={y + 3} style={{ fontFamily: F, fontSize: 7, fill: "#475569" }}>{d.sport}</text>}
+          </g>
+        );
+      })}
+
+      {/* Labels */}
+      <text x={width / 2} y={height - 4} textAnchor="middle" style={{ fontFamily: F, fontSize: 10, fill: "#64748b" }}>
+        Training facility cost (€, log scale) — {facSpec === "facMarg" ? "marginal" : "max-component"}
+      </text>
+      <text x={14} y={height / 2} textAnchor="middle" transform={`rotate(-90, 14, ${height / 2})`} style={{ fontFamily: F, fontSize: 10, fill: "#64748b" }}>
+        Equipment cost (€/yr, log scale)
+      </text>
+
+      {/* Legend */}
+      {[["Individual", "#1e293b"], ["Team", "#2563eb"], ["Duel", "#8b5cf6"]].map(([label, color], i) => (
+        <g key={label} transform={`translate(${margin.left + 8 + i * 80}, ${margin.top + 8})`}>
+          <circle cx={0} cy={0} r={4} fill={color} opacity={0.6} />
+          <text x={8} y={3} style={{ fontFamily: F, fontSize: 9, fill: "#475569" }}>{label}</text>
+        </g>
+      ))}
+    </svg>
+  );
+};
+
+// ============================================================
+// MAIN COMPONENT
+// ============================================================
+function PaperFigures() {
+  const [facSpec, setFacSpec] = useState("facMarg");
+  const [activeTab, setActiveTab] = useState("scatter");
+
+  const tabs = [
+    { id: "scatter", label: "Fig 4+5: Scatter" },
+    { id: "bubble", label: "Fig 1: Segmentation" },
+    { id: "compare", label: "Spec Comparison" },
+  ];
+
+  return (
+    <div style={{ fontFamily: "system-ui, sans-serif", maxWidth: 600, margin: "0 auto", padding: 12 }}>
+      <div style={{ fontFamily: F, fontSize: 14, fontWeight: 700, marginBottom: 8 }}>v0.95 Paper Figures</div>
+
+      {/* Tabs */}
+      <div style={{ display: "flex", gap: 4, marginBottom: 12 }}>
+        {tabs.map(t => (
+          <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
+            padding: "4px 10px", borderRadius: 4, border: activeTab === t.id ? "2px solid #2563eb" : "1px solid #cbd5e1",
+            background: activeTab === t.id ? "#eff6ff" : "#fff", fontFamily: F, fontSize: 10, cursor: "pointer",
+            fontWeight: activeTab === t.id ? 700 : 400, color: activeTab === t.id ? "#1d4ed8" : "#64748b",
+          }}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === "scatter" && (
+        <div>
+          <ScatterPlot
+            data={FULL_ALL}
+            title="Figure 4: Per-Sport Gini β — All 41 Sports (Full sample)"
+            xLabel="Equipment cost (€/yr, log scale)"
+            yLabel="Gini β (scoring-only OLS)"
+            showFit
+          />
+          <div style={{ height: 16 }} />
+          <ScatterPlot
+            data={UPPER_IND}
+            title="Figure 5: Per-Sport Gini β — Individual Sports (Upper GDP half)"
+            xLabel="Equipment cost (€/yr, log scale)"
+            yLabel="Gini β (scoring-only OLS)"
+            showFit
+          />
+          <div style={{ fontSize: 10, color: "#64748b", fontFamily: F, marginTop: 8, lineHeight: 1.5 }}>
+            Circles = individual, squares = team, diamonds = duel. Solid = p{"<"}0.10. WLS fit through individual sports (dashed red). Sport labels shown for |β|{">"}3 or p{"<"}0.02.
+          </div>
+        </div>
+      )}
+
+      {activeTab === "bubble" && (
+        <div>
+          <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
+            {[["facMarg", "Marginal"], ["facMax", "Max-component"]].map(([k, l]) => (
+              <button key={k} onClick={() => setFacSpec(k)} style={{
+                padding: "3px 8px", borderRadius: 3, border: facSpec === k ? "2px solid #2563eb" : "1px solid #cbd5e1",
+                background: facSpec === k ? "#eff6ff" : "#fff", fontFamily: F, fontSize: 10, cursor: "pointer",
+                fontWeight: facSpec === k ? 700 : 400,
+              }}>
+                {l}
+              </button>
+            ))}
+          </div>
+          <BubbleChart facSpec={facSpec} />
+          <div style={{ fontSize: 10, color: "#64748b", fontFamily: F, marginTop: 8, lineHeight: 1.5 }}>
+            Bubble size ∝ √(scoring countries). Toggle marginal/max-component to see reclassification of Marathon Swimming, Triathlon, Modern Pentathlon.
+          </div>
+        </div>
+      )}
+
+      {activeTab === "compare" && (
+        <div>
+          <div style={{ fontSize: 11, fontFamily: F, color: "#475569", marginBottom: 12, lineHeight: 1.5, background: "#f8fafc", padding: 10, borderRadius: 4 }}>
+            <strong>Key difference:</strong> Under marginal pricing, Marathon Swimming (€50K), Triathlon (€500K), and Modern Pentathlon (€800K) cluster at the bottom-left of the facility axis. Under max-component, all three shift to €25M (pool cost). This affects 6 of 41 sports.
+          </div>
+          <table style={{ borderCollapse: "collapse", width: "100%", fontSize: 11, fontFamily: F }}>
+            <thead>
+              <tr style={{ background: "#f1f5f9", borderBottom: "2px solid #cbd5e1" }}>
+                <td style={{ padding: "4px 6px", fontWeight: 700 }}>Sport</td>
+                <td style={{ padding: "4px 6px", fontWeight: 700, textAlign: "right" }}>Marginal</td>
+                <td style={{ padding: "4px 6px", fontWeight: 700, textAlign: "right" }}>Max-comp</td>
+                <td style={{ padding: "4px 6px", fontWeight: 700, textAlign: "center" }}>Change</td>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { sport: "Marathon Swimming", marg: 50000, max: 25000000 },
+                { sport: "Triathlon", marg: 500000, max: 25000000 },
+                { sport: "Modern Pentathlon", marg: 800000, max: 25000000 },
+                { sport: "Swimming", marg: 25000000, max: 25000000 },
+                { sport: "Water Polo", marg: 25000000, max: 25000000 },
+                { sport: "Artistic Swimming", marg: 25000000, max: 25000000 },
+              ].map(r => {
+                const changed = r.marg !== r.max;
+                const fmt = (v) => v >= 1e6 ? `€${(v / 1e6).toFixed(0)}M` : v >= 1e3 ? `€${(v / 1e3).toFixed(0)}K` : `€${v}`;
+                return (
+                  <tr key={r.sport} style={{ borderBottom: "1px solid #e2e8f0", background: changed ? "#fffbeb" : "transparent" }}>
+                    <td style={{ padding: "4px 6px" }}>{r.sport}</td>
+                    <td style={{ padding: "4px 6px", textAlign: "right" }}>{fmt(r.marg)}</td>
+                    <td style={{ padding: "4px 6px", textAlign: "right" }}>{fmt(r.max)}</td>
+                    <td style={{ padding: "4px 6px", textAlign: "center", color: changed ? "#dc2626" : "#94a3b8" }}>
+                      {changed ? "→ pool cost" : "—"}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(PaperFigures));
+    </script>
+</body>
+</html>

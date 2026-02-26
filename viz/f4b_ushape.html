@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F4b</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        const { useState } = React;
+
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+
+// ── Soviet split: Q3 and Q4 separate ──
+const SOV_Q3 = {
+  all:    {label:"Q3 all (17)",        t1:0.666,t2:-0.160,t3:+0.204,color:"#e67e22",dash:""},
+  nonSov: {label:"Q3 non-Soviet (5)",  t1:0.112,t2:-0.419,t3:-1.412,color:"#e67e22",dash:"4,2"},
+  soviet: {label:"Q3 Soviet (12)",     t1:0.423,t2:-0.591,t3:-0.273,color:"#9b59b6",dash:""},
+};
+const SOV_Q4 = {
+  all:    {label:"Q4 all (20)",        t1:0.906,t2:-1.395,t3:-0.422,color:"#2c3e50",dash:""},
+  // Q4 has 0 Soviet countries, so all = non-Soviet
+};
+
+// ── Sport Type splits: Q3 and Q4 separate ──
+const TYPE_Q3 = {
+  all:       {label:"Q3 full (41 sports)",        t1:0.666,  t2:-0.160, t3:+0.204, n:17},
+  non_team:  {label:"Q3 non-team (31)",           t1:1.094,  t2:-0.138, t3:+0.226, n:17},
+  team_only: {label:"Q3 team only (10)",          t1:0.029,  t2:null,   t3:null,   n:17},
+  non_duel:  {label:"Q3 non-duel (33)",           t1:0.571,  t2:-0.506, t3:+0.175, n:17},
+  duel_only: {label:"Q3 duel only (8)",           t1:1.041,  t2:+0.768, t3:+0.273, n:17},
+  indiv:     {label:"Q3 indiv. non-duel (23)",    t1:1.153,  t2:-0.493, t3:+0.188, n:17},
+};
+const TYPE_Q4 = {
+  all:       {label:"Q4 full (41 sports)",        t1:0.906,  t2:-1.395, t3:-0.422, n:20},
+  non_team:  {label:"Q4 non-team (31)",           t1:2.411,  t2:-1.936, t3:-0.963, n:20},
+  team_only: {label:"Q4 team only (10)",          t1:-0.282, t2:null,   t3:null,   n:20},
+  non_duel:  {label:"Q4 non-duel (33)",           t1:1.403,  t2:-1.526, t3:-0.257, n:20},
+  duel_only: {label:"Q4 duel only (8)",           t1:-1.040, t2:-1.349, t3:-1.052, n:20},
+  indiv:     {label:"Q4 indiv. non-duel (23)",    t1:4.292,  t2:-2.180, t3:-0.911, n:20},
+};
+
+// Q3 sport type Soviet splits (Q4 has no Soviet countries)
+const TYPE_Q3_SOV = {
+  non_team:  {sov:{t1:0.918,t2:-0.781,t3:-0.464,n:12}, non:{t1:0.077,t2:-0.323,t3:-1.316,n:5}},
+  non_duel:  {sov:{t1:0.492,t2:-0.884,t3:-0.105,n:12}, non:{t1:0.168,t2:-0.676,t3:-1.308,n:5}},
+  indiv:     {sov:{t1:1.265,t2:-1.067,t3:-0.289,n:12}, non:{t1:0.045,t2:-0.475,t3:-1.107,n:5}},
+};
+
+// ── Country data by shape (sov = soviet-legacy flag) ──
+const U_COUNTRIES = [
+  {c:"Norway",gdp:42.7,cu:-0.270,g:28,pts:313,sov:false},
+  {c:"USA",gdp:41.7,cu:-0.409,g:40,pts:4603,sov:false},
+  {c:"Switzerland",gdp:40.2,cu:-0.361,g:32,pts:399,sov:false},
+  {c:"Ireland",gdp:38.7,cu:-0.442,g:32,pts:143,sov:false},
+  {c:"Netherlands",gdp:36.0,cu:-0.422,g:28,pts:1199,sov:false},
+  {c:"Canada",gdp:33.9,cu:-0.349,g:34,pts:1011,sov:false},
+  {c:"Sweden",gdp:33.8,cu:-0.390,g:24,pts:489,sov:false},
+  {c:"Austria",gdp:33.5,cu:-0.364,g:30,pts:187,sov:false},
+  {c:"Denmark",gdp:33.0,cu:-0.155,g:25,pts:447,sov:false},
+  {c:"Belgium",gdp:32.1,cu:-0.456,g:31,pts:305,sov:false},
+  {c:"GBR",gdp:32.1,cu:-0.382,g:36,pts:2325,sov:false},
+  {c:"Australia",gdp:31.8,cu:-0.372,g:33,pts:1991,sov:false},
+  {c:"Germany",gdp:31.8,cu:-0.200,g:30,pts:2187,sov:false},
+  {c:"Finland",gdp:31.2,cu:-0.500,g:28,pts:115,sov:false},
+  {c:"Italy",gdp:29.6,cu:-0.166,g:34,pts:1597,sov:false},
+  {c:"France",gdp:28.9,cu:-0.183,g:31,pts:1916,sov:false},
+  {c:"Spain",gdp:26.2,cu:-0.249,g:33,pts:907,sov:false},
+  {c:"Israel",gdp:26.1,cu:-0.402,g:38,pts:122,sov:false},
+  {c:"New Zealand",gdp:25.1,cu:-0.237,g:34,pts:621,sov:false},
+  {c:"Greece",gdp:24.8,cu:-0.488,g:34,pts:351,sov:false},
+  {c:"Slovenia",gdp:22.6,cu:-0.349,g:23,pts:178,sov:true},
+  {c:"Portugal",gdp:21.5,cu:-0.284,g:39,pts:132,sov:false},
+  {c:"Czech Rep.",gdp:21.0,cu:-0.103,g:28,pts:423,sov:true},
+  {c:"Estonia",gdp:14.5,cu:-0.230,g:34,pts:89,sov:true},
+  {c:"Iran",gdp:14.4,cu:-0.468,g:44,pts:324,sov:false},
+  {c:"Croatia",gdp:14.1,cu:-0.500,g:30,pts:268,sov:true},
+  {c:"Poland",gdp:13.4,cu:-0.188,g:35,pts:673,sov:true},
+  {c:"Lithuania",gdp:12.6,cu:-0.426,g:35,pts:161,sov:true},
+  {c:"Argentina",gdp:12.1,cu:-0.427,g:49,pts:175,sov:false},
+  {c:"Kazakhstan",gdp:11.8,cu:-0.477,g:32,pts:397,sov:true},
+  {c:"Chile",gdp:11.6,cu:-0.468,g:52,pts:48,sov:false},
+  {c:"Brazil",gdp:10.5,cu:-0.424,g:57,pts:688,sov:false},
+  {c:"Russia",gdp:10.2,cu:-0.336,g:40,pts:2679,sov:true},
+  {c:"South Africa",gdp:9.7,cu:-0.474,g:65,pts:270,sov:false},
+  {c:"Bulgaria",gdp:8.9,cu:-0.414,g:29,pts:306,sov:true},
+  {c:"Romania",gdp:8.7,cu:-0.282,g:31,pts:547,sov:true},
+  {c:"Belarus",gdp:8.5,cu:-0.289,g:29,pts:551,sov:true},
+  {c:"Serbia",gdp:8.4,cu:-0.441,g:33,pts:178,sov:true},
+  {c:"Ecuador",gdp:7.0,cu:-0.458,g:54,pts:71,sov:false},
+  {c:"Ukraine",gdp:6.7,cu:-0.261,g:28,pts:905,sov:true},
+  {c:"Azerbaijan",gdp:5.2,cu:-0.437,g:27,pts:287,sov:true},
+  {c:"Morocco",gdp:5.0,cu:-0.500,g:41,pts:94,sov:false},
+  {c:"Mongolia",gdp:4.9,cu:-0.500,g:33,pts:106,sov:true},
+  {c:"China",gdp:4.5,cu:-0.285,g:41,pts:3441,sov:false},
+  {c:"Armenia",gdp:4.4,cu:-0.500,g:38,pts:120,sov:true},
+  {c:"India",gdp:2.7,cu:-0.230,g:28,pts:189,sov:false},
+  {c:"N. Korea",gdp:1.8,cu:-0.457,g:31,pts:208,sov:true},
+  {c:"Slovakia",gdp:15.2,cu:0.404,g:26,pts:211,sov:true},
+  {c:"Indonesia",gdp:5.7,cu:0.275,g:34,pts:168,sov:false},
+];
+
+const MONO_COUNTRIES = [
+  {c:"Bahrain",gdp:46.3,sl:-0.500,g:31,pts:51,sov:false},
+  {c:"Japan",gdp:30.8,sl:-0.402,g:35,pts:1575,sov:false},
+  {c:"Taiwan",gdp:28.6,sl:-0.327,g:33,pts:240,sov:false},
+  {c:"S. Korea",gdp:24.7,sl:-0.199,g:32,pts:1210,sov:false},
+  {c:"Hungary",gdp:16.3,sl:-0.185,g:30,pts:838,sov:true},
+  {c:"Venezuela",gdp:14.8,sl:-0.406,g:45,pts:76,sov:false},
+  {c:"Mexico",gdp:12.7,sl:-0.354,g:50,pts:294,sov:false},
+  {c:"Latvia",gdp:11.3,sl:-0.328,g:36,pts:102,sov:true},
+  {c:"Turkey",gdp:10.8,sl:-0.439,g:39,pts:297,sov:false},
+  {c:"Thailand",gdp:9.5,sl:-0.434,g:42,pts:216,sov:false},
+  {c:"Colombia",gdp:7.9,sl:-0.331,g:55,pts:227,sov:false},
+  {c:"Jamaica",gdp:7.9,sl:-0.500,g:46,pts:385,sov:false},
+  {c:"Tunisia",gdp:7.7,sl:-0.420,g:38,pts:85,sov:false},
+  {c:"Dominican Rep.",gdp:7.4,sl:-0.500,g:52,pts:84,sov:false},
+  {c:"Cuba",gdp:7.0,sl:-0.441,g:38,pts:799,sov:true},
+  {c:"Egypt",gdp:6.2,sl:-0.318,g:32,pts:134,sov:false},
+  {c:"Georgia",gdp:4.6,sl:-0.471,g:36,pts:262,sov:true},
+  {c:"Moldova",gdp:4.4,sl:-0.313,g:36,pts:48,sov:true},
+  {c:"Uzbekistan",gdp:3.3,sl:-0.474,g:35,pts:290,sov:true},
+  {c:"Kyrgyzstan",gdp:2.3,sl:-0.500,g:30,pts:67,sov:true},
+  {c:"Kenya",gdp:2.1,sl:-0.500,g:46,pts:488,sov:false},
+  {c:"Ethiopia",gdp:0.6,sl:-0.500,g:30,pts:336,sov:true},
+];
+
+// ── Helpers ──
+function Toggle({label,on,setOn}){
+  return <div onClick={()=>setOn(!on)} style={{display:"inline-flex",alignItems:"center",gap:5,cursor:"pointer",fontSize:10,color:"#666",userSelect:"none"}}>
+    <span style={{width:28,height:15,borderRadius:8,background:on?"#1a1a2e":"#ccc",display:"inline-block",position:"relative",transition:"background 0.2s"}}>
+      <span style={{position:"absolute",top:2,left:on?15:2,width:11,height:11,borderRadius:6,background:"#fff",transition:"left 0.2s"}}/>
+    </span>{label}
+  </div>;
+}
+
+// ── Line chart (shared by Soviet & Sport Type tabs) ──
+function LineChart({lines, width}){
+  const W=width||520,H=290;
+  const pad={top:18,right:140,bottom:50,left:70};
+  const w=W-pad.left-pad.right,h=H-pad.top-pad.bottom;
+  const sx=i=>pad.left+(i/2)*w;
+
+  const allB=lines.flatMap(l=>[l.t1,l.t2,l.t3].filter(v=>v!=null));
+  const yMin=Math.min(...allB,-0.2)*1.15,yMax=Math.max(...allB,0.2)*1.15;
+  const sy=v=>pad.top+h-((v-yMin)/(yMax-yMin))*h;
+  const yStep=yMax-yMin>2?0.5:yMax-yMin>1?0.5:0.2;
+  const yTicks=[];
+  for(let v=Math.ceil(yMin/yStep)*yStep;v<=yMax;v+=yStep)yTicks.push(Math.round(v*100)/100);
+
+  return <svg width={W} height={H} style={{fontFamily:font}}>
+    <line x1={pad.left} y1={sy(0)} x2={pad.left+w} y2={sy(0)} stroke="#ddd" strokeWidth={1}/>
+    <line x1={pad.left} y1={pad.top} x2={pad.left} y2={pad.top+h} stroke="#333" strokeWidth={1}/>
+    {yTicks.map(v=><g key={v}><line x1={pad.left-4} y1={sy(v)} x2={pad.left} y2={sy(v)} stroke="#999" strokeWidth={0.5}/><text x={pad.left-8} y={sy(v)+3.5} textAnchor="end" style={{fontSize:8.5,fill:"#888"}}>{v.toFixed(1)}</text></g>)}
+    <text x={12} y={pad.top+h/2} textAnchor="middle" style={{fontSize:10.5,fill:"#333",fontWeight:500}} transform={`rotate(-90,12,${pad.top+h/2})`}>Gini → Points (β)</text>
+    <line x1={pad.left} y1={pad.top+h} x2={pad.left+w} y2={pad.top+h} stroke="#333" strokeWidth={1}/>
+    {["Tier 1\nLow (<€3K)","Tier 2\nMed (€3–10K)","Tier 3\nHigh (>€10K)"].map((label,i)=>{const ls=label.split("\n");
+      return <g key={i}><line x1={sx(i)} y1={pad.top+h} x2={sx(i)} y2={pad.top+h+5} stroke="#333" strokeWidth={0.5}/><text x={sx(i)} y={pad.top+h+16} textAnchor="middle" style={{fontSize:9.5,fill:"#333",fontWeight:500}}>{ls[0]}</text><text x={sx(i)} y={pad.top+h+27} textAnchor="middle" style={{fontSize:8,fill:"#999"}}>{ls[1]}</text></g>;})}
+    <text x={pad.left+w/2} y={H-4} textAnchor="middle" style={{fontSize:10.5,fill:"#333",fontWeight:500}}>Equipment Cost Tier</text>
+
+    {lines.map((sl,si)=>{
+      const betas=[sl.t1,sl.t2,sl.t3].filter(v=>v!=null);
+      const tierIdxs = sl.t2!=null ? [0,1,2] : [0];
+      const pts=tierIdxs.map(i=>[sx(i),sy(betas[i])]);
+      const isRef = sl.color==="#ccc"||sl.color==="#aaa";
+
+      if(pts.length>1){
+        const pathD=pts.map((p,i)=>`${i===0?"M":"L"}${p[0]},${p[1]}`).join(" ");
+        return <g key={sl.label}>
+          <path d={pathD} fill="none" stroke={sl.color} strokeWidth={isRef?1.5:2} strokeDasharray={sl.dash||""} opacity={isRef?0.4:1}/>
+          {betas.map((b,i)=><g key={i}><circle cx={sx(tierIdxs[i])} cy={sy(b)} r={isRef?2.5:5} fill={isRef?"#ddd":sl.color} stroke="#fff" strokeWidth={isRef?0.5:1.5}/>
+            {!isRef&&<text x={sx(tierIdxs[i])+(si%2===0?-8:8)} y={sy(b)+(b>=0?-9:14)} textAnchor={si%2===0?"end":"start"}
+              style={{fontSize:8.5,fill:sl.color,fontWeight:600}}>{b>=0?"+":""}{b.toFixed(2)}</text>}
+          </g>)}
+          <text x={sx(2)+10} y={sy(betas[betas.length-1])+(si%2===0?-4:10)} textAnchor="start"
+            style={{fontSize:9,fill:sl.color,fontWeight:isRef?400:600,opacity:isRef?0.5:1}}>{sl.label}</text>
+        </g>;
+      } else {
+        return <g key={sl.label}>
+          <circle cx={sx(0)} cy={sy(betas[0])} r={isRef?2.5:5} fill={isRef?"#ddd":sl.color} stroke="#fff" strokeWidth={isRef?0.5:1.5}/>
+          <text x={sx(0)+10} y={sy(betas[0])+4} textAnchor="start"
+            style={{fontSize:9,fill:sl.color,fontWeight:isRef?400:600,opacity:isRef?0.5:1}}>{sl.label}: {betas[0]>=0?"+":""}{betas[0].toFixed(2)}</text>
+        </g>;
+      }
+    })}
+  </svg>;
+}
+
+// ── Butterfly chart with soviet-legacy toggle ──
+function ButterflyChart({showSoviet}){
+  const W=700,H=460;
+  const pad={top:42,right:16,bottom:50,left:16};
+  const centerX=W/2;
+  const halfW=(W-pad.left-pad.right)/2-30;
+  const h=H-pad.top-pad.bottom;
+  const yMin=-0.55,yMax=0.45;
+  const sy=v=>pad.top+h-((v-yMin)/(yMax-yMin))*h;
+
+  const uSorted=[...U_COUNTRIES].sort((a,b)=>b.gdp-a.gdp);
+  const mSorted=[...MONO_COUNTRIES].sort((a,b)=>b.gdp-a.gdp);
+  const uSpacing=halfW/Math.max(uSorted.length-1,1);
+  const mSpacing=halfW/Math.max(mSorted.length-1,1);
+
+  const gMin=23,gMax=65;
+  const giniColor=g=>{const t=Math.max(0,Math.min(1,(g-gMin)/(gMax-gMin)));
+    return `rgb(${Math.round(50+t*190)},${Math.round(100-t*40)},${Math.round(180-t*140)})`;};
+  const sovColor = "#9b59b6";
+  const maxPts=Math.max(...[...U_COUNTRIES,...MONO_COUNTRIES].map(c=>c.pts));
+  const radius=pts=>Math.max(3,Math.sqrt(pts/maxPts)*15);
+
+  const uLabels=new Set(["USA","GBR","China","Russia","Brazil","Australia","Germany","France","Netherlands","Sweden","New Zealand","Switzerland","South Africa","Norway","India","Slovakia","Indonesia"]);
+  const mLabels=new Set(["Japan","S. Korea","Hungary","Cuba","Kenya","Jamaica","Ethiopia","Mexico","Colombia","Turkey","Thailand"]);
+  const nSovU = U_COUNTRIES.filter(c=>c.sov).length;
+  const nSovM = MONO_COUNTRIES.filter(c=>c.sov).length;
+
+  return <svg width={W} height={H} style={{fontFamily:font}}>
+    <line x1={centerX} y1={pad.top-10} x2={centerX} y2={pad.top+h+4} stroke="#333" strokeWidth={1.5}/>
+    <text x={centerX-halfW/2} y={16} textAnchor="middle" style={{fontSize:12,fontWeight:700,fill:"#2c5aa0"}}>U-shape ({U_COUNTRIES.length})</text>
+    <text x={centerX-halfW/2} y={30} textAnchor="middle" style={{fontSize:8.5,fill:"#888"}}>{showSoviet?`${nSovU} Soviet-legacy highlighted`:"T2 dips below both T1 and T3"}</text>
+    <text x={centerX+halfW/2+30} y={16} textAnchor="middle" style={{fontSize:12,fontWeight:700,fill:"#c0392b"}}>Monotone ↘ ({MONO_COUNTRIES.length})</text>
+    <text x={centerX+halfW/2+30} y={30} textAnchor="middle" style={{fontSize:8.5,fill:"#888"}}>{showSoviet?`${nSovM} Soviet-legacy highlighted`:"T1 ≥ T2 ≥ T3 (each step down)"}</text>
+    <text x={centerX} y={H-6} textAnchor="middle" style={{fontSize:10,fill:"#333",fontWeight:600}}>← GDP/cap highest at center →</text>
+    <line x1={pad.left} y1={sy(0)} x2={W-pad.right} y2={sy(0)} stroke="#e0e0e0" strokeWidth={0.6} strokeDasharray="4,3"/>
+    {[-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4].filter(v=>v>=yMin&&v<=yMax).map(v=><g key={v}>
+      <text x={6} y={sy(v)+3.5} style={{fontSize:7.5,fill:"#aaa"}}>{v.toFixed(1)}</text>
+    </g>)}
+    <text x={4} y={sy(-0.5)-8} style={{fontSize:7,fill:"#888",fontWeight:500}}>deeper</text>
+    <text x={4} y={sy(0.4)+14} style={{fontSize:7,fill:"#888",fontWeight:500}}>inverted</text>
+
+    {uSorted.map((c,i)=>{
+      const x=centerX-10-i*uSpacing, y=sy(c.cu), r=radius(c.pts);
+      const isSov=c.sov, show=uLabels.has(c.c);
+      const fill=showSoviet&&isSov?sovColor:giniColor(c.g);
+      const op=showSoviet&&!isSov?0.25:0.6;
+      const showLabel=showSoviet?isSov:show;
+      return <g key={c.c}>
+        <circle cx={x} cy={y} r={r} fill={fill} fillOpacity={op} stroke={showSoviet&&isSov?sovColor:giniColor(c.g)} strokeWidth={showSoviet&&isSov?2:0.8}/>
+        {showLabel&&<text x={x} y={y-r-2} textAnchor="middle" style={{fontSize:6.5,fill:showSoviet?sovColor:"#333",fontWeight:500}}>{c.c}</text>}
+      </g>;
+    })}
+
+    {mSorted.map((c,i)=>{
+      const x=centerX+10+30+i*mSpacing, y=sy(c.sl), r=radius(c.pts);
+      const isSov=c.sov, show=mLabels.has(c.c);
+      const fill=showSoviet&&isSov?sovColor:giniColor(c.g);
+      const op=showSoviet&&!isSov?0.25:0.6;
+      const showLabel=showSoviet?isSov:show;
+      return <g key={c.c}>
+        <circle cx={x} cy={y} r={r} fill={fill} fillOpacity={op} stroke={showSoviet&&isSov?sovColor:giniColor(c.g)} strokeWidth={showSoviet&&isSov?2:0.8}/>
+        {showLabel&&<text x={x} y={y-r-2} textAnchor="middle" style={{fontSize:6.5,fill:showSoviet?sovColor:"#333",fontWeight:500}}>{c.c}</text>}
+      </g>;
+    })}
+
+    {[40,30,20,10,5,1].map(gdp=>{
+      const idx=uSorted.findIndex(c=>c.gdp<=gdp);
+      if(idx<0)return null;
+      const x=centerX-10-idx*uSpacing;
+      return <g key={`l${gdp}`}><line x1={x} y1={pad.top+h+4} x2={x} y2={pad.top+h+8} stroke="#bbb" strokeWidth={0.5}/><text x={x} y={pad.top+h+18} textAnchor="middle" style={{fontSize:7,fill:"#aaa"}}>${gdp}K</text></g>;
+    })}
+    {[30,20,10,5,1].map(gdp=>{
+      const idx=mSorted.findIndex(c=>c.gdp<=gdp);
+      if(idx<0)return null;
+      const x=centerX+10+30+idx*mSpacing;
+      return <g key={`r${gdp}`}><line x1={x} y1={pad.top+h+4} x2={x} y2={pad.top+h+8} stroke="#bbb" strokeWidth={0.5}/><text x={x} y={pad.top+h+18} textAnchor="middle" style={{fontSize:7,fill:"#aaa"}}>${gdp}K</text></g>;
+    })}
+
+    <text x={pad.left+8} y={pad.top+h/2} textAnchor="middle" style={{fontSize:8.5,fill:"#2c5aa0",fontWeight:500}} transform={`rotate(-90,${pad.left+8},${pad.top+h/2})`}>U-shape depth (curvature)</text>
+    <text x={W-pad.right-8} y={pad.top+h/2} textAnchor="middle" style={{fontSize:8.5,fill:"#c0392b",fontWeight:500}} transform={`rotate(-90,${W-pad.right-8},${pad.top+h/2})`}>Trend slope (T1→T3)</text>
+
+    {showSoviet ? <>
+      <circle cx={centerX-45} cy={H-32} r={6} fill={sovColor} fillOpacity={0.6} stroke={sovColor} strokeWidth={2}/>
+      <text x={centerX-35} y={H-28} style={{fontSize:8,fill:"#666"}}>Soviet-legacy</text>
+      <circle cx={centerX+30} cy={H-32} r={6} fill="#ccc" fillOpacity={0.25} stroke="#ccc" strokeWidth={0.8}/>
+      <text x={centerX+40} y={H-28} style={{fontSize:8,fill:"#666"}}>Non-Soviet</text>
+    </> : <>
+      {[25,35,45,55,65].map((g,i)=><g key={g}>
+        <rect x={centerX-50+i*22} y={H-40} width={16} height={10} rx={2} fill={giniColor(g)} fillOpacity={0.7}/>
+        <text x={centerX-42+i*22} y={H-22} textAnchor="middle" style={{fontSize:7,fill:"#888"}}>{g}</text>
+      </g>)}
+      <text x={centerX-50} y={H-12} style={{fontSize:7.5,fill:"#888"}}>Gini index (color)</text>
+    </>}
+  </svg>;
+}
+
+// ── Composition bar ──
+function CompositionBar(){
+  const tiers = [
+    {label:"Tier 1 (24)", team:10, duel:5, indiv:9},
+    {label:"Tier 2 (7)",  team:0,  duel:2, indiv:5},
+    {label:"Tier 3 (10)", team:0,  duel:1, indiv:9},
+  ];
+  const barW=140, barH=18, gap=6;
+  const colors = {team:"#c0392b", duel:"#e67e22", indiv:"#2c5aa0"};
+  return <svg width={400} height={100} style={{fontFamily:font}}>
+    {tiers.map((t,i)=>{
+      const y=10+i*(barH+gap);
+      const total=t.team+t.duel+t.indiv;
+      const wTeam=t.team/total*barW, wDuel=t.duel/total*barW, wIndiv=t.indiv/total*barW;
+      return <g key={i}>
+        <text x={0} y={y+13} style={{fontSize:9,fill:"#333",fontWeight:500}}>{t.label}</text>
+        <rect x={80} y={y} width={wTeam} height={barH} fill={colors.team} rx={1}/>
+        <rect x={80+wTeam} y={y} width={wDuel} height={barH} fill={colors.duel} rx={1}/>
+        <rect x={80+wTeam+wDuel} y={y} width={wIndiv} height={barH} fill={colors.indiv} rx={1}/>
+        <text x={80+barW+6} y={y+13} style={{fontSize:8,fill:"#888"}}>{t.team}/{t.duel}/{t.indiv}</text>
+      </g>;
+    })}
+    {[{l:"Team",c:colors.team},{l:"Duel",c:colors.duel},{l:"Individual",c:colors.indiv}].map((item,i)=><g key={i}>
+      <rect x={260+i*50} y={6} width={10} height={10} fill={item.c} rx={1}/>
+      <text x={273+i*50} y={15} style={{fontSize:8,fill:"#666"}}>{item.l}</text>
+    </g>)}
+  </svg>;
+}
+
+// ── Main ──
+function F4b(){
+  const [tab,setTab]=useState("patterns");
+  const [showSoviet,setShowSoviet]=useState(false);
+  const [decomp,setDecomp]=useState("team_vs_non");
+  const [showTypeSov,setShowTypeSov]=useState(false);
+
+  const tabs=[
+    {id:"patterns",label:"Country Patterns"},
+    {id:"soviet",label:"Soviet Split"},
+    {id:"sporttype",label:"Sport Type"},
+  ];
+
+  // Sport type lines: grey Q3/Q4 full as reference, colored decomposed subset on top
+  const typeLines = (()=>{
+    const q3Full = {label:"Q3 full (41)", t1:TYPE_Q3.all.t1, t2:TYPE_Q3.all.t2, t3:TYPE_Q3.all.t3, color:"#ccc", dash:"4,3"};
+    const q4Full = {label:"Q4 full (41)", t1:TYPE_Q4.all.t1, t2:TYPE_Q4.all.t2, t3:TYPE_Q4.all.t3, color:"#aaa", dash:"4,3"};
+
+    const q3Key = decomp==="team_vs_non"?"non_team":decomp==="duel_vs_non"?"non_duel":"indiv";
+    const q3ref = TYPE_Q3[q3Key];
+    const q4ref = TYPE_Q4[q3Key];
+
+    if(showTypeSov && TYPE_Q3_SOV[q3Key]){
+      const s = TYPE_Q3_SOV[q3Key];
+      return [q3Full, q4Full,
+        {label:`Q3 Soviet (${s.sov.n})`, t1:s.sov.t1, t2:s.sov.t2, t3:s.sov.t3, color:"#9b59b6", dash:""},
+        {label:`Q3 non-Sov (${s.non.n})`, t1:s.non.t1, t2:s.non.t2, t3:s.non.t3, color:"#e67e22", dash:"4,2"},
+        {label:q4ref.label, t1:q4ref.t1, t2:q4ref.t2, t3:q4ref.t3, color:"#2c3e50", dash:""},
+      ];
+    }
+    return [q3Full, q4Full,
+      {label:q3ref.label, t1:q3ref.t1, t2:q3ref.t2, t3:q3ref.t3, color:"#e67e22", dash:""},
+      {label:q4ref.label, t1:q4ref.t1, t2:q4ref.t2, t3:q4ref.t3, color:"#2c3e50", dash:""},
+    ];
+  })();
+
+  // Team-only lines (Q3 + Q4)
+  const teamLines = [
+    {label:TYPE_Q3.team_only.label, t1:TYPE_Q3.team_only.t1, t2:null, t3:null, color:"#e67e22", dash:""},
+    {label:TYPE_Q4.team_only.label, t1:TYPE_Q4.team_only.t1, t2:null, t3:null, color:"#2c3e50", dash:""},
+  ];
+  const duelLines = [
+    {label:TYPE_Q3.duel_only.label, t1:TYPE_Q3.duel_only.t1, t2:TYPE_Q3.duel_only.t2, t3:TYPE_Q3.duel_only.t3, color:"#e67e22", dash:""},
+    {label:TYPE_Q4.duel_only.label, t1:TYPE_Q4.duel_only.t1, t2:TYPE_Q4.duel_only.t2, t3:TYPE_Q4.duel_only.t3, color:"#2c3e50", dash:""},
+  ];
+
+  return <div style={{fontFamily:font,maxWidth:860,margin:"0 auto",padding:"18px 14px",color:"#1a1a2e",background:"#fefefe"}}>
+    <div style={{borderBottom:"2px solid #1a1a2e",paddingBottom:7,marginBottom:14}}>
+      <h2 style={{fontSize:16,margin:0,fontWeight:700,letterSpacing:"-0.3px"}}>Sport-Cost Decomposition: Exploring the U-Shape</h2>
+      <p style={{fontSize:11,color:"#666",margin:"3px 0 0",lineHeight:1.5}}>Robustness checks and decomposition. Orange = Q3 (17 countries, GDP $20–35K). Dark = Q4 (20 countries, $36–68K).</p>
+    </div>
+    <div style={{display:"flex",gap:1,marginBottom:14,flexWrap:"wrap"}}>
+      {tabs.map(t=><button key={t.id} onClick={()=>setTab(t.id)} style={{padding:"5px 12px",border:"none",borderBottom:tab===t.id?"2px solid #1a1a2e":"2px solid transparent",background:"none",color:tab===t.id?"#1a1a2e":"#999",fontSize:10.5,fontWeight:tab===t.id?600:400,cursor:"pointer",fontFamily:"inherit"}}>{t.label}</button>)}
+    </div>
+
+    {tab==="patterns"&&<div>
+      <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:8}}>
+        <p style={{fontSize:11,color:"#555",margin:0,lineHeight:1.6,flex:1}}>
+          71 countries classified by how their Olympic points distribute across equipment cost tiers.
+          Bubble size = total points. {showSoviet?"Purple = Soviet-legacy countries.":"Color = Gini index."}</p>
+        <Toggle label="Soviet-legacy" on={showSoviet} setOn={setShowSoviet}/>
+      </div>
+      <ButterflyChart showSoviet={showSoviet}/>
+      <div style={{marginTop:14,padding:"9px 12px",background:"#f8f8f5",borderLeft:"3px solid #1a1a2e",fontSize:11,lineHeight:1.6,color:"#333"}}>
+        {showSoviet ? <>
+          <strong>Soviet-legacy countries appear in both groups.</strong> 19 of 49 U-shape countries are Soviet-legacy (39%),
+          and 8 of 22 monotone countries are Soviet-legacy (36%) — similar proportions. The U-shape pattern
+          is not a Soviet artifact: it appears equally in countries with and without state sport programs.
+        </> : <>
+          <strong>The U-shape is not a composition artifact.</strong> If it were two overlapping monotone trends,
+          the left panel should be sparse. Instead, it contains 49 countries across the full
+          GDP spectrum — including every major Olympic power. The 22 monotone countries are predominantly
+          poorer (avg GDP $12K vs $20K). Only 2 countries (Slovakia, Indonesia) show inverted-U curvature (above zero).
+        </>}
+      </div>
+    </div>}
+
+    {tab==="soviet"&&<div>
+      <p style={{fontSize:11,color:"#555",margin:"0 0 4px",lineHeight:1.6}}>
+        Q3 and Q4 split by Soviet-legacy status. Q4 has zero Soviet countries — all 20 are non-Soviet.
+        Q3 has 12 Soviet-legacy and 5 non-Soviet countries.</p>
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
+        <Toggle label="Q3 Soviet split" on={showTypeSov} setOn={setShowTypeSov}/>
+      </div>
+      <LineChart lines={showTypeSov
+        ? [SOV_Q3.soviet, SOV_Q3.nonSov, SOV_Q4.all]
+        : [SOV_Q3.all, SOV_Q4.all]
+      }/>
+      <div style={{marginTop:14,padding:"9px 12px",background:"#f8f8f5",borderLeft:"3px solid #1a1a2e",fontSize:11,lineHeight:1.6,color:"#333"}}>
+        {showTypeSov ? <>
+          <strong>Q3 Soviet split.</strong> Soviet-legacy (12): clear U-shape with T2 dip at −0.59.
+          Non-Soviet Q3 (5 countries): much smaller group, shows downward gradient from +0.11 to −1.41 (monotone decline, not U-shape).
+          Q4 (dark) has no Soviet countries — its U-shape (+0.91 / −1.40 / −0.42) is entirely non-Soviet.
+        </> : <>
+          <strong>Q4 drives the depth.</strong> Q3 shows a mild U-shape (+0.67 / −0.16 / +0.20) — the trough is shallow.
+          Q4 amplifies it dramatically (+0.91 / −1.40 / −0.42). The cost mechanism requires both wealth
+          <em> and</em> inequality variation. Q4 countries have both, Q3 countries have less room for inequality to bite.
+        </>}
+      </div>
+    </div>}
+
+    {tab==="sporttype"&&<div>
+      <p style={{fontSize:11,color:"#555",margin:"0 0 10px",lineHeight:1.6}}>
+        Is the cost gradient driven by team sports (all Tier 1) or duel sports (cultural tradition)?
+        Decompose by sport type. Orange = Q3, dark = Q4.</p>
+
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12,flexWrap:"wrap"}}>
+        <span style={{fontSize:10,color:"#888"}}>Show:</span>
+        {[{id:"team_vs_non",l:"Team vs Non-team"},{id:"duel_vs_non",l:"Duel vs Non-duel"},{id:"cleanest",l:"Individual sports"}].map(o=>
+          <button key={o.id} onClick={()=>setDecomp(o.id)} style={{
+            padding:"3px 10px",border:decomp===o.id?"1.5px solid #1a1a2e":"1px solid #ccc",borderRadius:3,
+            background:decomp===o.id?"#1a1a2e":"#fff",color:decomp===o.id?"#fff":"#666",
+            fontSize:10,cursor:"pointer",fontFamily:"inherit"
+          }}>{o.l}</button>
+        )}
+        <div style={{marginLeft:8}}><Toggle label="Q3 Soviet split" on={showTypeSov} setOn={setShowTypeSov}/></div>
+      </div>
+
+      <div style={{display:"flex",gap:20,flexWrap:"wrap",alignItems:"flex-start"}}>
+        <LineChart lines={typeLines} width={540}/>
+        <div style={{minWidth:160}}>
+          <p style={{fontSize:10,fontWeight:600,color:"#333",margin:"0 0 6px"}}>Tier composition</p>
+          <CompositionBar/>
+        </div>
+      </div>
+
+      <div style={{marginTop:14,padding:"9px 12px",background:"#f8f8f5",borderLeft:"3px solid #1a1a2e",fontSize:11,lineHeight:1.6,color:"#333"}}>
+        {decomp==="team_vs_non" ? <>
+          <strong>Team sports don't drive it.</strong> All 10 team sports sit in Tier 1.
+          Non-team: Q3 = +1.09 / −0.14 / +0.23 (mild). Q4 = +2.41 / −1.94 / −0.96 (dramatic).
+          Team-only: Q3 = +0.03, Q4 = −0.28 (both near zero, T1 only).
+          The cost gradient lives entirely in non-team sports, amplified by Q4 wealth.
+          {showTypeSov && <> Q3 Soviet non-team: T1 = +0.92, T2 = −0.78. Q3 non-Soviet non-team: near zero (5 countries).</>}
+        </> : decomp==="duel_vs_non" ? <>
+          <strong>Duel sports show no cost gradient.</strong> Q3 duel: +1.04 / +0.77 / +0.27 (all positive, no dip).
+          Q4 duel: all three tiers near −1.0 (flat negative, inequality hurts uniformly). Cultural tradition dominates cost.
+          Non-duel: Q3 = +0.57 / −0.51 / +0.18 (mild U). Q4 = +1.40 / −1.53 / −0.26 (deep U).
+          {showTypeSov && <> Q3 Soviet non-duel: T1 = +0.49, T2 = −0.88. Q3 non-Soviet: weaker (5 countries).</>}
+        </> : <>
+          <strong>Cleanest test: 23 individual timed/measured sports.</strong> Balanced tier split (9/5/9). No team dynamics,
+          no cultural duel traditions. Q3 = +1.15 / −0.49 / +0.19. <strong>Q4 = +4.29 / −2.18 / −0.91</strong> —
+          by far the strongest gradient in any specification. A T1-to-T2 swing of 6.5 points in Q4.
+          This is where equipment cost operates most purely.
+          {showTypeSov && <> Q3 Soviet individual: T1 = +1.27, T2 = −1.07. Steepest Q3 gradient.</>}
+        </>}
+      </div>
+    </div>}
+  </div>;
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(F4b));
+    </script>
+</body>
+</html>

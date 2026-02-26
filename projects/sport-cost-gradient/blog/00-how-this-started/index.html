@@ -518,6 +518,160 @@ button#theme-toggle:hover {
 }
 
  
+.project-card-static {
+  cursor: default;
+}
+
+.project-card-static:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.project-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.7rem;
+}
+
+.pdf-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 0.15rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.pdf-link:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+ 
+.viz-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--gap);
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .viz-grid {
+    grid-template-columns: 1fr;
+  }
+  .viz-sidebar {
+    order: -1;
+  }
+}
+
+.viz-content .post-header {
+  margin-bottom: 1.5rem;
+}
+
+.viz-sidebar {
+  position: sticky;
+  top: 5rem;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+ 
+.viz-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.viz-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.viz-sidebar-header {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+.viz-card {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.6rem;
+  margin-bottom: 0.8rem;
+  transition: box-shadow 0.15s;
+}
+
+.viz-card:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.viz-frame-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 65%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.viz-frame-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  border: none;
+  transform: scale(0.5);
+  transform-origin: top left;
+  pointer-events: none;
+}
+
+.viz-card-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--primary);
+  margin-top: 0.4rem;
+  padding: 0 0.3rem;
+}
+
+.viz-version {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: var(--tertiary, #e5e7eb);
+  color: var(--secondary);
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.viz-fullscreen {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--secondary);
+  text-decoration: none;
+  padding: 0 0.3rem;
+  margin-top: 0.2rem;
+  transition: color 0.15s;
+}
+
+.viz-fullscreen:hover {
+  color: var(--primary);
+}
+
+ 
 .dark .project-card .status-active {
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -596,8 +750,8 @@ button#theme-toggle:hover {
   "keywords": [
     "research-journey"
   ],
-  "articleBody": "This research did not begin with a hypothesis. It began with a question about Norway.\nThe Norway puzzle (February 12) Norway wins a disproportionate number of gold medals relative to its total medal count. I wondered whether this pattern — equal countries producing winner types — held for other low-inequality nations. It would have made a nice paradox. But it didn’t hold up. The gold-to-silver ratio showed no systematic relationship with inequality.\nSo the question shifted: does income inequality predict overall Olympic performance? Using data from seven Summer Games (Sydney 2000 through Paris 2024) and a top-six scoring system, the answer appeared to be yes — more equal countries win more medals per capita, even after controlling for GDP. Income equality showed a stronger independent signal than gender equality.\nBut this result had a problem.\n[Session transcript: 01 — Equality predicts Olympic success]\nThe null that hides everything (February 12–13) After adding regional fixed effects — controls for geographic clusters like Scandinavia, East Asia, Latin America — the Gini coefficient dropped to zero. The inequality-performance correlation was a textbook case of Galton’s Problem: what looked like a causal relationship was actually regional clustering. Scandinavian countries are both equal and good at sport, but equality may not be why they’re good.\nThis should have been the end of the project. But looking more closely at the within-region patterns, something was off. In some regions, inequality correlated positively with performance. In others, negatively. The aggregate zero was hiding real heterogeneity.\n[Session transcripts: 02 — Dataset validation, 03 — Full analysis with sport cost]\nWhat if different sports react differently? (February 13) The question that changed everything wasn’t from the literature. It came from a prompt I wrote to Claude:\n“What we can do now is also see if there are certain sports that are different than others. Maybe regional differences are just a consequence of different regions having different sports and different sports are more or less dependent on Gini and gender equality. More or less expensive equipment. Need for specialized arenas.”\nThis was the origin of the sport-cost idea. Not a pre-specified hypothesis. Not from a paper. Just a question about whether sports differ in ways that might explain why inequality’s effect wasn’t uniform.\nA subsequent literature review revealed that Geloso and Kufenko (2021) had independently theorised a cost-barrier mechanism but lacked the data to test it. We had stumbled onto the same intuition from a different direction.\n[Session transcript: 05 — Visualization planning]\nThe U-shape surprise (February 18–19) With a proper panel dataset rebuilt for v0.91 — 71 countries, 47 sports, seven Games — we classified sports into equipment-cost tiers and ran interactions. The expected pattern was a monotonic gradient: inequality hurts more as cost rises.\nInstead, we found a U-shape. The cheapest sports (Tier 1) showed a positive Gini effect, and the most expensive sports (Tier 4) showed the expected negative effect. But the middle tiers were messy.\nDecomposing by sport type revealed why. Team sports — football, basketball, hockey — all landed in the cheap tier, and they have fundamentally different competitive dynamics. A country needs exactly one team per event, so large populations and institutional investment matter more than household cost barriers. Duel sports (fencing, judo, wrestling) showed no cost sensitivity at all — cultural traditions dominate.\nThe clean cost gradient only appeared in individual sports: swimming, cycling, sailing, equestrian — events where participation requires personal investment in equipment and training.\n[Session transcripts: 07 — Dataset rebuild, 08 — Sport-type decomposition]\n[Visualization: F4b — U-shape exploration]\nTwo channels, not one (February 23) Session 11 produced the paper’s central finding. We had been treating cost as a single dimension, but the data kept suggesting something more complex. When we separated equipment cost (what a household pays) from facility cost (what infrastructure requires), two cleanly independent mechanisms emerged:\nIncome inequality (Gini) interacts with household equipment cost — inequality creates participation barriers for expensive-equipment sports GDP per capita interacts with facility infrastructure cost — wealthy countries can build swimming pools and velodromes, poor countries cannot The cross-terms were zero. Equipment cost didn’t interact with GDP. Facility cost didn’t interact with Gini. And when both channels were included simultaneously, the Gini gradient attenuated by only 8% — near-complete independence.\nThis wasn’t a refinement. It was a reconceptualisation. Inequality and wealth operate through completely different sport-cost mechanisms.\n[Session transcript: 11 — Channel separation breakthrough]\n[Visualization: F6 — GDP and Gini cost channels]\nGetting the costs right (February 23–24) The channel separation only works if the cost classifications are credible. Sessions 10 and 13 document a painstaking process: building four-component cost estimates (equipment, coaching, facility access, competition) for all 41 sports in the main sample, validated against German club fee data and biographical research on Olympic medallists.\nThis revealed that equipment-only measures understate true barriers by 2–5x. Swimming’s cost is dominated by pool access (42% of total), not by goggles and swimsuits. The shift from ordinal tiers to continuous euro estimates in v0.94 allowed the facility channel to be tested properly.\n[Session transcripts: 10 — Cost reclassification pilot, 13 — Cost reclassification completion, 14 — Facility cost continuous]\n[Visualization: v0.93 Cost classification]\nRobustness (February 23) Does the gradient survive scrutiny? Session 12 tested it across time periods (2000–2008 vs 2012–2024), across regions (8 of 10 show negative gradients), and across estimation methods (OLS, Tobit, with-zeros). The pattern held everywhere except Latin America.\n[Session transcript: 12 — Robustness visualizations]\n[Visualization: F7 — Robustness three-tab]\nThe paper (February 24 onwards) By v0.95, the analytical work was largely complete. The remaining sessions focused on structuring the paper for the Journal of Institutional Economics, writing the formal prose, and deciding how transparent to be about the AI-assisted research process.\nThe answer to that last question: fully transparent. All 15 session transcripts are published alongside this journal. The AI (Claude) wrote pipeline code, implemented regression specifications, and drafted text. The research questions, analytical judgments, and cost classifications came from the human researcher.\n[Session transcripts: 15 — Paper refinement]\nTimeline Date Version What happened Feb 12 v0.8 Norway question → equality predicts success → Galton’s Problem kills it Feb 13 v0.9 Sport-cost idea introduced → first interaction models → publication strategy Feb 18 v0.91 Clean dataset rebuild, AIN/ROC resolution, 71 countries × 47 sports Feb 19 v0.91 U-shape discovered → team/duel/individual decomposition Feb 21 v0.92 Paper structure formalised, sport-type analysis refined Feb 23 v0.92 Channel separation breakthrough — two independent mechanisms Feb 23 v0.92 Robustness confirmed across periods, regions, methods Feb 23 v0.93 Four-component cost reclassification (equipment + coaching + facility + competition) Feb 24 v0.94 Facility cost upgraded from ordinal tiers to continuous euros Feb 24 v0.95 Paper refinement, final specification All session transcripts The full AI-assisted research transcripts are available alongside the paper as a methodological companion:\nEquality predicts Olympic success — The origin question Dataset validation — Seven Games quality check Full analysis with sport cost — First interaction models Publication strategy — Journal targeting Visualization planning — Identifying the sport-cost question Data consolidation — AIN athletes, ROC mapping Dataset rebuild — v0.91 panel construction Sport-type decomposition — The U-shape and why team sports differ Paper structure — Formalising the eight-section outline Cost reclassification pilot — Four-component cost estimates Channel separation — The breakthrough session Robustness visualizations — Period, region, method stability Cost reclassification completion — Marathon swimming, diving validation Facility cost continuous — Ordinal to euro transition Paper refinement — v0.95 final structure Interactive visualization — F4b U-shape explorer ",
-  "wordCount" : "1244",
+  "articleBody": "This research did not begin with a hypothesis. It began with a question about Norway.\nThe Norway puzzle (February 12) Norway wins a disproportionate number of gold medals relative to its total medal count. I wondered whether this pattern — equal countries producing winner types — held for other low-inequality nations. It would have made a nice paradox. But it didn’t hold up. The gold-to-silver ratio showed no systematic relationship with inequality.\nSo the question shifted: does income inequality predict overall Olympic performance? Using data from seven Summer Games (Sydney 2000 through Paris 2024) and a top-six scoring system, the answer appeared to be yes — more equal countries win more medals per capita, even after controlling for GDP. Income equality showed a stronger independent signal than gender equality.\nBut this result had a problem.\n[Session transcript: 01 — Equality predicts Olympic success]\nThe null that hides everything (February 12–13) After adding regional fixed effects — controls for geographic clusters like Scandinavia, East Asia, Latin America — the Gini coefficient dropped to zero. The inequality-performance correlation was a textbook case of Galton’s Problem: what looked like a causal relationship was actually regional clustering. Scandinavian countries are both equal and good at sport, but equality may not be why they’re good.\nThis should have been the end of the project. But looking more closely at the within-region patterns, something was off. In some regions, inequality correlated positively with performance. In others, negatively. The aggregate zero was hiding real heterogeneity.\n[Session transcripts: 02 — Dataset validation, 03 — Full analysis with sport cost]\nWhat if different sports react differently? (February 13) The question that changed everything wasn’t from the literature. It came from a prompt I wrote to Claude:\n“What we can do now is also see if there are certain sports that are different than others. Maybe regional differences are just a consequence of different regions having different sports and different sports are more or less dependent on Gini and gender equality. More or less expensive equipment. Need for specialized arenas.”\nThis was the origin of the sport-cost idea. Not a pre-specified hypothesis. Not from a paper. Just a question about whether sports differ in ways that might explain why inequality’s effect wasn’t uniform.\nA subsequent literature review revealed that Geloso and Kufenko (2021) had independently theorised a cost-barrier mechanism but lacked the data to test it. We had stumbled onto the same intuition from a different direction.\n[Session transcript: 05 — Visualization planning]\nThe U-shape surprise (February 18–19) With a proper panel dataset rebuilt for v0.91 — 71 countries, 47 sports, seven Games — we classified sports into equipment-cost tiers and ran interactions. The expected pattern was a monotonic gradient: inequality hurts more as cost rises.\nInstead, we found a U-shape. The cheapest sports (Tier 1) showed a positive Gini effect, and the most expensive sports (Tier 4) showed the expected negative effect. But the middle tiers were messy.\nDecomposing by sport type revealed why. Team sports — football, basketball, hockey — all landed in the cheap tier, and they have fundamentally different competitive dynamics. A country needs exactly one team per event, so large populations and institutional investment matter more than household cost barriers. Duel sports (fencing, judo, wrestling) showed no cost sensitivity at all — cultural traditions dominate.\nThe clean cost gradient only appeared in individual sports: swimming, cycling, sailing, equestrian — events where participation requires personal investment in equipment and training.\n[Session transcripts: 07 — Dataset rebuild, 08 — Sport-type decomposition]\nTwo channels, not one (February 23) Session 11 produced the paper’s central finding. We had been treating cost as a single dimension, but the data kept suggesting something more complex. When we separated equipment cost (what a household pays) from facility cost (what infrastructure requires), two cleanly independent mechanisms emerged:\nIncome inequality (Gini) interacts with household equipment cost — inequality creates participation barriers for expensive-equipment sports GDP per capita interacts with facility infrastructure cost — wealthy countries can build swimming pools and velodromes, poor countries cannot The cross-terms were zero. Equipment cost didn’t interact with GDP. Facility cost didn’t interact with Gini. And when both channels were included simultaneously, the Gini gradient attenuated by only 8% — near-complete independence.\nThis wasn’t a refinement. It was a reconceptualisation. Inequality and wealth operate through completely different sport-cost mechanisms.\n[Session transcript: 11 — Channel separation breakthrough]\nGetting the costs right (February 23–24) The channel separation only works if the cost classifications are credible. Sessions 10 and 13 document a painstaking process: building four-component cost estimates (equipment, coaching, facility access, competition) for all 41 sports in the main sample, validated against German club fee data and biographical research on Olympic medallists.\nThis revealed that equipment-only measures understate true barriers by 2–5x. Swimming’s cost is dominated by pool access (42% of total), not by goggles and swimsuits. The shift from ordinal tiers to continuous euro estimates in v0.94 allowed the facility channel to be tested properly.\n[Session transcripts: 10 — Cost reclassification pilot, 13 — Cost reclassification completion, 14 — Facility cost continuous]\nRobustness (February 23) Does the gradient survive scrutiny? Session 12 tested it across time periods (2000–2008 vs 2012–2024), across regions (8 of 10 show negative gradients), and across estimation methods (OLS, Tobit, with-zeros). The pattern held everywhere except Latin America.\n[Session transcript: 12 — Robustness visualizations]\nThe paper (February 24 onwards) By v0.95, the analytical work was largely complete. The remaining sessions focused on structuring the paper, writing the formal prose, and deciding how transparent to be about the AI-assisted research process.\nThe answer to that last question: fully transparent. All 15 session transcripts are published alongside this journal. The AI (Claude) wrote pipeline code, implemented regression specifications, and drafted text. The research questions, analytical judgments, and cost classifications came from the human researcher.\n[Session transcripts: 15 — Paper refinement]\nTimeline Date Version What happened Feb 12 v0.8 Norway question → equality predicts success → Galton’s Problem kills it Feb 13 v0.9 Sport-cost idea introduced → first interaction models → publication strategy Feb 18 v0.91 Clean dataset rebuild, AIN/ROC resolution, 71 countries × 47 sports Feb 19 v0.91 U-shape discovered → team/duel/individual decomposition Feb 21 v0.92 Paper structure formalised, sport-type analysis refined Feb 23 v0.92 Channel separation breakthrough — two independent mechanisms Feb 23 v0.92 Robustness confirmed across periods, regions, methods Feb 23 v0.93 Four-component cost reclassification (equipment + coaching + facility + competition) Feb 24 v0.94 Facility cost upgraded from ordinal tiers to continuous euros Feb 24 v0.95 Paper refinement, final specification All session transcripts The full AI-assisted research transcripts are available alongside the paper as a methodological companion:\nEquality predicts Olympic success — The origin question Dataset validation — Seven Games quality check Full analysis with sport cost — First interaction models Publication strategy — Journal targeting Visualization planning — Identifying the sport-cost question Data consolidation — AIN athletes, ROC mapping Dataset rebuild — v0.91 panel construction Sport-type decomposition — The U-shape and why team sports differ Paper structure — Formalising the eight-section outline Cost reclassification pilot — Four-component cost estimates Channel separation — The breakthrough session Robustness visualizations — Period, region, method stability Cost reclassification completion — Marathon swimming, diving validation Facility cost continuous — Ordinal to euro transition Paper refinement — v0.95 final structure Interactive visualization — F4b U-shape explorer ",
+  "wordCount" : "1216",
   "inLanguage": "en",
   "datePublished": "2026-02-12T00:00:00Z",
   "dateModified": "2026-02-12T00:00:00Z",
@@ -663,28 +817,30 @@ button#theme-toggle:hover {
     </nav>
 </header>
 <main class="main">
+<article class="viz-page">
+  <div class="viz-grid">
 
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/">Research Projects</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/">Income Inequality, Sport Cost, and Olympic Performance</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">Research Journal</a></div>
-    <h1 class="post-title entry-hint-parent">
-      How This Started
-    </h1>
-    <div class="post-meta"><span title='2026-02-12 00:00:00 +0000 UTC'>February 12, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
-
-</div>
-  </header> 
-  <div class="post-content"><p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
-<h2 id="the-norway-puzzle-february-12">The Norway puzzle (February 12)<a hidden class="anchor" aria-hidden="true" href="#the-norway-puzzle-february-12">#</a></h2>
+    
+    <div class="viz-content">
+      <div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/">Research Projects</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/">Income Inequality, Sport Cost, and Olympic Performance</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">Research Journal</a></div>
+      <header class="post-header">
+        <h1 class="post-title">How This Started</h1>
+        <div class="post-meta">
+          <span title='2026-02-12 00:00:00 +0000 UTC'>February 12, 2026</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+        </div>
+      </header>
+      <div class="post-content">
+        <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
+<h2 id="norway">The Norway puzzle (February 12)</h2>
 <p>Norway wins a disproportionate number of gold medals relative to its total medal count. I wondered whether this pattern — equal countries producing winner types — held for other low-inequality nations. It would have made a nice paradox. But it didn&rsquo;t hold up. The gold-to-silver ratio showed no systematic relationship with inequality.</p>
 <p>So the question shifted: does income inequality predict overall Olympic performance? Using data from seven Summer Games (Sydney 2000 through Paris 2024) and a top-six scoring system, the answer appeared to be yes — more equal countries win more medals per capita, even after controlling for GDP. Income equality showed a stronger independent signal than gender equality.</p>
 <p>But this result had a problem.</p>
 <p><em>[Session transcript: <a href="/projects/sport-cost-gradient/sessions/01/">01 — Equality predicts Olympic success</a>]</em></p>
-<h2 id="the-null-that-hides-everything-february-1213">The null that hides everything (February 12–13)<a hidden class="anchor" aria-hidden="true" href="#the-null-that-hides-everything-february-1213">#</a></h2>
+<h2 id="galton">The null that hides everything (February 12–13)</h2>
 <p>After adding regional fixed effects — controls for geographic clusters like Scandinavia, East Asia, Latin America — the Gini coefficient dropped to zero. The inequality-performance correlation was a textbook case of Galton&rsquo;s Problem: what looked like a causal relationship was actually regional clustering. Scandinavian countries are both equal and good at sport, but equality may not be <em>why</em> they&rsquo;re good.</p>
 <p>This should have been the end of the project. But looking more closely at the within-region patterns, something was off. In some regions, inequality correlated positively with performance. In others, negatively. The aggregate zero was hiding real heterogeneity.</p>
 <p><em>[Session transcripts: <a href="/projects/sport-cost-gradient/sessions/02/">02 — Dataset validation</a>, <a href="/projects/sport-cost-gradient/sessions/03/">03 — Full analysis with sport cost</a>]</em></p>
-<h2 id="what-if-different-sports-react-differently-february-13">What if different sports react differently? (February 13)<a hidden class="anchor" aria-hidden="true" href="#what-if-different-sports-react-differently-february-13">#</a></h2>
+<h2 id="sportcost">What if different sports react differently? (February 13)</h2>
 <p>The question that changed everything wasn&rsquo;t from the literature. It came from a prompt I wrote to Claude:</p>
 <blockquote>
 <p>&ldquo;What we can do now is also see if there are certain sports that are different than others. Maybe regional differences are just a consequence of different regions having different sports and different sports are more or less dependent on Gini and gender equality. More or less expensive equipment. Need for specialized arenas.&rdquo;</p>
@@ -692,14 +848,13 @@ button#theme-toggle:hover {
 <p>This was the origin of the sport-cost idea. Not a pre-specified hypothesis. Not from a paper. Just a question about whether sports differ in ways that might explain why inequality&rsquo;s effect wasn&rsquo;t uniform.</p>
 <p>A subsequent literature review revealed that Geloso and Kufenko (2021) had independently theorised a cost-barrier mechanism but lacked the data to test it. We had stumbled onto the same intuition from a different direction.</p>
 <p><em>[Session transcript: <a href="/projects/sport-cost-gradient/sessions/05/">05 — Visualization planning</a>]</em></p>
-<h2 id="the-u-shape-surprise-february-1819">The U-shape surprise (February 18–19)<a hidden class="anchor" aria-hidden="true" href="#the-u-shape-surprise-february-1819">#</a></h2>
+<h2 id="ushape">The U-shape surprise (February 18–19)</h2>
 <p>With a proper panel dataset rebuilt for v0.91 — 71 countries, 47 sports, seven Games — we classified sports into equipment-cost tiers and ran interactions. The expected pattern was a monotonic gradient: inequality hurts more as cost rises.</p>
 <p>Instead, we found a U-shape. The cheapest sports (Tier 1) showed a <em>positive</em> Gini effect, and the most expensive sports (Tier 4) showed the expected negative effect. But the middle tiers were messy.</p>
 <p>Decomposing by sport type revealed why. Team sports — football, basketball, hockey — all landed in the cheap tier, and they have fundamentally different competitive dynamics. A country needs exactly one team per event, so large populations and institutional investment matter more than household cost barriers. Duel sports (fencing, judo, wrestling) showed no cost sensitivity at all — cultural traditions dominate.</p>
 <p>The clean cost gradient only appeared in individual sports: swimming, cycling, sailing, equestrian — events where participation requires personal investment in equipment and training.</p>
 <p><em>[Session transcripts: <a href="/projects/sport-cost-gradient/sessions/07/">07 — Dataset rebuild</a>, <a href="/projects/sport-cost-gradient/sessions/08/">08 — Sport-type decomposition</a>]</em></p>
-<p><em>[Visualization: <a href="/projects/sport-cost-gradient/viz/#v091">F4b — U-shape exploration</a>]</em></p>
-<h2 id="two-channels-not-one-february-23">Two channels, not one (February 23)<a hidden class="anchor" aria-hidden="true" href="#two-channels-not-one-february-23">#</a></h2>
+<h2 id="channels">Two channels, not one (February 23)</h2>
 <p>Session 11 produced the paper&rsquo;s central finding. We had been treating cost as a single dimension, but the data kept suggesting something more complex. When we separated equipment cost (what a household pays) from facility cost (what infrastructure requires), two cleanly independent mechanisms emerged:</p>
 <ul>
 <li><strong>Income inequality</strong> (Gini) interacts with <strong>household equipment cost</strong> — inequality creates participation barriers for expensive-equipment sports</li>
@@ -708,22 +863,19 @@ button#theme-toggle:hover {
 <p>The cross-terms were zero. Equipment cost didn&rsquo;t interact with GDP. Facility cost didn&rsquo;t interact with Gini. And when both channels were included simultaneously, the Gini gradient attenuated by only 8% — near-complete independence.</p>
 <p>This wasn&rsquo;t a refinement. It was a reconceptualisation. Inequality and wealth operate through completely different sport-cost mechanisms.</p>
 <p><em>[Session transcript: <a href="/projects/sport-cost-gradient/sessions/11/">11 — Channel separation breakthrough</a>]</em></p>
-<p><em>[Visualization: <a href="/projects/sport-cost-gradient/viz/#v092">F6 — GDP and Gini cost channels</a>]</em></p>
-<h2 id="getting-the-costs-right-february-2324">Getting the costs right (February 23–24)<a hidden class="anchor" aria-hidden="true" href="#getting-the-costs-right-february-2324">#</a></h2>
+<h2 id="costs">Getting the costs right (February 23–24)</h2>
 <p>The channel separation only works if the cost classifications are credible. Sessions 10 and 13 document a painstaking process: building four-component cost estimates (equipment, coaching, facility access, competition) for all 41 sports in the main sample, validated against German club fee data and biographical research on Olympic medallists.</p>
 <p>This revealed that equipment-only measures understate true barriers by 2–5x. Swimming&rsquo;s cost is dominated by pool access (42% of total), not by goggles and swimsuits. The shift from ordinal tiers to continuous euro estimates in v0.94 allowed the facility channel to be tested properly.</p>
 <p><em>[Session transcripts: <a href="/projects/sport-cost-gradient/sessions/10/">10 — Cost reclassification pilot</a>, <a href="/projects/sport-cost-gradient/sessions/13/">13 — Cost reclassification completion</a>, <a href="/projects/sport-cost-gradient/sessions/14/">14 — Facility cost continuous</a>]</em></p>
-<p><em>[Visualization: <a href="/projects/sport-cost-gradient/viz/#v093">v0.93 Cost classification</a>]</em></p>
-<h2 id="robustness-february-23">Robustness (February 23)<a hidden class="anchor" aria-hidden="true" href="#robustness-february-23">#</a></h2>
+<h2 id="robustness">Robustness (February 23)</h2>
 <p>Does the gradient survive scrutiny? Session 12 tested it across time periods (2000–2008 vs 2012–2024), across regions (8 of 10 show negative gradients), and across estimation methods (OLS, Tobit, with-zeros). The pattern held everywhere except Latin America.</p>
 <p><em>[Session transcript: <a href="/projects/sport-cost-gradient/sessions/12/">12 — Robustness visualizations</a>]</em></p>
-<p><em>[Visualization: <a href="/projects/sport-cost-gradient/viz/#v092-robustness">F7 — Robustness three-tab</a>]</em></p>
-<h2 id="the-paper-february-24-onwards">The paper (February 24 onwards)<a hidden class="anchor" aria-hidden="true" href="#the-paper-february-24-onwards">#</a></h2>
-<p>By v0.95, the analytical work was largely complete. The remaining sessions focused on structuring the paper for the Journal of Institutional Economics, writing the formal prose, and deciding how transparent to be about the AI-assisted research process.</p>
+<h2 id="paper">The paper (February 24 onwards)</h2>
+<p>By v0.95, the analytical work was largely complete. The remaining sessions focused on structuring the paper, writing the formal prose, and deciding how transparent to be about the AI-assisted research process.</p>
 <p>The answer to that last question: fully transparent. All 15 session transcripts are published alongside this journal. The AI (Claude) wrote pipeline code, implemented regression specifications, and drafted text. The research questions, analytical judgments, and cost classifications came from the human researcher.</p>
 <p><em>[Session transcripts: <a href="/projects/sport-cost-gradient/sessions/15/">15 — Paper refinement</a>]</em></p>
 <hr>
-<h2 id="timeline">Timeline<a hidden class="anchor" aria-hidden="true" href="#timeline">#</a></h2>
+<h2 id="timeline">Timeline</h2>
 <table>
   <thead>
       <tr>
@@ -786,7 +938,7 @@ button#theme-toggle:hover {
   </tbody>
 </table>
 <hr>
-<h2 id="all-session-transcripts">All session transcripts<a hidden class="anchor" aria-hidden="true" href="#all-session-transcripts">#</a></h2>
+<h2 id="all-session-transcripts">All session transcripts</h2>
 <p>The full AI-assisted research transcripts are available alongside the paper as a methodological companion:</p>
 <ol>
 <li><a href="01/">Equality predicts Olympic success</a> — The origin question</li>
@@ -807,15 +959,148 @@ button#theme-toggle:hover {
 <li><a href="16/">Interactive visualization</a> — F4b U-shape explorer</li>
 </ol>
 
+      </div>
+    </div>
+
+    
+    <aside class="viz-sidebar">
+      <div class="viz-sidebar-header">Visualizations</div>
+      
+      <div class="viz-card" id="viz-norway">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/gini_vs_gold.html" loading="lazy" title="Gini vs Gold Ratio"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.8</span>
+          Gini vs Gold Ratio
+        </div>
+        <a href="/viz/gini_vs_gold.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-galton">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/regional_heterogeneity.html" loading="lazy" title="Regional Heterogeneity"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.8</span>
+          Regional Heterogeneity
+        </div>
+        <a href="/viz/regional_heterogeneity.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-galton">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/galton_diagnostic.html" loading="lazy" title="Galton Diagnostic"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.91</span>
+          Galton Diagnostic
+        </div>
+        <a href="/viz/galton_diagnostic.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-sportcost">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/f3_segmentation.html" loading="lazy" title="Sport-Cost Segmentation (F3)"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.91</span>
+          Sport-Cost Segmentation (F3)
+        </div>
+        <a href="/viz/f3_segmentation.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-ushape">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/f4b_ushape.html" loading="lazy" title="U-Shape Exploration (F4b)"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.91</span>
+          U-Shape Exploration (F4b)
+        </div>
+        <a href="/viz/f4b_ushape.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-ushape">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/f4a_gradient.html" loading="lazy" title="Cost Gradient (F4a)"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.91</span>
+          Cost Gradient (F4a)
+        </div>
+        <a href="/viz/f4a_gradient.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-channels">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/f6_channels.html" loading="lazy" title="Two-Channel Separation (F6)"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.92</span>
+          Two-Channel Separation (F6)
+        </div>
+        <a href="/viz/f6_channels.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-costs">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/cost_classification.html" loading="lazy" title="Cost Classification"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.93</span>
+          Cost Classification
+        </div>
+        <a href="/viz/cost_classification.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-costs">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/facility_cost.html" loading="lazy" title="Facility Cost Continuous"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.94</span>
+          Facility Cost Continuous
+        </div>
+        <a href="/viz/facility_cost.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-robustness">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/f7_robustness.html" loading="lazy" title="Robustness (F7)"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.92</span>
+          Robustness (F7)
+        </div>
+        <a href="/viz/f7_robustness.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-paper">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/paper_figures.html" loading="lazy" title="Paper Figures (Final)"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.95</span>
+          Paper Figures (Final)
+        </div>
+        <a href="/viz/paper_figures.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+      <div class="viz-card" id="viz-paper">
+        <div class="viz-frame-wrap">
+          <iframe src="/viz/results_dashboard.html" loading="lazy" title="Results Dashboard"></iframe>
+        </div>
+        <div class="viz-card-label">
+          <span class="viz-version">v0.95</span>
+          Results Dashboard
+        </div>
+        <a href="/viz/results_dashboard.html" class="viz-fullscreen" target="_blank">Full screen ↗</a>
+      </div>
+      
+    </aside>
 
   </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://research.syvertsen.com/tags/research-journey/">Research-Journey</a></li>
-    </ul>
-
-  </footer>
 </article>
     </main>
     

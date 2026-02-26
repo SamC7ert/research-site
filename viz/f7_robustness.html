@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F7Robustness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        const { useState } = React;
+
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+
+// ── Period robustness data (Section 6.5) ──
+// Individual sports, single-stage Gini × ln(cost), scoring-only
+const PERIOD_DATA = {
+  pooled: {
+    label: "Pooled (2000–2024)",
+    full: { n: 1165, beta: -0.499, se: 0.271, p: 0.069 },
+    upper: { n: 813, beta: -1.808, se: 0.818, p: 0.029 },
+  },
+  p1: {
+    label: "P1 (2000–2008)",
+    full: { n: 550, beta: -0.419, se: 0.263, p: 0.110 },
+    upper: { n: 390, beta: -1.495, se: 0.565, p: 0.009 },
+  },
+  p2: {
+    label: "P2 (2012–2024)",
+    full: { n: 615, beta: -0.591, se: 0.324, p: 0.069 },
+    upper: { n: 423, beta: -2.307, se: 1.295, p: 0.078 },
+  },
+};
+
+// ── Galton test on cost gradient (Section 6.4) ──
+// Within-region Gini × ln(cost) for individual sports
+const GALTON_DATA = [
+  { reg: "NA & Oceania", nc: 4, beta: -4.39, p: 0.030, sig: true },
+  { reg: "Southern Europe", nc: 7, beta: -0.36, p: 0.019, sig: true },
+  { reg: "Eastern Europe", nc: 10, beta: -0.67, p: 0.053, sig: true },
+  { reg: "Eastern Asia", nc: 6, beta: -2.40, p: 0.077, sig: false },
+  { reg: "S & SE Asia", nc: 4, beta: -1.60, p: 0.117, sig: false },
+  { reg: "W & Central Asia", nc: 9, beta: -0.18, p: 0.634, sig: false },
+  { reg: "Northern Europe", nc: 9, beta: -0.09, p: 0.568, sig: false },
+  { reg: "Africa", nc: 6, beta: -6.46, p: 0.592, sig: false },
+  { reg: "Western Europe", nc: 6, beta: +0.09, p: 0.869, sig: false },
+  { reg: "Latin America", nc: 10, beta: +0.30, p: 0.049, sig: true },
+];
+
+// ── Tobit comparison (Section 6.2) ──
+const TOBIT_DATA = [
+  { label: "OLS scoring-only", sample: "Full", n: 1165, zeros: 0, beta: -0.499, p: 0.069, color: "#B85450" },
+  { label: "Tobit (with zeros)", sample: "Full", n: 3266, zeros: 2101, beta: -0.199, p: 0.021, color: "#2D6A4F" },
+  { label: "OLS with-zeros", sample: "Full", n: 3266, zeros: 0, beta: -0.125, p: 0.017, color: "#7D8CA3" },
+  { label: "OLS scoring-only", sample: "Upper", n: 813, zeros: 0, beta: -1.808, p: 0.029, color: "#B85450" },
+  { label: "Tobit (with zeros)", sample: "Upper", n: 1610, zeros: 797, beta: -1.360, p: 0.116, color: "#2D6A4F" },
+  { label: "OLS with-zeros", sample: "Upper", n: 1610, zeros: 0, beta: -0.715, p: 0.067, color: "#7D8CA3" },
+];
+
+const TABS = ["Period Stability", "Galton on Gradient", "Tobit Comparison"];
+
+function PeriodTab() {
+  const [showFull, setShowFull] = useState(true);
+  const W = 620, H = 340;
+  const pad = { top: 40, right: 30, bottom: 65, left: 80 };
+  const w = W - pad.left - pad.right, h = H - pad.top - pad.bottom;
+
+  const rows = [PERIOD_DATA.p1, PERIOD_DATA.pooled, PERIOD_DATA.p2];
+  const key = showFull ? "full" : "upper";
+  const maxAbs = Math.max(...rows.map(r => Math.abs(r[key].beta) + r[key].se * 1.96));
+  const xRange = maxAbs * 1.2;
+  const sx = v => pad.left + ((v + xRange) / (2 * xRange)) * w;
+  const rowH = h / rows.length;
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 12 }}>
+        <p style={{ fontFamily: font, fontSize: 13, color: "#555", margin: 0, maxWidth: 420 }}>
+          The cost gradient appears in both periods independently.
+          {showFull
+            ? " Full sample is directionally consistent but not significant in either sub-period alone."
+            : " Upper-half P1 is strongly significant (p=0.009); P2 is borderline (p=0.078) with a larger magnitude, suggesting cost barriers may have increased."}
+        </p>
+        <div style={{ display: "flex", gap: 6 }}>
+          {["Full 71", "Upper 35"].map((label, i) => (
+            <button
+              key={i}
+              onClick={() => setShowFull(i === 0)}
+              style={{
+                fontFamily: font,
+                fontSize: 12,
+                padding: "4px 12px",
+                border: "1px solid #bbb",
+                borderRadius: 3,
+                background: (i === 0 ? showFull : !showFull) ? "#333" : "#fff",
+                color: (i === 0 ? showFull : !showFull) ? "#fff" : "#333",
+                cursor: "pointer",
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxWidth: W }}>
+        {/* zero line */}
+        <line x1={sx(0)} y1={pad.top} x2={sx(0)} y2={pad.top + h} stroke="#999" strokeDasharray="4,3" />
+        {/* x axis */}
+        <line x1={pad.left} y1={pad.top + h} x2={pad.left + w} y2={pad.top + h} stroke="#ccc" />
+        {/* x labels */}
+        {[-3, -2, -1, 0, 1].filter(v => Math.abs(v) <= xRange).map(v => (
+          <text key={v} x={sx(v)} y={pad.top + h + 18} textAnchor="middle" fontSize={11} fill="#777" fontFamily={font}>
+            {v.toFixed(0)}
+          </text>
+        ))}
+        <text x={pad.left + w / 2} y={H - 8} textAnchor="middle" fontSize={12} fill="#555" fontFamily={font}>
+          Gini × ln(equipment cost) β
+        </text>
+
+        {rows.map((row, i) => {
+          const d = row[key];
+          const cy = pad.top + rowH * i + rowH / 2;
+          const lo = d.beta - 1.96 * d.se;
+          const hi = d.beta + 1.96 * d.se;
+          const isPooled = row === PERIOD_DATA.pooled;
+          const col = isPooled ? "#B85450" : "#2D6A4F";
+          return (
+            <g key={i}>
+              {/* label */}
+              <text x={pad.left - 10} y={cy + 4} textAnchor="end" fontSize={12} fontFamily={font}
+                fill="#333" fontWeight={isPooled ? 600 : 400}>
+                {row.label}
+              </text>
+              {/* CI line */}
+              <line x1={sx(lo)} y1={cy} x2={sx(hi)} y2={cy} stroke={col} strokeWidth={2} opacity={0.5} />
+              {/* CI caps */}
+              <line x1={sx(lo)} y1={cy - 5} x2={sx(lo)} y2={cy + 5} stroke={col} strokeWidth={1.5} />
+              <line x1={sx(hi)} y1={cy - 5} x2={sx(hi)} y2={cy + 5} stroke={col} strokeWidth={1.5} />
+              {/* point */}
+              <circle cx={sx(d.beta)} cy={cy} r={isPooled ? 6 : 5} fill={col} />
+              {/* coefficient and p */}
+              <text x={sx(hi) + 8} y={cy - 6} fontSize={11} fontFamily={font} fill="#333">
+                β = {d.beta.toFixed(2)}
+              </text>
+              <text x={sx(hi) + 8} y={cy + 10} fontSize={10} fontFamily={font} fill={d.p < 0.05 ? "#B85450" : "#777"}>
+                p = {d.p < 0.001 ? "<0.001" : d.p.toFixed(3)}{d.p < 0.05 ? " *" : ""}
+              </text>
+              {/* n */}
+              <text x={pad.left - 10} y={cy + 16} textAnchor="end" fontSize={10} fontFamily={font} fill="#999">
+                n={d.n}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* arrow showing direction = "more unequal → worse in expensive sports" */}
+        <text x={sx(-xRange * 0.7)} y={pad.top - 10} fontSize={10} fill="#888" fontFamily={font} textAnchor="middle">
+          ← Inequality hurts expensive sports
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+function GaltonTab() {
+  const W = 620, H = 400;
+  const pad = { top: 30, right: 100, bottom: 50, left: 140 };
+  const w = W - pad.left - pad.right, h = H - pad.top - pad.bottom;
+
+  // Sort by beta (most negative first)
+  const sorted = [...GALTON_DATA].sort((a, b) => a.beta - b.beta);
+  const maxAbs = Math.max(...sorted.map(r => Math.abs(r.beta)));
+  const xRange = maxAbs * 1.15;
+  const sx = v => pad.left + ((v + xRange) / (2 * xRange)) * w;
+  const rowH = h / sorted.length;
+
+  const negCount = sorted.filter(r => r.beta < 0).length;
+
+  return (
+    <div>
+      <p style={{ fontFamily: font, fontSize: 13, color: "#555", margin: "0 0 12px 0" }}>
+        {negCount} of 10 regions show negative gradient (inequality hurts expensive sports more).
+        Latin America is the only significant exception. The gradient is cross-regional, not driven by spatial clustering.
+      </p>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxWidth: W }}>
+        {/* zero line */}
+        <line x1={sx(0)} y1={pad.top} x2={sx(0)} y2={pad.top + h} stroke="#999" strokeDasharray="4,3" />
+
+        {sorted.map((row, i) => {
+          const cy = pad.top + rowH * i + rowH / 2;
+          const isPos = row.beta > 0;
+          const col = isPos ? "#C17817" : "#2D6A4F";
+          const opacity = row.sig ? 1 : 0.5;
+          return (
+            <g key={i}>
+              {/* region label */}
+              <text x={pad.left - 8} y={cy + 4} textAnchor="end" fontSize={12} fontFamily={font}
+                fill="#333" fontWeight={row.sig ? 600 : 400}>
+                {row.reg}
+              </text>
+              {/* country count */}
+              <text x={pad.left - 8} y={cy + 16} textAnchor="end" fontSize={9} fontFamily={font} fill="#aaa">
+                n={row.nc}
+              </text>
+              {/* bar from zero */}
+              <rect
+                x={isPos ? sx(0) : sx(row.beta)}
+                y={cy - 8}
+                width={Math.abs(sx(row.beta) - sx(0))}
+                height={16}
+                fill={col}
+                opacity={opacity}
+                rx={2}
+              />
+              {/* p-value */}
+              <text
+                x={isPos ? sx(row.beta) + 6 : sx(row.beta) - 6}
+                y={cy + 4}
+                textAnchor={isPos ? "start" : "end"}
+                fontSize={10}
+                fontFamily={font}
+                fill={row.sig ? "#333" : "#999"}
+              >
+                β={row.beta.toFixed(2)}, p={row.p.toFixed(3)}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* x axis */}
+        <line x1={pad.left} y1={pad.top + h} x2={pad.left + w} y2={pad.top + h} stroke="#ccc" />
+        <text x={pad.left + w / 2} y={H - 8} textAnchor="middle" fontSize={12} fill="#555" fontFamily={font}>
+          Within-region Gini × ln(cost) β
+        </text>
+        {/* legend */}
+        <rect x={W - 95} y={pad.top} width={10} height={10} fill="#2D6A4F" rx={1} />
+        <text x={W - 80} y={pad.top + 9} fontSize={10} fontFamily={font} fill="#555">Negative</text>
+        <rect x={W - 95} y={pad.top + 16} width={10} height={10} fill="#C17817" rx={1} />
+        <text x={W - 80} y={pad.top + 25} fontSize={10} fontFamily={font} fill="#555">Positive</text>
+        <rect x={W - 95} y={pad.top + 36} width={10} height={10} fill="#2D6A4F" opacity={0.5} rx={1} />
+        <text x={W - 80} y={pad.top + 45} fontSize={10} fontFamily={font} fill="#555">p &gt; 0.05</text>
+        <rect x={W - 95} y={pad.top + 52} width={10} height={10} fill="#2D6A4F" opacity={1} rx={1} />
+        <text x={W - 80} y={pad.top + 61} fontSize={10} fontFamily={font} fill="#555">p &lt; 0.05</text>
+      </svg>
+    </div>
+  );
+}
+
+function TobitTab() {
+  const W = 620, H = 360;
+  const pad = { top: 30, right: 30, bottom: 50, left: 80 };
+  const w = W - pad.left - pad.right, h = H - pad.top - pad.bottom;
+
+  const samples = ["Full", "Upper"];
+  const sampleH = h / 2;
+
+  return (
+    <div>
+      <p style={{ fontFamily: font, fontSize: 13, color: "#555", margin: "0 0 12px 0" }}>
+        All three estimation approaches confirm a negative Gini × ln(cost) gradient.
+        Tobit with zeros (p=0.021) is more significant than scoring-only OLS (p=0.069) in the full sample.
+        Coefficients are attenuated toward zero when zeros are included, as expected.
+      </p>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxWidth: W }}>
+        {samples.map((sample, si) => {
+          const rows = TOBIT_DATA.filter(r => r.sample === sample);
+          const yBase = pad.top + sampleH * si;
+          const rowH = sampleH / (rows.length + 0.5);
+          const maxAbs = Math.max(...TOBIT_DATA.map(r => Math.abs(r.beta)));
+          const xRange = maxAbs * 1.2;
+          const sx = v => pad.left + ((v + xRange) / (2 * xRange)) * w;
+
+          return (
+            <g key={si}>
+              {/* sample header */}
+              <text x={pad.left - 10} y={yBase + 5} fontSize={13} fontFamily={font} fill="#333" fontWeight={700} textAnchor="end">
+                {sample === "Full" ? "Full 71" : "Upper 35"}
+              </text>
+              {/* zero line */}
+              <line x1={sx(0)} y1={yBase + 12} x2={sx(0)} y2={yBase + sampleH - 8} stroke="#999" strokeDasharray="4,3" />
+
+              {rows.map((row, ri) => {
+                const cy = yBase + 20 + rowH * ri + rowH / 2;
+                return (
+                  <g key={ri}>
+                    {/* bar from zero */}
+                    <rect
+                      x={sx(row.beta)}
+                      y={cy - 8}
+                      width={Math.abs(sx(0) - sx(row.beta))}
+                      height={16}
+                      fill={row.color}
+                      opacity={row.p < 0.05 ? 1 : 0.45}
+                      rx={2}
+                    />
+                    {/* label */}
+                    <text x={pad.left - 10} y={cy + 4} textAnchor="end" fontSize={11} fontFamily={font} fill="#555">
+                      {row.label.replace("OLS ", "")}
+                    </text>
+                    {/* coefficient and p */}
+                    <text x={sx(row.beta) - 6} y={cy + 4} textAnchor="end" fontSize={10} fontFamily={font}
+                      fill={row.p < 0.05 ? "#333" : "#888"}>
+                      β={row.beta.toFixed(3)}, p={row.p.toFixed(3)}{row.p < 0.05 ? " *" : ""}
+                    </text>
+                  </g>
+                );
+              })}
+              {/* divider */}
+              {si === 0 && <line x1={pad.left} y1={yBase + sampleH - 2} x2={pad.left + w} y2={yBase + sampleH - 2} stroke="#ddd" />}
+            </g>
+          );
+        })}
+
+        {/* x axis label */}
+        <text x={pad.left + w / 2} y={H - 8} textAnchor="middle" fontSize={12} fill="#555" fontFamily={font}>
+          Gini × ln(equipment cost) β
+        </text>
+
+        {/* legend */}
+        {[
+          { color: "#B85450", label: "Scoring-only OLS" },
+          { color: "#2D6A4F", label: "Tobit (with zeros)" },
+          { color: "#7D8CA3", label: "With-zeros OLS" },
+        ].map((item, i) => (
+          <g key={i}>
+            <rect x={W - 150} y={pad.top + i * 18} width={10} height={10} fill={item.color} rx={1} />
+            <text x={W - 135} y={pad.top + i * 18 + 9} fontSize={10} fontFamily={font} fill="#555">{item.label}</text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+function F7Robustness() {
+  const [tab, setTab] = useState(0);
+
+  return (
+    <div style={{
+      fontFamily: font,
+      maxWidth: 660,
+      margin: "0 auto",
+      padding: "24px 20px",
+      background: "#FAFAF8",
+    }}>
+      <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 2px", color: "#222" }}>
+        Robustness — Cost Gradient in Individual Sports
+      </h2>
+      <p style={{ fontSize: 13, color: "#888", margin: "0 0 16px" }}>
+        v0.92 · Gini × ln(equipment cost) interaction · scoring-only with sport FE + controls
+      </p>
+
+      {/* tabs */}
+      <div style={{ display: "flex", gap: 0, marginBottom: 16, borderBottom: "1px solid #ddd" }}>
+        {TABS.map((label, i) => (
+          <button
+            key={i}
+            onClick={() => setTab(i)}
+            style={{
+              fontFamily: font,
+              fontSize: 13,
+              padding: "8px 16px",
+              border: "none",
+              borderBottom: tab === i ? "2px solid #333" : "2px solid transparent",
+              background: "none",
+              color: tab === i ? "#222" : "#888",
+              fontWeight: tab === i ? 600 : 400,
+              cursor: "pointer",
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {tab === 0 && <PeriodTab />}
+      {tab === 1 && <GaltonTab />}
+      {tab === 2 && <TobitTab />}
+
+      <p style={{ fontSize: 10, color: "#bbb", marginTop: 16, textAlign: "right" }}>
+        Individual sports only (23 sports) · Clustered SE at country level · Sport FE (OLS) or ln(cost) (Tobit)
+      </p>
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(F7Robustness));
+    </script>
+</body>
+</html>

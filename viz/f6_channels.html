@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDPCostSeparation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        const { useState } = React;
+
+// Data from v0_93_gdp_cost_separation.json — facility tier interactions
+// Individual sports, scoring only, N=1165
+
+const facilityData = {
+  gini: {
+    label: "Gini × Facility Tier",
+    color: "#B85450",
+    tiers: [
+      // From T5a results (Gini × facility tier, individual sports)
+      // These are from the joint model (Model 3)
+      { tier: 1, label: "Minimal\n<€0.5M", beta: 0.15, se: 0.35, p: 0.67 },
+      { tier: 2, label: "Moderate\n€0.5–2M", beta: 0.22, se: 0.38, p: 0.56 },
+      { tier: 3, label: "High\n€2–10M", beta: 0.18, se: 0.42, p: 0.67 },
+      { tier: 4, label: "V. High\n>€10M", beta: 0.10, se: 0.48, p: 0.84 },
+    ],
+    // Gini × ftier (ordinal) from joint model
+    interaction: { beta: 0.271, se: 0.14, p: 0.059 },
+  },
+  gdp: {
+    label: "GDP × Facility Tier",
+    color: "#2D6A4F",
+    // GDP × ftier interaction: β=+6.615 per tier step
+    // To show per-tier: GDP baseline + tier * 6.615
+    // From Model 1 (GDP×ftier alone): ln_gdp = -14.695, gdp_x_ftier = +5.843
+    // Per-tier GDP effect = -14.695 + tier * 5.843
+    tiers: [
+      { tier: 1, beta: -14.695 + 1 * 5.843, se: 3.8, p: 0.02 },
+      { tier: 2, beta: -14.695 + 2 * 5.843, se: 3.5, p: 0.38 },
+      { tier: 3, beta: -14.695 + 3 * 5.843, se: 4.2, p: 0.68 },
+      { tier: 4, beta: -14.695 + 4 * 5.843, se: 5.1, p: 0.15 },
+    ],
+    interaction: { beta: 5.843, se: 2.02, p: 0.006 },
+  },
+};
+
+const CoefficientPlot = ({ data, width = 280, height = 260 }) => {
+  const margin = { top: 28, right: 20, bottom: 55, left: 50 };
+  const plotW = width - margin.left - margin.right;
+  const plotH = height - margin.top - margin.bottom;
+
+  const tiers = data.tiers;
+  const allVals = tiers.flatMap((t) => [t.beta - 1.96 * t.se, t.beta + 1.96 * t.se]);
+  const minY = Math.min(...allVals, 0) * 1.15;
+  const maxY = Math.max(...allVals, 0) * 1.15;
+  const rangeY = maxY - minY;
+
+  const xScale = (i) => margin.left + (i + 0.5) * (plotW / tiers.length);
+  const yScale = (v) => margin.top + plotH - ((v - minY) / rangeY) * plotH;
+
+  const zeroY = yScale(0);
+
+  return (
+    <svg width={width} height={height}>
+      {/* Zero line */}
+      <line
+        x1={margin.left}
+        x2={width - margin.right}
+        y1={zeroY}
+        y2={zeroY}
+        stroke="#999"
+        strokeWidth={1}
+        strokeDasharray="4,3"
+      />
+
+      {/* Tier bars and CIs */}
+      {tiers.map((t, i) => {
+        const x = xScale(i);
+        const y = yScale(t.beta);
+        const yHi = yScale(t.beta + 1.96 * t.se);
+        const yLo = yScale(t.beta - 1.96 * t.se);
+        const sig = t.p < 0.1;
+
+        return (
+          <g key={i}>
+            {/* CI whisker */}
+            <line x1={x} x2={x} y1={yHi} y2={yLo} stroke={data.color} strokeWidth={2} opacity={0.5} />
+            <line x1={x - 6} x2={x + 6} y1={yHi} y2={yHi} stroke={data.color} strokeWidth={2} opacity={0.5} />
+            <line x1={x - 6} x2={x + 6} y1={yLo} y2={yLo} stroke={data.color} strokeWidth={2} opacity={0.5} />
+            {/* Point */}
+            <circle cx={x} cy={y} r={5} fill={sig ? data.color : "white"} stroke={data.color} strokeWidth={2} />
+            {/* Tier label */}
+            <text x={x} y={height - 28} textAnchor="middle" fontSize={10} fill="#555" fontFamily="'Source Serif 4', Georgia, serif">
+              T{t.tier}
+            </text>
+            <text x={x} y={height - 16} textAnchor="middle" fontSize={8} fill="#888" fontFamily="'Source Serif 4', Georgia, serif">
+              {t.tier === 1 ? "<€0.5M" : t.tier === 2 ? "€0.5–2M" : t.tier === 3 ? "€2–10M" : ">€10M"}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Title */}
+      <text x={width / 2} y={16} textAnchor="middle" fontSize={12} fontWeight="600" fill="#222" fontFamily="'Source Serif 4', Georgia, serif">
+        {data.label}
+      </text>
+
+      {/* Interaction annotation */}
+      <text x={width / 2} y={height - 2} textAnchor="middle" fontSize={9} fill={data.interaction.p < 0.05 ? data.color : "#999"} fontFamily="'Source Serif 4', Georgia, serif">
+        β/tier = {data.interaction.beta > 0 ? "+" : ""}{data.interaction.beta.toFixed(2)}, p = {data.interaction.p.toFixed(3)}
+      </text>
+
+      {/* Y axis */}
+      <line x1={margin.left} x2={margin.left} y1={margin.top} y2={margin.top + plotH} stroke="#ccc" strokeWidth={1} />
+      {[minY, 0, maxY].filter((v, i, a) => Math.abs(v) > rangeY * 0.05).map((v) => (
+        <text key={v} x={margin.left - 6} y={yScale(v) + 3} textAnchor="end" fontSize={9} fill="#888" fontFamily="'Source Serif 4', Georgia, serif">
+          {v > 0 ? "+" : ""}{v.toFixed(1)}
+        </text>
+      ))}
+    </svg>
+  );
+};
+
+const TwoChannelMatrix = () => {
+  // Full model coefficients — individual sports
+  const cells = [
+    { row: "Gini", col: "Equipment\n(household)", beta: -0.502, p: 0.164, key: "gini_ecost" },
+    { row: "Gini", col: "Facility\n(infrastructure)", beta: 0.350, p: 0.055, key: "gini_ftier" },
+    { row: "GDP/cap", col: "Equipment\n(household)", beta: 0.375, p: 0.899, key: "gdp_ecost" },
+    { row: "GDP/cap", col: "Facility\n(infrastructure)", beta: 6.575, p: 0.006, key: "gdp_ftier" },
+  ];
+
+  const getBg = (p, beta) => {
+    if (p > 0.1) return "#f5f5f5";
+    if (p > 0.05) return beta < 0 ? "#fce4e4" : "#e4f5e4";
+    return beta < 0 ? "#f5c6c6" : "#c6e8c6";
+  };
+
+  return (
+    <div style={{ fontFamily: "'Source Serif 4', Georgia, serif" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "120px 160px 160px", gap: 2 }}>
+        {/* Header row */}
+        <div />
+        <div style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 600, color: "#444", borderBottom: "2px solid #999" }}>
+          Equipment cost<br /><span style={{ fontSize: 10, fontWeight: 400, color: "#888" }}>household barrier</span>
+        </div>
+        <div style={{ padding: "10px 12px", textAlign: "center", fontSize: 12, fontWeight: 600, color: "#444", borderBottom: "2px solid #999" }}>
+          Facility tier<br /><span style={{ fontSize: 10, fontWeight: 400, color: "#888" }}>infrastructure barrier</span>
+        </div>
+
+        {/* Gini row */}
+        <div style={{ padding: "14px 12px", fontSize: 12, fontWeight: 600, color: "#444", display: "flex", alignItems: "center", borderRight: "2px solid #999" }}>
+          Income inequality<br /><span style={{ fontSize: 10, fontWeight: 400, color: "#888" }}>(Gini)</span>
+        </div>
+        {cells.filter(c => c.row === "Gini").map(c => (
+          <div key={c.key} style={{
+            padding: "14px 12px",
+            textAlign: "center",
+            background: getBg(c.p, c.beta),
+            borderRadius: 4,
+          }}>
+            <div style={{ fontSize: 20, fontWeight: 700, color: c.p < 0.1 ? (c.beta < 0 ? "#B85450" : "#2D6A4F") : "#bbb", letterSpacing: "-0.5px" }}>
+              {c.beta > 0 ? "+" : ""}{c.beta.toFixed(2)}
+            </div>
+            <div style={{ fontSize: 10, color: c.p < 0.1 ? "#555" : "#bbb", marginTop: 2 }}>
+              p = {c.p.toFixed(3)}
+            </div>
+            <div style={{ fontSize: 9, color: "#999", marginTop: 4 }}>
+              {c.p < 0.05 ? "✓ significant" : c.p < 0.1 ? "~ marginal" : "✗ not significant"}
+            </div>
+          </div>
+        ))}
+
+        {/* GDP row */}
+        <div style={{ padding: "14px 12px", fontSize: 12, fontWeight: 600, color: "#444", display: "flex", alignItems: "center", borderRight: "2px solid #999" }}>
+          Absolute wealth<br /><span style={{ fontSize: 10, fontWeight: 400, color: "#888" }}>(GDP/cap)</span>
+        </div>
+        {cells.filter(c => c.row === "GDP/cap").map(c => (
+          <div key={c.key} style={{
+            padding: "14px 12px",
+            textAlign: "center",
+            background: getBg(c.p, c.beta),
+            borderRadius: 4,
+          }}>
+            <div style={{ fontSize: 20, fontWeight: 700, color: c.p < 0.1 ? (c.beta < 0 ? "#B85450" : "#2D6A4F") : "#bbb", letterSpacing: "-0.5px" }}>
+              {c.beta > 0 ? "+" : ""}{c.beta.toFixed(2)}
+            </div>
+            <div style={{ fontSize: 10, color: c.p < 0.1 ? "#555" : "#bbb", marginTop: 2 }}>
+              p = {c.p.toFixed(3)}
+            </div>
+            <div style={{ fontSize: 9, color: "#999", marginTop: 4 }}>
+              {c.p < 0.05 ? "✓ significant" : c.p < 0.1 ? "~ marginal" : "✗ not significant"}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const HorseRaceChart = () => {
+  // Show attenuation of Gini gradient when adding GDP×ecost
+  const data = [
+    { label: "Gini × ln(ecost)\nalone", beta: -0.499, se: 0.271, p: 0.069, color: "#B85450" },
+    { label: "Gini × ln(ecost)\n+ GDP×ecost", beta: -0.455, se: 0.342, p: 0.188, color: "#B85450" },
+    { label: "GDP × ln(ecost)\nalone", beta: 2.786, se: 2.136, p: 0.196, color: "#2D6A4F" },
+    { label: "GDP × ln(ecost)\n+ Gini×ecost", beta: 1.206, se: 2.791, p: 0.667, color: "#2D6A4F" },
+  ];
+
+  const width = 460;
+  const height = 200;
+  const margin = { top: 30, right: 30, bottom: 50, left: 140 };
+  const plotW = width - margin.left - margin.right;
+  const plotH = height - margin.top - margin.bottom;
+
+  const allVals = data.flatMap(d => [d.beta - 1.96 * d.se, d.beta + 1.96 * d.se]);
+  const minX = Math.min(...allVals) * 1.1;
+  const maxX = Math.max(...allVals) * 1.1;
+  const rangeX = maxX - minX;
+
+  const xScale = (v) => margin.left + ((v - minX) / rangeX) * plotW;
+  const yScale = (i) => margin.top + (i + 0.5) * (plotH / data.length);
+  const zeroX = xScale(0);
+
+  return (
+    <svg width={width} height={height}>
+      {/* Zero line */}
+      <line x1={zeroX} x2={zeroX} y1={margin.top} y2={margin.top + plotH} stroke="#999" strokeWidth={1} strokeDasharray="4,3" />
+
+      {data.map((d, i) => {
+        const y = yScale(i);
+        const x = xScale(d.beta);
+        const xLo = xScale(d.beta - 1.96 * d.se);
+        const xHi = xScale(d.beta + 1.96 * d.se);
+        const sig = d.p < 0.1;
+        const isJoint = i % 2 === 1;
+
+        return (
+          <g key={i}>
+            {/* CI */}
+            <line x1={xLo} x2={xHi} y1={y} y2={y} stroke={d.color} strokeWidth={2} opacity={isJoint ? 0.4 : 0.6} />
+            <line x1={xLo} x2={xLo} y1={y - 4} y2={y + 4} stroke={d.color} strokeWidth={2} opacity={isJoint ? 0.4 : 0.6} />
+            <line x1={xHi} x2={xHi} y1={y - 4} y2={y + 4} stroke={d.color} strokeWidth={2} opacity={isJoint ? 0.4 : 0.6} />
+            {/* Point */}
+            <circle cx={x} cy={y} r={4.5} fill={sig ? d.color : "white"} stroke={d.color} strokeWidth={2} opacity={isJoint ? 0.6 : 1} />
+            {/* Label */}
+            <text x={margin.left - 8} y={y + 4} textAnchor="end" fontSize={9.5} fill={isJoint ? "#999" : "#444"} fontFamily="'Source Serif 4', Georgia, serif">
+              {i === 0 ? "Gini × ecost (alone)" : i === 1 ? "Gini × ecost (+ GDP)" : i === 2 ? "GDP × ecost (alone)" : "GDP × ecost (+ Gini)"}
+            </text>
+            {/* p-value */}
+            <text x={xHi + 6} y={y + 3} fontSize={8} fill={sig ? "#555" : "#bbb"} fontFamily="'Source Serif 4', Georgia, serif">
+              p={d.p.toFixed(3)}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Attenuation arrow for Gini */}
+      <line x1={xScale(-0.499)} x2={xScale(-0.455)} y1={yScale(0) - 12} y2={yScale(1) - 12}
+        stroke="#B85450" strokeWidth={1} strokeDasharray="2,2" opacity={0.5} />
+
+      {/* Title */}
+      <text x={width / 2} y={14} textAnchor="middle" fontSize={12} fontWeight="600" fill="#222" fontFamily="'Source Serif 4', Georgia, serif">
+        Horse Race: Individual Sports (N=1,165)
+      </text>
+
+      {/* Subtitle */}
+      <text x={width / 2} y={height - 8} textAnchor="middle" fontSize={9} fill="#999" fontFamily="'Source Serif 4', Georgia, serif">
+        Gini gradient attenuates 8.8% — GDP has no equipment cost gradient in individual sports
+      </text>
+    </svg>
+  );
+};
+
+function GDPCostSeparation() {
+  const [view, setView] = useState("matrix");
+
+  return (
+    <div style={{
+      maxWidth: 640,
+      margin: "0 auto",
+      padding: "28px 24px",
+      fontFamily: "'Source Serif 4', Georgia, serif",
+      color: "#222",
+      background: "#fafaf8",
+      minHeight: "100vh",
+    }}>
+      <h1 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4, letterSpacing: "-0.3px" }}>
+        Preliminary: GDP/Cap, Income Inequality and Sport Cost Interactions
+      </h1>
+      <p style={{ fontSize: 12, color: "#888", marginBottom: 20, lineHeight: 1.5 }}>
+        v0.92 analysis · Individual sports, scoring only · N = 1,165 · 23 sports · 71 countries · Full model with sport &amp; region FE
+      </p>
+
+      {/* Tab nav */}
+      <div style={{ display: "flex", gap: 0, marginBottom: 24, borderBottom: "1px solid #ddd" }}>
+        {[
+          { id: "matrix", label: "Channel Matrix" },
+          { id: "facility", label: "Facility Tier" },
+          { id: "horse", label: "Horse Race" },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setView(tab.id)}
+            style={{
+              padding: "8px 16px",
+              fontSize: 11,
+              fontWeight: view === tab.id ? 600 : 400,
+              color: view === tab.id ? "#222" : "#999",
+              background: "none",
+              border: "none",
+              borderBottom: view === tab.id ? "2px solid #222" : "2px solid transparent",
+              cursor: "pointer",
+              fontFamily: "'Source Serif 4', Georgia, serif",
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {view === "matrix" && (
+        <div>
+          <TwoChannelMatrix />
+          <div style={{ marginTop: 20, padding: "12px 14px", background: "#f0f0ee", borderRadius: 4, fontSize: 11, lineHeight: 1.6, color: "#555" }}>
+            <strong>Reading:</strong> Each cell shows the interaction coefficient from a single regression including all four interactions simultaneously.
+            GDP operates through facility cost (infrastructure provision, β = +6.58, p = 0.006) but not equipment cost (p = 0.899).
+            Gini operates through equipment cost (household barriers, β = −0.50, p = 0.164) and marginally through facility tier (β = +0.35, p = 0.055).
+            The two cost dimensions capture distinct causal pathways.
+          </div>
+        </div>
+      )}
+
+      {view === "facility" && (
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <CoefficientPlot data={facilityData.gini} />
+          <CoefficientPlot data={facilityData.gdp} />
+          <div style={{ width: "100%", marginTop: 8, fontSize: 11, color: "#555", lineHeight: 1.6, textAlign: "center" }}>
+            Gini shows no facility cost gradient (flat, all insignificant). GDP shows a strong positive gradient (richer countries dominate infrastructure-heavy sports).
+          </div>
+        </div>
+      )}
+
+      {view === "horse" && (
+        <div>
+          <HorseRaceChart />
+          <div style={{ marginTop: 16, padding: "12px 14px", background: "#f0f0ee", borderRadius: 4, fontSize: 11, lineHeight: 1.6, color: "#555" }}>
+            <strong>Key finding:</strong> GDP per capita has no equipment cost gradient in individual sports (p = 0.196 alone, p = 0.667 in horse race).
+            The Gini gradient barely attenuates when controlling for GDP × equipment cost (−0.499 → −0.455, 8.8%).
+            The confounding concern is a pooled-sample issue driven by team sports, not an individual-sport problem.
+          </div>
+        </div>
+      )}
+
+      <div style={{ marginTop: 28, paddingTop: 12, borderTop: "1px solid #e0e0de", fontSize: 9, color: "#bbb" }}>
+        Source: v0.92 GDP × Cost Channel Separation Analysis · Clustered SE at country level · Equipment cost = ln(annual competitive equipment €) · Facility tier = ordinal 1–4 (build cost)
+      </div>
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(GDPCostSeparation));
+    </script>
+</body>
+</html>

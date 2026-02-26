@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportCostBubble</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        import { useState, useMemo } from "react";
+
+const SPORTS = [
+  {s:"Marathon Swimming",fm:0.001,ek:0.75,ft:1,et:1,rs:0.871,nc:17,tp:210,ne:10},
+  {s:"Artistic Swimming",fm:0.001,ek:2.00,ft:1,et:1,rs:0.776,nc:14,tp:294,ne:14},
+  {s:"Triathlon",fm:0.001,ek:10.00,ft:1,et:3,rs:0.979,nc:21,tp:328,ne:16},
+  {s:"Modern Pentathlon",fm:0.001,ek:10.00,ft:1,et:3,rs:0.881,nc:23,tp:294,ne:14},
+  {s:"Road Cycling",fm:0.001,ek:20.00,ft:1,et:3,rs:0.976,nc:28,tp:580,ne:28},
+  {s:"Boxing",fm:0.17,ek:1.25,ft:1,et:1,rs:0.538,nc:56,tp:1716,ne:86},
+  {s:"Taekwondo",fm:0.20,ek:1.25,ft:1,et:1,rs:0.693,nc:46,tp:1075,ne:56},
+  {s:"Athletics — Track",fm:0.25,ek:1.75,ft:1,et:1,rs:0.601,nc:51,tp:4103,ne:217},
+  {s:"Wrestling",fm:0.30,ek:0.65,ft:1,et:1,rs:0.591,nc:52,tp:2556,ne:124},
+  {s:"Judo",fm:0.30,ek:0.65,ft:1,et:1,rs:0.708,nc:52,tp:2045,ne:100},
+  {s:"Weightlifting",fm:0.30,ek:1.25,ft:1,et:1,rs:0.448,nc:54,tp:1956,ne:99},
+  {s:"Table Tennis",fm:0.30,ek:2.00,ft:1,et:1,rs:0.498,nc:28,tp:568,ne:30},
+  {s:"Archery",fm:0.30,ek:3.50,ft:1,et:2,rs:0.851,nc:22,tp:625,ne:30},
+  {s:"Mountain Biking",fm:0.30,ek:10.00,ft:1,et:3,rs:0.966,nc:22,tp:294,ne:14},
+  {s:"Beach Volleyball",fm:0.55,ek:0.75,ft:2,et:1,rs:0.699,nc:21,tp:287,ne:14},
+  {s:"Fencing",fm:0.60,ek:3.50,ft:2,et:2,rs:0.859,nc:30,tp:1534,ne:74},
+  {s:"Volleyball",fm:1.25,ek:0.75,ft:2,et:1,rs:0.667,nc:15,tp:246,ne:14},
+  {s:"Handball",fm:1.25,ek:0.75,ft:2,et:1,rs:0.967,nc:16,tp:246,ne:14},
+  {s:"Rugby Sevens",fm:1.25,ek:0.75,ft:2,et:1,rs:0.905,nc:9,tp:84,ne:6},
+  {s:"Basketball",fm:1.25,ek:1.25,ft:2,et:1,rs:0.955,nc:20,tp:333,ne:18},
+  {s:"Rhythmic Gymn.",fm:1.25,ek:2.00,ft:2,et:1,rs:0.857,nc:16,tp:294,ne:14},
+  {s:"Badminton",fm:1.25,ek:3.50,ft:2,et:2,rs:0.419,nc:21,tp:674,ne:35},
+  {s:"BMX Racing",fm:1.25,ek:3.50,ft:2,et:2,rs:0.810,nc:16,tp:210,ne:10},
+  {s:"Canoe Sprint",fm:1.25,ek:5.50,ft:2,et:2,rs:0.874,nc:40,tp:1719,ne:82},
+  {s:"Athletics — Field",fm:1.75,ek:1.50,ft:2,et:1,rs:0.795,nc:53,tp:2222,ne:112},
+  {s:"Football",fm:1.75,ek:2.00,ft:2,et:1,rs:0.794,nc:18,tp:223,ne:14},
+  {s:"Trampoline",fm:2.00,ek:0.65,ft:3,et:1,rs:0.629,nc:15,tp:294,ne:14},
+  {s:"Hockey",fm:2.00,ek:2.00,ft:3,et:1,rs:0.904,nc:12,tp:249,ne:14},
+  {s:"Sailing",fm:2.00,ek:32.50,ft:3,et:3,rs:0.922,nc:33,tp:1501,ne:73},
+  {s:"Shooting",fm:2.25,ek:12.50,ft:3,et:3,rs:0.735,nc:52,tp:2186,ne:109},
+  {s:"Equestrian",fm:2.75,ek:200.00,ft:3,et:3,rs:0.980,nc:20,tp:870,ne:42},
+  {s:"Baseball/Softball",fm:3.00,ek:2.00,ft:3,et:1,rs:0.816,nc:10,tp:147,ne:8},
+  {s:"Rowing",fm:3.00,ek:10.00,ft:3,et:3,rs:0.939,nc:39,tp:2053,ne:98},
+  {s:"Tennis",fm:3.00,ek:10.00,ft:3,et:3,rs:0.913,nc:41,tp:664,ne:32},
+  {s:"Artistic Gymn.",fm:5.00,ek:1.25,ft:3,et:1,rs:0.734,nc:42,tp:2032,ne:98},
+  {s:"Canoe Slalom",fm:10.15,ek:5.50,ft:4,et:2,rs:0.989,nc:21,tp:625,ne:30},
+  {s:"Golf",fm:12.50,ek:6.50,ft:4,et:2,rs:0.896,nc:20,tp:124,ne:6},
+  {s:"Track Cycling",fm:15.00,ek:20.00,ft:4,et:3,rs:0.938,nc:32,tp:1604,ne:78},
+  {s:"Diving",fm:17.50,ek:0.75,ft:4,et:1,rs:0.599,nc:21,tp:1162,ne:56},
+  {s:"Water Polo",fm:37.50,ek:0.65,ft:4,et:1,rs:1.000,nc:12,tp:237,ne:14},
+  {s:"Swimming",fm:37.50,ek:1.25,ft:4,et:1,rs:0.883,nc:43,tp:4749,ne:230},
+];
+
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+
+// Manual label placement: [side, verticalNudge]
+// side: "l"=left, "r"=right; verticalNudge in px from bubble center
+const LABEL_POS = {
+  "Marathon Swimming":   ["l", -6],
+  "Artistic Swimming":   ["l",  6],
+  "Triathlon":           ["r", -8],
+  "Modern Pentathlon":   ["r",  8],
+  "Road Cycling":        ["r",  0],
+  "Boxing":              ["r",  8],
+  "Taekwondo":           ["r", -8],
+  "Athletics — Track":   ["r",  0],
+  "Wrestling":           ["l",  8],
+  "Judo":                ["l", -8],
+  "Weightlifting":       ["l",  0],
+  "Table Tennis":        ["l",  0],
+  "Archery":             ["l",  0],
+  "Mountain Biking":     ["r",  0],
+  "Beach Volleyball":    ["l",  0],
+  "Fencing":             ["r",  0],
+  "Volleyball":          ["l", -10],
+  "Handball":            ["r", -10],
+  "Rugby Sevens":        ["r", 10],
+  "Basketball":          ["r",  0],
+  "Rhythmic Gymn.":      ["l",  8],
+  "Badminton":           ["l",  0],
+  "BMX Racing":          ["r",  8],
+  "Canoe Sprint":        ["r",  0],
+  "Athletics — Field":   ["l",  0],
+  "Football":            ["r",  8],
+  "Trampoline":          ["l",  0],
+  "Hockey":              ["r",  0],
+  "Sailing":             ["r",  0],
+  "Shooting":            ["l",  0],
+  "Equestrian":          ["r",  0],
+  "Baseball/Softball":   ["l",  0],
+  "Rowing":              ["l",  0],
+  "Tennis":              ["r",  8],
+  "Artistic Gymn.":      ["r",  0],
+  "Canoe Slalom":        ["l",  0],
+  "Golf":                ["r",  0],
+  "Track Cycling":       ["l",  0],
+  "Diving":              ["l",  0],
+  "Water Polo":          ["l", -8],
+  "Swimming":            ["r",  0],
+};
+
+function SportCostBubble() {
+  const [sizeBy, setSizeBy] = useState("nc");
+  const [hover, setHover] = useState(null);
+
+  const W = 840, H = 660;
+  const pad = {top: 52, right: 155, bottom: 58, left: 155};
+  const w = W - pad.left - pad.right, h = H - pad.top - pad.bottom;
+
+  const toX = d => Math.log10(Math.max(d.fm, 0.04));
+  const toY = d => Math.log10(Math.max(d.ek, 0.3));
+
+  const xVals = SPORTS.map(toX);
+  const yVals = SPORTS.map(toY);
+  const xMin = Math.min(...xVals) - 0.22;
+  const xMax = Math.max(...xVals) + 0.22;
+  const yMin = Math.min(...yVals) - 0.18;
+  const yMax = Math.max(...yVals) + 0.18;
+
+  const sx = v => pad.left + ((v - xMin) / (xMax - xMin)) * w;
+  const sy = v => pad.top + h - ((v - yMin) / (yMax - yMin)) * h;
+
+  const maxSize = Math.max(...SPORTS.map(d => sizeBy === "nc" ? d.nc : d.tp));
+  const radius = d => {
+    const val = sizeBy === "nc" ? d.nc : d.tp;
+    return 3 + Math.sqrt(val / maxSize) * 18;
+  };
+
+  const facBounds = [Math.log10(0.5), Math.log10(2), Math.log10(10)];
+  const eqBounds = [Math.log10(3), Math.log10(10)];
+
+  const xTicks = [
+    {v: Math.log10(0.05), l: "~0"},
+    {v: Math.log10(0.1), l: "0.1"},
+    {v: Math.log10(0.3), l: "0.3"},
+    {v: Math.log10(1), l: "1"},
+    {v: Math.log10(3), l: "3"},
+    {v: Math.log10(10), l: "10"},
+    {v: Math.log10(30), l: "30"},
+  ];
+  const yTicks = [
+    {v: Math.log10(0.5), l: "0.5"},
+    {v: Math.log10(1), l: "1"},
+    {v: Math.log10(3), l: "3"},
+    {v: Math.log10(10), l: "10"},
+    {v: Math.log10(30), l: "30"},
+    {v: Math.log10(100), l: "100"},
+    {v: Math.log10(200), l: "200"},
+  ];
+
+  const zones = [
+    {x0: xMin, x1: facBounds[0], label: "Minimal"},
+    {x0: facBounds[0], x1: facBounds[1], label: "Moderate"},
+    {x0: facBounds[1], x1: facBounds[2], label: "High"},
+    {x0: facBounds[2], x1: xMax, label: "Very High"},
+  ];
+  const zoneColors = ["rgba(34,197,94,0.035)", "rgba(59,130,246,0.035)", "rgba(234,179,8,0.035)", "rgba(220,38,38,0.035)"];
+
+  const btn = (active, label, val) => (
+    <button onClick={() => setSizeBy(val)} style={{
+      padding: "3px 10px", border: active ? "1.5px solid #1a1a2e" : "1px solid #ccc", borderRadius: 3,
+      background: active ? "#1a1a2e" : "#fff", color: active ? "#fff" : "#666",
+      fontSize: 10, cursor: "pointer", fontFamily: "inherit"
+    }}>{label}</button>
+  );
+
+  return <div style={{fontFamily: font, maxWidth: 900, margin: "0 auto", padding: "18px 14px", color: "#1a1a2e", background: "#fefefe"}}>
+    <div style={{borderBottom: "2px solid #1a1a2e", paddingBottom: 7, marginBottom: 14}}>
+      <h2 style={{fontSize: 16, margin: 0, fontWeight: 700, letterSpacing: "-0.3px"}}>
+        Sport Cost Segmentation
+      </h2>
+      <p style={{fontSize: 11, color: "#666", margin: "3px 0 0", lineHeight: 1.5}}>
+        41 main-sample Olympic sports. Training facility cost (Central Europe benchmark) vs personal equipment cost (annual, competitive level).
+        Log scale. Dashed lines = tier boundaries from cost classification.
+      </p>
+    </div>
+
+    <div style={{display: "flex", gap: 4, alignItems: "center", marginBottom: 10}}>
+      <span style={{fontSize: 10, color: "#888"}}>Bubble size:</span>
+      {btn(sizeBy === "nc", "Countries scoring", "nc")}
+      {btn(sizeBy === "tp", "Total points", "tp")}
+    </div>
+
+    <svg width={W} height={H} style={{fontFamily: font, overflow: "visible"}} onMouseLeave={() => setHover(null)}>
+      <defs>
+        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="1" dy="1" stdDeviation="2" floodOpacity="0.1"/>
+        </filter>
+      </defs>
+
+      {/* Zone backgrounds */}
+      {zones.map((z, i) => (
+        <rect key={i} x={sx(z.x0)} y={pad.top} width={sx(z.x1) - sx(z.x0)} height={h} fill={zoneColors[i]}/>
+      ))}
+
+      {/* Tier boundaries */}
+      {facBounds.map((bv, i) => (
+        <line key={`fb${i}`} x1={sx(bv)} y1={pad.top - 4} x2={sx(bv)} y2={pad.top + h}
+          stroke="#ccc" strokeWidth={0.7} strokeDasharray="5,3"/>
+      ))}
+      {eqBounds.map((bv, i) => (
+        <line key={`eb${i}`} x1={pad.left} y1={sy(bv)} x2={pad.left + w} y2={sy(bv)}
+          stroke="#ccc" strokeWidth={0.7} strokeDasharray="5,3"/>
+      ))}
+
+      {/* Tier labels */}
+      {zones.map((z, i) => (
+        <text key={i} x={(sx(z.x0) + sx(z.x1)) / 2} y={pad.top - 9}
+          textAnchor="middle" style={{fontSize: 9, fill: "#aaa", fontWeight: 500, letterSpacing: "0.3px"}}>
+          {z.label}
+        </text>
+      ))}
+      <text x={pad.left + w + 8} y={(sy(yMax) + sy(eqBounds[1])) / 2 + 3} style={{fontSize: 8.5, fill: "#aaa"}}>High eq.</text>
+      <text x={pad.left + w + 8} y={(sy(eqBounds[1]) + sy(eqBounds[0])) / 2 + 3} style={{fontSize: 8.5, fill: "#aaa"}}>Med eq.</text>
+      <text x={pad.left + w + 8} y={(sy(eqBounds[0]) + sy(yMin)) / 2 + 3} style={{fontSize: 8.5, fill: "#aaa"}}>Low eq.</text>
+
+      {/* Axes */}
+      <line x1={pad.left} y1={pad.top + h} x2={pad.left + w} y2={pad.top + h} stroke="#333" strokeWidth={1}/>
+      <line x1={pad.left} y1={pad.top} x2={pad.left} y2={pad.top + h} stroke="#333" strokeWidth={1}/>
+
+      {xTicks.filter(t => t.v >= xMin && t.v <= xMax).map(t => (
+        <g key={`xt${t.l}`}>
+          <line x1={sx(t.v)} y1={pad.top + h} x2={sx(t.v)} y2={pad.top + h + 5} stroke="#333" strokeWidth={0.5}/>
+          <text x={sx(t.v)} y={pad.top + h + 17} textAnchor="middle" style={{fontSize: 9.5, fill: "#555"}}>{t.l}</text>
+        </g>
+      ))}
+      {yTicks.filter(t => t.v >= yMin && t.v <= yMax).map(t => (
+        <g key={`yt${t.l}`}>
+          <line x1={pad.left - 5} y1={sy(t.v)} x2={pad.left} y2={sy(t.v)} stroke="#333" strokeWidth={0.5}/>
+          <text x={pad.left - 8} y={sy(t.v) + 3.5} textAnchor="end" style={{fontSize: 9.5, fill: "#555"}}>{t.l}</text>
+        </g>
+      ))}
+
+      <text x={pad.left + w / 2} y={H - 6} textAnchor="middle" style={{fontSize: 11.5, fill: "#333", fontWeight: 500}}>
+        Training Facility Cost (€M)
+      </text>
+      <text x={16} y={pad.top + h / 2} textAnchor="middle" style={{fontSize: 11.5, fill: "#333", fontWeight: 500}}
+        transform={`rotate(-90,16,${pad.top + h / 2})`}>
+        Personal Equipment Cost (€K/year)
+      </text>
+
+      {/* Bubbles */}
+      {[...SPORTS].sort((a, b) => radius(b) - radius(a)).map(d => {
+        const cx = sx(toX(d));
+        const cy = sy(toY(d));
+        const r = radius(d);
+        const isH = hover === d.s;
+        return <circle key={d.s} cx={cx} cy={cy} r={r}
+          fill="#1a1a2e" opacity={isH ? 0.35 : 0.12}
+          stroke="#1a1a2e" strokeWidth={isH ? 1.5 : 0.6}
+          onMouseEnter={() => setHover(d.s)} style={{cursor: "default"}}/>;
+      })}
+
+      {/* Labels with connectors */}
+      {SPORTS.map(d => {
+        const cx = sx(toX(d));
+        const cy = sy(toY(d));
+        const r = radius(d);
+        const [side, vNudge] = LABEL_POS[d.s] || ["r", 0];
+        const isH = hover === d.s;
+
+        const gap = r + 4;
+        const labelX = side === "r" ? cx + gap : cx - gap;
+        const labelY = cy + vNudge;
+        const anchor = side === "r" ? "start" : "end";
+
+        const edgeX = side === "r" ? cx + r + 1 : cx - r - 1;
+
+        return <g key={`lbl-${d.s}`}>
+          <line x1={edgeX} y1={cy + vNudge * 0.3} x2={labelX + (side === "r" ? -2 : 2)} y2={labelY}
+            stroke="#ccc" strokeWidth={0.5} opacity={isH ? 0.9 : 0.4}/>
+          <text x={labelX} y={labelY + 3} textAnchor={anchor}
+            style={{fontSize: isH ? 9.5 : 8.5, fill: isH ? "#1a1a2e" : "#666",
+              fontWeight: isH ? 600 : 400, pointerEvents: "none"}}>
+            {d.s}
+          </text>
+        </g>;
+      })}
+
+      {/* Tooltip */}
+      {hover && (() => {
+        const d = SPORTS.find(s => s.s === hover);
+        if (!d) return null;
+        const cx = sx(toX(d));
+        const cy = sy(toY(d));
+        const tipW = 210, tipH = 72;
+        let tx = cx + 20, ty = cy - tipH - 10;
+        if (tx + tipW > W - 5) tx = cx - tipW - 20;
+        if (ty < pad.top) ty = cy + 20;
+        return <g style={{pointerEvents: "none"}}>
+          <rect x={tx} y={ty} width={tipW} height={tipH} rx={4}
+            fill="#fff" stroke="#ccc" strokeWidth={1} filter="url(#shadow)"/>
+          <text x={tx + 8} y={ty + 16} style={{fontSize: 11, fontWeight: 600, fill: "#1a1a2e"}}>{d.s}</text>
+          <text x={tx + 8} y={ty + 30} style={{fontSize: 9.5, fill: "#555"}}>
+            Facility: €{d.fm < 0.01 ? "~0" : d.fm.toFixed(2)}M | Equipment: €{d.ek.toFixed(1)}K/yr
+          </text>
+          <text x={tx + 8} y={ty + 43} style={{fontSize: 9.5, fill: "#555"}}>
+            Rich-country share: {(d.rs * 100).toFixed(0)}%
+          </text>
+          <text x={tx + 8} y={ty + 56} style={{fontSize: 9.5, fill: "#555"}}>
+            {d.nc} countries | {d.ne} event-Games | {d.tp.toLocaleString()} pts
+          </text>
+        </g>;
+      })()}
+    </svg>
+
+    {/* Size legend */}
+    <div style={{display: "flex", gap: 20, alignItems: "center", marginTop: 2, marginLeft: pad.left, fontSize: 9.5, color: "#888"}}>
+      <span style={{fontWeight: 500}}>Bubble size = {sizeBy === "nc" ? "countries scoring" : "total points"}:</span>
+      {(sizeBy === "nc" ? [10, 30, 56] : [500, 2000, 4700]).map(n => {
+        const r = 3 + Math.sqrt(n / maxSize) * 18;
+        return <span key={n} style={{display: "inline-flex", alignItems: "center", gap: 4}}>
+          <svg width={Math.max(r * 2 + 2, 8)} height={Math.max(r * 2 + 2, 8)}>
+            <circle cx={r + 1} cy={r + 1} r={r} fill="#1a1a2e" opacity={0.12} stroke="#1a1a2e" strokeWidth={0.6}/>
+          </svg>
+          {n.toLocaleString()}
+        </span>;
+      })}
+    </div>
+  </div>;
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(SportCostBubble));
+    </script>
+</body>
+</html>

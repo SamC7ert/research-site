@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script>
+        const { useState } = React;
+
+// v0.94 POST-DECISION facility costs
+// Changes from pre-decision: Marathon Swimming €50K→€25M, Triathlon €500K→€25M, ModPent €800K→€25M
+const FACILITY_DATA = [
+  {name:"Swimming",oldTier:4,newEur:25000000,newTier:4,type:"individual",conf:"A"},
+  {name:"Water Polo",oldTier:4,newEur:25000000,newTier:4,type:"team",conf:"B"},
+  {name:"Artistic Swimming",oldTier:4,newEur:25000000,newTier:4,type:"team",conf:"B"},
+  {name:"Marathon Swimming",oldTier:1,newEur:25000000,newTier:4,type:"individual",conf:"B",note:"pool-dep"},
+  {name:"Triathlon",oldTier:1,newEur:25000000,newTier:4,type:"individual",conf:"B",note:"pool-dep"},
+  {name:"Modern Pentathlon",oldTier:3,newEur:25000000,newTier:4,type:"individual",conf:"B",note:"pool-dep"},
+  {name:"Canoe Slalom",oldTier:4,newEur:20000000,newTier:4,type:"individual",conf:"A"},
+  {name:"Diving",oldTier:4,newEur:20000000,newTier:4,type:"individual",conf:"B"},
+  {name:"Track Cycling",oldTier:4,newEur:15000000,newTier:4,type:"individual",conf:"B+"},
+  {name:"Golf",oldTier:4,newEur:2700000,newTier:3,type:"individual",conf:"A"},
+  {name:"Shooting",oldTier:3,newEur:4000000,newTier:3,type:"individual",conf:"B"},
+  {name:"Equestrian",oldTier:3,newEur:3000000,newTier:3,type:"individual",conf:"B"},
+  {name:"Rowing",oldTier:3,newEur:3000000,newTier:3,type:"individual",conf:"B"},
+  {name:"Sport Climbing",oldTier:2,newEur:2500000,newTier:3,type:"individual",conf:"B"},
+  {name:"Sailing",oldTier:2,newEur:2500000,newTier:3,type:"individual",conf:"B-"},
+  {name:"Tennis",oldTier:3,newEur:2000000,newTier:3,type:"duel",conf:"A"},
+  {name:"Canoe Sprint",oldTier:3,newEur:2000000,newTier:3,type:"individual",conf:"B"},
+  {name:"Athletics — Track",oldTier:1,newEur:1500000,newTier:2,type:"individual",conf:"A-"},
+  {name:"Hockey (Field)",oldTier:3,newEur:1100000,newTier:2,type:"team",conf:"A"},
+  {name:"Baseball/Softball",oldTier:2,newEur:1000000,newTier:2,type:"team",conf:"C+"},
+  {name:"Athletics — Field",oldTier:2,newEur:800000,newTier:2,type:"individual",conf:"B"},
+  {name:"BMX Racing",oldTier:1,newEur:800000,newTier:2,type:"individual",conf:"B"},
+  {name:"Artistic Gymnastics",oldTier:3,newEur:500000,newTier:2,type:"individual",conf:"B+"},
+  {name:"Trampoline",oldTier:2,newEur:250000,newTier:1,type:"individual",conf:"C"},
+  {name:"Archery",oldTier:2,newEur:200000,newTier:1,type:"individual",conf:"B"},
+  {name:"Beach Volleyball",oldTier:2,newEur:150000,newTier:1,type:"team",conf:"B"},
+  {name:"Fencing",oldTier:2,newEur:150000,newTier:1,type:"duel",conf:"B"},
+  {name:"Football (Soccer)",oldTier:2,newEur:150000,newTier:1,type:"team",conf:"B"},
+  {name:"Rhythmic Gymnastics",oldTier:2,newEur:150000,newTier:1,type:"individual",conf:"C"},
+  {name:"Badminton",oldTier:2,newEur:100000,newTier:1,type:"duel",conf:"B"},
+  {name:"Basketball",oldTier:2,newEur:100000,newTier:1,type:"team",conf:"B"},
+  {name:"Boxing",oldTier:1,newEur:100000,newTier:1,type:"duel",conf:"B"},
+  {name:"Mountain Biking",oldTier:1,newEur:100000,newTier:1,type:"individual",conf:"B"},
+  {name:"Rugby Sevens",oldTier:1,newEur:100000,newTier:1,type:"team",conf:"B"},
+  {name:"Weightlifting",oldTier:1,newEur:100000,newTier:1,type:"individual",conf:"B"},
+  {name:"Handball",oldTier:2,newEur:80000,newTier:1,type:"team",conf:"B"},
+  {name:"Judo",oldTier:1,newEur:80000,newTier:1,type:"duel",conf:"A"},
+  {name:"Table Tennis",oldTier:1,newEur:80000,newTier:1,type:"duel",conf:"B"},
+  {name:"Taekwondo",oldTier:1,newEur:80000,newTier:1,type:"duel",conf:"B"},
+  {name:"Volleyball",oldTier:2,newEur:80000,newTier:1,type:"team",conf:"B"},
+  {name:"Wrestling",oldTier:1,newEur:80000,newTier:1,type:"duel",conf:"A"},
+  {name:"Road Cycling",oldTier:1,newEur:50000,newTier:1,type:"individual",conf:"A"},
+];
+
+const TYPE_COLORS = { individual:"#64748b", team:"#2563eb", duel:"#8b5cf6" };
+const TIER_FILLS = { 4:"#fef2f2", 3:"#fff7ed", 2:"#f0fdf4", 1:"#f8fafc" };
+const TIER_BAR = { 4:"#e74c3c", 3:"#e67e22", 2:"#27ae60", 1:"#7f8c8d" };
+const CONF_STYLE = {
+  "A":{bg:"#14532d",fg:"#fff"},"A-":{bg:"#166534",fg:"#fff"},
+  "B+":{bg:"#854d0e",fg:"#fff"},"B":{bg:"#a16207",fg:"#fff"},"B-":{bg:"#b45309",fg:"#fff"},
+  "C+":{bg:"#991b1b",fg:"#fff"},"C":{bg:"#7f1d1d",fg:"#fff"},
+};
+
+const fmt = (v) => v >= 1e6 ? `€${(v/1e6).toFixed(1)}M` : v >= 1e3 ? `€${(v/1e3).toFixed(0)}K` : `€${v}`;
+const F = "'IBM Plex Mono','JetBrains Mono',monospace";
+
+function TierMigration() {
+  const oldRanked = [...FACILITY_DATA].sort((a,b) => b.oldTier!==a.oldTier ? b.oldTier-a.oldTier : a.name.localeCompare(b.name));
+  const newRanked = [...FACILITY_DATA].sort((a,b) => b.newEur-a.newEur);
+  const oMap = {}; oldRanked.forEach((d,i) => oMap[d.name]=i);
+  const nMap = {}; newRanked.forEach((d,i) => nMap[d.name]=i);
+  const n=FACILITY_DATA.length, lX=170, rX=530, tY=50, rH=15.5;
+  const h = tY+n*rH+40;
+  const y = (r) => tY+r*rH;
+
+  return (
+    <div style={{overflowX:"auto"}}>
+      <svg width={720} height={h} style={{fontFamily:F,fontSize:10}}>
+        <text x={lX-5} y={28} textAnchor="end" fill="#555" fontSize={11} fontWeight={700}>v0.93 Ordinal</text>
+        <text x={rX+5} y={28} textAnchor="start" fill="#555" fontSize={11} fontWeight={700}>v0.94 Continuous (€)</text>
+        {[4,3,2,1].map(t => {
+          const s=oldRanked.filter(d=>d.oldTier===t); if(!s.length) return null;
+          const y1=y(oMap[s[0].name])-6, y2=y(oMap[s[s.length-1].name])+8;
+          return <g key={`lt${t}`}><rect x={0} y={y1} width={lX+6} height={y2-y1} fill={TIER_FILLS[t]} rx={3}/><text x={4} y={(y1+y2)/2+3} fill="#aaa" fontSize={8} fontWeight={600}>T{t}</text></g>;
+        })}
+        {[4,3,2,1].map(t => {
+          const s=newRanked.filter(d=>d.newTier===t); if(!s.length) return null;
+          const y1=y(nMap[s[0].name])-6, y2=y(nMap[s[s.length-1].name])+8;
+          return <g key={`rt${t}`}><rect x={rX-6} y={y1} width={195} height={y2-y1} fill={TIER_FILLS[t]} rx={3}/><text x={rX+183} y={(y1+y2)/2+3} fill="#aaa" fontSize={8} fontWeight={600} textAnchor="end">T{t}</text></g>;
+        })}
+        {FACILITY_DATA.map(d => {
+          const ch=d.oldTier!==d.newTier, td=d.newTier-d.oldTier;
+          const pool=d.note==="pool-dep";
+          return <line key={`l-${d.name}`} x1={lX+4} y1={y(oMap[d.name])} x2={rX-4} y2={y(nMap[d.name])}
+            stroke={!ch?"#d4d4d4":pool?"#0891b2":td>0?"#2563eb":"#dc2626"} strokeWidth={ch?1.8:0.6} opacity={ch?0.6:0.2}/>;
+        })}
+        {oldRanked.map((d,i) => {
+          const ch=d.oldTier!==d.newTier;
+          return <text key={`ol-${d.name}`} x={lX-5} y={y(i)+3.5} textAnchor="end" fill="#333" fontSize={9} fontWeight={ch?600:400} opacity={ch?1:0.35}>{d.name}</text>;
+        })}
+        {newRanked.map((d,i) => {
+          const ch=d.oldTier!==d.newTier, pool=d.note==="pool-dep";
+          return (
+            <g key={`nr-${d.name}`}>
+              <circle cx={rX-10} cy={y(i)} r={3} fill={TYPE_COLORS[d.type]} opacity={0.75}/>
+              <text x={rX+5} y={y(i)+3.5} textAnchor="start" fill="#333" fontSize={9} fontWeight={ch?600:400} opacity={ch?1:0.35}>{d.name}</text>
+              <text x={rX+140} y={y(i)+3.5} textAnchor="end" fill="#888" fontSize={8} opacity={ch?1:0.3}>{fmt(d.newEur)}</text>
+              {ch && <text x={rX+160} y={y(i)+3.5} textAnchor="start" fill={pool?"#0891b2":d.newTier>d.oldTier?"#2563eb":"#dc2626"} fontSize={7.5} fontWeight={700}>
+                {pool ? `🏊T${d.oldTier}→T4` : d.newTier>d.oldTier?`↑T${d.newTier}`:`↓T${d.newTier}`}
+              </text>}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function LogDistribution() {
+  const sorted = [...FACILITY_DATA].sort((a,b) => b.newEur-a.newEur);
+  const bH=14, gap=2.5, lW=148, cW=390, rP=85, tW=lW+cW+rP;
+  const tH = sorted.length*(bH+gap)+60;
+  const lnMin=Math.log(50000), lnMax=Math.log(25000000);
+  const sc = (eur) => ((Math.log(eur)-lnMin)/(lnMax-lnMin))*cW;
+  const bounds = [{eur:500000,l:"€0.5M"},{eur:2000000,l:"€2M"},{eur:10000000,l:"€10M"}];
+  const refs = [100000,500000,1000000,5000000,10000000,25000000];
+
+  return (
+    <div style={{overflowX:"auto"}}>
+      <svg width={tW} height={tH} style={{fontFamily:F,fontSize:10}}>
+        {bounds.map(b => <g key={b.l}><line x1={lW+sc(b.eur)} y1={28} x2={lW+sc(b.eur)} y2={tH-10} stroke="#e74c3c" strokeWidth={0.8} strokeDasharray="3,3" opacity={0.35}/><text x={lW+sc(b.eur)} y={22} textAnchor="middle" fill="#c0392b" fontSize={8} fontWeight={600}>{b.l}</text></g>)}
+        {refs.map(v => <g key={v}><line x1={lW+sc(v)} y1={28} x2={lW+sc(v)} y2={tH-10} stroke="#f0f0f0" strokeWidth={0.5}/><text x={lW+sc(v)} y={22} textAnchor="middle" fill="#bbb" fontSize={7}>{fmt(v)}</text></g>)}
+        {sorted.map((d,i) => {
+          const yy=34+i*(bH+gap), w=sc(d.newEur), cf=CONF_STYLE[d.conf]||CONF_STYLE["B"], pool=d.note==="pool-dep";
+          return (
+            <g key={d.name}>
+              <circle cx={6} cy={yy+bH/2} r={3} fill={TYPE_COLORS[d.type]} opacity={0.75}/>
+              <text x={14} y={yy+bH/2+3} fill={pool?"#0891b2":"#333"} fontSize={9} fontWeight={pool?600:500}>{d.name}</text>
+              <rect x={lW} y={yy+1} width={w} height={bH-2} fill={pool?"#0891b2":TIER_BAR[d.newTier]} rx={2} opacity={pool?0.5:0.7}/>
+              <text x={lW+w+4} y={yy+bH/2+3} fill="#666" fontSize={8}>{fmt(d.newEur)}</text>
+              <rect x={tW-28} y={yy+2} width={16} height={bH-4} rx={3} fill={cf.bg}/>
+              <text x={tW-20} y={yy+bH/2+2.5} textAnchor="middle" fill={cf.fg} fontSize={7} fontWeight={700}>{d.conf}</text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
+function ResultsComparison() {
+  // Horse race: Individual, scoring-only, equipment cost
+  const hrData = [
+    {label:"Ind Full, Equipment",
+      v93_alone:"-0.676 (0.054)", v93_hr:"-0.679 (0.048)", v93_att:"-0.6%", v93_gdp:"+5.86 (0.005)",
+      v94_alone:"-0.676 (0.054)", v94_hr:"-0.704 (0.043)", v94_att:"-4.2%", v94_gdp:"+3.17 (0.003)"},
+    {label:"Ind Upper, Equipment",
+      v93_alone:"-2.537 (0.012)", v93_hr:"-2.537 (0.011)", v93_att:"-0.0%", v93_gdp:"+5.01 (0.035)",
+      v94_alone:"-2.537 (0.012)", v94_hr:"-2.540 (0.012)", v94_att:"-0.1%", v94_gdp:"+3.26 (0.013)"},
+    {label:"Ind Full, E+C+Co",
+      v93_alone:"-0.764 (0.069)", v93_hr:"-0.637 (0.124)", v93_att:"+16.6%", v93_gdp:"+5.61 (0.008)",
+      v94_alone:"-0.764 (0.069)", v94_hr:"-0.718 (0.088)", v94_att:"+6.0%", v94_gdp:"+3.02 (0.004)"},
+    {label:"Ind Upper, E+C+Co",
+      v93_alone:"-2.632 (0.026)", v93_hr:"-2.573 (0.031)", v93_att:"+2.2%", v93_gdp:"+4.48 (0.088)",
+      v94_alone:"-2.632 (0.026)", v94_hr:"-2.604 (0.029)", v94_att:"+1.1%", v94_gdp:"+3.11 (0.016)"},
+    {label:"Ind Full, Total",
+      v93_alone:"-0.576 (0.075)", v93_hr:"-0.403 (0.193)", v93_att:"+30.0%", v93_gdp:"+5.56 (0.008)",
+      v94_alone:"-0.576 (0.075)", v94_hr:"-0.486 (0.124)", v94_att:"+15.5%", v94_gdp:"+2.96 (0.004)"},
+    {label:"Ind Upper, Total",
+      v93_alone:"-1.815 (0.054)", v93_hr:"-1.738 (0.069)", v93_att:"+4.3%", v93_gdp:"+4.39 (0.108)",
+      v94_alone:"-1.815 (0.054)", v94_hr:"-1.757 (0.064)", v94_att:"+3.2%", v94_gdp:"+3.00 (0.022)"},
+  ];
+
+  const fw = [
+    {var:"Gini × ln(equip)", v93:"-2.47 (0.020)", v94:"-2.49 (0.022)", note:"Stable"},
+    {var:"GDP × facility", v93:"+6.15 (0.008)", v94:"+4.19 (0.004)", note:"Stronger"},
+    {var:"GDP × ln(equip)", v93:"-0.65 (0.902)", v94:"-1.31 (0.814)", note:"Null ✓"},
+    {var:"Gini × facility", v93:"+0.85 (0.014)", v94:"+0.55 (0.025)", note:"Stable"},
+  ];
+
+  const cellS = {padding:"4px 6px",fontSize:9,borderBottom:"1px solid #eee",fontFamily:F};
+  const headS = {...cellS,fontWeight:700,background:"#f5f5f0",color:"#555",position:"sticky",top:0};
+  const isGood = (s) => {
+    const m = s.match(/\(([0-9.]+)\)/);
+    return m && parseFloat(m[1]) < 0.05;
+  };
+
+  return (
+    <div style={{fontSize:10}}>
+      <div style={{marginBottom:16}}>
+        <div style={{fontWeight:700,fontSize:12,color:"#333",marginBottom:6}}>Horse Race: Gini×ln(cost) + GDP×facility</div>
+        <div style={{overflowX:"auto"}}>
+          <table style={{borderCollapse:"collapse",width:"100%",minWidth:700}}>
+            <thead>
+              <tr>
+                <th style={{...headS,textAlign:"left",minWidth:140}}>Specification</th>
+                <th colSpan={3} style={{...headS,textAlign:"center",background:"#f0f0e8",borderLeft:"2px solid #ddd"}}>v0.93 (ordinal tiers)</th>
+                <th colSpan={3} style={{...headS,textAlign:"center",background:"#e8f0f0",borderLeft:"2px solid #ddd"}}>v0.94 (continuous €)</th>
+              </tr>
+              <tr>
+                <th style={headS}></th>
+                <th style={{...headS,background:"#f0f0e8",borderLeft:"2px solid #ddd"}}>Gini in HR</th>
+                <th style={{...headS,background:"#f0f0e8"}}>Att.</th>
+                <th style={{...headS,background:"#f0f0e8"}}>GDP×fac</th>
+                <th style={{...headS,background:"#e8f0f0",borderLeft:"2px solid #ddd"}}>Gini in HR</th>
+                <th style={{...headS,background:"#e8f0f0"}}>Att.</th>
+                <th style={{...headS,background:"#e8f0f0"}}>GDP×fac</th>
+              </tr>
+            </thead>
+            <tbody>
+              {hrData.map((r,i) => (
+                <tr key={i} style={{background:i%2===0?"#fff":"#fafaf8"}}>
+                  <td style={{...cellS,fontWeight:600,color:"#444"}}>{r.label}</td>
+                  <td style={{...cellS,borderLeft:"2px solid #ddd",color:isGood(r.v93_hr)?"#166534":"#666"}}>{r.v93_hr}</td>
+                  <td style={{...cellS,color:"#888"}}>{r.v93_att}</td>
+                  <td style={{...cellS,color:isGood(r.v93_gdp)?"#166534":"#888"}}>{r.v93_gdp}</td>
+                  <td style={{...cellS,borderLeft:"2px solid #ddd",fontWeight:600,color:isGood(r.v94_hr)?"#166534":"#666"}}>{r.v94_hr}</td>
+                  <td style={{...cellS,fontWeight:600,color:"#0891b2"}}>{r.v94_att}</td>
+                  <td style={{...cellS,fontWeight:600,color:isGood(r.v94_gdp)?"#166534":"#888"}}>{r.v94_gdp}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style={{marginBottom:16}}>
+        <div style={{fontWeight:700,fontSize:12,color:"#333",marginBottom:6}}>4-Way Model: Individual, Upper, Equipment</div>
+        <div style={{overflowX:"auto"}}>
+          <table style={{borderCollapse:"collapse",width:"100%",maxWidth:550}}>
+            <thead>
+              <tr>
+                <th style={{...headS,textAlign:"left"}}>Interaction</th>
+                <th style={{...headS,background:"#f0f0e8"}}>v0.93</th>
+                <th style={{...headS,background:"#e8f0f0"}}>v0.94</th>
+                <th style={headS}>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fw.map((r,i) => (
+                <tr key={i} style={{background:i%2===0?"#fff":"#fafaf8"}}>
+                  <td style={{...cellS,fontWeight:600,color:"#444"}}>{r.var}</td>
+                  <td style={{...cellS,color:isGood(r.v93)?"#166534":"#888"}}>{r.v93}</td>
+                  <td style={{...cellS,fontWeight:600,color:isGood(r.v94)?"#166534":"#888"}}>{r.v94}</td>
+                  <td style={{...cellS,color:"#0891b2",fontWeight:600}}>{r.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style={{background:"#f0f9ff",border:"1px solid #bae6fd",borderRadius:6,padding:"10px 14px",fontSize:10,lineHeight:1.6,color:"#1e3a5f"}}>
+        <div style={{fontWeight:700,marginBottom:4}}>Key improvements v0.93 → v0.94</div>
+        <div>Gini×equip Full: p=0.048 → <b>p=0.043</b> (stronger after adding GDP channel)</div>
+        <div>GDP×facility Upper: p=0.035 → <b>p=0.013</b> (much more significant)</div>
+        <div>E+C+Co attenuation Full: 16.6% → <b>6.0%</b> (better channel separation)</div>
+        <div>Total attenuation Full: 30.0% → <b>15.5%</b> (less confounding)</div>
+        <div>4-way GDP×cost: null confirmed in both versions (0.902 → 0.814)</div>
+      </div>
+    </div>
+  );
+}
+
+function Legend({type}) {
+  if (type==="slope") return (
+    <div style={{display:"flex",gap:14,padding:"6px 0",fontSize:10,color:"#666",flexWrap:"wrap"}}>
+      <div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:16,height:2,background:"#2563eb"}}/><span>Tier up</span></div>
+      <div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:16,height:2,background:"#dc2626"}}/><span>Tier down</span></div>
+      <div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:16,height:2,background:"#0891b2"}}/><span>Pool-dependent reclassification</span></div>
+      <div style={{display:"flex",alignItems:"center",gap:4}}><div style={{width:16,height:2,background:"#d4d4d4"}}/><span>Same tier</span></div>
+      <div style={{borderLeft:"1px solid #ddd",paddingLeft:10,display:"flex",gap:8}}>
+        {Object.entries(TYPE_COLORS).map(([k,c]) => <div key={k} style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:7,height:7,borderRadius:"50%",background:c}}/><span style={{textTransform:"capitalize"}}>{k}</span></div>)}
+      </div>
+    </div>
+  );
+  if (type==="dist") return (
+    <div style={{display:"flex",gap:14,padding:"6px 0",fontSize:10,color:"#666",flexWrap:"wrap"}}>
+      {[{c:"#e74c3c",l:"T4 >€10M"},{c:"#e67e22",l:"T3 €2–10M"},{c:"#27ae60",l:"T2 €0.5–2M"},{c:"#7f8c8d",l:"T1 <€0.5M"},{c:"#0891b2",l:"Pool-dep"}].map(t =>
+        <div key={t.l} style={{display:"flex",alignItems:"center",gap:3}}><div style={{width:10,height:8,background:t.c,borderRadius:2,opacity:0.7}}/><span>{t.l}</span></div>
+      )}
+      <div style={{borderLeft:"1px solid #ddd",paddingLeft:10,display:"flex",gap:6}}>
+        {["A","B","C"].map(k => <span key={k} style={{background:CONF_STYLE[k].bg,color:CONF_STYLE[k].fg,fontSize:8,fontWeight:700,padding:"1px 4px",borderRadius:3}}>{k}</span>)}
+      </div>
+    </div>
+  );
+  return null;
+}
+
+function App() {
+  const [tab, setTab] = useState("slope");
+  const tabs = [
+    {id:"slope",label:"Tier Migration"},
+    {id:"dist",label:"Log Distribution"},
+    {id:"results",label:"v0.93 vs v0.94 Results"},
+  ];
+  const poolDep = FACILITY_DATA.filter(d=>d.note==="pool-dep").length;
+  const changed = FACILITY_DATA.filter(d=>d.oldTier!==d.newTier).length;
+
+  return (
+    <div style={{fontFamily:F,maxWidth:800,margin:"0 auto",padding:20,background:"#fafaf8",minHeight:"100vh"}}>
+      <h1 style={{fontSize:15,fontWeight:700,color:"#222",margin:"0 0 2px"}}>
+        v0.94 Facility Cost Classification
+      </h1>
+      <p style={{fontSize:10,color:"#888",margin:"0 0 14px",lineHeight:1.5}}>
+        41 sports · Ordinal tiers → continuous €M · {changed} tier changes · {poolDep} pool-dependent reclassifications (Marathon Swim, Triathlon, ModPent → €25M)
+        <br/>Range: €50K (Road Cycling) – €25M (Swimming) · 6 sports at €25M
+      </p>
+
+      <div style={{display:"flex",gap:0,marginBottom:10,borderBottom:"2px solid #e5e5e5"}}>
+        {tabs.map(t => (
+          <button key={t.id} onClick={()=>setTab(t.id)} style={{
+            padding:"7px 14px",fontSize:10,fontWeight:tab===t.id?700:400,
+            color:tab===t.id?"#222":"#999",background:"none",border:"none",
+            borderBottom:tab===t.id?"2px solid #222":"2px solid transparent",
+            cursor:"pointer",marginBottom:-2,fontFamily:"inherit",
+          }}>{t.label}</button>
+        ))}
+      </div>
+
+      {tab!=="results" && <Legend type={tab}/>}
+      {tab==="slope" && <TierMigration/>}
+      {tab==="dist" && <LogDistribution/>}
+      {tab==="results" && <ResultsComparison/>}
+    </div>
+  );
+}
+
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
