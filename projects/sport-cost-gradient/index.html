@@ -859,6 +859,103 @@ button#theme-toggle:hover {
 }
 
  
+.findings-section {
+  margin: 2.5rem 0;
+}
+
+.findings-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.finding-row {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(128,128,128,0.1);
+}
+
+.finding-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.finding-text {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.finding-number {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: var(--theme, #fff);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 50%;
+  margin-top: 0.1rem;
+}
+
+.finding-body {
+  min-width: 0;
+}
+
+.finding-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.4rem;
+  line-height: 1.3;
+}
+
+.finding-desc {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--secondary);
+  margin: 0;
+}
+
+.finding-desc em {
+  font-style: italic;
+}
+
+.finding-viz {
+  flex-shrink: 0;
+}
+
+.finding-viz .viz-thumb {
+  display: block;
+  width: 100%;
+}
+
+.finding-viz .viz-thumb-frame {
+  padding-bottom: 75%;
+}
+
+@media (max-width: 768px) {
+  .finding-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .finding-viz {
+    max-width: 280px;
+  }
+}
+
+ 
 .dark .project-card .status-active {
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -928,46 +1025,129 @@ button#theme-toggle:hover {
     </nav>
 </header>
 <main class="main">
-<article class="viz-page">
-  <div class="viz-grid">
 
+<article class="viz-page">
+
+  
+  <header class="post-header">
+    <h1 class="post-title">Income Inequality, Sport Cost, and Olympic Performance</h1>
     
-    <div class="viz-content">
-      <header class="post-header">
-        <h1 class="post-title">Income Inequality, Sport Cost, and Olympic Performance</h1>
-        
-        <div class="post-description">Does income inequality affect Olympic performance differently depending on what it costs to participate in a sport?</div>
-        
-        
-        <span class="project-status status-active">Active</span>
-        
-      </header>
-      <div class="post-content">
-        <h2 id="working-paper">Working Paper</h2>
+    <div class="post-description">Does income inequality affect Olympic performance differently depending on what it costs to participate in a sport?</div>
+    
+    
+    <span class="project-status status-active">Active</span>
+    
+  </header>
+
+  
+  <div class="post-content">
+    <h2 id="working-paper">Working Paper</h2>
 <p><strong>Status:</strong> Draft v0.95 (February 2026)</p>
 <hr>
 <h2 id="abstract">Abstract</h2>
 <p>Geloso and Kufenko (2021) hypothesised that income inequality affects Olympic performance through sport-specific cost barriers, but could not test this due to the absence of reliable sport-cost data. We construct a two-dimensional cost classification &ndash; household equipment cost and training facility cost &ndash; for 41 Olympic sports and test whether inequality&rsquo;s effect varies with cost, using a panel of 71 countries across seven Summer Games (2000&ndash;2024), scoring the top six finishers per event.</p>
-<p>The aggregate Gini&ndash;performance relationship is zero after regional controls &ndash; a textbook instance of Galton&rsquo;s Problem (Naroll 1961). But this null conceals a systematic gradient: inequality increasingly hurts performance as personal participation cost rises. In individual sports among upper-income countries, the interaction of Gini with log equipment cost is β = −2.54 (p = 0.012). The gradient is absent in team and duel sports.</p>
+<p>The aggregate Gini&ndash;performance relationship is zero after regional controls &ndash; a textbook instance of Galton&rsquo;s Problem (Ross &amp; Homer 1976). But this null conceals a systematic gradient: inequality increasingly hurts performance as personal participation cost rises. In individual sports among upper-income countries, the interaction of Gini with log equipment cost is β = −2.54 (p = 0.012). The gradient is absent in team and duel sports.</p>
 <p>The two cost dimensions capture distinct mechanisms. Income inequality interacts with household equipment cost but not with facility cost. GDP per capita interacts with facility cost (β = +3.2–3.7, p = 0.003–0.017) but not with equipment cost. In a joint specification, both channels survive with near-zero mutual attenuation. Inequality operates through household cost barriers; absolute wealth operates through infrastructure provision.</p>
 <p>Gender decomposition reveals the cost gradient operates on both men&rsquo;s and women&rsquo;s performance, with women slightly more affected. The aggregate gender equality (GGI)&ndash;performance association claimed by Berdahl et al. (2014) is confirmed as Galton&rsquo;s Problem, but the gendered pattern is real: it operates through income inequality and sport cost, not through gender equality indices.</p>
-<hr>
-<h2 id="key-findings">Key Findings</h2>
-<ol>
-<li>
-<p><strong>The Aggregate Puzzle (Galton&rsquo;s Problem):</strong> The Gini&ndash;performance relationship is zero after regional controls. But this null hides real heterogeneity &ndash; 7 regions show positive effects, 3 negative.</p>
-</li>
-<li>
-<p><strong>The Sport-Cost Gradient:</strong> Inequality&rsquo;s effect varies systematically with sport cost. In individual sports among upper-income countries, the interaction of Gini with log equipment cost is significant (p = 0.012). Team and duel sports show no such gradient.</p>
-</li>
-<li>
-<p><strong>Two Distinct Channels:</strong> GDP operates through <em>facility</em> infrastructure cost. Gini operates through <em>household</em> equipment cost. These are independent mechanisms with near-zero mutual attenuation.</p>
-</li>
-<li>
-<p><strong>Gender Decomposition:</strong> The Gini × equipment gradient operates on both men&rsquo;s and women&rsquo;s performance, with women slightly more affected &ndash; consistent with a household budget allocation mechanism. The aggregate GGI&ndash;performance association is Galton&rsquo;s Problem; the real gendered pattern runs through income inequality and sport cost.</p>
-</li>
-</ol>
-<hr>
+
+  </div>
+
+  
+  
+  <div class="findings-section">
+    <h2 class="findings-heading">Key Findings</h2>
+    
+    
+    
+    
+    <div class="finding-row">
+      <div class="finding-text">
+        <div class="finding-number">1</div>
+        <div class="finding-body">
+          <h3 class="finding-title">The Aggregate Puzzle (Galton&#39;s Problem)</h3>
+          <p class="finding-desc">The Gini&ndash;performance relationship is zero after regional controls. But this null hides real heterogeneity &ndash; 7 regions show positive effects, 3 negative.</p>
+        </div>
+      </div>
+      <div class="finding-viz">
+        <a href="/viz/paper_figures.html" target="_blank" class="viz-thumb" title="The Aggregate Puzzle (Galton&#39;s Problem) — click to open interactive">
+          <div class="viz-thumb-frame">
+            <img src="/viz/thumbs/paper_figures.png" loading="lazy" alt="The Aggregate Puzzle (Galton&#39;s Problem)">
+          </div>
+          <div class="viz-thumb-label">The Aggregate Puzzle (Galton&#39;s Problem)</div>
+        </a>
+      </div>
+    </div>
+    
+    
+    
+    
+    <div class="finding-row">
+      <div class="finding-text">
+        <div class="finding-number">2</div>
+        <div class="finding-body">
+          <h3 class="finding-title">The Sport-Cost Gradient</h3>
+          <p class="finding-desc">Inequality&rsquo;s effect varies systematically with sport cost. In individual sports among upper-income countries, the interaction of Gini with log equipment cost is significant (p = 0.012). Team and duel sports show no such gradient.</p>
+        </div>
+      </div>
+      <div class="finding-viz">
+        <a href="/viz/results_dashboard.html" target="_blank" class="viz-thumb" title="The Sport-Cost Gradient — click to open interactive">
+          <div class="viz-thumb-frame">
+            <img src="/viz/thumbs/results_dashboard.png" loading="lazy" alt="The Sport-Cost Gradient">
+          </div>
+          <div class="viz-thumb-label">The Sport-Cost Gradient</div>
+        </a>
+      </div>
+    </div>
+    
+    
+    
+    
+    <div class="finding-row">
+      <div class="finding-text">
+        <div class="finding-number">3</div>
+        <div class="finding-body">
+          <h3 class="finding-title">Two Distinct Channels</h3>
+          <p class="finding-desc">GDP operates through facility infrastructure cost. Gini operates through household equipment cost. These are independent mechanisms with near-zero mutual attenuation.</p>
+        </div>
+      </div>
+      <div class="finding-viz">
+        <a href="/viz/f6_channels.html" target="_blank" class="viz-thumb" title="Two Distinct Channels — click to open interactive">
+          <div class="viz-thumb-frame">
+            <img src="/viz/thumbs/f6_channels.png" loading="lazy" alt="Two Distinct Channels">
+          </div>
+          <div class="viz-thumb-label">Two Distinct Channels</div>
+        </a>
+      </div>
+    </div>
+    
+    
+    
+    
+    <div class="finding-row">
+      <div class="finding-text">
+        <div class="finding-number">4</div>
+        <div class="finding-body">
+          <h3 class="finding-title">Gender Decomposition</h3>
+          <p class="finding-desc">The Gini × equipment gradient operates on both men&rsquo;s and women&rsquo;s performance, with women slightly more affected &ndash; consistent with a household budget allocation mechanism. The aggregate GGI&ndash;performance association is Galton&rsquo;s Problem; the real gendered pattern runs through income inequality and sport cost.</p>
+        </div>
+      </div>
+      <div class="finding-viz">
+        <a href="/viz/cost_classification.html" target="_blank" class="viz-thumb" title="Gender Decomposition — click to open interactive">
+          <div class="viz-thumb-frame">
+            <img src="/viz/thumbs/cost_classification.png" loading="lazy" alt="Gender Decomposition">
+          </div>
+          <div class="viz-thumb-label">Gender Decomposition</div>
+        </a>
+      </div>
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="post-content">
+    
 <h2 id="explore-this-research">Explore This Research</h2>
 <ul>
 <li><a href="/projects/sport-cost-gradient/blog/">Research Journal</a> &ndash; Blog posts documenting how this research developed</li>
@@ -978,54 +1158,9 @@ button#theme-toggle:hover {
 <h2 id="license">License</h2>
 <p>This work is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>. Code and scripts under <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
 
-      </div>
-    </div>
-
-    
-    <aside class="viz-sidebar" style="flex-direction: column;">
-      <div class="viz-sidebar-header">Key Figures</div>
-      <div class="version-viz-grid">
-        
-        
-        
-        <a href="/viz/paper_figures.html" target="_blank" class="viz-thumb" title="Paper Figures — Scatter plots and gradients — click to open interactive">
-          <div class="viz-thumb-frame">
-            <img src="/viz/thumbs/paper_figures.png" loading="lazy" alt="Paper Figures — Scatter plots and gradients">
-          </div>
-          <div class="viz-thumb-label">Paper Figures — Scatter plots and gradients</div>
-        </a>
-        
-        
-        
-        <a href="/viz/results_dashboard.html" target="_blank" class="viz-thumb" title="Results Dashboard — All model specifications — click to open interactive">
-          <div class="viz-thumb-frame">
-            <img src="/viz/thumbs/results_dashboard.png" loading="lazy" alt="Results Dashboard — All model specifications">
-          </div>
-          <div class="viz-thumb-label">Results Dashboard — All model specifications</div>
-        </a>
-        
-        
-        
-        <a href="/viz/f6_channels.html" target="_blank" class="viz-thumb" title="Two-Channel Separation (F6) — click to open interactive">
-          <div class="viz-thumb-frame">
-            <img src="/viz/thumbs/f6_channels.png" loading="lazy" alt="Two-Channel Separation (F6)">
-          </div>
-          <div class="viz-thumb-label">Two-Channel Separation (F6)</div>
-        </a>
-        
-        
-        
-        <a href="/viz/cost_classification.html" target="_blank" class="viz-thumb" title="Cost Classification Explorer — click to open interactive">
-          <div class="viz-thumb-frame">
-            <img src="/viz/thumbs/cost_classification.png" loading="lazy" alt="Cost Classification Explorer">
-          </div>
-          <div class="viz-thumb-label">Cost Classification Explorer</div>
-        </a>
-        
-      </div>
-    </aside>
-
   </div>
+  
+
 </article>
     </main>
     
