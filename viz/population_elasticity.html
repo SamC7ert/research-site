@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Population Scaling & the Per-Capita Illusion</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #fff; color: #1a1a2e; }
+#root { max-width: 960px; margin: 0 auto; padding: 20px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const DATA = [{"noc":"ARG","name":"Argentina","period":1,"total_points":89,"ln_pop":17.4743,"ln_points":4.4886,"pop_millions":38.82,"gini":48.5,"region":"Latin America & Caribbean","gdp":12118},{"noc":"ARG","name":"Argentina","period":2,"total_points":86,"ln_pop":17.6264,"ln_points":4.4543,"pop_millions":45.19,"gini":42.3,"region":"Latin America & Caribbean","gdp":22393},{"noc":"ARM","name":"Armenia","period":1,"total_points":38.25,"ln_pop":14.9676,"ln_points":3.6441,"pop_millions":3.16,"gini":37.5,"region":"Western & Central Asia","gdp":4377},{"noc":"ARM","name":"Armenia","period":2,"total_points":82,"ln_pop":14.9012,"ln_points":4.4067,"pop_millions":2.96,"gini":29.9,"region":"Western & Central Asia","gdp":14706},{"noc":"AUS","name":"Australia","period":1,"total_points":1014,"ln_pop":16.8079,"ln_points":6.9217,"pop_millions":19.93,"gini":33.1,"region":"NA & Oceania","gdp":31815},{"noc":"AUS","name":"Australia","period":2,"total_points":977.25,"ln_pop":17.06,"ln_points":6.8847,"pop_millions":25.65,"gini":34.3,"region":"NA & Oceania","gdp":54184},{"noc":"AUT","name":"Austria","period":1,"total_points":104.75,"ln_pop":15.9162,"ln_points":4.6516,"pop_millions":8.17,"gini":29.8,"region":"Western Europe","gdp":33519},{"noc":"AUT","name":"Austria","period":2,"total_points":82.5,"ln_pop":16.0035,"ln_points":4.4128,"pop_millions":8.92,"gini":29.3,"region":"Western Europe","gdp":58523},{"noc":"BLR","name":"Belarus","period":1,"total_points":332.25,"ln_pop":16.0907,"ln_points":5.8059,"pop_millions":9.73,"gini":28.7,"region":"Eastern Europe","gdp":8483},{"noc":"BLR","name":"Belarus","period":2,"total_points":219,"ln_pop":16.0541,"ln_points":5.3891,"pop_millions":9.38,"gini":24.4,"region":"Eastern Europe","gdp":24872},{"noc":"BRA","name":"Brazil","period":1,"total_points":236.95,"ln_pop":19.0232,"ln_points":5.4678,"pop_millions":182.68,"gini":56.5,"region":"Latin America & Caribbean","gdp":10526},{"noc":"BRA","name":"Brazil","period":2,"total_points":450.75,"ln_pop":19.1562,"ln_points":6.1109,"pop_millions":208.66,"gini":52,"region":"Latin America & Caribbean","gdp":16102},{"noc":"CHN","name":"China","period":1,"total_points":1371.75,"ln_pop":20.9826,"ln_points":7.2238,"pop_millions":1296.08,"gini":40.9,"region":"Eastern Asia","gdp":4505},{"noc":"CHN","name":"China","period":2,"total_points":2069.25,"ln_pop":21.0676,"ln_points":7.6349,"pop_millions":1411.1,"gini":37.1,"region":"Eastern Asia","gdp":18267},{"noc":"CUB","name":"Cuba","period":1,"total_points":502.75,"ln_pop":16.2349,"ln_points":6.2201,"pop_millions":11.24,"gini":38,"region":"Latin America & Caribbean","gdp":7000},{"noc":"CUB","name":"Cuba","period":2,"total_points":296.25,"ln_pop":16.2188,"ln_points":5.6912,"pop_millions":11.06,"gini":38,"region":"Latin America & Caribbean","gdp":12000},{"noc":"DEN","name":"Denmark","period":1,"total_points":153.25,"ln_pop":15.5027,"ln_points":5.0321,"pop_millions":5.4,"gini":24.9,"region":"Northern Europe","gdp":33016},{"noc":"DEN","name":"Denmark","period":2,"total_points":293.25,"ln_pop":15.5788,"ln_points":5.681,"pop_millions":5.83,"gini":28.2,"region":"Northern Europe","gdp":62682},{"noc":"ETH","name":"Ethiopia","period":1,"total_points":150,"ln_pop":18.1473,"ln_points":5.0106,"pop_millions":76.08,"gini":29.8,"region":"Africa","gdp":558},{"noc":"ETH","name":"Ethiopia","period":2,"total_points":186,"ln_pop":18.5939,"ln_points":5.2257,"pop_millions":118.92,"gini":31.1,"region":"Africa","gdp":2407},{"noc":"FRA","name":"France","period":1,"total_points":773.5,"ln_pop":17.954,"ln_points":6.6509,"pop_millions":62.71,"gini":30.6,"region":"Western Europe","gdp":28921},{"noc":"FRA","name":"France","period":2,"total_points":1142.25,"ln_pop":18.0291,"ln_points":7.0408,"pop_millions":67.6,"gini":31.6,"region":"Western Europe","gdp":49482},{"noc":"GBR","name":"Great Britain","period":1,"total_points":725,"ln_pop":17.9097,"ln_points":6.5862,"pop_millions":59.99,"gini":35.6,"region":"Northern Europe","gdp":32051},{"noc":"GBR","name":"Great Britain","period":2,"total_points":1599.83,"ln_pop":18.0164,"ln_points":7.3777,"pop_millions":66.74,"gini":35.1,"region":"Northern Europe","gdp":48230},{"noc":"GER","name":"Germany","period":1,"total_points":1031.6,"ln_pop":18.2285,"ln_points":6.9389,"pop_millions":82.52,"gini":30.2,"region":"Western Europe","gdp":31753},{"noc":"GER","name":"Germany","period":2,"total_points":1155.83,"ln_pop":18.2363,"ln_points":7.0526,"pop_millions":83.16,"gini":31.7,"region":"Western Europe","gdp":58686},{"noc":"HUN","name":"Hungary","period":1,"total_points":351,"ln_pop":16.1288,"ln_points":5.8608,"pop_millions":10.11,"gini":29.9,"region":"Eastern Europe","gdp":16251},{"noc":"HUN","name":"Hungary","period":2,"total_points":487,"ln_pop":16.0846,"ln_points":6.1883,"pop_millions":9.67,"gini":30.6,"region":"Eastern Europe","gdp":35584},{"noc":"INA","name":"Indonesia","period":1,"total_points":86,"ln_pop":19.2445,"ln_points":4.4543,"pop_millions":227.93,"gini":34,"region":"South & SE Asia","gdp":5700},{"noc":"INA","name":"Indonesia","period":2,"total_points":81.5,"ln_pop":19.4316,"ln_points":4.4006,"pop_millions":274.81,"gini":37.9,"region":"South & SE Asia","gdp":11729},{"noc":"IND","name":"India","period":1,"total_points":38,"ln_pop":20.8508,"ln_points":3.6376,"pop_millions":1135.99,"gini":27.7,"region":"South & SE Asia","gdp":2682},{"noc":"IND","name":"India","period":2,"total_points":151,"ln_pop":21.0616,"ln_points":5.0173,"pop_millions":1402.62,"gini":25.5,"region":"South & SE Asia","gdp":6966},{"noc":"ITA","name":"Italy","period":1,"total_points":611.25,"ln_pop":17.873,"ln_points":6.4155,"pop_millions":57.83,"gini":34.3,"region":"Southern Europe","gdp":29581},{"noc":"ITA","name":"Italy","period":2,"total_points":986.08,"ln_pop":17.9005,"ln_points":6.8937,"pop_millions":59.44,"gini":34.8,"region":"Southern Europe","gdp":44436},{"noc":"JAM","name":"Jamaica","period":1,"total_points":159,"ln_pop":14.7984,"ln_points":5.0689,"pop_millions":2.67,"gini":45.5,"region":"Latin America & Caribbean","gdp":7854},{"noc":"JAM","name":"Jamaica","period":2,"total_points":226,"ln_pop":14.856,"ln_points":5.4205,"pop_millions":2.83,"gini":35,"region":"Latin America & Caribbean","gdp":9764},{"noc":"JPN","name":"Japan","period":1,"total_points":549,"ln_pop":18.6657,"ln_points":6.3081,"pop_millions":127.76,"gini":34.6,"region":"Eastern Asia","gdp":30832},{"noc":"JPN","name":"Japan","period":2,"total_points":1026.25,"ln_pop":18.6539,"ln_points":6.9337,"pop_millions":126.26,"gini":32.9,"region":"Eastern Asia","gdp":42426},{"noc":"KEN","name":"Kenya","period":1,"total_points":190.5,"ln_pop":17.3626,"ln_points":5.2497,"pop_millions":34.71,"gini":46.4,"region":"Africa","gdp":2066},{"noc":"KEN","name":"Kenya","period":2,"total_points":297.75,"ln_pop":17.7709,"ln_points":5.6963,"pop_millions":52.22,"gini":38.7,"region":"Africa","gdp":4793},{"noc":"KOR","name":"South Korea","period":1,"total_points":541,"ln_pop":17.6884,"ln_points":6.2934,"pop_millions":48.08,"gini":31.7,"region":"Eastern Asia","gdp":24658},{"noc":"KOR","name":"South Korea","period":2,"total_points":669,"ln_pop":17.7636,"ln_points":6.5058,"pop_millions":51.84,"gini":31.4,"region":"Eastern Asia","gdp":47881},{"noc":"MEX","name":"Mexico","period":1,"total_points":95.25,"ln_pop":18.4637,"ln_points":4.5565,"pop_millions":104.39,"gini":50.3,"region":"Latin America & Caribbean","gdp":12658},{"noc":"MEX","name":"Mexico","period":2,"total_points":198.5,"ln_pop":18.6581,"ln_points":5.2908,"pop_millions":126.8,"gini":43.5,"region":"Latin America & Caribbean","gdp":19354},{"noc":"NED","name":"Netherlands","period":1,"total_points":427.25,"ln_pop":16.6056,"ln_points":6.0574,"pop_millions":16.28,"gini":28.4,"region":"Western Europe","gdp":35961},{"noc":"NED","name":"Netherlands","period":2,"total_points":771.25,"ln_pop":16.6744,"ln_points":6.648,"pop_millions":17.44,"gini":28.5,"region":"Western Europe","gdp":62597},{"noc":"NOR","name":"Norway","period":1,"total_points":152,"ln_pop":15.3398,"ln_points":5.0239,"pop_millions":4.59,"gini":27.6,"region":"Northern Europe","gdp":42667},{"noc":"NOR","name":"Norway","period":2,"total_points":161.25,"ln_pop":15.498,"ln_points":5.083,"pop_millions":5.38,"gini":27.7,"region":"Northern Europe","gdp":67111},{"noc":"NZL","name":"New Zealand","period":1,"total_points":143.5,"ln_pop":15.2234,"ln_points":4.9663,"pop_millions":4.09,"gini":33.6,"region":"NA & Oceania","gdp":25124},{"noc":"NZL","name":"New Zealand","period":2,"total_points":477.08,"ln_pop":15.4393,"ln_points":6.1677,"pop_millions":5.07,"gini":32,"region":"NA & Oceania","gdp":45513},{"noc":"ROU","name":"Romania","period":1,"total_points":374,"ln_pop":16.8813,"ln_points":5.9243,"pop_millions":21.45,"gini":31,"region":"Eastern Europe","gdp":8653},{"noc":"ROU","name":"Romania","period":2,"total_points":172.5,"ln_pop":16.7738,"ln_points":5.1504,"pop_millions":19.27,"gini":34.8,"region":"Eastern Europe","gdp":32209},{"noc":"RSA","name":"South Africa","period":1,"total_points":97.75,"ln_pop":17.7072,"ln_points":4.5824,"pop_millions":48.99,"gini":64.8,"region":"Africa","gdp":9714},{"noc":"RSA","name":"South Africa","period":2,"total_points":171.75,"ln_pop":17.9192,"ln_points":5.146,"pop_millions":60.56,"gini":63,"region":"Africa","gdp":12671},{"noc":"RUS","name":"Russia","period":1,"total_points":1491.25,"ln_pop":18.7858,"ln_points":7.3074,"pop_millions":144.07,"gini":40.3,"region":"Eastern Europe","gdp":10227},{"noc":"RUS","name":"Russia","period":2,"total_points":1187.25,"ln_pop":18.7939,"ln_points":7.0794,"pop_millions":145.25,"gini":36,"region":"Eastern Europe","gdp":31491},{"noc":"SWE","name":"Sweden","period":1,"total_points":208.5,"ln_pop":16.012,"ln_points":5.3399,"pop_millions":8.99,"gini":24.3,"region":"Northern Europe","gdp":33805},{"noc":"SWE","name":"Sweden","period":2,"total_points":280.75,"ln_pop":16.1528,"ln_points":5.6375,"pop_millions":10.35,"gini":30,"region":"Northern Europe","gdp":57489},{"noc":"USA","name":"United States","period":1,"total_points":1901,"ln_pop":19.495,"ln_points":7.5501,"pop_millions":292.81,"gini":40.5,"region":"NA & Oceania","gdp":41725},{"noc":"USA","name":"United States","period":2,"total_points":2701.5,"ln_pop":19.6194,"ln_points":7.9016,"pop_millions":331.58,"gini":39.8,"region":"NA & Oceania","gdp":64402}];
+
+// Full dataset for regression lines (all 142 obs)
+const ALL_DATA = DATA; // Using selected subset for clarity in viz
+
+const GINI_MEDIAN = 33.1;
+const POP_MIN = 13.5;
+const POP_MAX = 21.5;
+const PTS_MIN = 1.5;
+const PTS_MAX = 8.5;
+
+// Colors
+const EQUAL_COLOR = '#1565C0';   // blue - more equal
+const UNEQUAL_COLOR = '#C62828'; // red - more unequal
+const GELOSO_COLOR = '#E65100';  // orange - Geloso's line
+const FIT_COLOR = '#2E7D32';     // green - best fit
+const GRAY = '#9E9E9E';
+
+// Regression parameters from results
+const ALPHA_GELOSO = 1.0;
+const ALPHA_FIT = 0.615;
+// Intercept for the best-fit line in log-log space (approximate from the data)
+// ln(points) = intercept + alpha * ln(pop)
+// Using the mean values: mean(ln_points) ≈ 5.3, mean(ln_pop) ≈ 17.0
+// intercept = 5.3 - 0.615 * 17.0 = -5.155
+const INTERCEPT_FIT = -5.16;
+// For Geloso line (alpha=1): intercept = 5.3 - 1.0 * 17.0 = -11.7
+const INTERCEPT_GELOSO = -11.7;
+
+function App() {
+  const [hoveredPoint, setHoveredPoint] = React.useState(null);
+  const [showResiduals, setShowResiduals] = React.useState(false);
+
+  const W = 900, H = 520;
+  const margin = { top: 40, right: 30, bottom: 60, left: 65 };
+  const pw = W - margin.left - margin.right;
+  const ph = H - margin.top - margin.bottom;
+
+  const xScale = (v) => margin.left + ((v - POP_MIN) / (POP_MAX - POP_MIN)) * pw;
+  const yScale = (v) => margin.top + ph - ((v - PTS_MIN) / (PTS_MAX - PTS_MIN)) * ph;
+
+  // Population axis labels
+  const popTicks = [
+    { ln: 14, label: '1M' },
+    { ln: 15.4, label: '5M' },
+    { ln: 16.1, label: '10M' },
+    { ln: 17.0, label: '24M' },
+    { ln: 17.7, label: '50M' },
+    { ln: 18.4, label: '100M' },
+    { ln: 19.1, label: '200M' },
+    { ln: 20.0, label: '500M' },
+    { ln: 21.0, label: '1.3B' },
+  ];
+
+  const ptsTicks = [2, 3, 4, 5, 6, 7, 8].map(v => ({
+    ln: v,
+    label: Math.round(Math.exp(v)).toLocaleString()
+  }));
+
+  // Lines
+  const geloso_y1 = INTERCEPT_GELOSO + ALPHA_GELOSO * POP_MIN;
+  const geloso_y2 = INTERCEPT_GELOSO + ALPHA_GELOSO * POP_MAX;
+  const fit_y1 = INTERCEPT_FIT + ALPHA_FIT * POP_MIN;
+  const fit_y2 = INTERCEPT_FIT + ALPHA_FIT * POP_MAX;
+
+  // Label positions for key countries
+  const labelMap = {
+    'Norway': { dx: -8, dy: -10 },
+    'Denmark': { dx: -8, dy: 12 },
+    'New Zealand': { dx: 8, dy: -8 },
+    'Netherlands': { dx: 8, dy: -10 },
+    'Sweden': { dx: 8, dy: 8 },
+    'Australia': { dx: 8, dy: -8 },
+    'Cuba': { dx: 8, dy: -8 },
+    'Jamaica': { dx: 8, dy: -8 },
+    'United States': { dx: -10, dy: -10 },
+    'China': { dx: -10, dy: 10 },
+    'India': { dx: -10, dy: -10 },
+    'Brazil': { dx: 8, dy: -8 },
+    'South Africa': { dx: 8, dy: 10 },
+    'Russia': { dx: 8, dy: -8 },
+    'Germany': { dx: -45, dy: -10 },
+    'France': { dx: -40, dy: 8 },
+    'Great Britain': { dx: 8, dy: 8 },
+    'Japan': { dx: 8, dy: -8 },
+    'Indonesia': { dx: 8, dy: 8 },
+    'Ethiopia': { dx: 8, dy: 8 },
+    'Kenya': { dx: 8, dy: -8 },
+    'Mexico': { dx: 8, dy: 8 },
+    'Hungary': { dx: 8, dy: 8 },
+    'South Korea': { dx: -60, dy: 8 },
+  };
+
+  // Use P2 data for cleaner display, deduplicated
+  const displayData = DATA.filter(d => d.period === 2 || !DATA.find(d2 => d2.noc === d.noc && d2.period === 2));
+
+  // Compute residuals from Geloso line
+  const getGelosoResid = (d) => d.ln_points - (INTERCEPT_GELOSO + ALPHA_GELOSO * d.ln_pop);
+  const getFitResid = (d) => d.ln_points - (INTERCEPT_FIT + ALPHA_FIT * d.ln_pop);
+
+  return (
+    <div style={{fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"}}>
+      <h2 style={{fontSize: 18, fontWeight: 600, marginBottom: 4, color: '#1a1a2e'}}>
+        Population Scaling & the Per-Capita Illusion
+      </h2>
+      <p style={{fontSize: 13, color: '#666', marginBottom: 12, lineHeight: 1.5}}>
+        Geloso & Kufenko assume Olympic points scale 1:1 with population (orange line). The data says the
+        elasticity is 0.62 (green line). The gap between the two lines creates a false Gini signal: small equal
+        countries sit above Geloso's line (appearing to "outperform"), while large unequal countries sit below it.
+      </p>
+
+      <div style={{display: 'flex', gap: 12, marginBottom: 12}}>
+        <button
+          onClick={() => setShowResiduals(false)}
+          style={{
+            padding: '6px 14px', borderRadius: 4, border: '1px solid #ccc',
+            background: !showResiduals ? '#1a1a2e' : '#fff',
+            color: !showResiduals ? '#fff' : '#333',
+            cursor: 'pointer', fontSize: 13, fontWeight: 500
+          }}
+        >
+          Scatter + Lines
+        </button>
+        <button
+          onClick={() => setShowResiduals(true)}
+          style={{
+            padding: '6px 14px', borderRadius: 4, border: '1px solid #ccc',
+            background: showResiduals ? '#1a1a2e' : '#fff',
+            color: showResiduals ? '#fff' : '#333',
+            cursor: 'pointer', fontSize: 13, fontWeight: 500
+          }}
+        >
+          Residuals → False Gini
+        </button>
+      </div>
+
+      <svg width={W} height={H} style={{background: '#fafafa', borderRadius: 4}}>
+        {/* Grid */}
+        {popTicks.filter(t => t.ln >= POP_MIN && t.ln <= POP_MAX).map((t, i) => (
+          <line key={`gx${i}`} x1={xScale(t.ln)} x2={xScale(t.ln)} y1={margin.top} y2={H - margin.bottom}
+                stroke="#e0e0e0" strokeDasharray="2,3" />
+        ))}
+        {ptsTicks.filter(t => t.ln >= PTS_MIN && t.ln <= PTS_MAX).map((t, i) => (
+          <line key={`gy${i}`} x1={margin.left} x2={W - margin.right} y1={yScale(t.ln)} y2={yScale(t.ln)}
+                stroke="#e0e0e0" strokeDasharray="2,3" />
+        ))}
+
+        {!showResiduals && (
+          <>
+            {/* Shaded region between lines showing the bias */}
+            <path
+              d={`M ${xScale(POP_MIN)} ${yScale(geloso_y1)}
+                  L ${xScale(POP_MAX)} ${yScale(geloso_y2)}
+                  L ${xScale(POP_MAX)} ${yScale(fit_y2)}
+                  L ${xScale(POP_MIN)} ${yScale(fit_y1)} Z`}
+              fill={GELOSO_COLOR} opacity={0.06}
+            />
+
+            {/* Geloso line (α = 1) */}
+            <line x1={xScale(POP_MIN)} y1={yScale(geloso_y1)} x2={xScale(POP_MAX)} y2={yScale(geloso_y2)}
+                  stroke={GELOSO_COLOR} strokeWidth={2.5} strokeDasharray="8,4" />
+
+            {/* Best fit line (α = 0.615) */}
+            <line x1={xScale(POP_MIN)} y1={yScale(fit_y1)} x2={xScale(POP_MAX)} y2={yScale(fit_y2)}
+                  stroke={FIT_COLOR} strokeWidth={2.5} />
+
+            {/* Line labels */}
+            <text x={xScale(20.3)} y={yScale(INTERCEPT_GELOSO + ALPHA_GELOSO * 20.3) - 8}
+                  fill={GELOSO_COLOR} fontSize={12} fontWeight={600}>
+              Geloso: α = 1.0 (per capita)
+            </text>
+            <text x={xScale(19.5)} y={yScale(INTERCEPT_FIT + ALPHA_FIT * 19.5) + 18}
+                  fill={FIT_COLOR} fontSize={12} fontWeight={600}>
+              Data: α = 0.62
+            </text>
+
+            {/* Annotation: gap arrow */}
+            {(() => {
+              const annotX = 15.0;
+              const gY = INTERCEPT_GELOSO + ALPHA_GELOSO * annotX;
+              const fY = INTERCEPT_FIT + ALPHA_FIT * annotX;
+              return (
+                <>
+                  <line x1={xScale(annotX)} y1={yScale(gY)} x2={xScale(annotX)} y2={yScale(fY)}
+                        stroke="#666" strokeWidth={1.5} markerEnd="url(#arrowDown)" markerStart="url(#arrowUp)" />
+                  <text x={xScale(annotX) + 6} y={(yScale(gY) + yScale(fY)) / 2 + 4}
+                        fill="#666" fontSize={11} fontStyle="italic">
+                    bias gap
+                  </text>
+                </>
+              );
+            })()}
+
+            {/* Data points */}
+            {displayData.map((d, i) => {
+              const isEqual = d.gini <= GINI_MEDIAN;
+              const isLabeled = labelMap[d.name];
+              const cx = xScale(d.ln_pop);
+              const cy = yScale(d.ln_points);
+              const isHovered = hoveredPoint && hoveredPoint.noc === d.noc;
+              return (
+                <g key={`p${i}`}
+                   onMouseEnter={() => setHoveredPoint(d)}
+                   onMouseLeave={() => setHoveredPoint(null)}>
+                  <circle cx={cx} cy={cy}
+                          r={isHovered ? 7 : 5}
+                          fill={isEqual ? EQUAL_COLOR : UNEQUAL_COLOR}
+                          opacity={isHovered ? 1 : 0.7}
+                          stroke={isHovered ? '#000' : 'none'}
+                          strokeWidth={1.5}
+                          style={{cursor: 'pointer'}} />
+                  {isLabeled && (
+                    <text x={cx + labelMap[d.name].dx} y={cy + labelMap[d.name].dy}
+                          fill="#333" fontSize={10} fontWeight={500}
+                          textAnchor={labelMap[d.name].dx < 0 ? 'end' : 'start'}>
+                      {d.noc}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+          </>
+        )}
+
+        {showResiduals && (
+          <>
+            {/* Residual view: x = Gini, y = residual from Geloso line */}
+            {(() => {
+              const giniMin = 22, giniMax = 68;
+              const residMin = -4, residMax = 4;
+              const rxScale = (v) => margin.left + ((v - giniMin) / (giniMax - giniMin)) * pw;
+              const ryScale = (v) => margin.top + ph - ((v - residMin) / (residMax - residMin)) * ph;
+
+              // Gini ticks
+              const gTicks = [25, 30, 35, 40, 45, 50, 55, 60, 65];
+              const rTicks = [-3, -2, -1, 0, 1, 2, 3];
+
+              return (
+                <>
+                  {/* Grid */}
+                  {gTicks.map((t, i) => (
+                    <line key={`rgx${i}`} x1={rxScale(t)} x2={rxScale(t)} y1={margin.top} y2={H - margin.bottom}
+                          stroke="#e0e0e0" strokeDasharray="2,3" />
+                  ))}
+                  {rTicks.map((t, i) => (
+                    <line key={`rgy${i}`} x1={margin.left} x2={W - margin.right} y1={ryScale(t)} y2={ryScale(t)}
+                          stroke={t === 0 ? '#999' : '#e0e0e0'} strokeWidth={t === 0 ? 1.5 : 1} strokeDasharray={t === 0 ? 'none' : '2,3'} />
+                  ))}
+
+                  {/* Regression line through residuals (negative slope = Geloso's "finding") */}
+                  {/* Approximate: residual ≈ -0.05 * (gini - 35) from the spurious correlation */}
+                  <line x1={rxScale(giniMin)} y1={ryScale(0.05 * (35 - giniMin))}
+                        x2={rxScale(giniMax)} y2={ryScale(0.05 * (35 - giniMax))}
+                        stroke={GELOSO_COLOR} strokeWidth={2} strokeDasharray="6,3" />
+                  <text x={rxScale(55)} y={ryScale(-0.05 * (55 - 35)) - 12}
+                        fill={GELOSO_COLOR} fontSize={11} fontWeight={600}>
+                    "Gini effect" = residual from wrong line
+                  </text>
+
+                  {/* Points */}
+                  {displayData.map((d, i) => {
+                    const isEqual = d.gini <= GINI_MEDIAN;
+                    const resid = getGelosoResid(d);
+                    const cx = rxScale(d.gini);
+                    const cy = ryScale(resid);
+                    if (cy < margin.top || cy > H - margin.bottom) return null;
+                    const isHovered = hoveredPoint && hoveredPoint.noc === d.noc;
+                    return (
+                      <g key={`rp${i}`}
+                         onMouseEnter={() => setHoveredPoint(d)}
+                         onMouseLeave={() => setHoveredPoint(null)}>
+                        <circle cx={cx} cy={cy}
+                                r={isHovered ? 7 : 5}
+                                fill={isEqual ? EQUAL_COLOR : UNEQUAL_COLOR}
+                                opacity={isHovered ? 1 : 0.7}
+                                stroke={isHovered ? '#000' : 'none'} strokeWidth={1.5}
+                                style={{cursor: 'pointer'}} />
+                        {labelMap[d.name] && (
+                          <text x={cx + (labelMap[d.name].dx > 0 ? 8 : -8)} y={cy + 4}
+                                fill="#333" fontSize={10} fontWeight={500}
+                                textAnchor={labelMap[d.name].dx > 0 ? 'start' : 'end'}>
+                            {d.noc}
+                          </text>
+                        )}
+                      </g>
+                    );
+                  })}
+
+                  {/* Axis labels */}
+                  {gTicks.map((t, i) => (
+                    <text key={`gxl${i}`} x={rxScale(t)} y={H - margin.bottom + 18}
+                          textAnchor="middle" fontSize={11} fill="#666">{t}</text>
+                  ))}
+                  {rTicks.map((t, i) => (
+                    <text key={`ryl${i}`} x={margin.left - 10} y={ryScale(t) + 4}
+                          textAnchor="end" fontSize={11} fill="#666">{t > 0 ? `+${t}` : t}</text>
+                  ))}
+                  <text x={W / 2} y={H - 8} textAnchor="middle" fontSize={13} fill="#333" fontWeight={500}>
+                    Gini coefficient
+                  </text>
+                  <text x={15} y={H / 2} textAnchor="middle" fontSize={13} fill="#333" fontWeight={500}
+                        transform={`rotate(-90, 15, ${H/2})`}>
+                    Residual from per-capita line (ln points)
+                  </text>
+
+                  {/* Annotations */}
+                  <rect x={rxScale(23)} y={ryScale(3.8)} width={180} height={50} rx={4} fill="#fff" stroke="#e0e0e0" />
+                  <text x={rxScale(23) + 10} y={ryScale(3.8) + 18} fontSize={11} fill={EQUAL_COLOR} fontWeight={600}>
+                    Equal countries sit ABOVE
+                  </text>
+                  <text x={rxScale(23) + 10} y={ryScale(3.8) + 34} fontSize={11} fill={EQUAL_COLOR}>
+                    Geloso's line → "outperform"
+                  </text>
+                  <rect x={rxScale(45)} y={ryScale(-2.2)} width={190} height={50} rx={4} fill="#fff" stroke="#e0e0e0" />
+                  <text x={rxScale(45) + 10} y={ryScale(-2.2) + 18} fontSize={11} fill={UNEQUAL_COLOR} fontWeight={600}>
+                    Unequal countries sit BELOW
+                  </text>
+                  <text x={rxScale(45) + 10} y={ryScale(-2.2) + 34} fontSize={11} fill={UNEQUAL_COLOR}>
+                    Geloso's line → "underperform"
+                  </text>
+                </>
+              );
+            })()}
+          </>
+        )}
+
+        {!showResiduals && (
+          <>
+            {/* X axis labels */}
+            {popTicks.filter(t => t.ln >= POP_MIN && t.ln <= POP_MAX).map((t, i) => (
+              <text key={`xl${i}`} x={xScale(t.ln)} y={H - margin.bottom + 18}
+                    textAnchor="middle" fontSize={11} fill="#666">{t.label}</text>
+            ))}
+            {/* Y axis labels */}
+            {ptsTicks.filter(t => t.ln >= PTS_MIN && t.ln <= PTS_MAX).map((t, i) => (
+              <text key={`yl${i}`} x={margin.left - 10} y={yScale(t.ln) + 4}
+                    textAnchor="end" fontSize={11} fill="#666">{t.label}</text>
+            ))}
+            {/* Axis titles */}
+            <text x={W / 2} y={H - 8} textAnchor="middle" fontSize={13} fill="#333" fontWeight={500}>
+              Population
+            </text>
+            <text x={15} y={H / 2} textAnchor="middle" fontSize={13} fill="#333" fontWeight={500}
+                  transform={`rotate(-90, 15, ${H/2})`}>
+              Olympic points (log scale)
+            </text>
+          </>
+        )}
+
+        {/* Arrow markers */}
+        <defs>
+          <marker id="arrowDown" viewBox="0 0 10 10" refX="5" refY="10" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 5 10 L 10 0" fill="none" stroke="#666" strokeWidth={1.5} />
+          </marker>
+          <marker id="arrowUp" viewBox="0 0 10 10" refX="5" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 10 L 5 0 L 10 10" fill="none" stroke="#666" strokeWidth={1.5} />
+          </marker>
+        </defs>
+      </svg>
+
+      {/* Legend */}
+      <div style={{display: 'flex', gap: 24, marginTop: 10, fontSize: 12, alignItems: 'center'}}>
+        <span style={{display: 'flex', alignItems: 'center', gap: 4}}>
+          <svg width={12} height={12}><circle cx={6} cy={6} r={5} fill={EQUAL_COLOR} /></svg>
+          More equal (Gini ≤ 33)
+        </span>
+        <span style={{display: 'flex', alignItems: 'center', gap: 4}}>
+          <svg width={12} height={12}><circle cx={6} cy={6} r={5} fill={UNEQUAL_COLOR} /></svg>
+          More unequal (Gini > 33)
+        </span>
+        <span style={{display: 'flex', alignItems: 'center', gap: 4}}>
+          <svg width={24} height={2}><line x1={0} y1={1} x2={24} y2={1} stroke={GELOSO_COLOR} strokeWidth={2} strokeDasharray="4,2"/></svg>
+          Per-capita assumption (α = 1)
+        </span>
+        <span style={{display: 'flex', alignItems: 'center', gap: 4}}>
+          <svg width={24} height={2}><line x1={0} y1={1} x2={24} y2={1} stroke={FIT_COLOR} strokeWidth={2}/></svg>
+          Data-estimated (α = 0.62)
+        </span>
+      </div>
+
+      {/* Tooltip */}
+      {hoveredPoint && (
+        <div style={{
+          position: 'fixed', bottom: 20, left: '50%', transform: 'translateX(-50%)',
+          background: '#1a1a2e', color: '#fff', padding: '8px 14px', borderRadius: 6,
+          fontSize: 13, display: 'flex', gap: 16, whiteSpace: 'nowrap', zIndex: 10
+        }}>
+          <span style={{fontWeight: 600}}>{hoveredPoint.name}</span>
+          <span>Pop: {hoveredPoint.pop_millions.toFixed(1)}M</span>
+          <span>Gini: {hoveredPoint.gini}</span>
+          <span>Points: {hoveredPoint.total_points.toLocaleString()}</span>
+          <span>Per-cap residual: {getGelosoResid(hoveredPoint) > 0 ? '+' : ''}{getGelosoResid(hoveredPoint).toFixed(2)}</span>
+        </div>
+      )}
+
+      {/* Bottom text */}
+      <div style={{marginTop: 16, fontSize: 12, color: '#888', lineHeight: 1.6, maxWidth: 800}}>
+        <strong>How to read this:</strong> The shaded area between the two lines is the bias. Small equal countries
+        (blue dots, left side) sit in the zone where Geloso's per-capita line overestimates the expected performance,
+        making them appear to "outperform." Large unequal countries (red dots, right side) sit below Geloso's line.
+        Click "Residuals → False Gini" to see how this gap creates a spurious negative correlation between inequality
+        and per-capita Olympic performance.
+        <br/><br/>
+        Population elasticity: 0.62 (95% CI: 0.44–0.79, p &lt; 0.001 vs H₀: α = 1).
+        Per tercile: small countries α = 0.80, medium α = 0.24, large α = 0.17.
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
+</script>
+</body>
+</html>

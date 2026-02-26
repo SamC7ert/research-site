@@ -1042,13 +1042,14 @@ button#theme-toggle:hover {
   
   <div class="post-content">
     <h2 id="working-paper">Working Paper</h2>
-<p><strong>Status:</strong> Draft v0.95 (February 2026)</p>
+<p><strong>Status:</strong> Draft v0.96 (February 2026)</p>
 <hr>
 <h2 id="abstract">Abstract</h2>
 <p>Geloso and Kufenko (2021) hypothesised that income inequality affects Olympic performance through sport-specific cost barriers, but could not test this due to the absence of reliable sport-cost data. We construct a two-dimensional cost classification &ndash; household equipment cost and training facility cost &ndash; for 41 Olympic sports and test whether inequality&rsquo;s effect varies with cost, using a panel of 71 countries across seven Summer Games (2000&ndash;2024), scoring the top six finishers per event.</p>
 <p>The aggregate Gini&ndash;performance relationship is zero after regional controls &ndash; a textbook instance of Galton&rsquo;s Problem (Ross &amp; Homer 1976). But this null conceals a systematic gradient: inequality increasingly hurts performance as personal participation cost rises. In individual sports among upper-income countries, the interaction of Gini with log equipment cost is β = −2.54 (p = 0.012). The gradient is absent in team and duel sports.</p>
 <p>The two cost dimensions capture distinct mechanisms. Income inequality interacts with household equipment cost but not with facility cost. GDP per capita interacts with facility cost (β = +3.2–3.7, p = 0.003–0.017) but not with equipment cost. In a joint specification, both channels survive with near-zero mutual attenuation. Inequality operates through household cost barriers; absolute wealth operates through infrastructure provision.</p>
 <p>Gender decomposition reveals the cost gradient operates on both men&rsquo;s and women&rsquo;s performance, with women slightly more affected. The aggregate gender equality (GGI)&ndash;performance association claimed by Berdahl et al. (2014) is confirmed as Galton&rsquo;s Problem, but the gendered pattern is real: it operates through income inequality and sport cost, not through gender equality indices.</p>
+<p>Geloso and Kufenko&rsquo;s aggregate negative Gini finding (inequality hurts medals per capita) is a specification artefact. Per-capita scoring forces population elasticity to 1, but the estimated elasticity is 0.62 &ndash; significantly below unity. Every flexible population specification (quartile dummies, splines, piecewise linear) agrees: aggregate Gini is null. Their institutional-quality mechanism (Economic Freedom threshold) adds nothing after proper regional and income controls. The cost gradient survives Mundlak correction, host-effect controls, and alternative GDP specifications.</p>
 
   </div>
 
@@ -1137,6 +1138,27 @@ button#theme-toggle:hover {
             <img src="/viz/thumbs/gender_decomposition.png" loading="lazy" alt="Gender Decomposition">
           </div>
           <div class="viz-thumb-label">Gender Decomposition</div>
+        </a>
+      </div>
+    </div>
+    
+    
+    
+    
+    <div class="finding-row">
+      <div class="finding-text">
+        <div class="finding-number">5</div>
+        <div class="finding-body">
+          <h3 class="finding-title">Per-Capita Scoring Is an Artefact</h3>
+          <p class="finding-desc">Geloso and Kufenko&rsquo;s headline finding &ndash; that inequality hurts medals per capita &ndash; is driven by forcing population elasticity to 1 when the data show α = 0.62. Every flexible population specification agrees: aggregate Gini is null. The per-capita result is carried entirely by small equal countries.</p>
+        </div>
+      </div>
+      <div class="finding-viz">
+        <a href="/viz/population_elasticity.html" target="_blank" class="viz-thumb" title="Per-Capita Scoring Is an Artefact — click to open interactive">
+          <div class="viz-thumb-frame">
+            <img src="/viz/thumbs/population_elasticity.png" loading="lazy" alt="Per-Capita Scoring Is an Artefact">
+          </div>
+          <div class="viz-thumb-label">Per-Capita Scoring Is an Artefact</div>
         </a>
       </div>
     </div>

@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>Research Journal | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 15 sessions with an AI research assistant.">
+<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.">
 <meta name="author" content="Sam C. Syvertsen">
 <link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
@@ -980,12 +980,12 @@ button#theme-toggle:hover {
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
   <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Research Journal">
-  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 15 sessions with an AI research assistant.">
+  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Research Journal">
-<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 15 sessions with an AI research assistant.">
+<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.">
 
 
 <script type="application/ld+json">
@@ -1036,9 +1036,9 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>7 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>9 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
-    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 15 sessions with an AI research assistant.</p>
+    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.</p>
   </header>
   <div class="post-content story-flow">
     <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
@@ -1241,7 +1241,7 @@ button#theme-toggle:hover {
 <h2 id="the-paper">The paper</h2>
 <p>By v0.95, the <a href="/viz/paper_figures.html">analytical results</a> were stable. The <a href="/viz/results_dashboard.html">full specification dashboard</a> shows all model variants and their coefficients.</p>
 <p>The remaining work was structural: organising nine sections, writing formal prose, and deciding how transparent to be about the AI-assisted research process.</p>
-<p>The answer to that last question: fully transparent. All 15 session transcripts are published alongside this journal as a methodological companion. The AI (Claude) wrote pipeline code, implemented regression specifications, and drafted text. The research questions, analytical judgments, and cost classifications came from the human researcher.</p>
+<p>The answer to that last question: fully transparent. All session transcripts are published alongside this journal as a methodological companion. The AI (Claude) wrote pipeline code, implemented regression specifications, and drafted text. The research questions, analytical judgments, and cost classifications came from the human researcher.</p>
 </div>
 <div class="story-panel">
 <div class="version-block">
@@ -1267,10 +1267,36 @@ button#theme-toggle:hover {
 </div>
 </div>
 </div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="engaging-with-geloso--and-discovering-the-per-capita-artefact">Engaging with Geloso — and discovering the per-capita artefact</h2>
+<p>With the core specification stable, v0.96 turned outward: a direct engagement with Geloso and Kufenko (2021) and Rewilak (2021). The question was whether our findings hold up against their specific methods and critiques.</p>
+<p>The results were more interesting than expected. First, Geloso&rsquo;s Economic Freedom of the World (EFW) mechanism — the idea that institutional quality determines whether inequality helps or hurts — turned out to be completely absorbed by proper regional and income controls. EFW adds nothing (p = 0.819 as a main effect, p = 0.408 as a cost moderator). The cost gradient doesn&rsquo;t need institutions to explain it.</p>
+<p>Second, Rewilak&rsquo;s Mundlak correction — which had killed most standard determinants of Olympic success — left our cost gradient untouched (β moved from −2.537 to −2.517, p stayed at 0.013). The gradient survives because it identifies off cross-sport variation, not the between-country variation that Mundlak absorbs.</p>
+<p>But the most important finding was about per-capita scoring. Geloso&rsquo;s headline result — that inequality hurts medals per capita — survived even our ten-region fixed effects (p = 0.038). This was puzzling. Digging into the <a href="/viz/population_elasticity.html">population elasticity</a>, we found the answer: per-capita scoring forces the assumption that Olympic performance scales linearly with population (elasticity α = 1). The data show α = 0.62 — and it&rsquo;s not even one smooth function. Small countries show α ≈ 0.80, large countries α ≈ 0.17. Per-capita scoring is approximately right for Norway but wildly wrong for China.</p>
+<p>Since larger countries tend to be more unequal (r = +0.30), the forced α = 1 constraint mechanically manufactures a negative Gini–performance association. Every flexible population specification — quartile dummies, splines, piecewise linear — agrees: aggregate Gini is null. Only the forced per-capita constraint produces significance.</p>
+<p>This doesn&rsquo;t affect our cost gradient, which operates on total points with free population controls. But it substantially weakens Geloso and Kufenko&rsquo;s aggregate contribution.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.96</span>
+<span class="version-title">Geloso Engagement and Per-Capita Critique</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/population_elasticity.html" target="_blank" class="viz-thumb" title="Population Elasticity — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/population_elasticity.png" loading="lazy"></div>
+<div class="viz-thumb-label">Population Elasticity</div>
+</a>
+</div>
+</div>
+</div>
+</div>
 <hr>
 <h2 id="what-this-project-found">What this project found</h2>
-<p>Income inequality does not predict Olympic performance in the aggregate — but this null conceals a systematic gradient. In individual sports, inequality increasingly hurts performance as personal equipment cost rises. A separate, independent channel runs through national wealth and facility infrastructure. The two mechanisms operate through completely different cost dimensions with near-zero mutual attenuation.</p>
-<p>The finding is robust across time, regions, estimation methods, and cost measurement approaches. It provides the first empirical test of the cost-barrier mechanism that Geloso and Kufenko theorised but could not evaluate.</p>
+<p>Income inequality does not predict Olympic performance in the aggregate — but this null conceals a systematic gradient. In individual sports, inequality increasingly hurts performance as personal equipment cost rises, with a crossover at approximately €1,400. A separate, independent channel runs through national wealth and facility infrastructure. The two mechanisms operate through completely different cost dimensions with near-zero mutual attenuation.</p>
+<p>The finding is robust across time, regions, estimation methods, cost measurement approaches, Mundlak correction, and host-effect controls. It provides the first empirical test of the cost-barrier mechanism that Geloso and Kufenko theorised but could not evaluate. Their own aggregate finding — that inequality hurts medals per capita — turns out to be a specification artefact driven by incorrect population scaling, not by a genuine inequality–performance relationship.</p>
 
   </div>
 </article>
