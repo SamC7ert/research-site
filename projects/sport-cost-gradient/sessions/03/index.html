@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Session: Running Full Analysis with Complete Data | Sam C. Syvertsen — Research</title>
+<title>Session: Running Full Analysis with Complete Data | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
 <meta name="description" content="Session: Running Full Analysis with Complete Data
 Date: 2026-02-13
@@ -110,10 +110,26 @@ body {
   line-height: var(--header-height);
 }
 
-.logo a {
+.logo a,
+.logo-home {
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.logo-home {
+  cursor: default;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.home-link svg {
+  vertical-align: middle;
 }
 
 #menu {
@@ -876,7 +892,7 @@ button#theme-toggle:hover {
 }
 </style>
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/03/">
-  <meta property="og:site_name" content="Sam C. Syvertsen — Research">
+  <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Session: Running Full Analysis with Complete Data">
   <meta property="og:description" content="Session: Running Full Analysis with Complete Data Date: 2026-02-13
 Summary Complete end-to-end analysis testing two hypotheses about how inequality affects Olympic performance across different sport cost tiers. Built on Geloso &amp; Kufenko (2021) who theorized that income inequality hurts Olympic performance through cost barriers but couldn’t find quality sport-cost data. Created a sport cost classification system categorizing 50 Olympic sports into four tiers (low, medium, high, very high).
@@ -925,7 +941,10 @@ Key Findings Income inequality (Gini) increasingly hurts performance as sport co
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://research.syvertsen.com/" accesskey="h" title="Sam C. Syvertsen — Research (Alt + H)">Sam C. Syvertsen — Research</a>
+            <a href="https://research.syvertsen.com/" accesskey="h" title="Home" class="home-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Home
+            </a>
             <div class="logo-switches">
             </div>
         </div>
@@ -1370,7 +1389,7 @@ import pandas as pd</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://research.syvertsen.com/">Sam C. Syvertsen — Research</a></span> · 
+        <span>&copy; 2026 <a href="https://research.syvertsen.com/">Sam C. Syvertsen</a></span> · 
 
     <span>
         Powered by

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Session: v0.91 Sport Type Decomposition | Sam C. Syvertsen — Research</title>
+<title>Session: v0.91 Sport Type Decomposition | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
 <meta name="description" content="Session: v0.91 Sport Type Decomposition
 Date: 2026-02-19
@@ -111,10 +111,26 @@ body {
   line-height: var(--header-height);
 }
 
-.logo a {
+.logo a,
+.logo-home {
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.logo-home {
+  cursor: default;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.home-link svg {
+  vertical-align: middle;
 }
 
 #menu {
@@ -877,7 +893,7 @@ button#theme-toggle:hover {
 }
 </style>
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/08/">
-  <meta property="og:site_name" content="Sam C. Syvertsen — Research">
+  <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Session: v0.91 Sport Type Decomposition">
   <meta property="og:description" content="Session: v0.91 Sport Type Decomposition Date: 2026-02-19
 Summary Systematic decomposition of the “U-shape” pattern in equipment cost tiers, where Tier 2 (medium-cost) sports showed unexpectedly poor performance. Tested whether this represents a genuine cost mechanism or is driven by confounding factors.
@@ -926,7 +942,10 @@ Key Findings Team sports (all concentrated in Tier 1) were not driving the cost 
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://research.syvertsen.com/" accesskey="h" title="Sam C. Syvertsen — Research (Alt + H)">Sam C. Syvertsen — Research</a>
+            <a href="https://research.syvertsen.com/" accesskey="h" title="Home" class="home-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Home
+            </a>
             <div class="logo-switches">
             </div>
         </div>
@@ -1935,7 +1954,7 @@ import statsmodels.api as sm`]*</p>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://research.syvertsen.com/">Sam C. Syvertsen — Research</a></span> · 
+        <span>&copy; 2026 <a href="https://research.syvertsen.com/">Sam C. Syvertsen</a></span> · 
 
     <span>
         Powered by

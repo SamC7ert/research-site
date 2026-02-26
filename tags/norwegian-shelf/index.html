@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Norwegian-Shelf | Sam C. Syvertsen — Research</title>
+<title>Norwegian-Shelf | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
 <meta name="description" content="Research on Olympic performance, sport cost inequality, and the Gini coefficient">
 <meta name="author" content="Sam C. Syvertsen">
@@ -99,10 +99,26 @@ body {
   line-height: var(--header-height);
 }
 
-.logo a {
+.logo a,
+.logo-home {
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.logo-home {
+  cursor: default;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.home-link svg {
+  vertical-align: middle;
 }
 
 #menu {
@@ -865,7 +881,7 @@ button#theme-toggle:hover {
 }
 </style>
 <meta property="og:url" content="https://research.syvertsen.com/tags/norwegian-shelf/">
-  <meta property="og:site_name" content="Sam C. Syvertsen — Research">
+  <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Norwegian-Shelf">
   <meta property="og:description" content="Research on Olympic performance, sport cost inequality, and the Gini coefficient">
   <meta property="og:locale" content="en-us">
@@ -879,7 +895,10 @@ button#theme-toggle:hover {
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://research.syvertsen.com/" accesskey="h" title="Sam C. Syvertsen — Research (Alt + H)">Sam C. Syvertsen — Research</a>
+            <a href="https://research.syvertsen.com/" accesskey="h" title="Home" class="home-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Home
+            </a>
             <div class="logo-switches">
             </div>
         </div>
@@ -896,7 +915,7 @@ button#theme-toggle:hover {
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://research.syvertsen.com/">Sam C. Syvertsen — Research</a></span> · 
+        <span>&copy; 2026 <a href="https://research.syvertsen.com/">Sam C. Syvertsen</a></span> · 
 
     <span>
         Powered by
