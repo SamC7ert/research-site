@@ -78,13 +78,280 @@
 
 <style>
  
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ 
+:root {
+  --nav-width: 1080px;
+  --main-width: 780px;
+}
+
+ 
+.header {
+  background: var(--theme);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.nav {
+  max-width: calc(var(--nav-width) + var(--gap) * 2);
+  line-height: var(--header-height);
+}
+
+.logo a {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+#menu {
+  gap: 0.3rem;
+}
+
+#menu li + li {
+  margin-inline-start: 0;
+}
+
+#menu a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+  color: var(--secondary);
+}
+
+#menu a:hover {
+  background: var(--code-bg, #f6f8fa);
+  color: var(--primary);
+}
+
+#menu .active {
+  border-bottom: none;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--code-bg, #f6f8fa);
+}
+
+button#theme-toggle {
+  font-size: 18px;
+  padding: 0.35rem;
+  border-radius: 6px;
+  transition: background 0.15s;
+  opacity: 0.6;
+}
+
+button#theme-toggle:hover {
+  opacity: 1;
+  background: var(--code-bg, #f6f8fa);
+}
+
+ 
+.breadcrumbs {
+  font-size: 0.8rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+.breadcrumbs a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--secondary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.breadcrumbs a:hover {
+  color: var(--primary);
 }
 
  
 .main {
   max-width: 1080px;
+}
+
+.post-header {
+  margin-bottom: 2rem;
+}
+
+.post-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.post-description {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  line-height: 1.6;
+  margin-top: 0.5rem;
+}
+
+.post-meta {
+  font-size: 0.82rem;
+  color: var(--secondary);
+  font-weight: 500;
+}
+
+.post-content {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.post-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-content h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.post-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+.post-content a {
+  color: var(--primary);
+  box-shadow: 0 1px 0 var(--primary);
+  transition: box-shadow 0.15s;
+}
+
+.post-content a:hover {
+  box-shadow: 0 2px 0 var(--primary);
+}
+
+.post-content blockquote {
+  border-inline-start: 3px solid var(--secondary);
+  padding: 0.5rem 1.2rem;
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+}
+
+.post-content code {
+  font-size: 0.82em;
+  padding: 0.2em 0.45em;
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 4px;
+}
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+}
+
+.post-content table th {
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--secondary);
+}
+
+.post-content table td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-content table tr:hover td {
+  background: var(--code-bg, #f6f8fa);
+}
+
+.post-content img {
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+ 
+.post-entry {
+  border: 1px solid transparent;
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 12px;
+  padding: 1.3rem 1.5rem;
+  margin-bottom: 0.8rem;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.post-entry:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.post-entry:active {
+  transform: scale(1);
+}
+
+.entry-header h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.entry-content {
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.entry-footer {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+ 
+.first-entry {
+  min-height: 200px;
+  border-radius: 16px;
+}
+
+.first-entry .entry-header h1 {
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+}
+
+ 
+.archive-year {
+  border-bottom: 2px solid var(--border);
+}
+
+.archive-year-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.archive-entry-title {
+  font-weight: 500;
+}
+
+ 
+.footer {
+  font-size: 0.78rem;
+  padding: 2rem 0;
+  color: var(--secondary);
 }
 
  
@@ -125,7 +392,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: var(--theme, #fff);
   overflow: hidden;
@@ -259,6 +526,18 @@ body {
 
 .dark .bio-photo {
   color: var(--code-bg, #1a1a2e);
+}
+
+.dark .post-entry {
+  background: rgba(255,255,255,0.04);
+}
+
+.dark .post-content table tr:hover td {
+  background: rgba(255,255,255,0.04);
+}
+
+.dark .post-content blockquote {
+  background: rgba(255,255,255,0.04);
 }
 </style>
 <meta property="og:url" content="https://research.syvertsen.com/tags/research-journey/">
