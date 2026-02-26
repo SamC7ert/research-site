@@ -1036,7 +1036,7 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>9 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>10 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
     <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.</p>
   </header>
@@ -1269,11 +1269,13 @@ button#theme-toggle:hover {
 </div>
 <div class="story-row">
 <div class="story-text">
-<h2 id="engaging-with-geloso--and-discovering-the-per-capita-artefact">Engaging with Geloso — and discovering the per-capita artefact</h2>
-<p>With the core specification stable, v0.96 turned outward: a direct engagement with Geloso and Kufenko (2021) and Rewilak (2021). The question was whether our findings hold up against their specific methods and critiques.</p>
-<p>The results were more interesting than expected. First, Geloso&rsquo;s Economic Freedom of the World (EFW) mechanism — the idea that institutional quality determines whether inequality helps or hurts — turned out to be completely absorbed by proper regional and income controls. EFW adds nothing (p = 0.819 as a main effect, p = 0.408 as a cost moderator). The cost gradient doesn&rsquo;t need institutions to explain it.</p>
-<p>Second, Rewilak&rsquo;s Mundlak correction — which had killed most standard determinants of Olympic success — left our cost gradient untouched (β moved from −2.537 to −2.517, p stayed at 0.013). The gradient survives because it identifies off cross-sport variation, not the between-country variation that Mundlak absorbs.</p>
-<p>But the most important finding was about per-capita scoring. Geloso&rsquo;s headline result — that inequality hurts medals per capita — survived even our ten-region fixed effects (p = 0.038). This was puzzling. Digging into the <a href="/viz/population_elasticity.html">population elasticity</a>, we found the answer: per-capita scoring forces the assumption that Olympic performance scales linearly with population (elasticity α = 1). The data show α = 0.62 — and it&rsquo;s not even one smooth function. Small countries show α ≈ 0.80, large countries α ≈ 0.17. Per-capita scoring is approximately right for Norway but wildly wrong for China.</p>
+<h2 id="stress-testing-against-the-literature">Stress-testing against the literature</h2>
+<p>With the core specification stable, v0.96 turned outward: a direct engagement with Geloso and Kufenko (2021) and Rewilak (2021). The question was whether our findings hold up against their specific methods and critiques — and whether their findings hold up against ours.</p>
+<p>Three challenges, all survived. Geloso&rsquo;s Economic Freedom of the World (EFW) mechanism — the idea that institutional quality determines whether inequality helps or hurts — turned out to be completely absorbed by proper regional and income controls. EFW adds nothing: it is null as a <a href="/viz/v096_robustness.html">main effect (p = 0.819), as a threshold interaction (p = 0.144), and as a cost moderator (p = 0.408)</a>. The cost gradient doesn&rsquo;t need institutions to explain it.</p>
+<p>Rewilak&rsquo;s Mundlak correction — which had killed most standard determinants of Olympic success by adding country time-averages — left our cost gradient untouched (β moved from −2.537 to −2.517, p stayed at 0.013). The gradient survives because it identifies off cross-sport variation within countries, not the between-country variation that Mundlak absorbs. This is a structural advantage of our sport-level approach over aggregate medal regressions.</p>
+<p>The host effect was also tested. Rewilak (2021) found it is one of only two variables surviving his Mundlak specification — hosting an Olympics genuinely boosts performance. In our data, the host advantage is large at the aggregate level: approximately +269 total points, equivalent to roughly 4.5 additional gold medals (p = 0.076). Seven countries in our sample hosted during the study period — Australia, Greece, and China in Period 1; Great Britain, Brazil, Japan, and France in Period 2. But the host boost is uniform across sports: it does not interact with cost. Adding the host dummy to our cost gradient model barely moves the coefficient (−2.537 → −2.559) and the crossover point is essentially unchanged (€1,406 → €1,450). The host effect is real, but orthogonal to the cost mechanism.</p>
+<h2 id="the-per-capita-artefact">The per-capita artefact</h2>
+<p>The most important finding was about per-capita scoring. Geloso&rsquo;s headline result — that inequality hurts medals per capita — survived even our ten-region fixed effects (p = 0.038). This was puzzling. Digging into the <a href="/viz/population_elasticity.html">population elasticity</a>, we found the answer: per-capita scoring forces the assumption that Olympic performance scales linearly with population (elasticity α = 1). The data show α = 0.62 — and it&rsquo;s not even one smooth function. Small countries show α ≈ 0.80, large countries α ≈ 0.17. Per-capita scoring is approximately right for Norway but wildly wrong for China.</p>
 <p>Since larger countries tend to be more unequal (r = +0.30), the forced α = 1 constraint mechanically manufactures a negative Gini–performance association. Every flexible population specification — quartile dummies, splines, piecewise linear — agrees: aggregate Gini is null. Only the forced per-capita constraint produces significance.</p>
 <p>This doesn&rsquo;t affect our cost gradient, which operates on total points with free population controls. But it substantially weakens Geloso and Kufenko&rsquo;s aggregate contribution.</p>
 </div>
@@ -1288,6 +1290,14 @@ button#theme-toggle:hover {
 <a href="/viz/population_elasticity.html" target="_blank" class="viz-thumb" title="Population Elasticity — click to open interactive">
 <div class="viz-thumb-frame"><img src="/viz/thumbs/population_elasticity.png" loading="lazy"></div>
 <div class="viz-thumb-label">Population Elasticity</div>
+</a>
+<a href="/viz/v096_robustness.html" target="_blank" class="viz-thumb" title="v0.96 Robustness — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/v096_robustness.png" loading="lazy"></div>
+<div class="viz-thumb-label">EFW / Mundlak / Host</div>
+</a>
+<a href="/viz/cost_crossover.html" target="_blank" class="viz-thumb" title="Cost Crossover — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/cost_crossover.png" loading="lazy"></div>
+<div class="viz-thumb-label">Cost Crossover</div>
 </a>
 </div>
 </div>

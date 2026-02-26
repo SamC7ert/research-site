@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cost Gradient — Crossover Analysis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body, #root { width: 100%; height: 100%; background-color: white; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+    <script type="text/babel">
+const { useState } = React;
+const font = "'Libre Franklin','Helvetica Neue',Arial,sans-serif";
+
+// Upper-half individual sports: total Gini effect at each cost point
+// From v0_96_cost_crossover.json → ind_upper
+const UPPER = [
+  { cost: 300,    ln: 5.704,  b: 3.920,   se: 1.565, p: 0.017, ci_lo: 0.852,   ci_hi: 6.987 },
+  { cost: 500,    ln: 6.215,  b: 2.624,   se: 1.113, p: 0.024, ci_lo: 0.442,   ci_hi: 4.806 },
+  { cost: 650,    ln: 6.477,  b: 1.958,   se: 0.898, p: 0.036, ci_lo: 0.198,   ci_hi: 3.718 },
+  { cost: 1000,   ln: 6.908,  b: 0.865,   se: 0.611, p: 0.166, ci_lo: -0.332,  ci_hi: 2.063 },
+  { cost: 1200,   ln: 7.090,  b: 0.403,   se: 0.542, p: 0.463, ci_lo: -0.660,  ci_hi: 1.466 },
+  { cost: 2000,   ln: 7.601,  b: -0.893,  se: 0.634, p: 0.168, ci_lo: -2.135,  ci_hi: 0.348 },
+  { cost: 4000,   ln: 8.294,  b: -2.652,  se: 1.150, p: 0.027, ci_lo: -4.907,  ci_hi: -0.398 },
+  { cost: 10000,  ln: 9.210,  b: -4.977,  se: 1.978, p: 0.017, ci_lo: -8.854,  ci_hi: -1.100 },
+  { cost: 50000,  ln: 10.820, b: -9.060,  se: 3.499, p: 0.014, ci_lo: -15.919, ci_hi: -2.202 },
+  { cost: 200000, ln: 12.206, b: -12.578, se: 4.825, p: 0.013, ci_lo: -22.035, ci_hi: -3.120 },
+];
+
+// Crossover point
+const CROSSOVER = 1406;
+const CROSSOVER_CI = [938, 2109];
+const LN_CROSS = Math.log(CROSSOVER);
+
+// Representative sports placed at their equipment cost
+const SPORTS = [
+  { name: "Track", cost: 650, pos: "above" },
+  { name: "Swimming", cost: 800, pos: "above" },
+  { name: "Rowing", cost: 1000, pos: "below" },
+  { name: "Shooting", cost: 1800, pos: "below" },
+  { name: "Cycling (Road)", cost: 4000, pos: "below" },
+  { name: "Sailing", cost: 4000, pos: "above" },
+  { name: "Triathlon", cost: 3500, pos: "above" },
+];
+
+// Linear model: total_effect = gini_main + gini_inter * ln(cost)
+// From ind_upper: gini_main = 18.391, gini_inter = -2.537
+const MAIN = 18.391;
+const INTER = -2.537;
+const effectAt = (lnCost) => MAIN + INTER * lnCost;
+
+function CrossoverChart() {
+  const [hover, setHover] = useState(null);
+
+  const W = 580, H = 380;
+  const pad = { top: 40, right: 30, bottom: 65, left: 65 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+
+  // X axis: ln(cost) from 5.5 to 12.5
+  const xMin = 5.4, xMax = 12.5;
+  const sx = (ln) => pad.left + ((ln - xMin) / (xMax - xMin)) * w;
+
+  // Y axis: total Gini effect
+  const yMin = -16, yMax = 8;
+  const sy = (v) => pad.top + h - ((v - yMin) / (yMax - yMin)) * h;
+
+  // Generate smooth line points
+  const linePts = [];
+  for (let ln = xMin; ln <= xMax; ln += 0.05) {
+    linePts.push({ x: sx(ln), y: sy(effectAt(ln)) });
+  }
+  const lineD = linePts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+
+  // CI band points
+  const ciBandTop = [];
+  const ciBandBot = [];
+  for (let ln = xMin; ln <= xMax; ln += 0.1) {
+    // Approximate SE grows at extremes - interpolate from data points
+    const eff = effectAt(ln);
+    // Find nearest data points for SE interpolation
+    let se = 0.6; // default mid-range
+    for (let i = 0; i < UPPER.length - 1; i++) {
+      if (ln >= UPPER[i].ln && ln <= UPPER[i + 1].ln) {
+        const t = (ln - UPPER[i].ln) / (UPPER[i + 1].ln - UPPER[i].ln);
+        se = UPPER[i].se * (1 - t) + UPPER[i + 1].se * t;
+        break;
+      }
+    }
+    if (ln < UPPER[0].ln) se = UPPER[0].se;
+    if (ln > UPPER[UPPER.length - 1].ln) se = UPPER[UPPER.length - 1].se;
+    ciBandTop.push({ x: sx(ln), y: sy(eff + 1.96 * se) });
+    ciBandBot.push({ x: sx(ln), y: sy(eff - 1.96 * se) });
+  }
+  const bandD = ciBandTop.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ")
+    + ciBandBot.reverse().map((p) => `L${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ") + "Z";
+
+  // X-axis cost labels
+  const xTicks = [300, 500, 1000, 2000, 5000, 10000, 50000, 200000];
+  const fmtCost = (c) => c >= 1000 ? `€${(c / 1000).toFixed(0)}K` : `€${c}`;
+
+  // Y-axis ticks
+  const yTicks = [-14, -12, -10, -8, -6, -4, -2, 0, 2, 4, 6];
+
+  // Crossover zone
+  const crossX = sx(LN_CROSS);
+  const crossCiLeft = sx(Math.log(CROSSOVER_CI[0]));
+  const crossCiRight = sx(Math.log(CROSSOVER_CI[1]));
+
+  return (
+    <svg width={W} height={H} style={{ fontFamily: font }}>
+      {/* Title */}
+      <text x={W / 2} y={18} textAnchor="middle" style={{ fontSize: 13, fontWeight: 600, fill: "#1a1a2e" }}>
+        Total Gini Effect by Sport Equipment Cost
+      </text>
+      <text x={W / 2} y={32} textAnchor="middle" style={{ fontSize: 10, fill: "#888" }}>
+        Upper-income countries · Individual sports · 10 region FE
+      </text>
+
+      {/* Zones */}
+      <rect x={pad.left} y={pad.top} width={crossX - pad.left} height={h}
+        fill="#e8f5e9" opacity={0.35} />
+      <rect x={crossX} y={pad.top} width={pad.left + w - crossX} height={h}
+        fill="#ffebee" opacity={0.35} />
+
+      {/* Zone labels */}
+      <text x={(pad.left + crossX) / 2} y={pad.top + 16} textAnchor="middle"
+        style={{ fontSize: 10, fontWeight: 600, fill: "#2e7d32", opacity: 0.7 }}>
+        Inequality helps
+      </text>
+      <text x={(pad.left + crossX) / 2} y={pad.top + 28} textAnchor="middle"
+        style={{ fontSize: 8.5, fill: "#2e7d32", opacity: 0.6 }}>
+        (tournament premium)
+      </text>
+      <text x={(crossX + pad.left + w) / 2} y={pad.top + 16} textAnchor="middle"
+        style={{ fontSize: 10, fontWeight: 600, fill: "#c62828", opacity: 0.7 }}>
+        Inequality hurts
+      </text>
+      <text x={(crossX + pad.left + w) / 2} y={pad.top + 28} textAnchor="middle"
+        style={{ fontSize: 8.5, fill: "#c62828", opacity: 0.6 }}>
+        (cost barrier)
+      </text>
+
+      {/* Y grid lines */}
+      {yTicks.map(v => (
+        <g key={v}>
+          <line x1={pad.left} y1={sy(v)} x2={pad.left + w} y2={sy(v)}
+            stroke={v === 0 ? "#666" : "#eee"} strokeWidth={v === 0 ? 1.5 : 0.5} />
+          <text x={pad.left - 8} y={sy(v) + 3.5} textAnchor="end"
+            style={{ fontSize: 9, fill: v === 0 ? "#333" : "#aaa" }}>
+            {v > 0 ? "+" : ""}{v}
+          </text>
+        </g>
+      ))}
+
+      {/* X axis line */}
+      <line x1={pad.left} y1={pad.top + h} x2={pad.left + w} y2={pad.top + h}
+        stroke="#333" strokeWidth={1} />
+
+      {/* X ticks */}
+      {xTicks.map(c => {
+        const ln = Math.log(c);
+        if (ln < xMin || ln > xMax) return null;
+        return (
+          <g key={c}>
+            <line x1={sx(ln)} y1={pad.top + h} x2={sx(ln)} y2={pad.top + h + 5}
+              stroke="#999" strokeWidth={0.5} />
+            <text x={sx(ln)} y={pad.top + h + 16} textAnchor="middle"
+              style={{ fontSize: 9, fill: "#666" }}>
+              {fmtCost(c)}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Axis labels */}
+      <text x={pad.left + w / 2} y={H - 8} textAnchor="middle"
+        style={{ fontSize: 11, fill: "#333", fontWeight: 500 }}>
+        Annual Equipment Cost (log scale)
+      </text>
+      <text x={14} y={pad.top + h / 2} textAnchor="middle"
+        style={{ fontSize: 11, fill: "#333", fontWeight: 500 }}
+        transform={`rotate(-90,14,${pad.top + h / 2})`}>
+        Gini → Points (β)
+      </text>
+
+      {/* CI band */}
+      <path d={bandD} fill="#1a1a2e" opacity={0.08} />
+
+      {/* Main line */}
+      <path d={lineD} fill="none" stroke="#1a1a2e" strokeWidth={2.5} />
+
+      {/* Crossover CI zone */}
+      <rect x={crossCiLeft} y={sy(0) - 3} width={crossCiRight - crossCiLeft} height={6}
+        fill="#ff9800" opacity={0.25} rx={2} />
+
+      {/* Crossover marker */}
+      <line x1={crossX} y1={pad.top + 34} x2={crossX} y2={pad.top + h - 4}
+        stroke="#ff9800" strokeWidth={1.5} strokeDasharray="4,3" />
+      <circle cx={crossX} cy={sy(0)} r={5} fill="#ff9800" stroke="white" strokeWidth={2} />
+      <text x={crossX} y={pad.top + h + 30} textAnchor="middle"
+        style={{ fontSize: 9, fill: "#e65100", fontWeight: 600 }}>
+        Crossover: €1,406
+      </text>
+      <text x={crossX} y={pad.top + h + 41} textAnchor="middle"
+        style={{ fontSize: 8, fill: "#e65100" }}>
+        (CI: €938–€2,109)
+      </text>
+
+      {/* Data points */}
+      {UPPER.map((d, i) => {
+        const sig = d.p < 0.05;
+        const x = sx(d.ln);
+        const y = sy(d.b);
+        return (
+          <g key={i}
+            onMouseEnter={() => setHover(d)}
+            onMouseLeave={() => setHover(null)}
+            style={{ cursor: "pointer" }}>
+            {/* CI whisker */}
+            <line x1={x} y1={sy(d.ci_lo)} x2={x} y2={sy(d.ci_hi)}
+              stroke={sig ? "#1a1a2e" : "#bbb"} strokeWidth={1} />
+            <line x1={x - 3} y1={sy(d.ci_lo)} x2={x + 3} y2={sy(d.ci_lo)}
+              stroke={sig ? "#1a1a2e" : "#bbb"} strokeWidth={0.8} />
+            <line x1={x - 3} y1={sy(d.ci_hi)} x2={x + 3} y2={sy(d.ci_hi)}
+              stroke={sig ? "#1a1a2e" : "#bbb"} strokeWidth={0.8} />
+            {/* Point */}
+            <circle cx={x} cy={y} r={4}
+              fill={sig ? "#1a1a2e" : "white"}
+              stroke="#1a1a2e" strokeWidth={1.5} />
+          </g>
+        );
+      })}
+
+      {/* Sport labels */}
+      {SPORTS.map((s, i) => {
+        const ln = Math.log(s.cost);
+        const x = sx(ln);
+        const eff = effectAt(ln);
+        const y = sy(eff);
+        const above = s.pos === "above";
+        return (
+          <g key={i}>
+            <line x1={x} y1={y + (above ? -6 : 6)} x2={x} y2={y + (above ? -18 : 18)}
+              stroke="#999" strokeWidth={0.5} />
+            <text x={x} y={y + (above ? -21 : 28)} textAnchor="middle"
+              style={{ fontSize: 8, fill: "#666", fontStyle: "italic" }}>
+              {s.name}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Hover tooltip */}
+      {hover && (() => {
+        const x = sx(hover.ln);
+        const y = sy(hover.b);
+        const tx = x > W / 2 ? x - 130 : x + 15;
+        const ty = Math.max(pad.top + 10, Math.min(y - 35, pad.top + h - 65));
+        return (
+          <g>
+            <rect x={tx} y={ty} width={120} height={55} rx={4}
+              fill="white" stroke="#ddd" strokeWidth={1} />
+            <text x={tx + 8} y={ty + 15} style={{ fontSize: 10, fontWeight: 600, fill: "#333" }}>
+              €{hover.cost.toLocaleString()}/yr
+            </text>
+            <text x={tx + 8} y={ty + 29} style={{ fontSize: 9, fill: "#666" }}>
+              Gini β = {hover.b >= 0 ? "+" : ""}{hover.b.toFixed(2)}
+            </text>
+            <text x={tx + 8} y={ty + 41} style={{ fontSize: 9, fill: "#666" }}>
+              p = {hover.p < 0.001 ? "<0.001" : hover.p.toFixed(3)}
+              {hover.p < 0.05 ? " ✱" : ""}
+            </text>
+          </g>
+        );
+      })()}
+
+      {/* Legend */}
+      <circle cx={pad.left + 10} cy={H - 18} r={3.5} fill="#1a1a2e" stroke="#1a1a2e" strokeWidth={1} />
+      <text x={pad.left + 18} y={H - 14} style={{ fontSize: 8, fill: "#666" }}>p &lt; 0.05</text>
+      <circle cx={pad.left + 70} cy={H - 18} r={3.5} fill="white" stroke="#1a1a2e" strokeWidth={1} />
+      <text x={pad.left + 78} y={H - 14} style={{ fontSize: 8, fill: "#666" }}>not sig.</text>
+    </svg>
+  );
+}
+
+function App() {
+  return (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center",
+      width: "100%", height: "100%", padding: 10 }}>
+      <CrossoverChart />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+</html>
