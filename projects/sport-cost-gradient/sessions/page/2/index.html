@@ -552,12 +552,68 @@ button#theme-toggle:hover {
 }
 
  
+
+ 
 .viz-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
 }
 
+.story-flow {
+  max-width: none;
+}
+
+ 
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.story-text {
+  min-width: 0;  
+}
+
+.story-text h2:first-child {
+  margin-top: 0;
+}
+
+.story-panel {
+  padding-top: 0.5rem;
+}
+
+ 
+.panel-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0.6rem 0 0.35rem;
+  opacity: 0.7;
+}
+
+.panel-section-label:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .story-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .story-panel {
+    padding-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+ 
 .viz-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -584,8 +640,6 @@ button#theme-toggle:hover {
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  display: flex;
-  flex-direction: column-reverse;  
 }
 
  
@@ -604,18 +658,30 @@ button#theme-toggle:hover {
   letter-spacing: 0.08em;
   color: var(--secondary);
   margin-bottom: 1rem;
-  order: 999;  
 }
 
  
 .version-block {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.version-block:first-child {
+.version-block:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-panel .version-block {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border-bottom: none;
+  margin-bottom: 0.8rem;
+}
+
+.story-panel .version-block:last-child {
   margin-bottom: 0;
 }
 
@@ -623,7 +689,7 @@ button#theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .version-tag {
@@ -639,7 +705,7 @@ button#theme-toggle:hover {
 }
 
 .version-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: -0.01em;
@@ -650,7 +716,7 @@ button#theme-toggle:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .viz-thumb {
@@ -659,9 +725,10 @@ button#theme-toggle:hover {
   color: inherit;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--code-bg, #f6f8fa);
+  background: #fff;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  border: 1px solid var(--border);
 }
 
 .viz-thumb:hover {
@@ -839,7 +906,6 @@ button#theme-toggle:hover {
   </header>
   <div class="entry-content">
     <p>Session: v0.92 Paper Structure and Sport Decomposition Date: 2026-02-21
-Chat link: Open in Claude
 Summary Extensive statistical analysis comparing “scoring-only” versus “with-zeros” specifications, followed by creation of a detailed paper outline and structural decisions.
 Key Results Team sports: positive Gini coefficient only in scoring-only samples (driven by USA, Brazil, Argentina); disappears or reverses with zero-scoring countries included. Duel sports: no systematic inequality relationship. Individual sports: confirmed hypothesized cost gradient. Structural Decisions Eight-section paper outline created. Equipment cost tiers removed in favor of continuous specifications. All gender analysis moved to separate Paper 2. “Horse race” jargon replaced with “joint specification.” Title settled: “How Income Distribution and Sports Participation Cost Shape Olympic Performance” Next Steps Planned (v0.92) Period robustness checks, Galton tests on cost gradient, and Tobit estimation.
 </p>
@@ -855,7 +921,6 @@ Key Results Team sports: positive Gini coefficient only in scoring-only samples 
   </header>
   <div class="entry-content">
     <p>Session: v0.92 Robustness Visualizations Date: 2026-02-23
-Chat link: Open in Claude
 Summary Completed visualizations for v0.92 robustness analyses after a previous session was cut off.
 Visualizations Created (F7 — Three-Tab Interactive) Period Stability: Coefficient plots with confidence intervals comparing P1 (2000–2008) vs P2 (2012–2024), with toggles between full and upper samples. Cost gradient appears consistently across time periods. Galton Tab: Horizontal bars showing 8 of 10 regions exhibit negative gradients. Latin America is the notable positive exception. Tobit Tab: Compares three estimation approaches (scoring-only OLS, Tobit with zeros, with-zeros OLS). All methods confirm the negative gradient. </p>
   </div>
@@ -870,7 +935,6 @@ Visualizations Created (F7 — Three-Tab Interactive) Period Stability: Coeffici
   </header>
   <div class="entry-content">
     <p>Session: v0.93 Cost Reclassification — Completion Date: 2026-02-23
-Chat link: Open in Claude
 Summary Completed systematic review of remaining C-rated sports, focusing on biographical analysis of Paris 2024 Olympic medallists to validate cost classifications.
 Key Discovery Marathon Swimming has no independent youth pathway — every medallist came through pool swimming clubs, with open water competition beginning only post-selection. Revised from €4,400 to €4,800, making it identical to Swimming.
 Unchanged Estimates (Documented) Diving, Artistic Swimming, and Water Polo estimates confirmed as reasonable approximations through biographical research. No revisions despite thorough investigation.
@@ -887,7 +951,6 @@ Unchanged Estimates (Documented) Diving, Artistic Swimming, and Water Polo estim
   </header>
   <div class="entry-content">
     <p>Session: v0.93 Cost Reclassification — Pilot Sports Date: 2026-02-23
-Chat link: Open in Claude
 Summary Extended the pilot cost analysis of 8 sports to develop a comprehensive four-component cost breakdown (equipment, coaching, facility access, competition expenses) for all Olympic sports.
 Pilot Results Total annual costs for the 8 pilot sports ranged from €1,400 (judo) to €10,500 (sailing). Facility costs emerged as a major hidden driver: swimming (42% of total cost) and rowing (47% of total cost). Equipment-only measures understate true cost barriers by 2–5× while preserving relative ordering.
 ...</p>
@@ -903,7 +966,6 @@ Pilot Results Total annual costs for the 8 pilot sports ranged from €1,400 (ju
   </header>
   <div class="entry-content">
     <p>Session: v0.93–v0.95 Paper Refinement and Analysis Plan Date: 2026-02-24
-Chat link: Open in Claude
 Summary Refined Paper 1 structure and created comprehensive handover documents for v0.95 analysis. Established that the research contribution is the first empirical validation of cost-based mechanisms that Geloso &amp; Kufenko theorized but couldn’t test.
 Structural Decisions Equipment cost tiers replaced with continuous specifications. All gender analysis moved to Paper 2. “Horse race” terminology replaced with “joint specification.” Key Finding Confirmed Two cleanly separated channels: GDP per capita interacts with facility infrastructure costs while Gini interacts with personal equipment costs in individual sports. The gradient is concentrated in upper-income countries.
 ...</p>
@@ -919,9 +981,9 @@ Structural Decisions Equipment cost tiers replaced with continuous specification
   </header>
   <div class="entry-content">
     <p>Session: v0.94 Facility Cost — Continuous Estimates Date: 2026-02-24
-Chat link: Open in Claude
 Summary Transitioned facility cost classifications from ordinal tiers (1–4) to continuous cost estimates in euros sourced from Central European construction data. Addressed three problematic pool-dependent sports (Marathon Swimming, Triathlon, Modern Pentathlon).
 Methodological Decision When Claude suggested testing different specifications first, Sam firmly rejected: “we cannot test first, that is cheating.” Classification decisions must be made before running regressions.
+Max-Component Principle Pool-dependent sports reclassified from marginal costs (€50K–€800K) to €25M reflecting swimming pool infrastructure dependence.
 ...</p>
   </div>
   <footer class="entry-footer"><span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
@@ -935,7 +997,6 @@ Methodological Decision When Claude suggested testing different specifications f
   </header>
   <div class="entry-content">
     <p>Session: Visualization Planning and Handover Date: 2026-02-13
-Chat link: Open in Claude
 Summary Verified the uploaded Forrest et al. 2017 PDF and planned interactive data visualizations for the research website. Analyzed four existing JSX visualization files and identified gaps.
 Existing Visualizations gini_sporting: Gini vs per-capita medal performance gini_vs_gold: Gini vs gold/silver ratio (summer and winter) gsn_galton: Galton’s Problem diagnostic with partial correlations gsn_gender_gdp: Gender performance analysis by GDP and Gini New Visualizations Proposed Sport-Cost Gradient Explorer (essential) — shows how country performance distributes across cost tiers “Who Wins What” heatmap — countries versus cost tiers Validation chart — rich vs poor country ratios by sport Key Analytical Insight Within-region Gini coefficients showed a non-random pattern: while overall Gini correlation disappeared after region controls, some regions showed positive and others negative correlations. This motivated the sport-cost decomposition analysis.
 </p>

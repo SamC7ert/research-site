@@ -9,11 +9,12 @@
 <meta name="keywords" content="">
 <meta name="description" content="Session: v0.94 Facility Cost — Continuous Estimates
 Date: 2026-02-24
-Chat link: Open in Claude
 Summary
 Transitioned facility cost classifications from ordinal tiers (1–4) to continuous cost estimates in euros sourced from Central European construction data. Addressed three problematic pool-dependent sports (Marathon Swimming, Triathlon, Modern Pentathlon).
 Methodological Decision
-When Claude suggested testing different specifications first, Sam firmly rejected: &ldquo;we cannot test first, that is cheating.&rdquo; Classification decisions must be made before running regressions.">
+When Claude suggested testing different specifications first, Sam firmly rejected: &ldquo;we cannot test first, that is cheating.&rdquo; Classification decisions must be made before running regressions.
+Max-Component Principle
+Pool-dependent sports reclassified from marginal costs (€50K–€800K) to €25M reflecting swimming pool infrastructure dependence.">
 <meta name="author" content="Sam C. Syvertsen">
 <link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/14/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
@@ -558,12 +559,68 @@ button#theme-toggle:hover {
 }
 
  
+
+ 
 .viz-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
 }
 
+.story-flow {
+  max-width: none;
+}
+
+ 
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.story-text {
+  min-width: 0;  
+}
+
+.story-text h2:first-child {
+  margin-top: 0;
+}
+
+.story-panel {
+  padding-top: 0.5rem;
+}
+
+ 
+.panel-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0.6rem 0 0.35rem;
+  opacity: 0.7;
+}
+
+.panel-section-label:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .story-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .story-panel {
+    padding-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+ 
 .viz-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -590,8 +647,6 @@ button#theme-toggle:hover {
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  display: flex;
-  flex-direction: column-reverse;  
 }
 
  
@@ -610,18 +665,30 @@ button#theme-toggle:hover {
   letter-spacing: 0.08em;
   color: var(--secondary);
   margin-bottom: 1rem;
-  order: 999;  
 }
 
  
 .version-block {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.version-block:first-child {
+.version-block:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-panel .version-block {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border-bottom: none;
+  margin-bottom: 0.8rem;
+}
+
+.story-panel .version-block:last-child {
   margin-bottom: 0;
 }
 
@@ -629,7 +696,7 @@ button#theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .version-tag {
@@ -645,7 +712,7 @@ button#theme-toggle:hover {
 }
 
 .version-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: -0.01em;
@@ -656,7 +723,7 @@ button#theme-toggle:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .viz-thumb {
@@ -665,9 +732,10 @@ button#theme-toggle:hover {
   color: inherit;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--code-bg, #f6f8fa);
+  background: #fff;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  border: 1px solid var(--border);
 }
 
 .viz-thumb:hover {
@@ -752,9 +820,9 @@ button#theme-toggle:hover {
   <meta property="og:site_name" content="Sam C. Syvertsen — Research">
   <meta property="og:title" content="Session: v0.94 Facility Cost — Continuous Estimates">
   <meta property="og:description" content="Session: v0.94 Facility Cost — Continuous Estimates Date: 2026-02-24
-Chat link: Open in Claude
 Summary Transitioned facility cost classifications from ordinal tiers (1–4) to continuous cost estimates in euros sourced from Central European construction data. Addressed three problematic pool-dependent sports (Marathon Swimming, Triathlon, Modern Pentathlon).
-Methodological Decision When Claude suggested testing different specifications first, Sam firmly rejected: “we cannot test first, that is cheating.” Classification decisions must be made before running regressions.">
+Methodological Decision When Claude suggested testing different specifications first, Sam firmly rejected: “we cannot test first, that is cheating.” Classification decisions must be made before running regressions.
+Max-Component Principle Pool-dependent sports reclassified from marginal costs (€50K–€800K) to €25M reflecting swimming pool infrastructure dependence.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -844,8 +912,7 @@ Methodological Decision When Claude suggested testing different specifications f
   </h1>
 </header>
 <div class="post-content"><h2 id="session-v094-facility-cost--continuous-estimates">Session: v0.94 Facility Cost — Continuous Estimates<a hidden class="anchor" aria-hidden="true" href="#session-v094-facility-cost--continuous-estimates">#</a></h2>
-<p><strong>Date:</strong> 2026-02-24<br>
-<strong>Chat link:</strong> <a href="https://claude.ai/chat/2caf9cd5-c345-4c5a-9e7a-9e5146f687cf">Open in Claude</a></p>
+<p><strong>Date:</strong> 2026-02-24</p>
 <h3 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h3>
 <p>Transitioned facility cost classifications from ordinal tiers (1–4) to continuous cost estimates in euros sourced from Central European construction data. Addressed three problematic pool-dependent sports (Marathon Swimming, Triathlon, Modern Pentathlon).</p>
 <h3 id="methodological-decision">Methodological Decision<a hidden class="anchor" aria-hidden="true" href="#methodological-decision">#</a></h3>

@@ -9,7 +9,6 @@
 <meta name="keywords" content="">
 <meta name="description" content="Session: v0.93 Cost Reclassification — Pilot Sports
 Date: 2026-02-23
-Chat link: Open in Claude
 Summary
 Extended the pilot cost analysis of 8 sports to develop a comprehensive four-component cost breakdown (equipment, coaching, facility access, competition expenses) for all Olympic sports.
 Pilot Results
@@ -558,12 +557,68 @@ button#theme-toggle:hover {
 }
 
  
+
+ 
 .viz-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
 }
 
+.story-flow {
+  max-width: none;
+}
+
+ 
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.story-text {
+  min-width: 0;  
+}
+
+.story-text h2:first-child {
+  margin-top: 0;
+}
+
+.story-panel {
+  padding-top: 0.5rem;
+}
+
+ 
+.panel-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0.6rem 0 0.35rem;
+  opacity: 0.7;
+}
+
+.panel-section-label:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .story-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .story-panel {
+    padding-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+ 
 .viz-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -590,8 +645,6 @@ button#theme-toggle:hover {
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  display: flex;
-  flex-direction: column-reverse;  
 }
 
  
@@ -610,18 +663,30 @@ button#theme-toggle:hover {
   letter-spacing: 0.08em;
   color: var(--secondary);
   margin-bottom: 1rem;
-  order: 999;  
 }
 
  
 .version-block {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.version-block:first-child {
+.version-block:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-panel .version-block {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border-bottom: none;
+  margin-bottom: 0.8rem;
+}
+
+.story-panel .version-block:last-child {
   margin-bottom: 0;
 }
 
@@ -629,7 +694,7 @@ button#theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .version-tag {
@@ -645,7 +710,7 @@ button#theme-toggle:hover {
 }
 
 .version-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: -0.01em;
@@ -656,7 +721,7 @@ button#theme-toggle:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .viz-thumb {
@@ -665,9 +730,10 @@ button#theme-toggle:hover {
   color: inherit;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--code-bg, #f6f8fa);
+  background: #fff;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  border: 1px solid var(--border);
 }
 
 .viz-thumb:hover {
@@ -752,7 +818,6 @@ button#theme-toggle:hover {
   <meta property="og:site_name" content="Sam C. Syvertsen — Research">
   <meta property="og:title" content="Session: v0.93 Cost Reclassification — Pilot Sports">
   <meta property="og:description" content="Session: v0.93 Cost Reclassification — Pilot Sports Date: 2026-02-23
-Chat link: Open in Claude
 Summary Extended the pilot cost analysis of 8 sports to develop a comprehensive four-component cost breakdown (equipment, coaching, facility access, competition expenses) for all Olympic sports.
 Pilot Results Total annual costs for the 8 pilot sports ranged from €1,400 (judo) to €10,500 (sailing). Facility costs emerged as a major hidden driver: swimming (42% of total cost) and rowing (47% of total cost). Equipment-only measures understate true cost barriers by 2–5× while preserving relative ordering.">
   <meta property="og:locale" content="en-us">
@@ -844,8 +909,7 @@ Pilot Results Total annual costs for the 8 pilot sports ranged from €1,400 (ju
   </h1>
 </header>
 <div class="post-content"><h2 id="session-v093-cost-reclassification--pilot-sports">Session: v0.93 Cost Reclassification — Pilot Sports<a hidden class="anchor" aria-hidden="true" href="#session-v093-cost-reclassification--pilot-sports">#</a></h2>
-<p><strong>Date:</strong> 2026-02-23<br>
-<strong>Chat link:</strong> <a href="https://claude.ai/chat/471ccc57-f4e0-4106-8be5-a2ee9d5b810e">Open in Claude</a></p>
+<p><strong>Date:</strong> 2026-02-23</p>
 <h3 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h3>
 <p>Extended the pilot cost analysis of 8 sports to develop a comprehensive four-component cost breakdown (equipment, coaching, facility access, competition expenses) for all Olympic sports.</p>
 <h3 id="pilot-results">Pilot Results<a hidden class="anchor" aria-hidden="true" href="#pilot-results">#</a></h3>

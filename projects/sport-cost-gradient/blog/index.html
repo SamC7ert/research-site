@@ -552,12 +552,68 @@ button#theme-toggle:hover {
 }
 
  
+
+ 
 .viz-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
 }
 
+.story-flow {
+  max-width: none;
+}
+
+ 
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.story-text {
+  min-width: 0;  
+}
+
+.story-text h2:first-child {
+  margin-top: 0;
+}
+
+.story-panel {
+  padding-top: 0.5rem;
+}
+
+ 
+.panel-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0.6rem 0 0.35rem;
+  opacity: 0.7;
+}
+
+.panel-section-label:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .story-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .story-panel {
+    padding-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+ 
 .viz-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -584,8 +640,6 @@ button#theme-toggle:hover {
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  display: flex;
-  flex-direction: column-reverse;  
 }
 
  
@@ -604,18 +658,30 @@ button#theme-toggle:hover {
   letter-spacing: 0.08em;
   color: var(--secondary);
   margin-bottom: 1rem;
-  order: 999;  
 }
 
  
 .version-block {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.version-block:first-child {
+.version-block:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-panel .version-block {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border-bottom: none;
+  margin-bottom: 0.8rem;
+}
+
+.story-panel .version-block:last-child {
   margin-bottom: 0;
 }
 
@@ -623,7 +689,7 @@ button#theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .version-tag {
@@ -639,7 +705,7 @@ button#theme-toggle:hover {
 }
 
 .version-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: -0.01em;
@@ -650,7 +716,7 @@ button#theme-toggle:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .viz-thumb {
@@ -659,9 +725,10 @@ button#theme-toggle:hover {
   color: inherit;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--code-bg, #f6f8fa);
+  background: #fff;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  border: 1px solid var(--border);
 }
 
 .viz-thumb:hover {
@@ -824,24 +891,53 @@ button#theme-toggle:hover {
 </header>
 <main class="main">
 <article class="viz-page">
-  <div class="viz-grid">
-
-    
-    <div class="viz-content">
-      <div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/">Research Projects</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/">Income Inequality, Sport Cost, and Olympic Performance</a></div>
-      <header class="post-header">
-        <h1 class="post-title">Research Journal</h1>
-        <div class="post-meta">
-          <span>7 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
-        </div>
-      </header>
-      <div class="post-content">
-        <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
+  <div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/">Research Projects</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/">Income Inequality, Sport Cost, and Olympic Performance</a></div>
+  <header class="post-header">
+    <h1 class="post-title">Research Journal</h1>
+    <div class="post-meta">
+      <span>7 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+    </div>
+    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 15 sessions with an AI research assistant.</p>
+  </header>
+  <div class="post-content story-flow">
+    <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
+<div class="story-row">
+<div class="story-text">
 <h2 id="why-does-norway-win-so-many-golds">Why does Norway win so many golds?</h2>
 <p>Norway&rsquo;s gold-to-total medal ratio at the Summer Olympics seemed unusually high for a small, egalitarian country. I wondered whether this was a pattern — whether equal societies produce <em>winner types</em> more efficiently. It would have been an interesting paradox: equality breeding dominance.</p>
 <p>It wasn&rsquo;t. The gold-to-silver ratio showed no systematic relationship with income inequality. The pattern was noise.</p>
 <p>But the initial investigation — comparing country-level Olympic performance against economic and social indicators — revealed something else. Using data from seven Summer Games (Sydney 2000 through Paris 2024) and a top-six scoring system, <a href="/viz/gini_vs_gold.html">income equality appeared to predict Olympic success per capita</a>, even after controlling for GDP. The signal from income equality was stronger than that from gender equality, which was unexpected.</p>
 <p>This looked like a publishable finding. It wasn&rsquo;t.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.8</span>
+<span class="version-title">Income Equality Predicts Olympic Success</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/gini_vs_gold.html" target="_blank" class="viz-thumb" title="Gini vs Gold Ratio — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/gini_vs_gold.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Gini vs Gold Ratio</div>
+</a>
+<a href="/viz/regional_heterogeneity.html" target="_blank" class="viz-thumb" title="Regional Heterogeneity — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/regional_heterogeneity.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Regional Heterogeneity</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/00/" class="session-link">00 Index</a>
+<a href="/projects/sport-cost-gradient/sessions/01/" class="session-link">01 Equality predicts success</a>
+<a href="/projects/sport-cost-gradient/sessions/02/" class="session-link">02 Dataset validation</a>
+<a href="/projects/sport-cost-gradient/sessions/05/" class="session-link">05 Visualization planning</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
 <h2 id="the-result-that-killed-itself">The result that killed itself</h2>
 <p>Adding regional fixed effects — controls for geographic clusters like Scandinavia, East Asia, Latin America — made the Gini coefficient drop to zero. The inequality–performance correlation was a textbook case of Galton&rsquo;s Problem: what looked causal was actually regional clustering. Scandinavian countries are both equal and good at sport, but equality may not be <em>why</em> they&rsquo;re good.</p>
 <p>This should have ended the project. But the <a href="/viz/regional_heterogeneity.html">regional heterogeneity</a> told a more complicated story. In some regions, inequality correlated positively with performance. In others, negatively. The aggregate zero was hiding real variation — 7 of 10 regions showed positive effects, 3 showed negative. A true null shouldn&rsquo;t produce that pattern.</p>
@@ -854,6 +950,23 @@ button#theme-toggle:hover {
 <p>This was the origin of the sport-cost idea. Not a pre-specified hypothesis. Not from a journal article. Just an observation that some sports require expensive equipment and facilities, and maybe that matters.</p>
 <p>A subsequent literature review revealed that Geloso and Kufenko (2021) had independently theorised exactly this mechanism — income inequality creates participation cost barriers in expensive sports — but lacked the data to test it. We had arrived at the same intuition from a completely different direction.</p>
 <p>Session 03 classified 50 Olympic sports into four cost tiers and ran interactions. The results were immediate: income inequality&rsquo;s negative effect on performance <em>increased with sport cost</em>. The interaction coefficient was significant (p = 0.03 in Period 1). And critically, these cost-dependent effects survived regional controls where the aggregate relationship had not. The cost mechanism explained what Galton&rsquo;s Problem had hidden.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.9</span>
+<span class="version-title">Sport Costs Explain the Inequality Effect</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/03/" class="session-link">03 Full analysis with sport cost</a>
+<a href="/projects/sport-cost-gradient/sessions/06/" class="session-link">06 Data consolidation, AIN athletes</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
 <h2 id="the-u-shape-surprise">The U-shape surprise</h2>
 <p>With a rebuilt panel dataset for v0.91 — 71 countries, 47 sports, seven Games — we expected a clean monotonic gradient: inequality hurts more as sport cost rises.</p>
 <p>Instead, the data showed a <a href="/viz/f4b_ushape.html">U-shape</a>. The cheapest sports (Tier 1) showed a <em>positive</em> Gini effect, and the most expensive sports showed the expected negative effect. The middle tiers were ambiguous.</p>
@@ -861,18 +974,125 @@ button#theme-toggle:hover {
 <p><strong>Team sports</strong> (football, basketball, hockey) cluster in the cheap tier but have no household cost barrier. A country needs exactly one team per event, so institutional investment and population matter more than what a family can afford. Their positive Gini effect in Tier 1 was a confound, not a mechanism.</p>
 <p><strong>Duel sports</strong> (judo, fencing, wrestling, taekwondo) show no cost sensitivity whatsoever. Cultural and martial traditions dominate — Japan in judo, Korea in taekwondo, Cuba in boxing. Cost is irrelevant to who wins.</p>
 <p><strong>Individual sports</strong> (swimming, cycling, sailing, triathlon) — events where participation requires personal investment — show the clean <a href="/viz/f4a_gradient.html">cost gradient</a>. Among upper-income countries competing in individual sports, the interaction of Gini with log equipment cost is significant (p = 0.012). This is where the mechanism lives.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.91</span>
+<span class="version-title">The U-Shape and Sport-Type Decomposition</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/f3_segmentation.html" target="_blank" class="viz-thumb" title="Sport-Cost Segmentation — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/f3_segmentation.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Sport-Cost Segmentation (F3)</div>
+</a>
+<a href="/viz/f4a_gradient.html" target="_blank" class="viz-thumb" title="Cost Gradient — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/f4a_gradient.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Cost Gradient (F4a)</div>
+</a>
+<a href="/viz/f4b_ushape.html" target="_blank" class="viz-thumb" title="U-Shape Explorer — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/f4b_ushape.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">U-Shape Explorer (F4b)</div>
+</a>
+<a href="/viz/galton_diagnostic.html" target="_blank" class="viz-thumb" title="Galton Diagnostic — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/galton_diagnostic.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Galton Diagnostic</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/07/" class="session-link">07 Dataset rebuild</a>
+<a href="/projects/sport-cost-gradient/sessions/08/" class="session-link">08 Sport-type decomposition</a>
+<a href="/projects/sport-cost-gradient/sessions/16/" class="session-link">16 Interactive F4b</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
 <h2 id="two-channels-not-one">Two channels, not one</h2>
 <p>Session 11 produced the paper&rsquo;s central result. We had been treating cost as a single dimension, but separating <em>household equipment cost</em> (what a family pays for gear) from <em>facility infrastructure cost</em> (what it costs to build a pool or velodrome) revealed <a href="/viz/f6_channels.html">two cleanly independent mechanisms</a>:</p>
 <p><strong>Channel 1: Inequality × equipment cost.</strong> Income inequality interacts with household equipment cost but <em>not</em> with facility cost. When families face cost barriers, unequal societies produce fewer participants in expensive-equipment sports.</p>
 <p><strong>Channel 2: GDP × facility cost.</strong> GDP per capita interacts with facility infrastructure cost but <em>not</em> with equipment cost. Wealthy countries build swimming pools and velodromes. Poor countries cannot, regardless of their inequality level.</p>
 <p>The cross-terms were zero. Equipment cost didn&rsquo;t interact with GDP. Facility cost didn&rsquo;t interact with Gini. And when both channels were included simultaneously, the Gini gradient attenuated by only 8% — near-complete independence.</p>
 <p>This wasn&rsquo;t a refinement. It was a reconceptualisation. Inequality and wealth operate through completely different sport-cost dimensions.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.92</span>
+<span class="version-title">Two Channels Cleanly Separated</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/f6_channels.html" target="_blank" class="viz-thumb" title="GDP/Gini Channel Separation — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/f6_channels.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">GDP/Gini Channel Separation (F6)</div>
+</a>
+<a href="/viz/f7_robustness.html" target="_blank" class="viz-thumb" title="Robustness — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/f7_robustness.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Robustness (F7)</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/09/" class="session-link">09 Paper structure</a>
+<a href="/projects/sport-cost-gradient/sessions/11/" class="session-link">11 Channel separation</a>
+<a href="/projects/sport-cost-gradient/sessions/12/" class="session-link">12 Robustness visualizations</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
 <h2 id="getting-the-costs-right">Getting the costs right</h2>
 <p>The channel separation only works if the cost classifications are credible. Sessions 10 and 13 document a painstaking process of building four-component <a href="/viz/cost_classification.html">cost estimates</a> for all 41 sports in the main sample: equipment, coaching, facility access, and competition fees.</p>
 <p>The estimates drew on German club fee structures (Beitragsordnungen), sporting goods pricing, and biographical research on Paris 2024 medallists. A crucial discovery: equipment-only measures understate true participation barriers by 2–5×. Swimming&rsquo;s total cost is dominated by pool access (42%), not by goggles and swimsuits. Rowing&rsquo;s facility share is 47%.</p>
 <p>One example of the biographical validation method: every Paris 2024 marathon swimming medallist came through competitive pool swimming clubs. Open water training only begins post-selection. This confirmed that marathon swimming requires swimming pool infrastructure (€25M), not lakeside access (€50K). The &ldquo;marginal cost&rdquo; framing would miss this entirely.</p>
 <p>Session 14 upgraded <a href="/viz/facility_cost.html">facility costs from ordinal tiers to continuous euro estimates</a>, using Central European construction data. The transition strengthened the GDP–facility channel while the Gini–equipment channel remained stable. Both specifications — marginal cost and max-component — are reported for transparency.</p>
 <p>A principle that governed the entire process: classifications were finalised <em>before</em> running regressions. As noted in Session 14: &ldquo;We cannot test first, that is cheating.&rdquo;</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.93</span>
+<span class="version-title">Four-Component Cost Framework</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/cost_classification.html" target="_blank" class="viz-thumb" title="Cost Classification — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/cost_classification.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Cost Classification</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/10/" class="session-link">10 Cost reclassification pilot</a>
+<a href="/projects/sport-cost-gradient/sessions/13/" class="session-link">13 Biographical validation</a>
+</div>
+</div>
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.94</span>
+<span class="version-title">Continuous Facility Costs</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/facility_cost.html" target="_blank" class="viz-thumb" title="Facility Cost Explorer — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/facility_cost.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Facility Cost Explorer</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/14/" class="session-link">14 Facility cost continuous</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
 <h2 id="does-it-hold-up">Does it hold up?</h2>
 <p>The <a href="/viz/f7_robustness.html">robustness analysis</a> tested the cost gradient across three dimensions:</p>
 <p><strong>Time periods:</strong> The gradient is consistent between Period 1 (2000–2008) and Period 2 (2012–2024). This is not a recent phenomenon.</p>
@@ -882,281 +1102,35 @@ button#theme-toggle:hover {
 <p>By v0.95, the <a href="/viz/paper_figures.html">analytical results</a> were stable. The <a href="/viz/results_dashboard.html">full specification dashboard</a> shows all model variants and their coefficients.</p>
 <p>The remaining work was structural: organising nine sections, writing formal prose, and deciding how transparent to be about the AI-assisted research process.</p>
 <p>The answer to that last question: fully transparent. All 15 session transcripts are published alongside this journal as a methodological companion. The AI (Claude) wrote pipeline code, implemented regression specifications, and drafted text. The research questions, analytical judgments, and cost classifications came from the human researcher.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.95</span>
+<span class="version-title">Paper Figures and Final Specification</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/paper_figures.html" target="_blank" class="viz-thumb" title="Paper Figures — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/paper_figures.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Paper Figures</div>
+</a>
+<a href="/viz/results_dashboard.html" target="_blank" class="viz-thumb" title="Results Dashboard — click to open interactive">
+<div class="viz-thumb-frame"><iframe src="/viz/results_dashboard.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-label">Results Dashboard</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/15/" class="session-link">15 Paper refinement</a>
+</div>
+</div>
+</div>
+</div>
 <hr>
 <h2 id="what-this-project-found">What this project found</h2>
 <p>Income inequality does not predict Olympic performance in the aggregate — but this null conceals a systematic gradient. In individual sports, inequality increasingly hurts performance as personal equipment cost rises. A separate, independent channel runs through national wealth and facility infrastructure. The two mechanisms operate through completely different cost dimensions with near-zero mutual attenuation.</p>
 <p>The finding is robust across time, regions, estimation methods, and cost measurement approaches. It provides the first empirical test of the cost-barrier mechanism that Geloso and Kufenko theorised but could not evaluate.</p>
-
-      </div>
-    </div>
-
-    
-    <aside class="viz-sidebar">
-      <div class="viz-sidebar-header">Version Timeline</div>
-
-      
-      <div class="version-block" id="ver-pre">
-        <div class="version-header">
-          <span class="version-tag">Pre v0.8</span>
-          <span class="version-title">Starting Point</span>
-        </div>
-
-        
-
-        
-        <div class="version-sessions">
-          
-          <a href="/projects/sport-cost-gradient/sessions/00/" class="session-link">00 Index</a>
-          
-        </div>
-        
-      </div>
-      
-      <div class="version-block" id="ver-v08">
-        <div class="version-header">
-          <span class="version-tag">v0.8</span>
-          <span class="version-title">Income Equality Predicts Olympic Success</span>
-        </div>
-
-        
-        <div class="version-viz-grid">
-          
-          <a href="/viz/gini_vs_gold.html" target="_blank" class="viz-thumb" title="Gini vs Gold Ratio — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/gini_vs_gold.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Gini vs Gold Ratio</div>
-          </a>
-          
-          <a href="/viz/regional_heterogeneity.html" target="_blank" class="viz-thumb" title="Regional Heterogeneity — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/regional_heterogeneity.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Regional Heterogeneity</div>
-          </a>
-          
-        </div>
-        
-
-        
-        <div class="version-sessions">
-          
-          <a href="/projects/sport-cost-gradient/sessions/01/" class="session-link">01 Equality predicts success</a>
-          
-          <a href="/projects/sport-cost-gradient/sessions/02/" class="session-link">02 Dataset validation</a>
-          
-          <a href="/projects/sport-cost-gradient/sessions/05/" class="session-link">05 Visualization planning</a>
-          
-        </div>
-        
-      </div>
-      
-      <div class="version-block" id="ver-v09">
-        <div class="version-header">
-          <span class="version-tag">v0.9</span>
-          <span class="version-title">Sport Costs Explain the Inequality Effect</span>
-        </div>
-
-        
-
-        
-        <div class="version-sessions">
-          
-          <a href="/projects/sport-cost-gradient/sessions/03/" class="session-link">03 Full analysis with sport cost</a>
-          
-          <a href="/projects/sport-cost-gradient/sessions/06/" class="session-link">06 Data consolidation, AIN athletes</a>
-          
-        </div>
-        
-      </div>
-      
-      <div class="version-block" id="ver-v091">
-        <div class="version-header">
-          <span class="version-tag">v0.91</span>
-          <span class="version-title">The U-Shape and Sport-Type Decomposition</span>
-        </div>
-
-        
-        <div class="version-viz-grid">
-          
-          <a href="/viz/f3_segmentation.html" target="_blank" class="viz-thumb" title="Sport-Cost Segmentation (F3) — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/f3_segmentation.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Sport-Cost Segmentation (F3)</div>
-          </a>
-          
-          <a href="/viz/f4a_gradient.html" target="_blank" class="viz-thumb" title="Cost Gradient (F4a) — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/f4a_gradient.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Cost Gradient (F4a)</div>
-          </a>
-          
-          <a href="/viz/f4b_ushape.html" target="_blank" class="viz-thumb" title="U-Shape Explorer (F4b) — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/f4b_ushape.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">U-Shape Explorer (F4b)</div>
-          </a>
-          
-          <a href="/viz/galton_diagnostic.html" target="_blank" class="viz-thumb" title="Galton Diagnostic — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/galton_diagnostic.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Galton Diagnostic</div>
-          </a>
-          
-        </div>
-        
-
-        
-        <div class="version-sessions">
-          
-          <a href="/projects/sport-cost-gradient/sessions/07/" class="session-link">07 Dataset rebuild</a>
-          
-          <a href="/projects/sport-cost-gradient/sessions/08/" class="session-link">08 Sport-type decomposition</a>
-          
-          <a href="/projects/sport-cost-gradient/sessions/16/" class="session-link">16 Interactive F4b</a>
-          
-        </div>
-        
-      </div>
-      
-      <div class="version-block" id="ver-v092">
-        <div class="version-header">
-          <span class="version-tag">v0.92</span>
-          <span class="version-title">Two Channels Cleanly Separated</span>
-        </div>
-
-        
-        <div class="version-viz-grid">
-          
-          <a href="/viz/f6_channels.html" target="_blank" class="viz-thumb" title="GDP/Gini Channel Separation (F6) — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/f6_channels.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">GDP/Gini Channel Separation (F6)</div>
-          </a>
-          
-          <a href="/viz/f7_robustness.html" target="_blank" class="viz-thumb" title="Robustness (F7) — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/f7_robustness.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Robustness (F7)</div>
-          </a>
-          
-        </div>
-        
-
-        
-        <div class="version-sessions">
-          
-          <a href="/projects/sport-cost-gradient/sessions/09/" class="session-link">09 Paper structure</a>
-          
-          <a href="/projects/sport-cost-gradient/sessions/11/" class="session-link">11 Channel separation</a>
-          
-          <a href="/projects/sport-cost-gradient/sessions/12/" class="session-link">12 Robustness visualizations</a>
-          
-        </div>
-        
-      </div>
-      
-      <div class="version-block" id="ver-v093">
-        <div class="version-header">
-          <span class="version-tag">v0.93</span>
-          <span class="version-title">Four-Component Cost Framework</span>
-        </div>
-
-        
-        <div class="version-viz-grid">
-          
-          <a href="/viz/cost_classification.html" target="_blank" class="viz-thumb" title="Cost Classification — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/cost_classification.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Cost Classification</div>
-          </a>
-          
-        </div>
-        
-
-        
-        <div class="version-sessions">
-          
-          <a href="/projects/sport-cost-gradient/sessions/10/" class="session-link">10 Cost reclassification pilot</a>
-          
-          <a href="/projects/sport-cost-gradient/sessions/13/" class="session-link">13 Biographical validation</a>
-          
-        </div>
-        
-      </div>
-      
-      <div class="version-block" id="ver-v094">
-        <div class="version-header">
-          <span class="version-tag">v0.94</span>
-          <span class="version-title">Continuous Facility Costs</span>
-        </div>
-
-        
-        <div class="version-viz-grid">
-          
-          <a href="/viz/facility_cost.html" target="_blank" class="viz-thumb" title="Facility Cost Explorer — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/facility_cost.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Facility Cost Explorer</div>
-          </a>
-          
-        </div>
-        
-
-        
-        <div class="version-sessions">
-          
-          <a href="/projects/sport-cost-gradient/sessions/14/" class="session-link">14 Facility cost continuous</a>
-          
-        </div>
-        
-      </div>
-      
-      <div class="version-block" id="ver-v095">
-        <div class="version-header">
-          <span class="version-tag">v0.95</span>
-          <span class="version-title">Paper Figures and Final Specification</span>
-        </div>
-
-        
-        <div class="version-viz-grid">
-          
-          <a href="/viz/paper_figures.html" target="_blank" class="viz-thumb" title="Paper Figures — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/paper_figures.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Paper Figures</div>
-          </a>
-          
-          <a href="/viz/results_dashboard.html" target="_blank" class="viz-thumb" title="Results Dashboard — click to open interactive">
-            <div class="viz-thumb-frame">
-              <iframe src="/viz/results_dashboard.html" loading="lazy" tabindex="-1"></iframe>
-            </div>
-            <div class="viz-thumb-label">Results Dashboard</div>
-          </a>
-          
-        </div>
-        
-
-        
-        <div class="version-sessions">
-          
-          <a href="/projects/sport-cost-gradient/sessions/15/" class="session-link">15 Paper refinement</a>
-          
-        </div>
-        
-      </div>
-      
-
-    </aside>
 
   </div>
 </article>

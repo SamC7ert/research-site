@@ -9,7 +9,6 @@
 <meta name="keywords" content="">
 <meta name="description" content="Session: v0.91 Dataset Rebuild
 Date: 2026-02-18
-Chat link: Open in Claude
 Summary
 Rebuilding derived datasets D1 (country × sport × period panel) and D2 (country aggregate) for v0.91. Discovered outdated fields from v0.9 still present — the old &ldquo;communist&rdquo; field needed replacement with &ldquo;soviet_legacy&rdquo; and China required reclassification.
 Work Done
@@ -565,12 +564,68 @@ button#theme-toggle:hover {
 }
 
  
+
+ 
 .viz-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
 }
 
+.story-flow {
+  max-width: none;
+}
+
+ 
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.story-text {
+  min-width: 0;  
+}
+
+.story-text h2:first-child {
+  margin-top: 0;
+}
+
+.story-panel {
+  padding-top: 0.5rem;
+}
+
+ 
+.panel-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0.6rem 0 0.35rem;
+  opacity: 0.7;
+}
+
+.panel-section-label:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .story-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .story-panel {
+    padding-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+ 
 .viz-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -597,8 +652,6 @@ button#theme-toggle:hover {
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  display: flex;
-  flex-direction: column-reverse;  
 }
 
  
@@ -617,18 +670,30 @@ button#theme-toggle:hover {
   letter-spacing: 0.08em;
   color: var(--secondary);
   margin-bottom: 1rem;
-  order: 999;  
 }
 
  
 .version-block {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.version-block:first-child {
+.version-block:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-panel .version-block {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border-bottom: none;
+  margin-bottom: 0.8rem;
+}
+
+.story-panel .version-block:last-child {
   margin-bottom: 0;
 }
 
@@ -636,7 +701,7 @@ button#theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .version-tag {
@@ -652,7 +717,7 @@ button#theme-toggle:hover {
 }
 
 .version-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: -0.01em;
@@ -663,7 +728,7 @@ button#theme-toggle:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .viz-thumb {
@@ -672,9 +737,10 @@ button#theme-toggle:hover {
   color: inherit;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--code-bg, #f6f8fa);
+  background: #fff;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  border: 1px solid var(--border);
 }
 
 .viz-thumb:hover {
@@ -759,7 +825,6 @@ button#theme-toggle:hover {
   <meta property="og:site_name" content="Sam C. Syvertsen — Research">
   <meta property="og:title" content="Session: v0.91 Dataset Rebuild">
   <meta property="og:description" content="Session: v0.91 Dataset Rebuild Date: 2026-02-18
-Chat link: Open in Claude
 Summary Rebuilding derived datasets D1 (country × sport × period panel) and D2 (country aggregate) for v0.91. Discovered outdated fields from v0.9 still present — the old “communist” field needed replacement with “soviet_legacy” and China required reclassification.
 Work Done Rebuilt D1 and D2 from source data using updated v1.0a region_classification.json. Applied sport filtering: dropped 6 new sports (BMX Freestyle, Skateboarding, etc.). Created main and robustness sport samples based on game participation thresholds. Aggregated performance using 6-5-4-3-2-1 scoring for places 1–6. Issue Discovered Verification against old D2 revealed point mismatches for several countries, indicating the previous build handled shared medals differently (likely fractional points for tied results). Investigation of original logic initiated.">
   <meta property="og:locale" content="en-us">
@@ -851,8 +916,7 @@ Work Done Rebuilt D1 and D2 from source data using updated v1.0a region_classifi
   </h1>
 </header>
 <div class="post-content"><h2 id="session-v091-dataset-rebuild">Session: v0.91 Dataset Rebuild<a hidden class="anchor" aria-hidden="true" href="#session-v091-dataset-rebuild">#</a></h2>
-<p><strong>Date:</strong> 2026-02-18<br>
-<strong>Chat link:</strong> <a href="https://claude.ai/chat/81308395-4eb5-4560-be63-c19aa37e30b8">Open in Claude</a></p>
+<p><strong>Date:</strong> 2026-02-18</p>
 <h3 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h3>
 <p>Rebuilding derived datasets D1 (country × sport × period panel) and D2 (country aggregate) for v0.91. Discovered outdated fields from v0.9 still present — the old &ldquo;communist&rdquo; field needed replacement with &ldquo;soviet_legacy&rdquo; and China required reclassification.</p>
 <h3 id="work-done">Work Done<a hidden class="anchor" aria-hidden="true" href="#work-done">#</a></h3>

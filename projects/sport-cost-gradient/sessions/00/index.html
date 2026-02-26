@@ -15,27 +15,27 @@ Sessions: 15
 
 
 Norways Olympic gold and silver medals across eight games
-2026-02-12 — Claude chat
 
 
 2nd Pass 8 summer olympics two periods
-2026-02-12 — Claude chat
 
 
 Running full analysis with complete data
-2026-02-13 — Claude chat
 
 
 Academic publishing strategy for economics research
-2026-02-13 — Claude chat
 
 
 Handover files analysis
-2026-02-13 — Claude chat
 
 
 Sports participation rates and Olympic performance
-2026-02-18 — Claude chat">
+
+
+V0.9 preparing v0.91
+
+
+V0.91 analysis 2 to start sport decompose">
 <meta name="author" content="Sam C. Syvertsen">
 <link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/00/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
@@ -580,12 +580,68 @@ button#theme-toggle:hover {
 }
 
  
+
+ 
 .viz-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
 }
 
+.story-flow {
+  max-width: none;
+}
+
+ 
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.story-text {
+  min-width: 0;  
+}
+
+.story-text h2:first-child {
+  margin-top: 0;
+}
+
+.story-panel {
+  padding-top: 0.5rem;
+}
+
+ 
+.panel-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0.6rem 0 0.35rem;
+  opacity: 0.7;
+}
+
+.panel-section-label:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .story-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .story-panel {
+    padding-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+ 
 .viz-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -612,8 +668,6 @@ button#theme-toggle:hover {
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  display: flex;
-  flex-direction: column-reverse;  
 }
 
  
@@ -632,18 +686,30 @@ button#theme-toggle:hover {
   letter-spacing: 0.08em;
   color: var(--secondary);
   margin-bottom: 1rem;
-  order: 999;  
 }
 
  
 .version-block {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.version-block:first-child {
+.version-block:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-panel .version-block {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border-bottom: none;
+  margin-bottom: 0.8rem;
+}
+
+.story-panel .version-block:last-child {
   margin-bottom: 0;
 }
 
@@ -651,7 +717,7 @@ button#theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .version-tag {
@@ -667,7 +733,7 @@ button#theme-toggle:hover {
 }
 
 .version-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: -0.01em;
@@ -678,7 +744,7 @@ button#theme-toggle:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .viz-thumb {
@@ -687,9 +753,10 @@ button#theme-toggle:hover {
   color: inherit;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--code-bg, #f6f8fa);
+  background: #fff;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  border: 1px solid var(--border);
 }
 
 .viz-thumb:hover {
@@ -777,17 +844,13 @@ button#theme-toggle:hover {
 Period: February 12–24, 2026
 Sessions: 15
 Norways Olympic gold and silver medals across eight games
-2026-02-12 — Claude chat
 2nd Pass 8 summer olympics two periods
-2026-02-12 — Claude chat
 Running full analysis with complete data
-2026-02-13 — Claude chat
 Academic publishing strategy for economics research
-2026-02-13 — Claude chat
 Handover files analysis
-2026-02-13 — Claude chat
 Sports participation rates and Olympic performance
-2026-02-18 — Claude chat">
+V0.9 preparing v0.91
+V0.91 analysis 2 to start sport decompose">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -878,68 +941,52 @@ Sports participation rates and Olympic performance
 <hr>
 <ol>
 <li>
-<p><a href="2026-02-12_10_equality-predicts-olympic-success.md">Norways Olympic gold and silver medals across eight games</a><br>
-<em>2026-02-12</em> — <a href="https://claude.ai/chat/edccaf76-3253-4a3d-8fe0-db842b541a54">Claude chat</a></p>
+<p><a href="2026-02-12_10_equality-predicts-olympic-success.md">Norways Olympic gold and silver medals across eight games</a></p>
 </li>
 <li>
-<p><a href="2026-02-12_18_dataset-validation-seven-games.md">2nd Pass 8 summer olympics two periods</a><br>
-<em>2026-02-12</em> — <a href="https://claude.ai/chat/2c10cd93-1773-4bd7-bfc4-82d9e5d01696">Claude chat</a></p>
+<p><a href="2026-02-12_18_dataset-validation-seven-games.md">2nd Pass 8 summer olympics two periods</a></p>
 </li>
 <li>
-<p><a href="2026-02-13_00_full-analysis-inequality-sport-cost.md">Running full analysis with complete data</a><br>
-<em>2026-02-13</em> — <a href="https://claude.ai/chat/4131293b-ae30-4853-ab25-a6469a2ad943">Claude chat</a></p>
+<p><a href="2026-02-13_00_full-analysis-inequality-sport-cost.md">Running full analysis with complete data</a></p>
 </li>
 <li>
-<p><a href="2026-02-13_07_publication-strategy.md">Academic publishing strategy for economics research</a><br>
-<em>2026-02-13</em> — <a href="https://claude.ai/chat/81d3307e-6497-4adf-8348-73df57e902d4">Claude chat</a></p>
+<p><a href="2026-02-13_07_publication-strategy.md">Academic publishing strategy for economics research</a></p>
 </li>
 <li>
-<p><a href="2026-02-13_10_visualization-planning-handover.md">Handover files analysis</a><br>
-<em>2026-02-13</em> — <a href="https://claude.ai/chat/50569398-5925-469e-bd93-eee7d4581121">Claude chat</a></p>
+<p><a href="2026-02-13_10_visualization-planning-handover.md">Handover files analysis</a></p>
 </li>
 <li>
-<p><a href="2026-02-18_06_data-consolidation-ain-athletes.md">Sports participation rates and Olympic performance</a><br>
-<em>2026-02-18</em> — <a href="https://claude.ai/chat/6eefccbc-908e-47e9-a4a5-b443ae174b8c">Claude chat</a></p>
+<p><a href="2026-02-18_06_data-consolidation-ain-athletes.md">Sports participation rates and Olympic performance</a></p>
 </li>
 <li>
-<p><a href="2026-02-18_12_v091-dataset-rebuild.md">V0.9 preparing v0.91</a><br>
-<em>2026-02-18</em> — <a href="https://claude.ai/chat/81308395-4eb5-4560-be63-c19aa37e30b8">Claude chat</a></p>
+<p><a href="2026-02-18_12_v091-dataset-rebuild.md">V0.9 preparing v0.91</a></p>
 </li>
 <li>
-<p><a href="2026-02-19_10_v091-sport-type-decomposition.md">V0.91 analysis 2 to start sport decompose</a><br>
-<em>2026-02-19</em> — <a href="https://claude.ai/chat/e2799075-e058-4a18-8f40-5689547b0747">Claude chat</a></p>
+<p><a href="2026-02-19_10_v091-sport-type-decomposition.md">V0.91 analysis 2 to start sport decompose</a></p>
 </li>
 <li>
-<p><a href="2026-02-21_18_v092-paper-structure-sport-decomposition.md">v0.91 Sports decomposition Team Duel Individual Prepare v0.92</a><br>
-<em>2026-02-21</em> — <a href="https://claude.ai/chat/d197e438-2539-42bc-9024-8a96d2733675">Claude chat</a></p>
+<p><a href="2026-02-21_18_v092-paper-structure-sport-decomposition.md">v0.91 Sports decomposition Team Duel Individual Prepare v0.92</a></p>
 </li>
 <li>
-<p><a href="2026-02-23_05_v093-cost-reclassification-pilot.md">v0.93 Cost reclass part 1</a><br>
-<em>2026-02-23</em> — <a href="https://claude.ai/chat/471ccc57-f4e0-4106-8be5-a2ee9d5b810e">Claude chat</a></p>
+<p><a href="2026-02-23_05_v093-cost-reclassification-pilot.md">v0.93 Cost reclass part 1</a></p>
 </li>
 <li>
-<p><a href="2026-02-23_08_v092-channel-separation-breakthrough.md">v0.92 Rerun analysis and file upload</a><br>
-<em>2026-02-23</em> — <a href="https://claude.ai/chat/786d0ea7-2a98-44e2-abe7-459887eab6ec">Claude chat</a></p>
+<p><a href="2026-02-23_08_v092-channel-separation-breakthrough.md">v0.92 Rerun analysis and file upload</a></p>
 </li>
 <li>
-<p><a href="2026-02-23_11_v092-robustness-visualizations.md">v0.92 visualization and robustness analysis</a><br>
-<em>2026-02-23</em> — <a href="https://claude.ai/chat/8d3f68b6-7648-462d-aebc-00e6c9c3a3b7">Claude chat</a></p>
+<p><a href="2026-02-23_11_v092-robustness-visualizations.md">v0.92 visualization and robustness analysis</a></p>
 </li>
 <li>
-<p><a href="2026-02-23_12_v093-cost-reclass-completion.md">0.93 Cost reclass part 2</a><br>
-<em>2026-02-23</em> — <a href="https://claude.ai/chat/f736762b-e438-4f74-a001-501bb7d8529b">Claude chat</a></p>
+<p><a href="2026-02-23_12_v093-cost-reclass-completion.md">0.93 Cost reclass part 2</a></p>
 </li>
 <li>
-<p><a href="2026-02-24_08_v094-facility-cost-continuous.md">v0.94 Sports facility cost review</a><br>
-<em>2026-02-24</em> — <a href="https://claude.ai/chat/2caf9cd5-c345-4c5a-9e7a-9e5146f687cf">Claude chat</a></p>
+<p><a href="2026-02-24_08_v094-facility-cost-continuous.md">v0.94 Sports facility cost review</a></p>
 </li>
 <li>
-<p><a href="2026-02-24_09_v093-v095-paper-refinement.md">v0.93 Analysis</a><br>
-<em>2026-02-24</em> — <a href="https://claude.ai/chat/ae97e23f-3993-419e-82a8-7f3821cadf2d">Claude chat</a></p>
+<p><a href="2026-02-24_09_v093-v095-paper-refinement.md">v0.93 Analysis</a></p>
 </li>
 <li>
-<p><a href="2026-02-24_16_v091-interactive-visualization-f4b.md">v0.91 Sports decomposition continuation</a><br>
-<em>2026-02-24</em> — <a href="https://claude.ai/chat/4b745beb-c74b-4660-b092-aa99d1df1b95">Claude chat</a></p>
+<p><a href="2026-02-24_16_v091-interactive-visualization-f4b.md">v0.91 Sports decomposition continuation</a></p>
 </li>
 </ol>
 

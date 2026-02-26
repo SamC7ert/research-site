@@ -9,7 +9,6 @@
 <meta name="keywords" content="">
 <meta name="description" content="Session: Interactive Visualization F4b Development
 Date: 2026-02-24
-Chat link: Open in Claude
 Summary
 Developed and refined interactive React visualization F4b exploring the &ldquo;U-shape&rdquo; relationship between equipment costs and inequality&rsquo;s effect on Olympic success.
 F4b Tabs
@@ -571,12 +570,68 @@ button#theme-toggle:hover {
 }
 
  
+
+ 
 .viz-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
 }
 
+.story-flow {
+  max-width: none;
+}
+
+ 
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.story-text {
+  min-width: 0;  
+}
+
+.story-text h2:first-child {
+  margin-top: 0;
+}
+
+.story-panel {
+  padding-top: 0.5rem;
+}
+
+ 
+.panel-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0.6rem 0 0.35rem;
+  opacity: 0.7;
+}
+
+.panel-section-label:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .story-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .story-panel {
+    padding-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+ 
 .viz-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -603,8 +658,6 @@ button#theme-toggle:hover {
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  display: flex;
-  flex-direction: column-reverse;  
 }
 
  
@@ -623,18 +676,30 @@ button#theme-toggle:hover {
   letter-spacing: 0.08em;
   color: var(--secondary);
   margin-bottom: 1rem;
-  order: 999;  
 }
 
  
 .version-block {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.version-block:first-child {
+.version-block:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-panel .version-block {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border-bottom: none;
+  margin-bottom: 0.8rem;
+}
+
+.story-panel .version-block:last-child {
   margin-bottom: 0;
 }
 
@@ -642,7 +707,7 @@ button#theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .version-tag {
@@ -658,7 +723,7 @@ button#theme-toggle:hover {
 }
 
 .version-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: -0.01em;
@@ -669,7 +734,7 @@ button#theme-toggle:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .viz-thumb {
@@ -678,9 +743,10 @@ button#theme-toggle:hover {
   color: inherit;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--code-bg, #f6f8fa);
+  background: #fff;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  border: 1px solid var(--border);
 }
 
 .viz-thumb:hover {
@@ -765,7 +831,6 @@ button#theme-toggle:hover {
   <meta property="og:site_name" content="Sam C. Syvertsen — Research">
   <meta property="og:title" content="Session: Interactive Visualization F4b Development">
   <meta property="og:description" content="Session: Interactive Visualization F4b Development Date: 2026-02-24
-Chat link: Open in Claude
 Summary Developed and refined interactive React visualization F4b exploring the “U-shape” relationship between equipment costs and inequality’s effect on Olympic success.
 F4b Tabs Country Patterns: Butterfly chart showing U-shape vs monotone countries. Soviet Split: Q3 and Q4 GDP quartiles shown as separate lines with Soviet-legacy breakdowns. Q4 contains zero Soviet-legacy nations. Sport Type: Decomposition by team, duel, and individual sports with original full-sample lines as grey reference curves. Design Decisions Q3 and Q4 shown as separate lines rather than combined. Grey reference curves for full sample with decomposed subsets in color. “Individual non-duel” relabeled as “Individual sports.” Boundary test visualizations deferred to separate F4c component. Principle Clean, focused visualizations preferred over complex multi-purpose interfaces.">
   <meta property="og:locale" content="en-us">
@@ -857,8 +922,7 @@ F4b Tabs Country Patterns: Butterfly chart showing U-shape vs monotone countries
   </h1>
 </header>
 <div class="post-content"><h2 id="session-interactive-visualization-f4b-development">Session: Interactive Visualization F4b Development<a hidden class="anchor" aria-hidden="true" href="#session-interactive-visualization-f4b-development">#</a></h2>
-<p><strong>Date:</strong> 2026-02-24<br>
-<strong>Chat link:</strong> <a href="https://claude.ai/chat/4b745beb-c74b-4660-b092-aa99d1df1b95">Open in Claude</a></p>
+<p><strong>Date:</strong> 2026-02-24</p>
 <h3 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h3>
 <p>Developed and refined interactive React visualization F4b exploring the &ldquo;U-shape&rdquo; relationship between equipment costs and inequality&rsquo;s effect on Olympic success.</p>
 <h3 id="f4b-tabs">F4b Tabs<a hidden class="anchor" aria-hidden="true" href="#f4b-tabs">#</a></h3>

@@ -9,7 +9,6 @@
 <meta name="keywords" content="">
 <meta name="description" content="Session: v0.91 Sport Type Decomposition
 Date: 2026-02-19
-Chat link: Open in Claude
 Summary
 Systematic decomposition of the &ldquo;U-shape&rdquo; pattern in equipment cost tiers, where Tier 2 (medium-cost) sports showed unexpectedly poor performance. Tested whether this represents a genuine cost mechanism or is driven by confounding factors.
 Key Findings
@@ -565,12 +564,68 @@ button#theme-toggle:hover {
 }
 
  
+
+ 
 .viz-page {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--gap);
 }
 
+.story-flow {
+  max-width: none;
+}
+
+ 
+.story-row {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 0.5rem;
+}
+
+.story-text {
+  min-width: 0;  
+}
+
+.story-text h2:first-child {
+  margin-top: 0;
+}
+
+.story-panel {
+  padding-top: 0.5rem;
+}
+
+ 
+.panel-section-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  margin: 0.6rem 0 0.35rem;
+  opacity: 0.7;
+}
+
+.panel-section-label:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .story-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .story-panel {
+    padding-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+ 
 .viz-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -597,8 +652,6 @@ button#theme-toggle:hover {
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  display: flex;
-  flex-direction: column-reverse;  
 }
 
  
@@ -617,18 +670,30 @@ button#theme-toggle:hover {
   letter-spacing: 0.08em;
   color: var(--secondary);
   margin-bottom: 1rem;
-  order: 999;  
 }
 
  
 .version-block {
-  margin-bottom: 1.2rem;
-  padding-bottom: 1.2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--border);
 }
 
-.version-block:first-child {
+.version-block:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-panel .version-block {
+  background: var(--code-bg, #f6f8fa);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  border-bottom: none;
+  margin-bottom: 0.8rem;
+}
+
+.story-panel .version-block:last-child {
   margin-bottom: 0;
 }
 
@@ -636,7 +701,7 @@ button#theme-toggle:hover {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 
 .version-tag {
@@ -652,7 +717,7 @@ button#theme-toggle:hover {
 }
 
 .version-title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: -0.01em;
@@ -663,7 +728,7 @@ button#theme-toggle:hover {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .viz-thumb {
@@ -672,9 +737,10 @@ button#theme-toggle:hover {
   color: inherit;
   border-radius: 8px;
   overflow: hidden;
-  background: var(--code-bg, #f6f8fa);
+  background: #fff;
   transition: transform 0.15s, box-shadow 0.15s;
   cursor: pointer;
+  border: 1px solid var(--border);
 }
 
 .viz-thumb:hover {
@@ -759,7 +825,6 @@ button#theme-toggle:hover {
   <meta property="og:site_name" content="Sam C. Syvertsen — Research">
   <meta property="og:title" content="Session: v0.91 Sport Type Decomposition">
   <meta property="og:description" content="Session: v0.91 Sport Type Decomposition Date: 2026-02-19
-Chat link: Open in Claude
 Summary Systematic decomposition of the “U-shape” pattern in equipment cost tiers, where Tier 2 (medium-cost) sports showed unexpectedly poor performance. Tested whether this represents a genuine cost mechanism or is driven by confounding factors.
 Key Findings Team sports (all concentrated in Tier 1) were not driving the cost gradient. Duel sports showed no cost sensitivity at all — cultural traditions dominate performance. Individual non-duel sports (timed/measured events like swimming, track, cycling) showed the cleanest cost mechanism. The equipment cost mechanism is robust when properly isolated from confounding sport characteristics. Methodological Insight Sport types operate through different mechanisms: team sports through institutional qualification barriers, duel sports through cultural tradition, and individual sports through household cost constraints. Proper decomposition is essential for isolating cost effects.">
   <meta property="og:locale" content="en-us">
@@ -851,8 +916,7 @@ Key Findings Team sports (all concentrated in Tier 1) were not driving the cost 
   </h1>
 </header>
 <div class="post-content"><h2 id="session-v091-sport-type-decomposition">Session: v0.91 Sport Type Decomposition<a hidden class="anchor" aria-hidden="true" href="#session-v091-sport-type-decomposition">#</a></h2>
-<p><strong>Date:</strong> 2026-02-19<br>
-<strong>Chat link:</strong> <a href="https://claude.ai/chat/e2799075-e058-4a18-8f40-5689547b0747">Open in Claude</a></p>
+<p><strong>Date:</strong> 2026-02-19</p>
 <h3 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h3>
 <p>Systematic decomposition of the &ldquo;U-shape&rdquo; pattern in equipment cost tiers, where Tier 2 (medium-cost) sports showed unexpectedly poor performance. Tested whether this represents a genuine cost mechanism or is driven by confounding factors.</p>
 <h3 id="key-findings">Key Findings<a hidden class="anchor" aria-hidden="true" href="#key-findings">#</a></h3>
