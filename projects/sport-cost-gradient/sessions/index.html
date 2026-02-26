@@ -61,11 +61,7 @@
     </style>
 </noscript>
 <script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.querySelector("html").dataset.theme = 'dark';
     } else {
         document.querySelector("html").dataset.theme = 'light';
@@ -528,6 +524,38 @@ button#theme-toggle:hover {
   box-shadow: none;
 }
 
+.project-card-body {
+  display: flex;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.project-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-card-thumb {
+  flex-shrink: 0;
+  width: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.15s, transform 0.15s;
+  display: block;
+}
+
+.project-card-thumb:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+
+.project-card-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .project-card-footer {
   display: flex;
   align-items: center;
@@ -744,6 +772,17 @@ button#theme-toggle:hover {
   background: #fff;
 }
 
+.viz-thumb-frame img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+ 
 .viz-thumb-frame iframe {
   position: absolute;
   top: 0;
@@ -785,6 +824,22 @@ button#theme-toggle:hover {
 .session-link:hover {
   color: var(--primary);
   border-color: var(--primary);
+}
+
+ 
+.top-link {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  max-width: 2.5rem !important;
+  max-height: 2.5rem !important;
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+}
+
+.top-link svg {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
 }
 
  
@@ -853,39 +908,9 @@ button#theme-toggle:hover {
         <div class="logo">
             <a href="https://research.syvertsen.com/" accesskey="h" title="Sam C. Syvertsen — Research (Alt + H)">Sam C. Syvertsen — Research</a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
             </div>
         </div>
         <ul id="menu">
-            <li>
-                <a href="https://research.syvertsen.com/projects/" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://research.syvertsen.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
         </ul>
     </nav>
 </header>
@@ -898,29 +923,6 @@ button#theme-toggle:hover {
     Full AI-assisted research session transcripts
   </div>
 </header>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Olympic Research Project — Session Index Project: How Income Distribution and Sports Participation Cost Shape Olympic Performance
-Period: February 12–24, 2026
-Sessions: 15
-Norways Olympic gold and silver medals across eight games
-2nd Pass 8 summer olympics two periods
-Running full analysis with complete data
-Academic publishing strategy for economics research
-Handover files analysis
-Sports participation rates and Olympic performance
-V0.9 preparing v0.91
-V0.91 analysis 2 to start sport decompose
-...</p>
-  </div>
-  <footer class="entry-footer"><span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to " href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/00/"></a>
-</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
@@ -948,7 +950,7 @@ Summary Consolidated and verified multiple datasets for statistical analysis. Ma
 Data Issues Resolved ROC athletes (Tokyo 2020): Russian Olympic Committee athletes mapped to Russia. AIN athletes (Paris 2024): Scraping Olympedia.org athlete profiles identified all 13 Individual Neutral Athletes as either Russian or Belarusian nationals, with detailed source documentation. Predictors dataset: 95 corrections to GDP, population, Gini, and GGGI data verified against World Bank and World Economic Forum primary sources. Datasets Prepared Olympic event results (7 Games, verified) Country predictors (71 countries, two periods) Sport cost classifications (47 sports, facility and equipment tiers) Regional classifications Comprehensive metadata documenting sources, methods, and corrections Full Transcript Human I have read some articles pushing percentage participation in organized sports as an explanation with Norway having 93 pct and US much less. Is that stastics available. Is there any research on that?
 ...</p>
   </div>
-  <footer class="entry-footer"><span>168 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>166 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: Data Consolidation and AIN Athlete Research" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/06/"></a>
 </article>
 
@@ -963,7 +965,7 @@ Summary Systematic data quality verification of the scraped Olympic dataset cove
 Issues Found and Resolved Rio 2016: Missing 26 events from entire sports (Rowing, Sailing, Modern Pentathlon) due to rate limiting during original scraping. Sydney 2000 &amp; Athens 2004: Contained two wheelchair exhibition events each that were not official Olympic medal events. Tokyo 2020: Missing Baseball Men. Validation Result Random sampling of 60 events across the dataset and checking against live Olympedia data confirmed 100% accuracy for individual sport events (53/53 correct). Only discrepancies were in team sports that had already been manually corrected. All seven Games now match official event counts exactly.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>112 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>110 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: Dataset Validation — Seven Olympic Games (2000–2024)" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/02/"></a>
 </article>
 
@@ -978,7 +980,7 @@ Summary Developed and refined interactive React visualization F4b exploring the 
 F4b Tabs Country Patterns: Butterfly chart showing U-shape vs monotone countries. Soviet Split: Q3 and Q4 GDP quartiles shown as separate lines with Soviet-legacy breakdowns. Q4 contains zero Soviet-legacy nations. Sport Type: Decomposition by team, duel, and individual sports with original full-sample lines as grey reference curves. Design Decisions Q3 and Q4 shown as separate lines rather than combined. Grey reference curves for full sample with decomposed subsets in color. “Individual non-duel” relabeled as “Individual sports.” Boundary test visualizations deferred to separate F4c component. Principle Clean, focused visualizations preferred over complex multi-purpose interfaces.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>50 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>48 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: Interactive Visualization F4b Development" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/16/"></a>
 </article>
 
@@ -993,7 +995,7 @@ Summary Extensive statistical investigation into whether societal equality predi
 Key Findings Income equality shows a stronger independent signal than gender equality for predicting Olympic performance, particularly for women, even after controlling for wealth effects. A critical methodological error was discovered: when expanding to test for regional clustering effects (Galton’s Problem), Claude switched from the proper multi-Games GSN dataset to single-Olympics Paris 2024 data without flagging the change. All subsequent analyses of regional heterogeneity, democracy interactions, and communist legacy effects were compromised by this data switch. Outcome Collected all JSX files with embedded datasets. Created a markdown summary to brief a future session on redoing the analysis correctly, particularly focusing on whether regional clustering eliminates the income equality signal when using the methodologically sound 8-Games aggregated data.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>62 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>60 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: Norway&#39;s Olympic Gold and Silver Medals Across Eight Games" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/01/"></a>
 </article>
 
@@ -1008,7 +1010,7 @@ Summary Complete end-to-end analysis testing two hypotheses about how inequality
 Key Findings Income inequality (Gini) increasingly hurts performance as sport cost rises (β = -0.016, p = 0.03 for Period 1), confirming the Geloso theory. Gender equality (GGI) shows its strongest positive effects in expensive sports (β = 8.258, p = 0.009) — contrary to the original hypothesis that it would uniformly help across all sports through talent pool expansion. Results resolve Kuppens &amp; Pollet’s (2015) critique of Berdahl et al. by showing sport-cost mechanisms survive regional controls where aggregate relationships do not. Outputs Six publication-quality figures, comprehensive regression tables, descriptive statistics, and a complete paper outline.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>25 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>24 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: Running Full Analysis with Complete Data" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/03/"></a>
 </article>
 
@@ -1023,7 +1025,7 @@ Summary Rebuilding derived datasets D1 (country × sport × period panel) and D2
 Work Done Rebuilt D1 and D2 from source data using updated v1.0a region_classification.json. Applied sport filtering: dropped 6 new sports (BMX Freestyle, Skateboarding, etc.). Created main and robustness sport samples based on game participation thresholds. Aggregated performance using 6-5-4-3-2-1 scoring for places 1–6. Issue Discovered Verification against old D2 revealed point mismatches for several countries, indicating the previous build handled shared medals differently (likely fractional points for tied results). Investigation of original logic initiated.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>38 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>36 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.91 Dataset Rebuild" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/07/"></a>
 </article>
 
@@ -1038,7 +1040,7 @@ Summary Systematic decomposition of the “U-shape” pattern in equipment cost 
 Key Findings Team sports (all concentrated in Tier 1) were not driving the cost gradient. Duel sports showed no cost sensitivity at all — cultural traditions dominate performance. Individual non-duel sports (timed/measured events like swimming, track, cycling) showed the cleanest cost mechanism. The equipment cost mechanism is robust when properly isolated from confounding sport characteristics. Methodological Insight Sport types operate through different mechanisms: team sports through institutional qualification barriers, duel sports through cultural tradition, and individual sports through household cost constraints. Proper decomposition is essential for isolating cost effects.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>64 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>63 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.91 Sport Type Decomposition" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/08/"></a>
 </article>
 
@@ -1053,8 +1055,23 @@ Summary Major analytical breakthrough: discovered two cleanly separated causal m
 The Breakthrough GDP per capita interacts strongly with facility cost (pools, velodromes, golf courses): coefficients &#43;5.8 to &#43;6.6 per facility tier, p=0.006. No interaction with equipment cost (p=0.667–0.899). Gini coefficient interacts with equipment cost (household participation barriers). No interaction with facility cost. When both interactions included simultaneously, Gini gradient attenuates only 8% (from -0.499 to -0.455), confirming separability. Interpretation Two distinct causal pathways: inequality operates through household cost barriers (talented kids from modest families can’t afford expensive sports), while absolute wealth operates through infrastructure provision (poor countries can’t build required facilities).
 ...</p>
   </div>
-  <footer class="entry-footer"><span>64 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>62 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.92 Channel Separation Breakthrough" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/11/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session: v0.92 Paper Structure and Sport Decomposition
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Session: v0.92 Paper Structure and Sport Decomposition Date: 2026-02-21
+Summary Extensive statistical analysis comparing “scoring-only” versus “with-zeros” specifications, followed by creation of a detailed paper outline and structural decisions.
+Key Results Team sports: positive Gini coefficient only in scoring-only samples (driven by USA, Brazil, Argentina); disappears or reverses with zero-scoring countries included. Duel sports: no systematic inequality relationship. Individual sports: confirmed hypothesized cost gradient. Structural Decisions Eight-section paper outline created. Equipment cost tiers removed in favor of continuous specifications. All gender analysis moved to separate Paper 2. “Horse race” jargon replaced with “joint specification.” Title settled: “How Income Distribution and Sports Participation Cost Shape Olympic Performance” Next Steps Planned (v0.92) Period robustness checks, Galton tests on cost gradient, and Tobit estimation.
+...</p>
+  </div>
+  <footer class="entry-footer"><span>123 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session: v0.92 Paper Structure and Sport Decomposition" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/09/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
@@ -1124,19 +1141,6 @@ The Breakthrough GDP per capita interacts strongly with facility cost (pools, ve
             mybutton.style.opacity = "0";
         }
     };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
 
 </script>
 </body>

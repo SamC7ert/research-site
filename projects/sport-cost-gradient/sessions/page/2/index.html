@@ -61,11 +61,7 @@
     </style>
 </noscript>
 <script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.querySelector("html").dataset.theme = 'dark';
     } else {
         document.querySelector("html").dataset.theme = 'light';
@@ -528,6 +524,38 @@ button#theme-toggle:hover {
   box-shadow: none;
 }
 
+.project-card-body {
+  display: flex;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.project-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-card-thumb {
+  flex-shrink: 0;
+  width: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.15s, transform 0.15s;
+  display: block;
+}
+
+.project-card-thumb:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+
+.project-card-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .project-card-footer {
   display: flex;
   align-items: center;
@@ -744,6 +772,17 @@ button#theme-toggle:hover {
   background: #fff;
 }
 
+.viz-thumb-frame img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+ 
 .viz-thumb-frame iframe {
   position: absolute;
   top: 0;
@@ -785,6 +824,22 @@ button#theme-toggle:hover {
 .session-link:hover {
   color: var(--primary);
   border-color: var(--primary);
+}
+
+ 
+.top-link {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  max-width: 2.5rem !important;
+  max-height: 2.5rem !important;
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+}
+
+.top-link svg {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
 }
 
  
@@ -853,39 +908,9 @@ button#theme-toggle:hover {
         <div class="logo">
             <a href="https://research.syvertsen.com/" accesskey="h" title="Sam C. Syvertsen — Research (Alt + H)">Sam C. Syvertsen — Research</a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
             </div>
         </div>
         <ul id="menu">
-            <li>
-                <a href="https://research.syvertsen.com/projects/" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://research.syvertsen.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
         </ul>
     </nav>
 </header>
@@ -901,21 +926,6 @@ button#theme-toggle:hover {
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.92 Paper Structure and Sport Decomposition
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Session: v0.92 Paper Structure and Sport Decomposition Date: 2026-02-21
-Summary Extensive statistical analysis comparing “scoring-only” versus “with-zeros” specifications, followed by creation of a detailed paper outline and structural decisions.
-Key Results Team sports: positive Gini coefficient only in scoring-only samples (driven by USA, Brazil, Argentina); disappears or reverses with zero-scoring countries included. Duel sports: no systematic inequality relationship. Individual sports: confirmed hypothesized cost gradient. Structural Decisions Eight-section paper outline created. Equipment cost tiers removed in favor of continuous specifications. All gender analysis moved to separate Paper 2. “Horse race” jargon replaced with “joint specification.” Title settled: “How Income Distribution and Sports Participation Cost Shape Olympic Performance” Next Steps Planned (v0.92) Period robustness checks, Galton tests on cost gradient, and Tobit estimation.
-...</p>
-  </div>
-  <footer class="entry-footer"><span>126 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.92 Paper Structure and Sport Decomposition" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/09/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
     <h2 class="entry-hint-parent">Session: v0.92 Robustness Visualizations
     </h2>
   </header>
@@ -925,7 +935,7 @@ Summary Completed visualizations for v0.92 robustness analyses after a previous 
 Visualizations Created (F7 — Three-Tab Interactive) Period Stability: Coefficient plots with confidence intervals comparing P1 (2000–2008) vs P2 (2012–2024), with toggles between full and upper samples. Cost gradient appears consistently across time periods. Galton Tab: Horizontal bars showing 8 of 10 regions exhibit negative gradients. Latin America is the notable positive exception. Tobit Tab: Compares three estimation approaches (scoring-only OLS, Tobit with zeros, with-zeros OLS). All methods confirm the negative gradient. Full Transcript Human v0.92 final visualization. We couldnt make the visualization for what was done before we were cut off. Only the one shown. I want one on two period robustness and galton robustness. Look through if there are other new things in v0.92 that is worth visualizing.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>4 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>3 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.92 Robustness Visualizations" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/12/"></a>
 </article>
 
@@ -941,7 +951,7 @@ Key Discovery Marathon Swimming has no independent youth pathway — every medal
 Unchanged Estimates (Documented) Diving, Artistic Swimming, and Water Polo estimates confirmed as reasonable approximations through biographical research. No revisions despite thorough investigation.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>50 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>47 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.93 Cost Reclassification — Completion" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/13/"></a>
 </article>
 
@@ -971,7 +981,7 @@ Summary Refined Paper 1 structure and created comprehensive handover documents f
 Structural Decisions Equipment cost tiers replaced with continuous specifications. All gender analysis moved to Paper 2. “Horse race” terminology replaced with “joint specification.” Key Finding Confirmed Two cleanly separated channels: GDP per capita interacts with facility infrastructure costs while Gini interacts with personal equipment costs in individual sports. The gradient is concentrated in upper-income countries.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>89 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>86 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.93–v0.95 Paper Refinement and Analysis Plan" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/15/"></a>
 </article>
 
@@ -987,7 +997,7 @@ Methodological Decision When Claude suggested testing different specifications f
 Max-Component Principle Pool-dependent sports reclassified from marginal costs (€50K–€800K) to €25M reflecting swimming pool infrastructure dependence.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>63 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>62 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.94 Facility Cost — Continuous Estimates" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/14/"></a>
 </article>
 
@@ -1002,7 +1012,7 @@ Summary Verified the uploaded Forrest et al. 2017 PDF and planned interactive da
 Existing Visualizations gini_sporting: Gini vs per-capita medal performance gini_vs_gold: Gini vs gold/silver ratio (summer and winter) gsn_galton: Galton’s Problem diagnostic with partial correlations gsn_gender_gdp: Gender performance analysis by GDP and Gini New Visualizations Proposed Sport-Cost Gradient Explorer (essential) — shows how country performance distributes across cost tiers “Who Wins What” heatmap — countries versus cost tiers Validation chart — rich vs poor country ratios by sport Key Analytical Insight Within-region Gini coefficients showed a non-random pattern: while overall Gini correlation disappeared after region controls, some regions showed positive and others negative correlations. This motivated the sport-cost decomposition analysis.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>32 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <footer class="entry-footer"><span>30 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: Visualization Planning and Handover" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/05/"></a>
 </article>
 <footer class="page-footer">
@@ -1074,19 +1084,6 @@ Existing Visualizations gini_sporting: Gini vs per-capita medal performance gini
             mybutton.style.opacity = "0";
         }
     };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
 
 </script>
 </body>

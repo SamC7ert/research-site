@@ -61,11 +61,7 @@
     </style>
 </noscript>
 <script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.querySelector("html").dataset.theme = 'dark';
     } else {
         document.querySelector("html").dataset.theme = 'light';
@@ -528,6 +524,38 @@ button#theme-toggle:hover {
   box-shadow: none;
 }
 
+.project-card-body {
+  display: flex;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.project-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-card-thumb {
+  flex-shrink: 0;
+  width: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.15s, transform 0.15s;
+  display: block;
+}
+
+.project-card-thumb:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+
+.project-card-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .project-card-footer {
   display: flex;
   align-items: center;
@@ -744,6 +772,17 @@ button#theme-toggle:hover {
   background: #fff;
 }
 
+.viz-thumb-frame img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+ 
 .viz-thumb-frame iframe {
   position: absolute;
   top: 0;
@@ -785,6 +824,22 @@ button#theme-toggle:hover {
 .session-link:hover {
   color: var(--primary);
   border-color: var(--primary);
+}
+
+ 
+.top-link {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  max-width: 2.5rem !important;
+  max-height: 2.5rem !important;
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+}
+
+.top-link svg {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
 }
 
  
@@ -853,39 +908,9 @@ button#theme-toggle:hover {
         <div class="logo">
             <a href="https://research.syvertsen.com/" accesskey="h" title="Sam C. Syvertsen — Research (Alt + H)">Sam C. Syvertsen — Research</a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
             </div>
         </div>
         <ul id="menu">
-            <li>
-                <a href="https://research.syvertsen.com/projects/" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://research.syvertsen.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
         </ul>
     </nav>
 </header>
@@ -918,17 +943,16 @@ button#theme-toggle:hover {
 <div class="panel-section-label">Visualizations</div>
 <div class="version-viz-grid">
 <a href="/viz/gini_vs_gold.html" target="_blank" class="viz-thumb" title="Gini vs Gold Ratio — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/gini_vs_gold.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/gini_vs_gold.png" loading="lazy"></div>
 <div class="viz-thumb-label">Gini vs Gold Ratio</div>
 </a>
 <a href="/viz/regional_heterogeneity.html" target="_blank" class="viz-thumb" title="Regional Heterogeneity — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/regional_heterogeneity.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/regional_heterogeneity.png" loading="lazy"></div>
 <div class="viz-thumb-label">Regional Heterogeneity</div>
 </a>
 </div>
 <div class="panel-section-label">Sessions</div>
 <div class="version-sessions">
-<a href="/projects/sport-cost-gradient/sessions/00/" class="session-link">00 Index</a>
 <a href="/projects/sport-cost-gradient/sessions/01/" class="session-link">01 Equality predicts success</a>
 <a href="/projects/sport-cost-gradient/sessions/02/" class="session-link">02 Dataset validation</a>
 <a href="/projects/sport-cost-gradient/sessions/05/" class="session-link">05 Visualization planning</a>
@@ -984,19 +1008,19 @@ button#theme-toggle:hover {
 <div class="panel-section-label">Visualizations</div>
 <div class="version-viz-grid">
 <a href="/viz/f3_segmentation.html" target="_blank" class="viz-thumb" title="Sport-Cost Segmentation — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/f3_segmentation.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/f3_segmentation.png" loading="lazy"></div>
 <div class="viz-thumb-label">Sport-Cost Segmentation (F3)</div>
 </a>
 <a href="/viz/f4a_gradient.html" target="_blank" class="viz-thumb" title="Cost Gradient — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/f4a_gradient.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/f4a_gradient.png" loading="lazy"></div>
 <div class="viz-thumb-label">Cost Gradient (F4a)</div>
 </a>
 <a href="/viz/f4b_ushape.html" target="_blank" class="viz-thumb" title="U-Shape Explorer — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/f4b_ushape.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/f4b_ushape.png" loading="lazy"></div>
 <div class="viz-thumb-label">U-Shape Explorer (F4b)</div>
 </a>
 <a href="/viz/galton_diagnostic.html" target="_blank" class="viz-thumb" title="Galton Diagnostic — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/galton_diagnostic.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/galton_diagnostic.png" loading="lazy"></div>
 <div class="viz-thumb-label">Galton Diagnostic</div>
 </a>
 </div>
@@ -1027,11 +1051,11 @@ button#theme-toggle:hover {
 <div class="panel-section-label">Visualizations</div>
 <div class="version-viz-grid">
 <a href="/viz/f6_channels.html" target="_blank" class="viz-thumb" title="GDP/Gini Channel Separation — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/f6_channels.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/f6_channels.png" loading="lazy"></div>
 <div class="viz-thumb-label">GDP/Gini Channel Separation (F6)</div>
 </a>
 <a href="/viz/f7_robustness.html" target="_blank" class="viz-thumb" title="Robustness — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/f7_robustness.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/f7_robustness.png" loading="lazy"></div>
 <div class="viz-thumb-label">Robustness (F7)</div>
 </a>
 </div>
@@ -1062,7 +1086,7 @@ button#theme-toggle:hover {
 <div class="panel-section-label">Visualizations</div>
 <div class="version-viz-grid">
 <a href="/viz/cost_classification.html" target="_blank" class="viz-thumb" title="Cost Classification — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/cost_classification.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/cost_classification.png" loading="lazy"></div>
 <div class="viz-thumb-label">Cost Classification</div>
 </a>
 </div>
@@ -1080,7 +1104,7 @@ button#theme-toggle:hover {
 <div class="panel-section-label">Visualizations</div>
 <div class="version-viz-grid">
 <a href="/viz/facility_cost.html" target="_blank" class="viz-thumb" title="Facility Cost Explorer — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/facility_cost.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/facility_cost.png" loading="lazy"></div>
 <div class="viz-thumb-label">Facility Cost Explorer</div>
 </a>
 </div>
@@ -1112,11 +1136,11 @@ button#theme-toggle:hover {
 <div class="panel-section-label">Visualizations</div>
 <div class="version-viz-grid">
 <a href="/viz/paper_figures.html" target="_blank" class="viz-thumb" title="Paper Figures — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/paper_figures.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/paper_figures.png" loading="lazy"></div>
 <div class="viz-thumb-label">Paper Figures</div>
 </a>
 <a href="/viz/results_dashboard.html" target="_blank" class="viz-thumb" title="Results Dashboard — click to open interactive">
-<div class="viz-thumb-frame"><iframe src="/viz/results_dashboard.html" loading="lazy" tabindex="-1"></iframe></div>
+<div class="viz-thumb-frame"><img src="/viz/thumbs/results_dashboard.png" loading="lazy"></div>
 <div class="viz-thumb-label">Results Dashboard</div>
 </a>
 </div>
@@ -1196,19 +1220,6 @@ button#theme-toggle:hover {
             mybutton.style.opacity = "0";
         }
     };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
 
 </script>
 </body>
