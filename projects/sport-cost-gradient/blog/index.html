@@ -1036,7 +1036,7 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>10 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>14 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
     <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.</p>
   </header>
@@ -1303,10 +1303,81 @@ button#theme-toggle:hover {
 </div>
 </div>
 </div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="can-a-simulation-reproduce-the-cost-gradient">Can a simulation reproduce the cost gradient?</h2>
+<p>The cost gradient was established empirically: inequality hurts more as equipment cost rises, and the effect concentrates in wealthier countries. But there was an uncomfortable asymmetry. Among upper-GDP countries, the empirical Gini×cost coefficient was large and significant. Among lower-GDP countries, it was essentially zero. The regression said this was about affordability saturation — rich countries all have affordability near 1.0, so the Gini gradient can&rsquo;t bite there. But could a forward simulation, starting from economic fundamentals, actually reproduce this split?</p>
+<p>Session 17 built a two-stage simulation. Stage 1 allocated athletes to sports via an affordability × infrastructure × popularity model. Stage 2 determined quality as a function of effective athletes, GDP, cost, and host bonus. The model was calibrated to match the empirical GDP ratio between rich and poor country halves (~2.57×).</p>
+<p>We tested five different affordability curve shapes: linear, moderate convex (√), strong convex (^0.3), lognormal standard, and lognormal fat-tail. Each represents a different theory of how income distribution translates into participation barriers. The idea was that at least one curve should reproduce the empirical pattern where rich unequal countries underperform in expensive sports.</p>
+<p>None of them did. Across all five curves, the simulation produced a Gini×cost gradient that was roughly one-tenth to one-fifth of the empirical value in the individual sports, rich half specification. The contemporaneous affordability mechanism — families being priced out of expensive sports <em>right now</em> — was real but far too weak to explain the observed data. The model matched country-level totals well (r ≈ 0.90) but couldn&rsquo;t generate the cross-sport inequality pattern.</p>
+<p>This was the first indication that something beyond current economic conditions was driving the results.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.97a</span>
+<span class="version-title">Simulation Cannot Close the Gap</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/sim_affordability.html" target="_blank" class="viz-thumb" title="Simulation: Affordability Curves — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/sim_affordability.png" loading="lazy"></div>
+<div class="viz-thumb-label">Affordability Curves</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/17/" class="session-link">17 Two-stage simulation</a>
+<a href="/projects/sport-cost-gradient/sessions/18/" class="session-link">18 Affordability curves</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="the-persistence-discovery">The persistence discovery</h2>
+<p>The simulation&rsquo;s failure pointed to something missing from the model: history. Countries that were good at swimming in 2000 tend to be good at swimming in 2024 — not because their current economics predict it, but because they built coaching systems, competitive pipelines, and cultural expectations around that sport decades ago. If this accumulated advantage correlates with the Gini×cost gradient (because historically wealthy, equal countries invested in expensive sports early), then persistence would amplify a small contemporaneous effect into the large empirical one.</p>
+<p>We tested this directly. Using event-level data from all seven Olympic Games (Sydney 2000 through Paris 2024), we ran the simulation game by game and added a persistence bonus: quality += γ × ln(1 + previous_points). Two scenarios were compared. <em>Cultural persistence</em> used Game 1 (Sydney 2000) as a fixed seed throughout — representing frozen historical advantage. <em>Rolling persistence</em> used the previous game&rsquo;s actual results as the seed — representing accumulated, evolving competitive capital.</p>
+<p>Rolling persistence closed the gap almost completely. For individual sports in the rich half, the no-persistence simulation produced a Gini×cost coefficient of −0.74 against the empirical −7.82, a gap of +7.1. With rolling persistence (γ = 2.0), the simulated coefficient reached −9.00 — actually slightly overshooting the empirical value (gap −1.2). Cultural persistence (γ = 1.5) closed it to +1.2. A combined model (γ_c = 0.7, γ_r = 2.2) split the difference at +1.0.</p>
+<p>The cell-level correlation between simulated and empirical points — the fit at the country×sport level, the hardest test — jumped from 0.484 without persistence to 0.782 with rolling persistence and 0.793 with the combined model.</p>
+<p>Rolling persistence dominates. In the two-factor model, the rolling weight (γ_r = 2.2) dwarfs the cultural weight (γ_c = 0.7). Most of the explanatory power comes from recent competitive history, not frozen initial conditions. This makes theoretical sense: coaching pipelines, athlete development systems, and competitive cultures evolve — they are not set in stone at Sydney 2000.</p>
+<p>The interpretation cuts deep. The Gini×cost gradient partly reflects contemporaneous affordability barriers (families being priced out of expensive sports) but largely reflects accumulated specialisation patterns that correlate with historical inequality and wealth. Countries with low inequality and high wealth invested in expensive individual sports decades ago, built competitive ecosystems, and those ecosystems persist. The gradient in the cross-section is real, but it measures both current mechanism and inherited advantage.</p>
+<p>Crucially, the cost gradient <em>survives</em> the Mundlak correction — the standard econometric test for separating within-country from between-country variation. With Mundlak controls, β moves from −2.537 to −2.517 and p stays at 0.013. This is the key differentiator from the aggregate literature. Rewilak (2021) showed that GDP and population become insignificant with Mundlak correction — they are pure between-country effects. Our cost gradient identifies off cross-sport variation <em>within</em> countries, which Mundlak does not absorb. The persistence finding explains <em>why</em> the between-country component is large, while the Mundlak survival confirms that the within-country component is also real.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.97b</span>
+<span class="version-title">Rolling Persistence Closes the Gap</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/persistence_gap.html" target="_blank" class="viz-thumb" title="Persistence Closes the Gap — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/persistence_gap.png" loading="lazy"></div>
+<div class="viz-thumb-label">Persistence Gap</div>
+</a>
+</div>
+<div class="panel-section-label">Key numbers</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">Individual, rich, Model 4 gap:</span>
+<span class="session-link" style="cursor:default">No persistence: +7.1</span>
+<span class="session-link" style="cursor:default">Cultural (γ=1.5): +1.2</span>
+<span class="session-link" style="cursor:default">Rolling (γ=2.0): −1.2</span>
+<span class="session-link" style="cursor:default">Cell r: 0.48 → 0.78</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/18/" class="session-link">18 Persistence experiment</a>
+<a href="/projects/sport-cost-gradient/sessions/19/" class="session-link">19 7-game persistence</a>
+</div>
+</div>
+</div>
+</div>
 <hr>
 <h2 id="what-this-project-found">What this project found</h2>
 <p>Income inequality does not predict Olympic performance in the aggregate — but this null conceals a systematic gradient. In individual sports, inequality increasingly hurts performance as personal equipment cost rises, with a crossover at approximately €1,400. A separate, independent channel runs through national wealth and facility infrastructure. The two mechanisms operate through completely different cost dimensions with near-zero mutual attenuation.</p>
 <p>The finding is robust across time, regions, estimation methods, cost measurement approaches, Mundlak correction, and host-effect controls. It provides the first empirical test of the cost-barrier mechanism that Geloso and Kufenko theorised but could not evaluate. Their own aggregate finding — that inequality hurts medals per capita — turns out to be a specification artefact driven by incorrect population scaling, not by a genuine inequality–performance relationship.</p>
+<p>A simulation exercise reveals that contemporaneous affordability barriers alone cannot generate the full magnitude of the observed gradient. Rolling persistence — where a country&rsquo;s competitive capital in each sport accumulates from game to game — closes the gap between simulation and data almost completely. The cost gradient reflects both a real current mechanism (household cost barriers pricing out talent) and an inherited one (decades of accumulated investment in expensive sports by historically wealthy, equal countries). The Mundlak correction confirms that the within-country, cross-sport component is genuine and not absorbed by country-level time averages.</p>
 
   </div>
 </article>

@@ -5,39 +5,24 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Sam C. Syvertsen — Research</title>
+<title>Session: Affordability Curves and Persistence Discovery | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="Olympic Research Project — Session Index
-Project: How Income Distribution and Sports Participation Cost Shape Olympic Performance
-Period: February 12–24, 2026
-Sessions: 15
+<meta name="description" content="Session: Affordability Curves and Persistence Discovery
+Date: 2026-02-26
+Summary
+Tested five different affordability curve shapes (linear, moderate convex, strong convex, lognormal standard, lognormal fat-tail) to see whether the functional form of the income-to-participation mapping could close the gap between simulated and empirical Gini×cost gradients. None succeeded. Then introduced rolling persistence from previous Olympic Games, which closed the gap almost completely.
+Affordability Curves Tested
 
+Baseline (linear): Affordability = (1 − Gini) × income share above cost threshold
+Moderate convex (√): Square-root transformation of affordability
+Strong convex (^0.3): Power-law with exponent 0.3
+Lognormal standard: Full lognormal income distribution, standard σ
+Lognormal fat-tail (1.5σ): Fatter tails to amplify inequality effects
 
-
-Norways Olympic gold and silver medals across eight games
-
-
-2nd Pass 8 summer olympics two periods
-
-
-Running full analysis with complete data
-
-
-Academic publishing strategy for economics research
-
-
-Handover files analysis
-
-
-Sports participation rates and Olympic performance
-
-
-V0.9 preparing v0.91
-
-
-V0.91 analysis 2 to start sport decompose">
+Key Finding
+All five curves produced simulated gradients that were 6–19% of the empirical value. The contemporaneous affordability mechanism is real but too weak to explain the data alone.">
 <meta name="author" content="Sam C. Syvertsen">
-<link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/00/">
+<link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/18/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://research.syvertsen.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://research.syvertsen.com/favicon-16x16.png">
@@ -46,8 +31,8 @@ V0.91 analysis 2 to start sport decompose">
 <link rel="mask-icon" href="https://research.syvertsen.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/00/index.xml" title="rss">
-<link rel="alternate" hreflang="en" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/00/">
+<link rel="alternate" type="application/rss+xml" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/18/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/18/">
 <noscript>
     <style>
         #theme-toggle,
@@ -89,11 +74,7 @@ V0.91 analysis 2 to start sport decompose">
     </style>
 </noscript>
 <script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.querySelector("html").dataset.theme = 'dark';
-    } else if (localStorage.getItem("pref-theme") === "light") {
-       document.querySelector("html").dataset.theme = 'light';
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.querySelector("html").dataset.theme = 'dark';
     } else {
         document.querySelector("html").dataset.theme = 'light';
@@ -131,10 +112,26 @@ body {
   line-height: var(--header-height);
 }
 
-.logo a {
+.logo a,
+.logo-home {
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.logo-home {
+  cursor: default;
+}
+
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.home-link svg {
+  vertical-align: middle;
 }
 
 #menu {
@@ -556,6 +553,38 @@ button#theme-toggle:hover {
   box-shadow: none;
 }
 
+.project-card-body {
+  display: flex;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.project-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-card-thumb {
+  flex-shrink: 0;
+  width: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.15s, transform 0.15s;
+  display: block;
+}
+
+.project-card-thumb:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+
+.project-card-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .project-card-footer {
   display: flex;
   align-items: center;
@@ -772,6 +801,17 @@ button#theme-toggle:hover {
   background: #fff;
 }
 
+.viz-thumb-frame img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+ 
 .viz-thumb-frame iframe {
   position: absolute;
   top: 0;
@@ -816,6 +856,119 @@ button#theme-toggle:hover {
 }
 
  
+.top-link {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+  max-width: 2.5rem !important;
+  max-height: 2.5rem !important;
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+}
+
+.top-link svg {
+  width: 1.2rem !important;
+  height: 1.2rem !important;
+}
+
+ 
+.findings-section {
+  margin: 2.5rem 0;
+}
+
+.findings-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.finding-row {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(128,128,128,0.1);
+}
+
+.finding-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.finding-text {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.finding-number {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: var(--theme, #fff);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 50%;
+  margin-top: 0.1rem;
+}
+
+.finding-body {
+  min-width: 0;
+}
+
+.finding-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.4rem;
+  line-height: 1.3;
+}
+
+.finding-desc {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--secondary);
+  margin: 0;
+}
+
+.finding-desc em {
+  font-style: italic;
+}
+
+.finding-viz {
+  flex-shrink: 0;
+}
+
+.finding-viz .viz-thumb {
+  display: block;
+  width: 100%;
+}
+
+.finding-viz .viz-thumb-frame {
+  padding-bottom: 75%;
+}
+
+@media (max-width: 768px) {
+  .finding-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .finding-viz {
+    max-width: 280px;
+  }
+}
+
+ 
 .dark .project-card .status-active {
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -837,24 +990,16 @@ button#theme-toggle:hover {
   background: rgba(255,255,255,0.04);
 }
 </style>
-<meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/00/">
-  <meta property="og:site_name" content="Sam C. Syvertsen — Research">
-  <meta property="og:title" content="Sam C. Syvertsen — Research">
-  <meta property="og:description" content="Olympic Research Project — Session Index Project: How Income Distribution and Sports Participation Cost Shape Olympic Performance
-Period: February 12–24, 2026
-Sessions: 15
-Norways Olympic gold and silver medals across eight games
-2nd Pass 8 summer olympics two periods
-Running full analysis with complete data
-Academic publishing strategy for economics research
-Handover files analysis
-Sports participation rates and Olympic performance
-V0.9 preparing v0.91
-V0.91 analysis 2 to start sport decompose">
+<meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/18/">
+  <meta property="og:site_name" content="Sam C. Syvertsen">
+  <meta property="og:title" content="Session: Affordability Curves and Persistence Discovery">
+  <meta property="og:description" content="Session: Affordability Curves and Persistence Discovery Date: 2026-02-26
+Summary Tested five different affordability curve shapes (linear, moderate convex, strong convex, lognormal standard, lognormal fat-tail) to see whether the functional form of the income-to-participation mapping could close the gap between simulated and empirical Gini×cost gradients. None succeeded. Then introduced rolling persistence from previous Olympic Games, which closed the gap almost completely.
+Affordability Curves Tested Baseline (linear): Affordability = (1 − Gini) × income share above cost threshold Moderate convex (√): Square-root transformation of affordability Strong convex (^0.3): Power-law with exponent 0.3 Lognormal standard: Full lognormal income distribution, standard σ Lognormal fat-tail (1.5σ): Fatter tails to amplify inequality effects Key Finding All five curves produced simulated gradients that were 6–19% of the empirical value. The contemporaneous affordability mechanism is real but too weak to explain the data alone.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="">
+<meta name="twitter:title" content="Session: Affordability Curves and Persistence Discovery">
 <meta name="twitter:description" content="Research on Olympic performance, sport cost inequality, and the Gini coefficient">
 
 
@@ -884,8 +1029,8 @@ V0.91 analysis 2 to start sport decompose">
     {
       "@type": "ListItem",
       "position":  4 ,
-      "name": "",
-      "item": "https://research.syvertsen.com/projects/sport-cost-gradient/sessions/00/"
+      "name": "Session: Affordability Curves and Persistence Discovery",
+      "item": "https://research.syvertsen.com/projects/sport-cost-gradient/sessions/18/"
     }
   ]
 }
@@ -895,107 +1040,47 @@ V0.91 analysis 2 to start sport decompose">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://research.syvertsen.com/" accesskey="h" title="Sam C. Syvertsen — Research (Alt + H)">Sam C. Syvertsen — Research</a>
+            <a href="https://research.syvertsen.com/" accesskey="h" title="Home" class="home-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Home
+            </a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
             </div>
         </div>
         <ul id="menu">
-            <li>
-                <a href="https://research.syvertsen.com/projects/" title="Projects">
-                    <span>Projects</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://research.syvertsen.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
         </ul>
     </nav>
 </header>
 <main class="main"> 
-<div class="post-content"><h1 id="olympic-research-project--session-index">Olympic Research Project — Session Index<a hidden class="anchor" aria-hidden="true" href="#olympic-research-project--session-index">#</a></h1>
-<p><strong>Project:</strong> How Income Distribution and Sports Participation Cost Shape Olympic Performance<br>
-<strong>Period:</strong> February 12–24, 2026<br>
-<strong>Sessions:</strong> 15</p>
-<hr>
+<header class="page-header"><div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/">Research Projects</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/">Income Inequality, Sport Cost, and Olympic Performance</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/">Session Transcripts</a></div>
+  <h1>
+    Session: Affordability Curves and Persistence Discovery
+  </h1>
+</header>
+<div class="post-content"><h2 id="session-affordability-curves-and-persistence-discovery">Session: Affordability Curves and Persistence Discovery<a hidden class="anchor" aria-hidden="true" href="#session-affordability-curves-and-persistence-discovery">#</a></h2>
+<p><strong>Date:</strong> 2026-02-26</p>
+<h3 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h3>
+<p>Tested five different affordability curve shapes (linear, moderate convex, strong convex, lognormal standard, lognormal fat-tail) to see whether the functional form of the income-to-participation mapping could close the gap between simulated and empirical Gini×cost gradients. None succeeded. Then introduced rolling persistence from previous Olympic Games, which closed the gap almost completely.</p>
+<h3 id="affordability-curves-tested">Affordability Curves Tested<a hidden class="anchor" aria-hidden="true" href="#affordability-curves-tested">#</a></h3>
 <ol>
-<li>
-<p><a href="2026-02-12_10_equality-predicts-olympic-success.md">Norways Olympic gold and silver medals across eight games</a></p>
-</li>
-<li>
-<p><a href="2026-02-12_18_dataset-validation-seven-games.md">2nd Pass 8 summer olympics two periods</a></p>
-</li>
-<li>
-<p><a href="2026-02-13_00_full-analysis-inequality-sport-cost.md">Running full analysis with complete data</a></p>
-</li>
-<li>
-<p><a href="2026-02-13_07_publication-strategy.md">Academic publishing strategy for economics research</a></p>
-</li>
-<li>
-<p><a href="2026-02-13_10_visualization-planning-handover.md">Handover files analysis</a></p>
-</li>
-<li>
-<p><a href="2026-02-18_06_data-consolidation-ain-athletes.md">Sports participation rates and Olympic performance</a></p>
-</li>
-<li>
-<p><a href="2026-02-18_12_v091-dataset-rebuild.md">V0.9 preparing v0.91</a></p>
-</li>
-<li>
-<p><a href="2026-02-19_10_v091-sport-type-decomposition.md">V0.91 analysis 2 to start sport decompose</a></p>
-</li>
-<li>
-<p><a href="2026-02-21_18_v092-paper-structure-sport-decomposition.md">v0.91 Sports decomposition Team Duel Individual Prepare v0.92</a></p>
-</li>
-<li>
-<p><a href="2026-02-23_05_v093-cost-reclassification-pilot.md">v0.93 Cost reclass part 1</a></p>
-</li>
-<li>
-<p><a href="2026-02-23_08_v092-channel-separation-breakthrough.md">v0.92 Rerun analysis and file upload</a></p>
-</li>
-<li>
-<p><a href="2026-02-23_11_v092-robustness-visualizations.md">v0.92 visualization and robustness analysis</a></p>
-</li>
-<li>
-<p><a href="2026-02-23_12_v093-cost-reclass-completion.md">0.93 Cost reclass part 2</a></p>
-</li>
-<li>
-<p><a href="2026-02-24_08_v094-facility-cost-continuous.md">v0.94 Sports facility cost review</a></p>
-</li>
-<li>
-<p><a href="2026-02-24_09_v093-v095-paper-refinement.md">v0.93 Analysis</a></p>
-</li>
-<li>
-<p><a href="2026-02-24_16_v091-interactive-visualization-f4b.md">v0.91 Sports decomposition continuation</a></p>
-</li>
+<li><strong>Baseline (linear):</strong> Affordability = (1 − Gini) × income share above cost threshold</li>
+<li><strong>Moderate convex (√):</strong> Square-root transformation of affordability</li>
+<li><strong>Strong convex (^0.3):</strong> Power-law with exponent 0.3</li>
+<li><strong>Lognormal standard:</strong> Full lognormal income distribution, standard σ</li>
+<li><strong>Lognormal fat-tail (1.5σ):</strong> Fatter tails to amplify inequality effects</li>
 </ol>
+<h3 id="key-finding">Key Finding<a hidden class="anchor" aria-hidden="true" href="#key-finding">#</a></h3>
+<p>All five curves produced simulated gradients that were 6–19% of the empirical value. The contemporaneous affordability mechanism is real but too weak to explain the data alone.</p>
+<h3 id="persistence-introduction">Persistence Introduction<a hidden class="anchor" aria-hidden="true" href="#persistence-introduction">#</a></h3>
+<p>Added quality += γ × ln(1 + previous_points) per country-sport cell. Cultural persistence (fixed Sydney 2000 seed) and rolling persistence (previous game results) tested. Rolling persistence with γ ≈ 2.0 closes the gap.</p>
+<hr>
 
 
 </div>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://research.syvertsen.com/">Sam C. Syvertsen — Research</a></span> · 
+        <span>&copy; 2026 <a href="https://research.syvertsen.com/">Sam C. Syvertsen</a></span> · 
 
     <span>
         Powered by
@@ -1054,19 +1139,6 @@ V0.91 analysis 2 to start sport decompose">
             mybutton.style.opacity = "0";
         }
     };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        const html = document.querySelector("html");
-        if (html.dataset.theme === "dark") {
-            html.dataset.theme = 'light';
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            html.dataset.theme = 'dark';
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
 
 </script>
 </body>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation: Affordability Curves</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body, #root { width: 100%; height: 100%; background-color: white; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+    <script type="text/babel">
+const { useState } = React;
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+
+// Individual sports, rich half, Model 4 (Full) — from v5b_affordability_curves.json
+const CURVES = [
+  { id: "linear",     label: "Baseline (linear)",    sim: -2.96,  emp: -52.27, corr: 0.899, ratio: "5.7%" },
+  { id: "sqrt",       label: "Moderate convex (√)",   sim: -5.32,  emp: -52.27, corr: 0.894, ratio: "10.2%" },
+  { id: "pow03",      label: "Strong convex (^0.3)",  sim: -5.33,  emp: -52.27, corr: 0.896, ratio: "10.2%" },
+  { id: "lognorm",    label: "Lognormal standard",    sim: -9.39,  emp: -52.27, corr: 0.895, ratio: "18.0%" },
+  { id: "fattail",    label: "Lognormal fat-tail",    sim: -10.00, emp: -52.27, corr: 0.897, ratio: "19.1%" },
+];
+
+// Stepwise decomposition for fat-tail (best performing curve) — individual, rich
+const STEPWISE = [
+  { model: "1. Gini×cost only",    emp: -64.21, sim: -20.30 },
+  { model: "2. + GDP×cost",        emp: -76.50, sim: -16.56 },
+  { model: "3. + Pop×cost",        emp: -40.72, sim: -16.53 },
+  { model: "4. Full (all×cost)",   emp: -52.27, sim: -10.00 },
+];
+
+// All sports, rich half, Model 4
+const ALL_SPORTS = [
+  { id: "linear",   label: "Linear",       sim: -4.67,  emp: -24.85 },
+  { id: "sqrt",     label: "Convex (√)",    sim: -5.60,  emp: -24.85 },
+  { id: "pow03",    label: "Convex (^0.3)", sim: -5.92,  emp: -24.85 },
+  { id: "lognorm",  label: "Lognormal",     sim: -5.69,  emp: -24.85 },
+  { id: "fattail",  label: "Fat-tail",      sim: -8.30,  emp: -24.85 },
+];
+
+function GapChart({ data, title, subtitle, W = 600, H = 300 }) {
+  const pad = { top: 50, right: 140, bottom: 60, left: 200 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+  const rowH = h / data.length;
+
+  const allVals = data.flatMap(d => [d.sim, d.emp]);
+  const xMin = Math.min(...allVals) * 1.15;
+  const xMax = Math.max(0, Math.max(...allVals) * 0.5);
+  const sx = v => pad.left + ((v - xMin) / (xMax - xMin)) * w;
+
+  const xStep = Math.abs(xMin) > 40 ? 20 : 10;
+  const ticks = [];
+  for (let v = Math.ceil(xMin / xStep) * xStep; v <= xMax; v += xStep) ticks.push(v);
+
+  return (
+    <svg width={W} height={H} style={{ fontFamily: font }}>
+      <text x={pad.left + w / 2} y={18} textAnchor="middle" style={{ fontSize: 13, fontWeight: 700, fill: "#1a1a2e" }}>{title}</text>
+      <text x={pad.left + w / 2} y={34} textAnchor="middle" style={{ fontSize: 10, fill: "#888" }}>{subtitle}</text>
+
+      {/* Zero line */}
+      <line x1={sx(0)} y1={pad.top - 4} x2={sx(0)} y2={pad.top + h + 4} stroke="#ccc" strokeWidth={1} />
+
+      {/* X axis ticks */}
+      {ticks.map(v => (
+        <g key={v}>
+          <line x1={sx(v)} y1={pad.top + h} x2={sx(v)} y2={pad.top + h + 5} stroke="#999" strokeWidth={0.5} />
+          <text x={sx(v)} y={pad.top + h + 18} textAnchor="middle" style={{ fontSize: 9, fill: "#888" }}>{v}</text>
+        </g>
+      ))}
+      <text x={pad.left + w / 2} y={H - 8} textAnchor="middle" style={{ fontSize: 10, fill: "#555" }}>Gini × ln(Equipment Cost) coefficient</text>
+
+      {/* Empirical reference line */}
+      <line x1={sx(data[0].emp)} y1={pad.top - 4} x2={sx(data[0].emp)} y2={pad.top + h + 4}
+        stroke="#c41e3a" strokeWidth={1.5} strokeDasharray="6,3" />
+      <text x={sx(data[0].emp) - 4} y={pad.top - 8} textAnchor="end"
+        style={{ fontSize: 9, fill: "#c41e3a", fontWeight: 600 }}>Empirical ({data[0].emp.toFixed(1)})</text>
+
+      {data.map((d, i) => {
+        const y = pad.top + i * rowH + rowH / 2;
+        const gap = Math.abs(d.emp) > 0 ? Math.round((d.sim / d.emp) * 100) : 0;
+        return (
+          <g key={d.id || i}>
+            <text x={pad.left - 10} y={y + 4} textAnchor="end" style={{ fontSize: 10.5, fill: "#333", fontWeight: 500 }}>{d.label}</text>
+            {/* Bar from 0 to sim */}
+            <rect x={Math.min(sx(d.sim), sx(0))} y={y - 8} width={Math.abs(sx(d.sim) - sx(0))} height={16}
+              fill="#1a1a2e" opacity={0.75} rx={2} />
+            <text x={sx(d.sim) + (d.sim < 0 ? -6 : 6)} y={y + 4}
+              textAnchor={d.sim < 0 ? "end" : "start"}
+              style={{ fontSize: 9, fill: "#1a1a2e", fontWeight: 600 }}>{d.sim.toFixed(1)}</text>
+            {/* Ratio label */}
+            <text x={sx(xMax) + 10} y={y + 4} textAnchor="start"
+              style={{ fontSize: 9, fill: "#999" }}>{gap}% of empirical</text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function StepwiseChart() {
+  const W = 600, H = 280;
+  const pad = { top: 50, right: 50, bottom: 55, left: 180 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+  const rowH = h / STEPWISE.length;
+  const allVals = STEPWISE.flatMap(d => [d.sim, d.emp]);
+  const xMin = Math.min(...allVals) * 1.1;
+  const xMax = 10;
+  const sx = v => pad.left + ((v - xMin) / (xMax - xMin)) * w;
+
+  return (
+    <svg width={W} height={H} style={{ fontFamily: font }}>
+      <text x={pad.left + w / 2} y={18} textAnchor="middle" style={{ fontSize: 13, fontWeight: 700, fill: "#1a1a2e" }}>
+        Stepwise Decomposition: Fat-Tail Curve
+      </text>
+      <text x={pad.left + w / 2} y={34} textAnchor="middle" style={{ fontSize: 10, fill: "#888" }}>
+        Individual sports, upper GDP half — building up controls
+      </text>
+      <line x1={sx(0)} y1={pad.top - 4} x2={sx(0)} y2={pad.top + h + 4} stroke="#ccc" strokeWidth={1} />
+      {STEPWISE.map((d, i) => {
+        const y = pad.top + i * rowH + rowH / 2;
+        return (
+          <g key={i}>
+            <text x={pad.left - 10} y={y + 4} textAnchor="end" style={{ fontSize: 10, fill: "#333", fontWeight: 500 }}>{d.model}</text>
+            {/* Empirical bar */}
+            <rect x={Math.min(sx(d.emp), sx(0))} y={y - 10} width={Math.abs(sx(d.emp) - sx(0))} height={9}
+              fill="#c41e3a" opacity={0.6} rx={1} />
+            <text x={sx(d.emp) - 4} y={y - 3} textAnchor="end" style={{ fontSize: 8, fill: "#c41e3a", fontWeight: 500 }}>{d.emp.toFixed(1)}</text>
+            {/* Simulated bar */}
+            <rect x={Math.min(sx(d.sim), sx(0))} y={y + 1} width={Math.abs(sx(d.sim) - sx(0))} height={9}
+              fill="#1a1a2e" opacity={0.75} rx={1} />
+            <text x={sx(d.sim) - 4} y={y + 9} textAnchor="end" style={{ fontSize: 8, fill: "#1a1a2e", fontWeight: 500 }}>{d.sim.toFixed(1)}</text>
+          </g>
+        );
+      })}
+      {/* Legend */}
+      <rect x={pad.left + w - 100} y={pad.top + h + 15} width={10} height={8} fill="#c41e3a" opacity={0.6} rx={1} />
+      <text x={pad.left + w - 86} y={pad.top + h + 22} style={{ fontSize: 9, fill: "#666" }}>Empirical</text>
+      <rect x={pad.left + w - 40} y={pad.top + h + 15} width={10} height={8} fill="#1a1a2e" opacity={0.75} rx={1} />
+      <text x={pad.left + w - 26} y={pad.top + h + 22} style={{ fontSize: 9, fill: "#666" }}>Simulated</text>
+      <text x={pad.left + w / 2} y={H - 8} textAnchor="middle" style={{ fontSize: 10, fill: "#555" }}>Gini × ln(Equipment Cost) coefficient</text>
+    </svg>
+  );
+}
+
+function App() {
+  const [tab, setTab] = useState("gap");
+  const tabs = [
+    { id: "gap", label: "The Gap" },
+    { id: "stepwise", label: "Stepwise" },
+    { id: "allsports", label: "All Sports" },
+  ];
+
+  return (
+    <div style={{ fontFamily: font, maxWidth: 860, margin: "0 auto", padding: "18px 14px", color: "#1a1a2e", background: "#fefefe" }}>
+      <div style={{ borderBottom: "2px solid #1a1a2e", paddingBottom: 7, marginBottom: 14 }}>
+        <h2 style={{ fontSize: 16, margin: 0, fontWeight: 700, letterSpacing: "-0.3px" }}>
+          Simulation: Five Affordability Curves Cannot Close the Gap
+        </h2>
+        <p style={{ fontSize: 11, color: "#666", margin: "3px 0 0", lineHeight: 1.5 }}>
+          Two-stage simulation (v5B): affordability × infrastructure × popularity → quality. Calibrated to match empirical GDP ratio (~2.57×). Monte Carlo n = 20.
+        </p>
+      </div>
+
+      <div style={{ display: "flex", gap: 1, marginBottom: 14, flexWrap: "wrap" }}>
+        {tabs.map(t => (
+          <button key={t.id} onClick={() => setTab(t.id)} style={{
+            padding: "5px 12px", border: "none",
+            borderBottom: tab === t.id ? "2px solid #1a1a2e" : "2px solid transparent",
+            background: "none", color: tab === t.id ? "#1a1a2e" : "#999",
+            fontSize: 10.5, fontWeight: tab === t.id ? 600 : 400,
+            cursor: "pointer", fontFamily: "inherit"
+          }}>{t.label}</button>
+        ))}
+      </div>
+
+      {tab === "gap" && (
+        <div>
+          <GapChart data={CURVES}
+            title="Simulated vs Empirical Gini×Cost Gradient"
+            subtitle="Individual sports, upper GDP half, Model 4 (Full controls)"
+          />
+          <div style={{ marginTop: 14, padding: "9px 12px", background: "#f8f8f5", borderLeft: "3px solid #1a1a2e", fontSize: 11, lineHeight: 1.6, color: "#333" }}>
+            <strong>The gap:</strong> Even the best-performing affordability curve (lognormal fat-tail) produces only 19% of the empirical gradient.
+            The contemporaneous affordability mechanism is real but far too weak to explain the observed pattern alone.
+          </div>
+        </div>
+      )}
+
+      {tab === "stepwise" && (
+        <div>
+          <StepwiseChart />
+          <div style={{ marginTop: 14, padding: "9px 12px", background: "#f8f8f5", borderLeft: "3px solid #1a1a2e", fontSize: 11, lineHeight: 1.6, color: "#333" }}>
+            <strong>Consistent shortfall:</strong> Across all four stepwise models, the simulation underpredicts the Gini×cost gradient by a factor of 3–5×.
+            Adding GDP and population controls doesn't help — the gap is structural, not a confound.
+          </div>
+        </div>
+      )}
+
+      {tab === "allsports" && (
+        <div>
+          <GapChart data={ALL_SPORTS}
+            title="All Sports: Same Pattern, Smaller Gap"
+            subtitle="All sport types, upper GDP half, Model 4"
+            W={600} H={280}
+          />
+          <div style={{ marginTop: 14, padding: "9px 12px", background: "#f8f8f5", borderLeft: "3px solid #1a1a2e", fontSize: 11, lineHeight: 1.6, color: "#333" }}>
+            <strong>Broader pattern:</strong> Including team and duel sports narrows the gap (19–33% of empirical vs 6–19% for individual only),
+            but the simulation still systematically underpredicts the gradient.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+    </script>
+</body>
+</html>
