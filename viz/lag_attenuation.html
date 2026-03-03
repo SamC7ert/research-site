@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lag Attenuation Analysis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body, #root { width: 100%; height: 100%; background-color: white; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+    <script type="text/babel">
+const { useState } = React;
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+const navy = "#1a1a2e";
+const blue = "#4a90e2";
+
+// ===== TAB 1: LAG ATTENUATION DATA =====
+const LAG_DATA = [
+  { name: "Ind Upper", noLag: -0.875, noLagP: 0.008, withLag: -0.653, withLagP: 0.016, attenuation: 25.4 },
+  { name: "Ind Full", noLag: -0.527, noLagP: 0.021, withLag: -0.395, withLagP: 0.054, attenuation: 25.1 },
+  { name: "Team Full", noLag: -0.276, noLagP: 0.001, withLag: -0.205, withLagP: 0.006, attenuation: 25.7 },
+  { name: "All Sports", noLag: -0.204, noLagP: 0.013, withLag: -0.148, withLagP: 0.060, attenuation: 27.5 },
+];
+
+// ===== TAB 2: TWO CHANNELS DATA =====
+const CHANNELS_DATA = [
+  { name: "Gini × ln(equip)", value: -0.653, p: 0.016, color: "#e74c3c", direction: "negative" },
+  { name: "GDP × ln(facility)", value: 0.608, p: 0.036, color: "#27ae60", direction: "positive" },
+];
+
+// ===== TAB 3: YEAR-SPECIFIC UPGRADE DATA =====
+const UPGRADE_DATA = [
+  { metric: "Ind Upper Gini×cost (lag)", v98: -0.745, v98P: 0.026, v99: -0.653, v99P: 0.016, highlight: false },
+  { metric: "Crossover point (€)", v98: 2470, v99: 2196, highlight: false, isCost: true },
+  { metric: "Attenuation rate", v98: 18.3, v99: 25.4, highlight: false, isPercent: true },
+  { metric: "GDP×fac Ind Full", v98: 0.62, v98P: 0.056, v99: 0.608, v99P: 0.036, highlight: true },
+  { metric: "Lag β Upper", v98: 5.81, v99: 5.83, highlight: false },
+];
+
+// ===== COMPONENT 1: LAG ATTENUATION BARS =====
+function LagAttenuationChart() {
+  const [hover, setHover] = useState(null);
+
+  const W = 700, H = 340;
+  const pad = { top: 50, right: 140, bottom: 50, left: 140 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+  const rowH = h / LAG_DATA.length;
+
+  const maxAbs = 1.0;
+  const sx = (v) => pad.left + ((v + maxAbs) / (2 * maxAbs)) * w;
+  const zeroX = sx(0);
+
+  const pStar = (p) => p < 0.05 ? "**" : p < 0.10 ? "*" : "";
+  const fmtP = (p) => p < 0.001 ? "<.001" : p.toFixed(3);
+
+  return (
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: "20px 14px", fontFamily: font }}>
+      <div style={{ borderBottom: "2px solid " + navy, paddingBottom: 12, marginBottom: 18 }}>
+        <h2 style={{ fontSize: 15, fontWeight: 700, color: navy, margin: 0 }}>
+          Lag Attenuation
+        </h2>
+        <p style={{ fontSize: 11, color: "#666", margin: "4px 0 0", lineHeight: 1.5 }}>
+          Gini × ln(equip) coefficient without lag vs with lagged points control.
+          Blue = without lag, Navy = with lag. Shows 25% attenuation across specifications.
+        </p>
+      </div>
+
+      <svg width={W} height={H} style={{ fontFamily: font, overflow: "visible" }}>
+        {/* Title */}
+        <text x={W / 2} y={18} textAnchor="middle" style={{ fontSize: 13, fontWeight: 600, fill: navy }}>
+          75% of the Cost Gradient Survives Persistence Control
+        </text>
+
+        {/* Zero line */}
+        <line x1={zeroX} y1={pad.top - 4} x2={zeroX} y2={pad.top + h}
+          stroke="#999" strokeWidth={1.5} opacity={0.6} />
+
+        {/* Grid */}
+        {[-1.0, -0.5, 0, 0.5, 1.0].map((v) => (
+          v !== 0 && (
+            <g key={v}>
+              <line x1={sx(v)} y1={pad.top} x2={sx(v)} y2={pad.top + h}
+                stroke="#eee" strokeWidth={0.5} />
+              <text x={sx(v)} y={pad.top + h + 18} textAnchor="middle"
+                style={{ fontSize: 9, fill: "#999" }}>
+                {v.toFixed(1)}
+              </text>
+            </g>
+          )
+        ))}
+
+        {/* Axis labels */}
+        <text x={pad.left + w / 2} y={H - 5} textAnchor="middle"
+          style={{ fontSize: 10, fill: "#666", fontWeight: 500 }}>
+          Coefficient (β)
+        </text>
+
+        {/* Data rows */}
+        {LAG_DATA.map((d, i) => {
+          const y = pad.top + i * rowH + rowH / 2;
+          const isHover = hover === i;
+
+          return (
+            <g key={i}
+              onMouseEnter={() => setHover(i)}
+              onMouseLeave={() => setHover(null)}
+              style={{ cursor: "default" }}>
+
+              {/* Spec name */}
+              <text x={pad.left - 12} y={y + 1} textAnchor="end"
+                style={{ fontSize: 11, fontWeight: 500, fill: isHover ? navy : "#333" }}>
+                {d.name}
+              </text>
+
+              {/* Without lag bar */}
+              <rect x={Math.min(zeroX, sx(d.noLag))} y={y - 6}
+                width={Math.abs(sx(d.noLag) - zeroX)} height={12}
+                fill={blue} opacity={isHover ? 0.85 : 0.6} rx={2} />
+
+              {/* With lag bar */}
+              <rect x={Math.min(zeroX, sx(d.withLag))} y={y + 2}
+                width={Math.abs(sx(d.withLag) - zeroX)} height={12}
+                fill={navy} opacity={isHover ? 0.9 : 0.7} rx={2} />
+
+              {/* Without lag value + p */}
+              <text x={Math.min(zeroX, sx(d.noLag)) - 5} y={y - 4}
+                textAnchor="end" style={{ fontSize: 9.5, fill: blue, fontWeight: 600 }}>
+                {d.noLag.toFixed(3)}
+              </text>
+              <text x={Math.min(zeroX, sx(d.noLag)) - 5} y={y + 6}
+                textAnchor="end" style={{ fontSize: 8, fill: "#999" }}>
+                p={fmtP(d.noLagP)}{pStar(d.noLagP)}
+              </text>
+
+              {/* With lag value + p */}
+              <text x={Math.min(zeroX, sx(d.withLag)) - 5} y={y + 8}
+                textAnchor="end" style={{ fontSize: 9.5, fill: navy, fontWeight: 600 }}>
+                {d.withLag.toFixed(3)}
+              </text>
+              <text x={Math.min(zeroX, sx(d.withLag)) - 5} y={y + 18}
+                textAnchor="end" style={{ fontSize: 8, fill: "#999" }}>
+                p={fmtP(d.withLagP)}{pStar(d.withLagP)}
+              </text>
+
+              {/* Attenuation % on right */}
+              <text x={W - 30} y={y + 4}
+                textAnchor="middle" style={{ fontSize: 11, fontWeight: 600, fill: "#e67e22" }}>
+                {d.attenuation.toFixed(1)}%
+              </text>
+              <text x={W - 30} y={y + 14}
+                textAnchor="middle" style={{ fontSize: 8, fill: "#999" }}>
+                attenuation
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Legend */}
+      <div style={{ marginTop: 18, fontSize: 10, color: "#666" }}>
+        <div style={{ display: "flex", gap: 24 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 20, height: 8, background: blue, borderRadius: 1, opacity: 0.7 }} />
+            <span>Without lag</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 20, height: 8, background: navy, borderRadius: 1, opacity: 0.8 }} />
+            <span>With lag control</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ color: "#e67e22", fontWeight: 600 }}>*</span>
+            <span>p &lt; 0.10</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ color: "#e67e22", fontWeight: 600 }}>**</span>
+            <span>p &lt; 0.05</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ===== COMPONENT 2: TWO CHANNELS INDEPENDENCE =====
+function TwoChannelsChart() {
+  const [hover, setHover] = useState(null);
+
+  const W = 600, H = 260;
+  const pad = { top: 50, right: 80, bottom: 50, left: 180 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+  const rowH = h / CHANNELS_DATA.length;
+
+  const maxAbs = 0.8;
+  const sx = (v) => pad.left + ((v + maxAbs) / (2 * maxAbs)) * w;
+  const zeroX = sx(0);
+
+  const fmtP = (p) => p < 0.001 ? "<.001" : p.toFixed(3);
+
+  return (
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: "20px 14px", fontFamily: font }}>
+      <div style={{ borderBottom: "2px solid " + navy, paddingBottom: 12, marginBottom: 18 }}>
+        <h2 style={{ fontSize: 15, fontWeight: 700, color: navy, margin: 0 }}>
+          Two Channels
+        </h2>
+        <p style={{ fontSize: 11, color: "#666", margin: "4px 0 0", lineHeight: 1.5 }}>
+          Gini × equipment and GDP × facility channels are both significant (p &lt; 0.05) with ~0% mutual attenuation.
+          Independence demonstrates two distinct mechanisms at play.
+        </p>
+      </div>
+
+      <svg width={W} height={H} style={{ fontFamily: font, overflow: "visible" }}>
+        {/* Title */}
+        <text x={W / 2} y={18} textAnchor="middle" style={{ fontSize: 13, fontWeight: 600, fill: navy }}>
+          Independent Cost Gradient Channels
+        </text>
+
+        {/* Zero line */}
+        <line x1={zeroX} y1={pad.top - 4} x2={zeroX} y2={pad.top + h}
+          stroke="#333" strokeWidth={1.5} />
+
+        {/* Grid */}
+        {[-0.6, -0.3, 0, 0.3, 0.6].map((v) => (
+          v !== 0 && (
+            <g key={v}>
+              <line x1={sx(v)} y1={pad.top} x2={sx(v)} y2={pad.top + h}
+                stroke="#eee" strokeWidth={0.5} />
+              <text x={sx(v)} y={pad.top + h + 18} textAnchor="middle"
+                style={{ fontSize: 9, fill: "#999" }}>
+                {v.toFixed(1)}
+              </text>
+            </g>
+          )
+        ))}
+
+        {/* Axis label */}
+        <text x={pad.left + w / 2} y={H - 5} textAnchor="middle"
+          style={{ fontSize: 10, fill: "#666", fontWeight: 500 }}>
+          Coefficient (β) with lag
+        </text>
+
+        {/* Data rows */}
+        {CHANNELS_DATA.map((d, i) => {
+          const y = pad.top + i * rowH + rowH / 2;
+          const isHover = hover === i;
+
+          return (
+            <g key={i}
+              onMouseEnter={() => setHover(i)}
+              onMouseLeave={() => setHover(null)}
+              style={{ cursor: "default" }}>
+
+              {/* Channel name */}
+              <text x={pad.left - 12} y={y + 1} textAnchor="end"
+                style={{ fontSize: 11, fontWeight: 500, fill: isHover ? navy : "#333" }}>
+                {d.name}
+              </text>
+
+              {/* Bar */}
+              <rect x={Math.min(zeroX, sx(d.value))} y={y - 10}
+                width={Math.abs(sx(d.value) - zeroX)} height={20}
+                fill={d.color} opacity={isHover ? 0.9 : 0.75} rx={2} />
+
+              {/* Value + p */}
+              <text x={Math.max(zeroX, sx(d.value)) + 8} y={y + 4}
+                style={{ fontSize: 11, fontWeight: 600, fill: d.color }}>
+                {d.direction === "negative" ? "" : "+"}{d.value.toFixed(3)}
+              </text>
+              <text x={Math.max(zeroX, sx(d.value)) + 8} y={y + 14}
+                style={{ fontSize: 9, fill: "#999" }}>
+                p = {fmtP(d.p)}**
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Info box */}
+      <div style={{ marginTop: 18, padding: 12, background: "#f5f5f5", borderRadius: 4, fontSize: 10, color: "#555" }}>
+        <strong>Mutual attenuation: ~0%</strong> · Both channels remain significant independently.
+        Gini effect works through equipment costs; GDP effect works through facility requirements.
+      </div>
+    </div>
+  );
+}
+
+// ===== COMPONENT 3: YEAR-SPECIFIC UPGRADE =====
+function YearSpecificUpgradeChart() {
+  const [hover, setHover] = useState(null);
+
+  const W = 750, H = 360;
+  const pad = { top: 50, right: 100, bottom: 50, left: 200 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+  const rowH = h / UPGRADE_DATA.length;
+
+  const maxScale = 1.2;
+  const sx = (v, maxV) => pad.left + (v / maxV) * w * 0.45;
+  const sx2 = (v, maxV) => pad.left + w / 2 + (v / maxV) * w * 0.45;
+  const zeroX = pad.left;
+  const midX = pad.left + w / 2;
+
+  const fmtVal = (d, isV98) => {
+    const v = isV98 ? d.v98 : d.v99;
+    if (d.isCost) return `€${Math.round(v).toLocaleString()}`;
+    if (d.isPercent) return `${v.toFixed(1)}%`;
+    if (d.metric.includes("Lag β")) return v.toFixed(2);
+    return v.toFixed(3);
+  };
+
+  const fmtP = (p) => p < 0.001 ? "<.001" : p.toFixed(3);
+
+  return (
+    <div style={{ maxWidth: 900, margin: "0 auto", padding: "20px 14px", fontFamily: font }}>
+      <div style={{ borderBottom: "2px solid " + navy, paddingBottom: 12, marginBottom: 18 }}>
+        <h2 style={{ fontSize: 15, fontWeight: 700, color: navy, margin: 0 }}>
+          Year-Specific Upgrade
+        </h2>
+        <p style={{ fontSize: 11, color: "#666", margin: "4px 0 0", lineHeight: 1.5 }}>
+          Evolution from period-averaged (v0.98) to year-specific (v0.99) predictors.
+          Note: GDP×facility effect becomes significant (p &lt; 0.05) in v0.99.
+        </p>
+      </div>
+
+      <svg width={W} height={H} style={{ fontFamily: font, overflow: "visible" }}>
+        {/* Title */}
+        <text x={W / 2} y={18} textAnchor="middle" style={{ fontSize: 13, fontWeight: 600, fill: navy }}>
+          Model Improvements: v0.98 → v0.99
+        </text>
+
+        {/* Section headers */}
+        <text x={pad.left + w / 4} y={36} textAnchor="middle"
+          style={{ fontSize: 11, fontWeight: 600, fill: "#888" }}>
+          v0.98 (period-avg)
+        </text>
+        <text x={pad.left + 3 * w / 4} y={36} textAnchor="middle"
+          style={{ fontSize: 11, fontWeight: 600, fill: "#888" }}>
+          v0.99 (year-specific)
+        </text>
+
+        {/* Data rows */}
+        {UPGRADE_DATA.map((d, i) => {
+          const y = pad.top + i * rowH + rowH / 2;
+          const isHover = hover === i;
+          const highlightBg = d.highlight ? "#fff3cd" : "none";
+
+          return (
+            <g key={i}
+              onMouseEnter={() => setHover(i)}
+              onMouseLeave={() => setHover(null)}
+              style={{ cursor: "default" }}>
+
+              {/* Background highlight */}
+              {d.highlight && (
+                <rect x={pad.left - 10} y={y - 18} width={w + 20} height={36}
+                  fill={highlightBg} opacity={0.6} />
+              )}
+
+              {/* Metric name */}
+              <text x={pad.left - 12} y={y + 1} textAnchor="end"
+                style={{
+                  fontSize: 10.5,
+                  fontWeight: d.highlight ? 700 : 500,
+                  fill: isHover ? navy : "#333",
+                }}>
+                {d.metric}
+              </text>
+
+              {/* v0.98 value */}
+              <g>
+                <rect x={sx(Math.abs(d.v98), 1.0)} y={y - 8} width={30} height={16}
+                  fill="#3498db" opacity={isHover ? 0.8 : 0.65} rx={2} />
+                <text x={sx(Math.abs(d.v98), 1.0) + 15} y={y + 3}
+                  textAnchor="middle" style={{ fontSize: 10, fontWeight: 600, fill: "white" }}>
+                  {fmtVal(d, true)}
+                </text>
+                {d.v98P && (
+                  <text x={sx(Math.abs(d.v98), 1.0) + 15} y={y + 13}
+                    textAnchor="middle" style={{ fontSize: 8, fill: "#3498db" }}>
+                    p={fmtP(d.v98P)}
+                  </text>
+                )}
+              </g>
+
+              {/* Arrow */}
+              <g>
+                <defs>
+                  <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#999" />
+                  </marker>
+                </defs>
+                <line x1={sx(1.0, 1.0) + 8} y1={y} x2={sx2(0, 1.0) - 8} y2={y}
+                  stroke="#999" strokeWidth={1.5} markerEnd="url(#arrowhead)" />
+              </g>
+
+              {/* v0.99 value */}
+              <g>
+                <rect x={sx2(Math.abs(d.v99), 1.0)} y={y - 8} width={30} height={16}
+                  fill={d.highlight ? "#27ae60" : "#2ecc71"} opacity={isHover ? 0.9 : 0.75} rx={2} />
+                <text x={sx2(Math.abs(d.v99), 1.0) + 15} y={y + 3}
+                  textAnchor="middle" style={{ fontSize: 10, fontWeight: 600, fill: "white" }}>
+                  {fmtVal(d, false)}
+                </text>
+                {d.v99P && (
+                  <text x={sx2(Math.abs(d.v99), 1.0) + 15} y={y + 13}
+                    textAnchor="middle" style={{ fontSize: 8, fill: d.highlight ? "#27ae60" : "#2ecc71" }}>
+                    p={fmtP(d.v99P)}{d.highlight && d.v99P < 0.05 ? "**" : ""}
+                  </text>
+                )}
+              </g>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Key finding */}
+      <div style={{
+        marginTop: 18,
+        padding: 14,
+        background: "#fff3cd",
+        border: "1px solid #ffc107",
+        borderRadius: 4,
+        fontSize: 11,
+        color: "#333",
+      }}>
+        <strong>Key improvement:</strong> GDP × facility effect becomes statistically significant (p = 0.036) in v0.99,
+        demonstrating robust two-channel cost gradient mechanism.
+      </div>
+    </div>
+  );
+}
+
+// ===== MAIN APP =====
+function App() {
+  const [tab, setTab] = useState("lag");
+
+  return (
+    <div style={{
+      fontFamily: font,
+      width: "100%",
+      minHeight: "100vh",
+      background: "white",
+      padding: "0 0",
+    }}>
+      {/* Tab buttons */}
+      <div style={{
+        padding: "20px 14px",
+        borderBottom: "2px solid #e0e0e0",
+        maxWidth: 900,
+        margin: "0 auto",
+      }}>
+        <div style={{ display: "flex", gap: 0 }}>
+          {[
+            { id: "lag", label: "Lag Attenuation" },
+            { id: "channels", label: "Two Channels" },
+            { id: "upgrade", label: "Year-Specific Upgrade" },
+          ].map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              style={{
+                padding: "10px 18px",
+                fontSize: 12,
+                fontWeight: tab === t.id ? 700 : 500,
+                color: tab === t.id ? navy : "#999",
+                background: "none",
+                border: "none",
+                borderBottom: tab === t.id ? `3px solid ${navy}` : "3px solid transparent",
+                cursor: "pointer",
+                marginBottom: -2,
+                fontFamily: "inherit",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab content */}
+      <div style={{ background: "white" }}>
+        {tab === "lag" && <LagAttenuationChart />}
+        {tab === "channels" && <TwoChannelsChart />}
+        {tab === "upgrade" && <YearSpecificUpgradeChart />}
+      </div>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+    </script>
+</body>
+</html>

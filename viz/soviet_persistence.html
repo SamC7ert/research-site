@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soviet Persistence Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+        const navy = "#1a1a2e";
+        const soviet = "#8B2B2B";
+        const lightNavy = "#3a3a4e";
+        const lightGray = "#f5f5f5";
+
+        // Soviet countries data
+        const UPPER_GDP_SOVIET = [
+            "Estonia", "Czech Republic", "Hungary", "Lithuania",
+            "Poland", "Russia", "Croatia", "Latvia", "Slovakia", "Slovenia"
+        ];
+
+        const LOWER_GDP_SOVIET = [
+            "Armenia", "Azerbaijan", "Belarus", "Bulgaria", "China",
+            "Georgia", "Kazakhstan", "Kyrgyzstan", "Mongolia", "North Korea",
+            "Romania", "Serbia", "Tajikistan", "Turkmenistan", "Ukraine", "Uzbekistan"
+        ];
+
+        function SovietPersistence() {
+            const [activeTab, setActiveTab] = useState("coefficient");
+
+            const tabStyle = {
+                padding: "8px 14px",
+                border: "none",
+                background: "transparent",
+                borderBottom: "2px solid transparent",
+                fontSize: 12,
+                fontWeight: 500,
+                cursor: "pointer",
+                color: "#666",
+                fontFamily: font,
+                transition: "all 0.2s ease"
+            };
+
+            const activeTabStyle = {
+                ...tabStyle,
+                color: navy,
+                borderBottomColor: soviet
+            };
+
+            return (
+                <div style={{ fontFamily: font, maxWidth: 900, margin: "0 auto", padding: "18px 14px", color: navy, background: "#fefefe" }}>
+
+                    {/* Header */}
+                    <div style={{ borderBottom: "2px solid " + navy, paddingBottom: 7, marginBottom: 14 }}>
+                        <h2 style={{ fontSize: 16, margin: 0, fontWeight: 700, letterSpacing: "-0.3px" }}>
+                            Soviet Persistence in Olympic Performance
+                        </h2>
+                        <p style={{ fontSize: 11, color: "#666", margin: "3px 0 0", lineHeight: 1.5 }}>
+                            Analysis of Soviet/non-Soviet coefficient with and without lag control, stratified by GDP level.
+                        </p>
+                    </div>
+
+                    {/* Tab Navigation */}
+                    <div style={{ display: "flex", gap: 20, marginBottom: 20, borderBottom: "1px solid #e0e0e0" }}>
+                        <button
+                            onClick={() => setActiveTab("coefficient")}
+                            style={activeTab === "coefficient" ? activeTabStyle : tabStyle}
+                        >
+                            Soviet Coefficient and Lag
+                        </button>
+                        <button
+                            onClick={() => setActiveTab("countries")}
+                            style={activeTab === "countries" ? activeTabStyle : tabStyle}
+                        >
+                            Who Are the Soviet Countries?
+                        </button>
+                    </div>
+
+                    {/* Tab Content */}
+                    {activeTab === "coefficient" ? <CoefficientTab /> : <CountriesTab />}
+
+                </div>
+            );
+        }
+
+        function CoefficientTab() {
+            const W = 720, H = 480;
+            const margin = { top: 30, right: 40, bottom: 50, left: 120 };
+            const plotWidth = W - margin.left - margin.right;
+            const plotHeight = H - margin.top - margin.bottom;
+
+            // Data: [without_lag, with_lag, attenuation_%]
+            const data = [
+                { gdpHalf: "Upper GDP", withoutLag: 3.99, withLag: 3.11, attenuation: 22 },
+                { gdpHalf: "Lower GDP", withoutLag: -7.88, withLag: -7.58, attenuation: 4 }
+            ];
+
+            const yMin = -8.5, yMax = 4.5;
+            const yRange = yMax - yMin;
+            const scale = plotHeight / yRange;
+
+            const y = (val) => margin.top + plotHeight - ((val - yMin) * scale);
+
+            // Calculate x positions for pairs
+            const pairSpacing = plotWidth / data.length;
+            const pairCenters = data.map((_, i) => margin.left + (i + 0.5) * pairSpacing);
+            const barWidth = 20;
+            const barGap = 30;
+
+            return (
+                <div style={{ marginTop: 10 }}>
+                    <div style={{ fontSize: 11, color: "#666", marginBottom: 12, lineHeight: 1.6 }}>
+                        <p style={{ marginBottom: 8 }}>
+                            <strong style={{ color: navy }}>Key Finding:</strong> Lag barely absorbs the Soviet effect — it operates through an <strong>independent institutional channel</strong>.
+                        </p>
+                        <p>
+                            The Soviet coefficient remains robust even after controlling for performance persistence (lag). In upper GDP countries, the effect only attenuates by 22%. In lower GDP countries, attenuation is merely 4%.
+                        </p>
+                    </div>
+
+                    <svg width={W} height={H} style={{ fontFamily: font, overflow: "visible", marginBottom: 12 }}>
+                        {/* Grid lines */}
+                        {[-8, -6, -4, -2, 0, 2, 4].map((v) => (
+                            <line
+                                key={`grid-${v}`}
+                                x1={margin.left}
+                                y1={y(v)}
+                                x2={margin.left + plotWidth}
+                                y2={y(v)}
+                                stroke="#e8e8e8"
+                                strokeWidth={0.5}
+                                strokeDasharray="2,2"
+                            />
+                        ))}
+
+                        {/* Zero line (thicker) */}
+                        <line
+                            x1={margin.left}
+                            y1={y(0)}
+                            x2={margin.left + plotWidth}
+                            y2={y(0)}
+                            stroke="#ccc"
+                            strokeWidth={1}
+                        />
+
+                        {/* Axes */}
+                        <line x1={margin.left} y1={margin.top} x2={margin.left} y2={margin.top + plotHeight} stroke={navy} strokeWidth={1.5} />
+                        <line x1={margin.left} y1={margin.top + plotHeight} x2={W - margin.right} y2={margin.top + plotHeight} stroke={navy} strokeWidth={1.5} />
+
+                        {/* Y-axis ticks and labels */}
+                        {[-8, -6, -4, -2, 0, 2, 4].map((v) => (
+                            <g key={`ytick-${v}`}>
+                                <line x1={margin.left - 5} y1={y(v)} x2={margin.left} y2={y(v)} stroke={navy} strokeWidth={0.8} />
+                                <text x={margin.left - 10} y={y(v) + 3.5} textAnchor="end" style={{ fontSize: 10, fill: "#555" }}>
+                                    {v}
+                                </text>
+                            </g>
+                        ))}
+
+                        {/* Y-axis label */}
+                        <text
+                            x={16}
+                            y={margin.top + plotHeight / 2}
+                            textAnchor="middle"
+                            style={{ fontSize: 11.5, fill: navy, fontWeight: 500 }}
+                            transform={`rotate(-90,16,${margin.top + plotHeight / 2})`}
+                        >
+                            Soviet Coefficient (β)
+                        </text>
+
+                        {/* Bars and labels */}
+                        {data.map((d, i) => {
+                            const center = pairCenters[i];
+                            const x1 = center - (barWidth + barGap / 2) / 2;
+                            const x2 = center + (barWidth + barGap / 2) / 2;
+                            const h1 = plotHeight - ((d.withoutLag - yMin) * scale);
+                            const h2 = plotHeight - ((d.withLag - yMin) * scale);
+
+                            const y1Base = margin.top + plotHeight;
+                            const y2Base = margin.top + plotHeight;
+
+                            return (
+                                <g key={`pair-${i}`}>
+                                    {/* Without lag bar */}
+                                    <rect
+                                        x={x1}
+                                        y={d.withoutLag >= 0 ? y(d.withoutLag) : y(0)}
+                                        width={barWidth}
+                                        height={Math.abs(h1)}
+                                        fill={d.withoutLag >= 0 ? soviet : lightNavy}
+                                        opacity={0.8}
+                                    />
+                                    <text
+                                        x={x1 + barWidth / 2}
+                                        y={d.withoutLag >= 0 ? y(d.withoutLag) - 4 : y(d.withoutLag) + 12}
+                                        textAnchor="middle"
+                                        style={{ fontSize: 9.5, fontWeight: 600, fill: navy }}
+                                    >
+                                        {d.withoutLag.toFixed(2)}
+                                    </text>
+
+                                    {/* With lag bar */}
+                                    <rect
+                                        x={x2}
+                                        y={d.withLag >= 0 ? y(d.withLag) : y(0)}
+                                        width={barWidth}
+                                        height={Math.abs(h2)}
+                                        fill={d.withLag >= 0 ? soviet : lightNavy}
+                                        opacity={0.5}
+                                    />
+                                    <text
+                                        x={x2 + barWidth / 2}
+                                        y={d.withLag >= 0 ? y(d.withLag) - 4 : y(d.withLag) + 12}
+                                        textAnchor="middle"
+                                        style={{ fontSize: 9.5, fontWeight: 600, fill: navy }}
+                                    >
+                                        {d.withLag.toFixed(2)}
+                                    </text>
+
+                                    {/* Attenuation label */}
+                                    <text
+                                        x={center}
+                                        y={y(0) + 22}
+                                        textAnchor="middle"
+                                        style={{ fontSize: 9, fill: "#888", fontStyle: "italic" }}
+                                    >
+                                        {d.attenuation}% attenuation
+                                    </text>
+
+                                    {/* X-axis label */}
+                                    <text
+                                        x={center}
+                                        y={margin.top + plotHeight + 30}
+                                        textAnchor="middle"
+                                        style={{ fontSize: 10.5, fontWeight: 500, fill: navy }}
+                                    >
+                                        {d.gdpHalf}
+                                    </text>
+                                </g>
+                            );
+                        })}
+                    </svg>
+
+                    {/* Legend */}
+                    <div style={{ display: "flex", gap: 30, justifyContent: "center", marginTop: 16, fontSize: 10, color: "#666" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <div style={{ width: 16, height: 16, background: soviet, opacity: 0.8, borderRadius: 2 }} />
+                            <span>Without lag control</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <div style={{ width: 16, height: 16, background: soviet, opacity: 0.5, borderRadius: 2 }} />
+                            <span>With lag control</span>
+                        </div>
+                    </div>
+
+                    {/* Interpretation */}
+                    <div style={{ marginTop: 18, padding: 12, background: lightGray, borderLeft: "3px solid " + soviet, borderRadius: 3 }}>
+                        <p style={{ fontSize: 10, color: "#555", lineHeight: 1.6, margin: 0 }}>
+                            <strong style={{ color: navy }}>Interpretation:</strong> Soviet countries exhibit a strong institutional advantage in upper-GDP nations (overperformance of ~4 medals per game) and a persistent disadvantage in lower-GDP nations (underperformance of ~7-8 medals). These effects survive lag controls, suggesting the Soviet legacy operates through structural institutional features rather than momentum from past success.
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        function CountriesTab() {
+            return (
+                <div style={{ marginTop: 10 }}>
+                    <p style={{ fontSize: 11, color: "#666", marginBottom: 14, lineHeight: 1.6 }}>
+                        <strong style={{ color: navy }}>Soviet countries</strong> are defined as Warsaw Pact members, USSR successor states, and Soviet-aligned regimes. They cluster by current GDP level:
+                    </p>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+                        {/* Upper GDP Half */}
+                        <div>
+                            <div style={{
+                                background: soviet,
+                                color: "white",
+                                padding: "8px 10px",
+                                borderRadius: "3px 3px 0 0",
+                                fontSize: 11,
+                                fontWeight: 600,
+                                letterSpacing: "0.3px"
+                            }}>
+                                Upper GDP Half (n=10)
+                            </div>
+                            <div style={{
+                                background: lightGray,
+                                padding: "12px 10px",
+                                borderRadius: "0 0 3px 3px",
+                                marginBottom: 16
+                            }}>
+                                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                    {UPPER_GDP_SOVIET.map((country, i) => (
+                                        <li key={i} style={{
+                                            padding: "6px 0",
+                                            borderBottom: i < UPPER_GDP_SOVIET.length - 1 ? "1px solid #e0e0e0" : "none",
+                                            fontSize: 10,
+                                            color: "#333"
+                                        }}>
+                                            {country}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <p style={{
+                                    fontSize: 9,
+                                    color: "#888",
+                                    marginTop: 10,
+                                    paddingTop: 8,
+                                    borderTop: "1px solid #ddd",
+                                    fontStyle: "italic"
+                                }}>
+                                    Mostly EU accession countries + Russia
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Lower GDP Half */}
+                        <div>
+                            <div style={{
+                                background: lightNavy,
+                                color: "white",
+                                padding: "8px 10px",
+                                borderRadius: "3px 3px 0 0",
+                                fontSize: 11,
+                                fontWeight: 600,
+                                letterSpacing: "0.3px"
+                            }}>
+                                Lower GDP Half (n=16)
+                            </div>
+                            <div style={{
+                                background: lightGray,
+                                padding: "12px 10px",
+                                borderRadius: "0 0 3px 3px"
+                            }}>
+                                <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                    {LOWER_GDP_SOVIET.map((country, i) => (
+                                        <li key={i} style={{
+                                            padding: "6px 0",
+                                            borderBottom: i < LOWER_GDP_SOVIET.length - 1 ? "1px solid #e0e0e0" : "none",
+                                            fontSize: 10,
+                                            color: "#333"
+                                        }}>
+                                            {country}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <p style={{
+                                    fontSize: 9,
+                                    color: "#888",
+                                    marginTop: 10,
+                                    paddingTop: 8,
+                                    borderTop: "1px solid #ddd",
+                                    fontStyle: "italic"
+                                }}>
+                                    Mix of Central Asian, Caucasus, Balkans, and East European countries
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Definition note */}
+                    <div style={{ marginTop: 18, padding: 12, background: lightGray, borderLeft: "3px solid " + navy, borderRadius: 3 }}>
+                        <p style={{ fontSize: 9.5, color: "#555", lineHeight: 1.7, margin: 0 }}>
+                            <strong style={{ color: navy }}>Soviet Legacy Definition:</strong> Countries classified as Soviet if they were (1) USSR member states, (2) Warsaw Pact members, or (3) strongly Soviet-aligned during the Cold War. This historical institutional framework influences state sports infrastructure, coaching traditions, and talent pipeline systems that persist decades after political transitions.
+                        </p>
+                    </div>
+
+                    {/* Summary statistics */}
+                    <div style={{ marginTop: 14, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                        <div style={{ padding: 10, background: "rgba(139, 43, 43, 0.1)", borderRadius: 3 }}>
+                            <div style={{ fontSize: 10, fontWeight: 600, color: soviet, marginBottom: 4 }}>Upper GDP Effect</div>
+                            <div style={{ fontSize: 11, color: navy, fontWeight: 600 }}>+3.99 → +3.11</div>
+                            <div style={{ fontSize: 9, color: "#888" }}>22% attenuation</div>
+                        </div>
+                        <div style={{ padding: 10, background: "rgba(58, 58, 78, 0.1)", borderRadius: 3 }}>
+                            <div style={{ fontSize: 10, fontWeight: 600, color: lightNavy, marginBottom: 4 }}>Lower GDP Effect</div>
+                            <div style={{ fontSize: 11, color: navy, fontWeight: 600 }}>-7.88 → -7.58</div>
+                            <div style={{ fontSize: 9, color: "#888" }}>4% attenuation</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(SovietPersistence));
+    </script>
+</body>
+</html>

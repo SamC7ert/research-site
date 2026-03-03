@@ -1042,6 +1042,51 @@ button#theme-toggle:hover {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Session: Seven-Game Persistence Experiment
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Session: Seven-Game Persistence Experiment Date: 2026-02-27
+Summary Extended the persistence simulation across all seven Olympic Games (Sydney 2000 through Paris 2024) with game-level event data. Compared four configurations: no persistence, cultural persistence (Game 1 seed), rolling persistence (previous game seed), and combined (both factors with separate weights).
+Calibration Cultural only: γ_c = 1.5 (grid search on cell-level correlation) Rolling only: γ_r = 2.0 Combined: γ_c = 0.7, γ_r = 2.2 Key Results — Individual Sports, Rich Half, Model 4 Config Simulated β Empirical β Gap No persistence −0.74 −7.82 &#43;7.1 Cultural (γ=1.5) −6.58 −7.82 &#43;1.2 Rolling (γ=2.0) −9.00 −7.82 −1.2 Combined −8.82 −7.82 &#43;1.0 Fit Metrics (Cell-Level Correlation) No persistence: r = 0.484 Cultural: r = 0.731 Rolling: r = 0.782 Combined: r = 0.793 Interpretation Rolling persistence dominates the combined model (γ_r » γ_c). The cost gradient reflects both contemporaneous affordability barriers and accumulated competitive capital that correlates with historical wealth and inequality patterns.
+...</p>
+  </div>
+  <footer class="entry-footer"><span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session: Seven-Game Persistence Experiment" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/19/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session: Two-Stage Simulation Model
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Session: Two-Stage Simulation Model Date: 2026-02-25
+Summary Built a forward simulation to test whether contemporaneous economic fundamentals can reproduce the empirical Gini×cost gradient. The model has two stages: Stage 1 allocates athletes to sports via affordability × infrastructure × popularity; Stage 2 determines quality as a function of effective athletes, GDP, cost, and host bonus.
+Key Design Decisions Affordability function: Maps income distribution (via Gini) to the fraction of households that can afford a sport’s annual cost. Tested multiple functional forms. Infrastructure weighting: GDP × log(facility cost) determines national infrastructure capacity per sport. Calibration target: Match empirical rich/poor GDP ratio (~2.57×) in simulated total points. Monte Carlo: 20 simulation runs per configuration to account for stochastic allocation. Results The simulation matches country-level totals reasonably well (r ≈ 0.90) but produces a Gini×cost gradient far smaller than the empirical value — roughly one-tenth to one-fifth of the observed coefficient in the individual sports, upper GDP half specification.
+...</p>
+  </div>
+  <footer class="entry-footer"><span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session: Two-Stage Simulation Model" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/17/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session: v0.91 Dataset Rebuild
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Session: v0.91 Dataset Rebuild Date: 2026-02-18
+Summary Rebuilding derived datasets D1 (country × sport × period panel) and D2 (country aggregate) for v0.91. Discovered outdated fields from v0.9 still present — the old “communist” field needed replacement with “soviet_legacy” and China required reclassification.
+Work Done Rebuilt D1 and D2 from source data using updated v1.0a region_classification.json. Applied sport filtering: dropped 6 new sports (BMX Freestyle, Skateboarding, etc.). Created main and robustness sport samples based on game participation thresholds. Aggregated performance using 6-5-4-3-2-1 scoring for places 1–6. Issue Discovered Verification against old D2 revealed point mismatches for several countries, indicating the previous build handled shared medals differently (likely fractional points for tied results). Investigation of original logic initiated.
+...</p>
+  </div>
+  <footer class="entry-footer"><span>34 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session: v0.91 Dataset Rebuild" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/07/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Session: v0.91 Sport Type Decomposition
     </h2>
   </header>
@@ -1145,41 +1190,12 @@ Structural Decisions Equipment cost tiers replaced with continuous specification
   <footer class="entry-footer"><span>85 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.93–v0.95 Paper Refinement and Analysis Plan" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/15/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.94 Facility Cost — Continuous Estimates
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Session: v0.94 Facility Cost — Continuous Estimates Date: 2026-02-24
-Summary Transitioned facility cost classifications from ordinal tiers (1–4) to continuous cost estimates in euros sourced from Central European construction data. Addressed three problematic pool-dependent sports (Marathon Swimming, Triathlon, Modern Pentathlon).
-Methodological Decision When Claude suggested testing different specifications first, Sam firmly rejected: “we cannot test first, that is cheating.” Classification decisions must be made before running regressions.
-Max-Component Principle Pool-dependent sports reclassified from marginal costs (€50K–€800K) to €25M reflecting swimming pool infrastructure dependence.
-...</p>
-  </div>
-  <footer class="entry-footer"><span>61 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.94 Facility Cost — Continuous Estimates" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/14/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: Visualization Planning and Handover
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Session: Visualization Planning and Handover Date: 2026-02-13
-Summary Verified the uploaded Forrest et al. 2017 PDF and planned interactive data visualizations for the research website. Analyzed four existing JSX visualization files and identified gaps.
-Existing Visualizations gini_sporting: Gini vs per-capita medal performance gini_vs_gold: Gini vs gold/silver ratio (summer and winter) gsn_galton: Galton’s Problem diagnostic with partial correlations gsn_gender_gdp: Gender performance analysis by GDP and Gini New Visualizations Proposed Sport-Cost Gradient Explorer (essential) — shows how country performance distributes across cost tiers “Who Wins What” heatmap — countries versus cost tiers Validation chart — rich vs poor country ratios by sport Key Analytical Insight Within-region Gini coefficients showed a non-random pattern: while overall Gini correlation disappeared after region controls, some regions showed positive and others negative correlations. This motivated the sport-cost decomposition analysis.
-...</p>
-  </div>
-  <footer class="entry-footer"><span>28 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: Visualization Planning and Handover" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/05/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/">
       «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/page/3/">Next&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>

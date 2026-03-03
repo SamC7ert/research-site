@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Religion vs Region: Galton Controls Compared</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body, #root { width: 100%; height: 100%; background-color: white; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+    <script type="text/babel">
+const { useState } = React;
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+
+// ── Cost gradient: Gini × ln(Equipment Cost) β ──
+const GRADIENT = [
+  { type: "Individual, Upper GDP", religion: -2.657, relig_p: 0.007, region: -2.537, region_p: 0.012 },
+  { type: "All Sports, Upper GDP",  religion: -0.855, relig_p: 0.009, region: -0.805, region_p: 0.018 },
+  { type: "Team, Full Sample",      religion: -0.711, relig_p: 0.031, region: -0.718, region_p: 0.038 },
+  { type: "Duel, Full Sample",      religion: -0.083, relig_p: 0.748, region: -0.138, region_p: 0.588 },
+];
+
+// ── Aggregate M4: Total Gini β ──
+const AGGREGATE = [
+  { label: "Religion controls", beta: -8.116, p: 0.058, color: "#1a1a2e" },
+  { label: "Region controls",   beta: 4.337,  p: 0.385, color: "#4a7ccc" },
+];
+
+// ── Specification comparison ──
+const SPECS = [
+  { label: "Religion (4 continuous vars)", vars: 4, desc: "pct_christian, pct_muslim, pct_hindu, pct_buddhist", color: "#1a1a2e" },
+  { label: "Region (9 dummy vars)",        vars: 9, desc: "N. Europe, S. Europe, E. Europe, W&C Asia, E. Asia, SE Asia, Sub-Saharan, Latin Am., Oceania", color: "#4a7ccc" },
+];
+
+function stars(p) {
+  if (p < 0.01) return "***";
+  if (p < 0.05) return "**";
+  if (p < 0.10) return "*";
+  return "";
+}
+
+function GradientChart() {
+  const W = 640, H = 340;
+  const pad = { top: 55, right: 50, bottom: 50, left: 190 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+  const rowH = h / GRADIENT.length;
+  const barH = 11;
+
+  const allVals = GRADIENT.flatMap(d => [d.religion, d.region]);
+  const xMin = Math.min(...allVals) * 1.2;
+  const xMax = Math.max(0.5, Math.max(...allVals) * 2);
+  const sx = v => pad.left + ((v - xMin) / (xMax - xMin)) * w;
+
+  return (
+    <svg width={W} height={H} style={{ fontFamily: font }}>
+      <text x={pad.left + w / 2} y={18} textAnchor="middle"
+        style={{ fontSize: 13, fontWeight: 700, fill: "#1a1a2e" }}>
+        Cost Gradient: Religion vs Region Controls
+      </text>
+      <text x={pad.left + w / 2} y={34} textAnchor="middle"
+        style={{ fontSize: 10, fill: "#888" }}>
+        Gini × ln(Equipment Cost) coefficient — religion strengthens the key specification
+      </text>
+
+      <line x1={sx(0)} y1={pad.top - 4} x2={sx(0)} y2={pad.top + h + 4} stroke="#ccc" strokeWidth={1} />
+
+      {GRADIENT.map((d, i) => {
+        const y = pad.top + i * rowH + rowH / 2;
+        const isNull = Math.abs(d.relig_p) > 0.1 && Math.abs(d.region_p) > 0.1;
+        return (
+          <g key={d.type}>
+            <text x={pad.left - 10} y={y + 4} textAnchor="end"
+              style={{ fontSize: 10, fill: isNull ? "#aaa" : "#333", fontWeight: 500 }}>{d.type}</text>
+
+            {/* Religion bar (top) */}
+            <rect x={Math.min(sx(d.religion), sx(0))} y={y - barH - 1}
+              width={Math.abs(sx(d.religion) - sx(0))} height={barH}
+              fill="#1a1a2e" opacity={isNull ? 0.3 : 0.85} rx={2} />
+            <text x={sx(d.religion) + (d.religion < 0 ? -5 : 5)} y={y - barH + 8}
+              textAnchor={d.religion < 0 ? "end" : "start"}
+              style={{ fontSize: 9, fill: isNull ? "#aaa" : "#1a1a2e", fontWeight: 600 }}>
+              {d.religion.toFixed(3)}{stars(d.relig_p)}
+            </text>
+
+            {/* Region bar (bottom) */}
+            <rect x={Math.min(sx(d.region), sx(0))} y={y + 1}
+              width={Math.abs(sx(d.region) - sx(0))} height={barH}
+              fill="#4a7ccc" opacity={isNull ? 0.3 : 0.7} rx={2} />
+            <text x={sx(d.region) + (d.region < 0 ? -5 : 5)} y={y + barH}
+              textAnchor={d.region < 0 ? "end" : "start"}
+              style={{ fontSize: 9, fill: isNull ? "#aaa" : "#4a7ccc", fontWeight: 600 }}>
+              {d.region.toFixed(3)}{stars(d.region_p)}
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Legend */}
+      <rect x={pad.left} y={H - 22} width={12} height={8} fill="#1a1a2e" rx={1} />
+      <text x={pad.left + 16} y={H - 15} style={{ fontSize: 9, fill: "#555" }}>Religion (4 vars)</text>
+      <rect x={pad.left + 110} y={H - 22} width={12} height={8} fill="#4a7ccc" rx={1} />
+      <text x={pad.left + 126} y={H - 15} style={{ fontSize: 9, fill: "#555" }}>Region (9 dummies)</text>
+      <text x={W - 20} y={H - 15} textAnchor="end" style={{ fontSize: 8, fill: "#aaa" }}>*** p&lt;0.01  ** p&lt;0.05  * p&lt;0.10</text>
+    </svg>
+  );
+}
+
+function AggregateChart() {
+  const W = 640, H = 280;
+  const pad = { top: 55, right: 60, bottom: 55, left: 200 };
+  const w = W - pad.left - pad.right;
+  const h = H - pad.top - pad.bottom;
+  const rowH = h / AGGREGATE.length;
+  const barH = 20;
+
+  const allVals = AGGREGATE.map(d => d.beta);
+  const absMax = Math.max(...allVals.map(Math.abs)) * 1.4;
+  const sx = v => pad.left + ((v + absMax) / (2 * absMax)) * w;
+
+  return (
+    <svg width={W} height={H} style={{ fontFamily: font }}>
+      <text x={pad.left + w / 2} y={18} textAnchor="middle"
+        style={{ fontSize: 13, fontWeight: 700, fill: "#1a1a2e" }}>
+        The Aggregate Puzzle: Gini Flips Sign
+      </text>
+      <text x={pad.left + w / 2} y={34} textAnchor="middle"
+        style={{ fontSize: 10, fill: "#888" }}>
+        Aggregate Model 4 — total Gini coefficient with full controls
+      </text>
+
+      {/* Zero line */}
+      <line x1={sx(0)} y1={pad.top - 4} x2={sx(0)} y2={pad.top + h + 4} stroke="#ccc" strokeWidth={1} />
+      <text x={sx(0)} y={pad.top + h + 20} textAnchor="middle" style={{ fontSize: 9, fill: "#999" }}>0</text>
+
+      {/* Hurt / Help labels */}
+      <text x={sx(-absMax * 0.7)} y={pad.top - 8} textAnchor="middle"
+        style={{ fontSize: 9, fill: "#c41e3a", fontWeight: 500 }}>← Inequality hurts</text>
+      <text x={sx(absMax * 0.7)} y={pad.top - 8} textAnchor="middle"
+        style={{ fontSize: 9, fill: "#2d7d2d", fontWeight: 500 }}>Inequality helps →</text>
+
+      {AGGREGATE.map((d, i) => {
+        const y = pad.top + i * rowH + rowH / 2;
+        return (
+          <g key={d.label}>
+            <text x={pad.left - 10} y={y + 5} textAnchor="end"
+              style={{ fontSize: 11, fill: "#333", fontWeight: 500 }}>{d.label}</text>
+            <rect x={Math.min(sx(d.beta), sx(0))} y={y - barH / 2}
+              width={Math.abs(sx(d.beta) - sx(0))} height={barH}
+              fill={d.color} opacity={0.8} rx={3} />
+            <text x={sx(d.beta) + (d.beta < 0 ? -8 : 8)} y={y + 5}
+              textAnchor={d.beta < 0 ? "end" : "start"}
+              style={{ fontSize: 11, fill: d.color, fontWeight: 700 }}>
+              {d.beta > 0 ? "+" : ""}{d.beta.toFixed(1)} (p={d.p.toFixed(3)})
+            </text>
+          </g>
+        );
+      })}
+
+      <text x={pad.left + w / 2} y={H - 12} textAnchor="middle"
+        style={{ fontSize: 10, fill: "#555" }}>Total Gini coefficient on aggregate Olympic points</text>
+      <text x={pad.left + w / 2} y={H - 0} textAnchor="middle"
+        style={{ fontSize: 9, fill: "#999" }}>
+        Same model, same data — only the Galton control differs
+      </text>
+    </svg>
+  );
+}
+
+function App() {
+  const [tab, setTab] = useState(0);
+  const tabs = ["Cost Gradient", "Aggregate Puzzle"];
+
+  const style = {
+    container: { fontFamily: font, padding: "16px 20px", maxWidth: 680, margin: "0 auto" },
+    tabRow: { display: "flex", gap: 4, marginBottom: 16, borderBottom: "2px solid #eee", paddingBottom: 0 },
+    tab: (active) => ({
+      padding: "8px 18px", cursor: "pointer", fontFamily: font,
+      fontSize: 12, fontWeight: active ? 700 : 400, letterSpacing: 0.3,
+      color: active ? "#1a1a2e" : "#888",
+      borderBottom: active ? "2px solid #1a1a2e" : "2px solid transparent",
+      marginBottom: -2, background: "none", border: "none",
+      borderBottomWidth: 2, borderBottomStyle: "solid",
+      borderBottomColor: active ? "#1a1a2e" : "transparent",
+    }),
+    note: { fontSize: 10, color: "#999", lineHeight: 1.5, marginTop: 12, maxWidth: 580 },
+  };
+
+  return (
+    <div style={style.container}>
+      <div style={style.tabRow}>
+        {tabs.map((t, i) => (
+          <button key={t} style={style.tab(i === tab)} onClick={() => setTab(i)}>{t}</button>
+        ))}
+      </div>
+
+      {tab === 0 && (
+        <div>
+          <GradientChart />
+          <div style={style.note}>
+            Religion uses 4 continuous variables (% Christian, Muslim, Hindu, Buddhist; "other" as reference)
+            from Pew Research Center data. Region uses 9 geographic dummies (Northern Europe as reference).
+            Religion is more parsimonious and produces a stronger gradient in the key specification
+            (Individual, Upper GDP: p = 0.007 vs 0.012).
+          </div>
+        </div>
+      )}
+
+      {tab === 1 && (
+        <div>
+          <AggregateChart />
+          <div style={style.note}>
+            At the aggregate level (total Olympic points per country-period), the choice of Galton control
+            changes the story entirely. With religion controls, the total Gini effect stays negative and
+            marginally significant — inequality hurts. With region fixed effects, it flips positive and
+            becomes insignificant — the 9 dummies absorb the signal. The sport-level cost gradient is
+            robust to both specifications, but the aggregate result is not.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+</html>

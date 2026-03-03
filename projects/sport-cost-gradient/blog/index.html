@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>Research Journal | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.">
+<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 22 sessions with an AI research assistant.">
 <meta name="author" content="Sam C. Syvertsen">
 <link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
@@ -980,12 +980,12 @@ button#theme-toggle:hover {
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
   <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Research Journal">
-  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.">
+  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 22 sessions with an AI research assistant.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Research Journal">
-<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.">
+<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 22 sessions with an AI research assistant.">
 
 
 <script type="application/ld+json">
@@ -1036,9 +1036,9 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>15 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>20 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
-    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 16 sessions with an AI research assistant.</p>
+    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 22 sessions with an AI research assistant.</p>
   </header>
   <div class="post-content story-flow">
     <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
@@ -1336,6 +1336,40 @@ button#theme-toggle:hover {
 </div>
 <div class="story-row">
 <div class="story-text">
+<h2 id="i-reluctantly-wonder-whether-to-enter-religion">&ldquo;I reluctantly wonder whether to enter religion&rdquo;</h2>
+<p>The simulation needed religion to work. Without a penalty term for Muslim-majority and Hindu-majority countries, the model couldn&rsquo;t explain why India — the world&rsquo;s second-largest country — was a 95% negative outlier. The formula that eventually fitted the data included an explicit religious composition term: δ × (muslim + 0.5×hindu + 0.3×buddhist). This was uncomfortable but empirically unavoidable.</p>
+<p>That discomfort prompted a different question. Back in v0.96, while writing the Galton&rsquo;s Problem section, we had engaged with Ross and Homer (1976), who tested three measures of cross-national diffusion: shared borders, shared language, and trade links. Language won decisively — significant in 16 of 27 tested situations, versus 12 for borders and near-zero for trade. Their conclusion was that cultural proximity, not geographic proximity, is the primary channel through which societies influence each other.</p>
+<p>Our ten-region fixed effects were geographic. If Ross and Homer were right, we were controlling for the wrong kind of proximity. Religion — like language — captures cultural affinity that cuts across borders. Catholic Latin America shares more with Catholic Southern Europe than with Protestant Northern Europe, regardless of the Atlantic between them. The simulation had already shown that religious composition mattered for sport participation. The question was whether it also worked as a Galton control — and whether it might work <em>better</em> than geography.</p>
+<p>We ran the full regression pipeline twice: once with four continuous religion variables (percent Christian, Muslim, Hindu, Buddhist — with &ldquo;other&rdquo; as reference, sourced from Pew Research Center), and once with the nine geographic region dummies used throughout the paper. The results were striking.</p>
+<p>In the key specification — individual sports, upper GDP half — the cost gradient <em>strengthened</em> under religion controls. The Gini × ln(equipment cost) coefficient moved from −2.537 (p = 0.012) with region to −2.657 (p = 0.007) with religion. Four continuous variables outperformed nine dummies. The signal that geography had been partially absorbing was now free to show itself.</p>
+<p>The aggregate results diverged even more dramatically. With religion controls, the total Gini effect on national Olympic points was −8.1 and marginally significant (p = 0.058) — inequality hurts. With region fixed effects, it flipped to +4.3 and became insignificant (p = 0.385). Same model, same data, same 71 countries — only the Galton control differed. The nine region dummies were absorbing so much of the inequality variation that the aggregate coefficient changed sign. Religion controls, being more parsimonious and aligned with the actual diffusion channel, left the inequality signal intact.</p>
+<p>This was not just a specification choice. It was a statement about what Galton&rsquo;s Problem actually is in the context of Olympic performance. Countries don&rsquo;t copy each other&rsquo;s sporting traditions because they share a border. They share traditions because they share culture — colonial history, institutional templates, attitudes toward physical activity and gender participation. Religion captures this better than geography, and Ross and Homer&rsquo;s 1976 evidence says it should.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.97</span>
+<span class="version-title">Religion Outperforms Region as Galton Control</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/religion_vs_region.html" target="_blank" class="viz-thumb" title="Religion vs Region — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/religion_vs_region.png" loading="lazy"></div>
+<div class="viz-thumb-label">Religion vs Region</div>
+</a>
+</div>
+<div class="panel-section-label">Key numbers</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">Individual, Upper GDP:</span>
+<span class="session-link" style="cursor:default">Religion: β = −2.657 (p = 0.007)</span>
+<span class="session-link" style="cursor:default">Region: β = −2.537 (p = 0.012)</span>
+<span class="session-link" style="cursor:default">Vars: 4 continuous vs 9 dummies</span>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
 <h2 id="the-persistence-discovery">The persistence discovery</h2>
 <p>The simulation&rsquo;s failure pointed to something missing from the model: history. Countries that were good at swimming in 2000 tend to be good at swimming in 2024 — not because their current economics predict it, but because they built coaching systems, competitive pipelines, and cultural expectations around that sport decades ago. If this accumulated advantage correlates with the Gini×cost gradient (because historically wealthy, equal countries invested in expensive sports early), then persistence would amplify a small contemporaneous effect into the large empirical one.</p>
 <p>We tested this directly. Using event-level data from all seven Olympic Games (Sydney 2000 through Paris 2024), we ran the simulation game by game and added a persistence bonus: quality += γ × ln(1 + previous_points). Two scenarios were compared. <em>Cultural persistence</em> used Game 1 (Sydney 2000) as a fixed seed throughout — representing frozen historical advantage. <em>Rolling persistence</em> used the previous game&rsquo;s actual results as the seed — representing accumulated, evolving competitive capital.</p>
@@ -1374,11 +1408,85 @@ button#theme-toggle:hover {
 </div>
 </div>
 </div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="testing-persistence-econometrically">Testing persistence econometrically</h2>
+<p>The simulation had shown that persistence explains most of the gap. But simulation is not proof — it is calibrated to match, so it will match. The econometric test is harder: add lagged Olympic performance directly to the regression and see what survives.</p>
+<p>We scraped Barcelona 1992 and Atlanta 1996 from Olympedia to provide lag seeds, then built a game-level panel: 71 countries × 41 sports × 9 Games (1992–2024), with the first two games serving only as lag sources. The regression sample covers Sydney 2000 through Paris 2024 — seven Games with lagged points for each country-sport cell.</p>
+<p>The key variable is ln(1 + lagged_points): how many points a country earned in the same sport at the previous Olympics. If persistence fully explains the cost gradient, this control should absorb it. If the gradient survives, some of the mechanism is contemporaneous.</p>
+<p><a href="/viz/lag_attenuation.html">75% survived</a>. In the primary specification — individual sports, upper GDP, religion controls — the Gini×ln(equipment cost) coefficient moved from −0.875 (p = 0.008) without lag to −0.653 (p = 0.016) with lag. An attenuation of 25%. The lag coefficient itself was massive: β = 5.83 (p &lt; 0.001). Past performance strongly predicts current performance. But three-quarters of the cost gradient operates through a channel that lagged performance cannot absorb.</p>
+<p>The two-channel structure held perfectly at game level. Gini × equipment: β = −0.653, p = 0.016. GDP × facility: β = +0.608, p = 0.036. Mutual attenuation: approximately zero. Both channels significant, both independent, both surviving persistence controls.</p>
+<p>The crossover point — where the Gini effect switches from positive to negative — landed at €2,196 (95% CI: €1,688–€2,857). Higher than the two-period estimate (€1,406), reflecting that game-level data introduces more noise but also more identifying variation. The direction and magnitude are consistent.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.98</span>
+<span class="version-title">Game-Level Panel with Persistence Control</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/lag_attenuation.html" target="_blank" class="viz-thumb" title="Lag Attenuation — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/lag_attenuation.png" loading="lazy"></div>
+<div class="viz-thumb-label">Lag Attenuation</div>
+</a>
+</div>
+<div class="panel-section-label">Key numbers</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">Ind Upper, with lag:</span>
+<span class="session-link" style="cursor:default">Gini×cost: β = −0.653 (p = .016)</span>
+<span class="session-link" style="cursor:default">Lag: β = 5.83 (p < .001)</span>
+<span class="session-link" style="cursor:default">Attenuation: 25%</span>
+<span class="session-link" style="cursor:default">Crossover: €2,196</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/20/" class="session-link">20 Game-level panel</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="the-soviet-puzzle">The Soviet puzzle</h2>
+<p>One robustness question nagged. Former Soviet countries are systematic outliers: in the upper GDP half, they overperform (Soviet β = +3.99); in the lower GDP half, they underperform (β = −7.88). The centrally planned sport system — state-funded training academies, systematic talent identification, full-time athletic employment — created performance patterns unlike anything the market-based model predicts.</p>
+<p>If Soviet overperformance were simply accumulated historical advantage, the lag control should absorb it. It barely did. In the upper GDP half, adding lagged points attenuated the Soviet coefficient by only 22% (+3.99 → +3.11). In the lower half, by just 4% (−7.88 → −7.58). The <a href="/viz/soviet_persistence.html">Soviet effect operates through an institutional channel</a> that is largely independent of sport-specific persistence.</p>
+<p>The ten upper-GDP Soviet countries are mostly EU accession states — Estonia, Czech Republic, Poland, Hungary — plus Russia. Their overperformance reflects decades of institutional investment that persists even after the system that created it has dissolved. The sixteen lower-GDP Soviet countries face the opposite pattern: the institutional apparatus collapsed without being replaced, and GDP has not risen enough to substitute market-based development.</p>
+<h2 id="year-specific-data">Year-specific data</h2>
+<p>A final data upgrade replaced period-averaged economic predictors with year-specific values from the World Bank. The original panel gave every country the same GDP for an entire period — Estonia had $14,538 for Sydney 2000, Athens 2004, and Beijing 2008 alike. The upgraded panel tracks Estonia from $5,872 in 1992 to $49,969 in 2024.</p>
+<p>The results mostly improved. P-values tightened (more identifying variation from within-country GDP changes), the GDP×facility channel became significant for the first time at the 5% level (p = 0.036), and the core gradient remained stable. The simulation comparison weakened — from ~50% to ~28% of the empirical gradient — because year-specific GDP introduces within-country variation that the cross-sectional simulation architecture cannot model. An honest limitation, documented transparently.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.99</span>
+<span class="version-title">Year-Specific Data and Soviet Analysis</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/soviet_persistence.html" target="_blank" class="viz-thumb" title="Soviet Persistence — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/soviet_persistence.png" loading="lazy"></div>
+<div class="viz-thumb-label">Soviet Persistence</div>
+</a>
+<a href="/viz/lag_attenuation.html" target="_blank" class="viz-thumb" title="Year-Specific Comparison — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/lag_attenuation.png" loading="lazy"></div>
+<div class="viz-thumb-label">Year-Specific Upgrade</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/21/" class="session-link">21 Year-specific predictors</a>
+<a href="/projects/sport-cost-gradient/sessions/22/" class="session-link">22 Soviet analysis</a>
+</div>
+</div>
+</div>
+</div>
 <hr>
 <h2 id="what-this-project-found">What this project found</h2>
-<p>Income inequality does not predict Olympic performance in the aggregate — but this null conceals a systematic gradient. In individual sports, inequality increasingly hurts performance as personal equipment cost rises, with a crossover at approximately €1,400. A separate, independent channel runs through national wealth and facility infrastructure. The two mechanisms operate through completely different cost dimensions with near-zero mutual attenuation.</p>
-<p>The finding is robust across time, regions, estimation methods, cost measurement approaches, Mundlak correction, and host-effect controls. It provides the first empirical test of the cost-barrier mechanism that Geloso and Kufenko theorised but could not evaluate. Their own aggregate finding — that inequality hurts medals per capita — turns out to be a specification artefact driven by incorrect population scaling, not by a genuine inequality–performance relationship.</p>
-<p>A simulation exercise reveals that contemporaneous affordability barriers alone cannot generate the full magnitude of the observed gradient. Rolling persistence — where a country&rsquo;s competitive capital in each sport accumulates from game to game — closes the gap between simulation and data almost completely. The cost gradient reflects both a real current mechanism (household cost barriers pricing out talent) and an inherited one (decades of accumulated investment in expensive sports by historically wealthy, equal countries). The Mundlak correction confirms that the within-country, cross-sport component is genuine and not absorbed by country-level time averages.</p>
+<p>Income inequality does not predict Olympic performance in the aggregate — but this null conceals a systematic gradient. In individual sports, inequality increasingly hurts performance as personal equipment cost rises, with a crossover at approximately €2,200. A separate, independent channel runs through national wealth and facility infrastructure. The two mechanisms operate through completely different cost dimensions with near-zero mutual attenuation.</p>
+<p>The finding is robust across time, regions, estimation methods, cost measurement approaches, Mundlak correction, host-effect controls, and persistence controls. It provides the first empirical test of the cost-barrier mechanism that Geloso and Kufenko theorised but could not evaluate. Their own aggregate finding — that inequality hurts medals per capita — turns out to be a specification artefact driven by incorrect population scaling, not by a genuine inequality–performance relationship.</p>
+<p>A game-level panel with lagged Olympic points as controls confirms that 75% of the cost gradient survives persistence — the mechanism is primarily contemporaneous, not just accumulated historical advantage. A simulation exercise shows that known economic channels (affordability, infrastructure, quality) explain roughly 28% of the gradient; the remainder likely reflects ecosystem effects (coaching networks, club cultures, competitive pipelines) that the simulation&rsquo;s architecture does not yet capture. Former Soviet countries show institutional persistence patterns that are largely independent of sport-specific momentum, suggesting that centralised sport investment created a distinct developmental pathway.</p>
+<p>The Mundlak correction confirms that the within-country, cross-sport component of the gradient is genuine and not absorbed by country-level time averages. The cost gradient identifies off variation <em>within</em> countries — the same country performs differently across cheap and expensive sports — which is what gives it structural robustness that aggregate approaches lack.</p>
 
   </div>
 </article>
