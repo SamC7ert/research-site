@@ -859,6 +859,61 @@ button#theme-toggle:hover {
 }
 
  
+.abstract-area {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.abstract-area > .post-content {
+  min-width: 0;
+}
+
+.journal-box {
+  margin-top: 1rem;
+  padding: 1.2rem;
+  background: var(--code-bg, #f6f6f6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.journal-box-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+}
+
+.journal-box-text {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--secondary);
+  margin: 0 0 0.75rem;
+}
+
+.journal-box-link {
+  display: inline-block;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.journal-box-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .abstract-area {
+    grid-template-columns: 1fr;
+  }
+  .journal-box {
+    max-width: 320px;
+  }
+}
+
+ 
 .findings-section {
   margin: 2.5rem 0;
 }
@@ -1042,6 +1097,36 @@ button#theme-toggle:hover {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Session: Norway&#39;s Olympic Gold and Silver Medals Across Eight Games
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Session: Norway’s Olympic Gold and Silver Medals Across Eight Games Date: 2026-02-12
+Summary Extensive statistical investigation into whether societal equality predicts Olympic success per capita. Built on GSN Per Capita Cup data aggregating 4 summer plus 4 winter Olympics with standard 6-5-4 scoring. Used proper controls for GDP per capita and sophisticated analyses including Frisch-Waugh-Lovell partial correlations and multiple regression models.
+Key Findings Income equality shows a stronger independent signal than gender equality for predicting Olympic performance, particularly for women, even after controlling for wealth effects. A critical methodological error was discovered: when expanding to test for regional clustering effects (Galton’s Problem), Claude switched from the proper multi-Games GSN dataset to single-Olympics Paris 2024 data without flagging the change. All subsequent analyses of regional heterogeneity, democracy interactions, and communist legacy effects were compromised by this data switch. Outcome Collected all JSX files with embedded datasets. Created a markdown summary to brief a future session on redoing the analysis correctly, particularly focusing on whether regional clustering eliminates the income equality signal when using the methodologically sound 8-Games aggregated data.
+...</p>
+  </div>
+  <footer class="entry-footer"><span>60 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session: Norway&#39;s Olympic Gold and Silver Medals Across Eight Games" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/01/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session: Running Full Analysis with Complete Data
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Session: Running Full Analysis with Complete Data Date: 2026-02-13
+Summary Complete end-to-end analysis testing two hypotheses about how inequality affects Olympic performance across different sport cost tiers. Built on Geloso &amp; Kufenko (2021) who theorized that income inequality hurts Olympic performance through cost barriers but couldn’t find quality sport-cost data. Created a sport cost classification system categorizing 50 Olympic sports into four tiers (low, medium, high, very high).
+Key Findings Income inequality (Gini) increasingly hurts performance as sport cost rises (β = -0.016, p = 0.03 for Period 1), confirming the Geloso theory. Gender equality (GGI) shows its strongest positive effects in expensive sports (β = 8.258, p = 0.009) — contrary to the original hypothesis that it would uniformly help across all sports through talent pool expansion. Results resolve Kuppens &amp; Pollet’s (2015) critique of Berdahl et al. by showing sport-cost mechanisms survive regional controls where aggregate relationships do not. Outputs Six publication-quality figures, comprehensive regression tables, descriptive statistics, and a complete paper outline.
+...</p>
+  </div>
+  <footer class="entry-footer"><span>21 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session: Running Full Analysis with Complete Data" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/03/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Session: Seven-Game Persistence Experiment
     </h2>
   </header>
@@ -1159,36 +1244,6 @@ Unchanged Estimates (Documented) Diving, Artistic Swimming, and Water Polo estim
   </div>
   <footer class="entry-footer"><span>46 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session: v0.93 Cost Reclassification — Completion" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/13/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.93 Cost Reclassification — Pilot Sports
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Session: v0.93 Cost Reclassification — Pilot Sports Date: 2026-02-23
-Summary Extended the pilot cost analysis of 8 sports to develop a comprehensive four-component cost breakdown (equipment, coaching, facility access, competition expenses) for all Olympic sports.
-Pilot Results Total annual costs for the 8 pilot sports ranged from €1,400 (judo) to €10,500 (sailing). Facility costs emerged as a major hidden driver: swimming (42% of total cost) and rowing (47% of total cost). Equipment-only measures understate true cost barriers by 2–5× while preserving relative ordering.
-...</p>
-  </div>
-  <footer class="entry-footer"><span>21 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.93 Cost Reclassification — Pilot Sports" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/10/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.93–v0.95 Paper Refinement and Analysis Plan
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Session: v0.93–v0.95 Paper Refinement and Analysis Plan Date: 2026-02-24
-Summary Refined Paper 1 structure and created comprehensive handover documents for v0.95 analysis. Established that the research contribution is the first empirical validation of cost-based mechanisms that Geloso &amp; Kufenko theorized but couldn’t test.
-Structural Decisions Equipment cost tiers replaced with continuous specifications. All gender analysis moved to Paper 2. “Horse race” terminology replaced with “joint specification.” Key Finding Confirmed Two cleanly separated channels: GDP per capita interacts with facility infrastructure costs while Gini interacts with personal equipment costs in individual sports. The gradient is concentrated in upper-income countries.
-...</p>
-  </div>
-  <footer class="entry-footer"><span>85 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.93–v0.95 Paper Refinement and Analysis Plan" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/15/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

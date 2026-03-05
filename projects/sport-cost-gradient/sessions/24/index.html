@@ -5,11 +5,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Sport-Cost | Sam C. Syvertsen</title>
+<title>Session 24: Reproducibility Testing and the Clustering Discovery | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="Research on Olympic performance, sport cost inequality, and the Gini coefficient">
+<meta name="description" content="Summary
+Designed and executed a blind reproducibility test: the paper was redacted (all numerical results replaced with placeholders), packaged with data files sorted into regression/, simulation/, and other/ directories, and given to independent AI sessions to reproduce the results from specifications alone.
+Gemini (Google) attempted first but fabricated all quantitative results — the primary β came back as −0.024 versus the actual −0.653 (27× underestimate), with all regression coefficients 15–130× too small. Gemini got descriptive statistics right (Spearman ρ, persistence hierarchy, attenuation percentages) because those were readable from the text context. Gemini later honestly acknowledged the fabrication in a Norwegian-language confession.">
 <meta name="author" content="Sam C. Syvertsen">
-<link rel="canonical" href="https://research.syvertsen.com/tags/sport-cost/">
+<link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/24/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://research.syvertsen.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://research.syvertsen.com/favicon-16x16.png">
@@ -18,8 +20,8 @@
 <link rel="mask-icon" href="https://research.syvertsen.com/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://research.syvertsen.com/tags/sport-cost/index.xml" title="rss">
-<link rel="alternate" hreflang="en" href="https://research.syvertsen.com/tags/sport-cost/">
+<link rel="alternate" type="application/rss+xml" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/24/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/24/">
 <noscript>
     <style>
         #theme-toggle,
@@ -1032,16 +1034,50 @@ button#theme-toggle:hover {
   background: rgba(255,255,255,0.04);
 }
 </style>
-<meta property="og:url" content="https://research.syvertsen.com/tags/sport-cost/">
+<meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/24/">
   <meta property="og:site_name" content="Sam C. Syvertsen">
-  <meta property="og:title" content="Sport-Cost">
-  <meta property="og:description" content="Research on Olympic performance, sport cost inequality, and the Gini coefficient">
+  <meta property="og:title" content="Session 24: Reproducibility Testing and the Clustering Discovery">
+  <meta property="og:description" content="Summary Designed and executed a blind reproducibility test: the paper was redacted (all numerical results replaced with placeholders), packaged with data files sorted into regression/, simulation/, and other/ directories, and given to independent AI sessions to reproduce the results from specifications alone.
+Gemini (Google) attempted first but fabricated all quantitative results — the primary β came back as −0.024 versus the actual −0.653 (27× underestimate), with all regression coefficients 15–130× too small. Gemini got descriptive statistics right (Spearman ρ, persistence hierarchy, attenuation percentages) because those were readable from the text context. Gemini later honestly acknowledged the fabrication in a Norwegian-language confession.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sport-Cost">
+<meta name="twitter:title" content="Session 24: Reproducibility Testing and the Clustering Discovery">
 <meta name="twitter:description" content="Research on Olympic performance, sport cost inequality, and the Gini coefficient">
 
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Research Projects",
+      "item": "https://research.syvertsen.com/projects/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Income Inequality, Sport Cost, and Olympic Performance",
+      "item": "https://research.syvertsen.com/projects/sport-cost-gradient/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Session Transcripts",
+      "item": "https://research.syvertsen.com/projects/sport-cost-gradient/sessions/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  4 ,
+      "name": "Session 24: Reproducibility Testing and the Clustering Discovery",
+      "item": "https://research.syvertsen.com/projects/sport-cost-gradient/sessions/24/"
+    }
+  ]
+}
+</script>
 </head>
 <body class="list" id="top">
     <header class="header">
@@ -1059,11 +1095,21 @@ button#theme-toggle:hover {
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/tags/">Tags</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/">Research Projects</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/">Income Inequality, Sport Cost, and Olympic Performance</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/">Session Transcripts</a></div>
   <h1>
-    Sport-Cost
+    Session 24: Reproducibility Testing and the Clustering Discovery
   </h1>
 </header>
+<div class="post-content"><h2 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h2>
+<p>Designed and executed a blind reproducibility test: the paper was redacted (all numerical results replaced with placeholders), packaged with data files sorted into regression/, simulation/, and other/ directories, and given to independent AI sessions to reproduce the results from specifications alone.</p>
+<p>Gemini (Google) attempted first but fabricated all quantitative results — the primary β came back as −0.024 versus the actual −0.653 (27× underestimate), with all regression coefficients 15–130× too small. Gemini got descriptive statistics right (Spearman ρ, persistence hierarchy, attenuation percentages) because those were readable from the text context. Gemini later honestly acknowledged the fabrication in a Norwegian-language confession.</p>
+<p>An independent Claude session performed much better: primary β = −0.633 (within 3% of −0.653), correct sample sizes, correct signs throughout. However, p-values were systematically 7 orders of magnitude too small (5.6 × 10⁻⁹ vs 0.016). Diagnosing this discrepancy revealed the root cause: the paper&rsquo;s v0.99 pipeline uses country-clustered standard errors (statsmodels cov_cluster, ~35 clusters for upper GDP), while the reproducer used HC1. With ~35 clusters, clustering dramatically inflates standard errors compared to HC1, which assumes independence across observations.</p>
+<p>This was a specification error in the paper itself — the text said &ldquo;HC1 robust standard errors&rdquo; when the pipeline actually used country clustering. The correction was made in v0.99.4: a paragraph after Equation 4 now explicitly states that all standard errors are clustered at the country level, and Section 6.2 explains why the simulation evaluation uses HC1 (calibration targets are point estimates, not significance levels).</p>
+<p>A new reproducibility package (Reproducibility_data2/) was created with the corrected redacted paper, all data files, and a new simulation calibration methodology document detailing the full three-stage architecture, 13 parameters with ranges, and the Phase A/B/C calibration procedure — all stripped of results. The simulation methodology was also published as a new page on the research website.</p>
+<p><strong>Version:</strong> v0.99.3 → v0.99.4</p>
+
+
+</div>
     </main>
     
 <footer class="footer">

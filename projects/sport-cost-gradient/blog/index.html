@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>Research Journal | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 22 sessions with an AI research assistant.">
+<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 24 sessions with an AI research assistant.">
 <meta name="author" content="Sam C. Syvertsen">
 <link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
@@ -859,6 +859,61 @@ button#theme-toggle:hover {
 }
 
  
+.abstract-area {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.abstract-area > .post-content {
+  min-width: 0;
+}
+
+.journal-box {
+  margin-top: 1rem;
+  padding: 1.2rem;
+  background: var(--code-bg, #f6f6f6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.journal-box-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+}
+
+.journal-box-text {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--secondary);
+  margin: 0 0 0.75rem;
+}
+
+.journal-box-link {
+  display: inline-block;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.journal-box-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .abstract-area {
+    grid-template-columns: 1fr;
+  }
+  .journal-box {
+    max-width: 320px;
+  }
+}
+
+ 
 .findings-section {
   margin: 2.5rem 0;
 }
@@ -980,12 +1035,12 @@ button#theme-toggle:hover {
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
   <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Research Journal">
-  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 22 sessions with an AI research assistant.">
+  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 24 sessions with an AI research assistant.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Research Journal">
-<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 22 sessions with an AI research assistant.">
+<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 24 sessions with an AI research assistant.">
 
 
 <script type="application/ld+json">
@@ -1036,9 +1091,9 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>20 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>23 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
-    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 22 sessions with an AI research assistant.</p>
+    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 24 sessions with an AI research assistant.</p>
   </header>
   <div class="post-content story-flow">
     <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
@@ -1477,6 +1532,62 @@ button#theme-toggle:hover {
 <div class="version-sessions">
 <a href="/projects/sport-cost-gradient/sessions/21/" class="session-link">21 Year-specific predictors</a>
 <a href="/projects/sport-cost-gradient/sessions/22/" class="session-link">22 Soviet analysis</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="persistence-is-an-infrastructure-phenomenon">Persistence is an infrastructure phenomenon</h2>
+<p>With the game-level panel as the primary narrative, v0.99.2 restructured the paper around a single data structure — no more toggling between two-period and game-level analyses. Six editorial decisions were resolved in extended discussion: the aggregate puzzle rewritten with game-level data, team sports presented as separate dynamics without a claimed mechanism, simulation kept as a standalone section, and two-period results demoted to robustness.</p>
+<p>A new finding emerged from per-sport lag regressions. Persistence — the tendency for countries to keep winning in the same sports — does not track household equipment cost. It tracks facility infrastructure cost. The per-sport correlation was suggestive (r = 0.26, p = 0.23, n = 23) but the observation-level panel confirmed it decisively: lag × ln(facility) = +1.17 (p &lt; 0.0001), while lag × ln(equipment) = −1.90 (p &lt; 0.0001). Countries that built swimming pools and velodromes decades ago keep producing swimmers and cyclists. But this institutional persistence operates through a different cost dimension than the Gini × equipment gradient — which is precisely why 75% of the cost gradient survives lag controls.</p>
+<p>A three-cluster scatter of lag coefficients against facility cost revealed three distinct persistence mechanisms: individual sports rising with infrastructure investment, duel sports (fencing, wrestling, judo) showing high persistence at low facility cost through coaching tradition, and team sports uniformly low regardless of infrastructure — consistent with different mechanisms of competitive advantage accumulation and underlining the need to treat them separately.</p>
+<p>The paper&rsquo;s claims were systematically hedged: &ldquo;reduces&rdquo; became &ldquo;is associated with,&rdquo; &ldquo;absent&rdquo; became &ldquo;is not observed,&rdquo; crossover expressed as sport names rather than euros, and Section 8.4 was rewritten to honestly describe 2,000 simulation parameter combinations that could not explain why the gradient concentrates in upper-income countries. The abstract was tightened to 180 words leading with the result.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.99.2</span>
+<span class="version-title">Paper Restructuring and Lag × Facility</span>
+</div>
+<div class="panel-section-label">Key numbers</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">Lag × ln(facility): +1.17 (p < .0001)</span>
+<span class="session-link" style="cursor:default">Lag × ln(equip): −1.90 (p < .0001)</span>
+<span class="session-link" style="cursor:default">Three persistence clusters</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/23/" class="session-link">23 Paper restructuring</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="can-an-ai-reproduce-the-results-blind">Can an AI reproduce the results blind?</h2>
+<p>The paper claimed specific regression coefficients. But these numbers were computed by the same AI (Claude) that wrote the pipeline code. How do we know the code is correct? A blind reproducibility test: strip all numerical results from the paper, provide only the methodology text, equations, and data files, and ask an independent session to fill in the blanks.</p>
+<p>Gemini (Google) went first. It fabricated everything. The primary β came back as −0.024 — a 27× underestimate of the actual −0.653. All regression coefficients were 15–130× too small. The descriptive numbers were correct (Spearman ρ, persistence hierarchy, attenuation percentages) because those were readable from the text context. Gemini later acknowledged the fabrication honestly.</p>
+<p>An independent Claude session did much better: β = −0.633, within 3% of −0.653. Correct sample sizes, correct signs throughout. But p-values were off by seven orders of magnitude (5.6 × 10⁻⁹ vs 0.016). This was too systematic to be a bug. Diagnosing it revealed the root cause: the paper&rsquo;s pipeline uses country-clustered standard errors (~35 clusters), while the reproducer used HC1 (which assumes independence). With few clusters, clustering dramatically inflates standard errors.</p>
+<p>This was a specification error in the paper itself. The text said &ldquo;HC1 robust standard errors&rdquo; when the code actually used country clustering. The correction was made in v0.99.4, and the reproducibility test was redesigned with the corrected specification. The clustering method should arrive from the paper alone — that is what the next test must verify.</p>
+<p>The exercise also produced a simulation calibration methodology document — the full three-stage architecture, 13 parameters with ranges, the Phase A/B/C calibration procedure — now published on the <a href="/projects/sport-cost-gradient/methodology/">methodology page</a>.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v0.99.4</span>
+<span class="version-title">Reproducibility Testing</span>
+</div>
+<div class="panel-section-label">Key numbers</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">Gemini β: −0.024 (fabricated)</span>
+<span class="session-link" style="cursor:default">Claude β: −0.633 (3% off)</span>
+<span class="session-link" style="cursor:default">p-value gap: 7 orders of magnitude</span>
+<span class="session-link" style="cursor:default">Root cause: clustered vs HC1 SEs</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/24/" class="session-link">24 Reproducibility testing</a>
 </div>
 </div>
 </div>

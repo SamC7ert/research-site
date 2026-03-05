@@ -859,6 +859,61 @@ button#theme-toggle:hover {
 }
 
  
+.abstract-area {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.abstract-area > .post-content {
+  min-width: 0;
+}
+
+.journal-box {
+  margin-top: 1rem;
+  padding: 1.2rem;
+  background: var(--code-bg, #f6f6f6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.journal-box-heading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+}
+
+.journal-box-text {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--secondary);
+  margin: 0 0 0.75rem;
+}
+
+.journal-box-link {
+  display: inline-block;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.journal-box-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .abstract-area {
+    grid-template-columns: 1fr;
+  }
+  .journal-box {
+    max-width: 320px;
+  }
+}
+
+ 
 .findings-section {
   margin: 2.5rem 0;
 }
@@ -1039,6 +1094,36 @@ button#theme-toggle:hover {
     Full AI-assisted research session transcripts
   </div>
 </header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session: v0.93 Cost Reclassification — Pilot Sports
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Session: v0.93 Cost Reclassification — Pilot Sports Date: 2026-02-23
+Summary Extended the pilot cost analysis of 8 sports to develop a comprehensive four-component cost breakdown (equipment, coaching, facility access, competition expenses) for all Olympic sports.
+Pilot Results Total annual costs for the 8 pilot sports ranged from €1,400 (judo) to €10,500 (sailing). Facility costs emerged as a major hidden driver: swimming (42% of total cost) and rowing (47% of total cost). Equipment-only measures understate true cost barriers by 2–5× while preserving relative ordering.
+...</p>
+  </div>
+  <footer class="entry-footer"><span>21 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session: v0.93 Cost Reclassification — Pilot Sports" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/10/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session: v0.93–v0.95 Paper Refinement and Analysis Plan
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Session: v0.93–v0.95 Paper Refinement and Analysis Plan Date: 2026-02-24
+Summary Refined Paper 1 structure and created comprehensive handover documents for v0.95 analysis. Established that the research contribution is the first empirical validation of cost-based mechanisms that Geloso &amp; Kufenko theorized but couldn’t test.
+Structural Decisions Equipment cost tiers replaced with continuous specifications. All gender analysis moved to Paper 2. “Horse race” terminology replaced with “joint specification.” Key Finding Confirmed Two cleanly separated channels: GDP per capita interacts with facility infrastructure costs while Gini interacts with personal equipment costs in individual sports. The gradient is concentrated in upper-income countries.
+...</p>
+  </div>
+  <footer class="entry-footer"><span>85 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session: v0.93–v0.95 Paper Refinement and Analysis Plan" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/15/"></a>
+</article>
 
 <article class="post-entry"> 
   <header class="entry-header">
