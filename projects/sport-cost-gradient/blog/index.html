@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>Research Journal | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 24 sessions with an AI research assistant.">
+<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 25 sessions with an AI research assistant.">
 <meta name="author" content="Sam C. Syvertsen">
 <link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
@@ -1035,12 +1035,12 @@ button#theme-toggle:hover {
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
   <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Research Journal">
-  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 24 sessions with an AI research assistant.">
+  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 25 sessions with an AI research assistant.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Research Journal">
-<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 24 sessions with an AI research assistant.">
+<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 25 sessions with an AI research assistant.">
 
 
 <script type="application/ld+json">
@@ -1091,9 +1091,9 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>23 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>25 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
-    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 24 sessions with an AI research assistant.</p>
+    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 25 sessions with an AI research assistant.</p>
   </header>
   <div class="post-content story-flow">
     <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
@@ -1588,6 +1588,35 @@ button#theme-toggle:hover {
 <div class="panel-section-label">Sessions</div>
 <div class="version-sessions">
 <a href="/projects/sport-cost-gradient/sessions/24/" class="session-link">24 Reproducibility testing</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="the-numbers-dont-match--and-thats-the-point">The numbers don&rsquo;t match — and that&rsquo;s the point</h2>
+<p>The second reproducibility test used the corrected specification (country-clustered SEs stated explicitly). An independent Claude session came back with β = −0.698 instead of −0.65, p = 0.032 instead of 0.016, and 1,882 observations instead of 1,944. Close enough to confirm the finding is real, but different enough to demand explanation.</p>
+<p>The initial instinct was to patch the paper with the new numbers. That was wrong — if the pipeline has a problem, you fix the pipeline and re-run, not copy results from a test that might have its own errors. The number changes were reverted.</p>
+<p>Tracing the divergence revealed three points where the original pipeline and the reproducibility script constructed their samples differently. The biggest: how &ldquo;upper GDP half&rdquo; was defined. The original pipeline used a two-period average from a separate predictors file; the reproducibility script computed the median from game-level GDP after filtering to countries with positive points. Conditioning the GDP split on the outcome variable is methodologically suspect — it means &ldquo;upper half&rdquo; is partly defined by Olympic success, which is what the regression tries to explain.</p>
+<p>The agreed fix: compute each country&rsquo;s mean GDP per capita across all seven games, rank the 71 countries once, and use that time-invariant classification throughout. This will be stated explicitly in the methodology section.</p>
+<p>The session also built the v1.00 data foundation. Gender-disaggregated point columns (<code>points_men</code>, <code>points_women</code>, <code>points_mixed</code>) were added to the main panel — previously, running the gender decomposition required re-aggregating from 9 event files with sport name mapping that was prone to errors (the reproducibility test hit exactly these bugs). The enrichment resolved 69 events with missing gender labels and matched the original panel builder&rsquo;s logic for athletics classification, historical NOC codes (EUN, TCH, ROC), and Paris 2024&rsquo;s neutral athletes. All 26,199 rows validate: the gender columns sum exactly to the total.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v1.00</span>
+<span class="version-title">Pipeline Divergence and Data Preparation</span>
+</div>
+<div class="panel-section-label">Key findings</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">Repro β: −0.698 vs paper −0.65</span>
+<span class="session-link" style="cursor:default">Root cause: GDP split definition</span>
+<span class="session-link" style="cursor:default">Fix: time-invariant country ranking</span>
+<span class="session-link" style="cursor:default">Gender columns: 0 validation errors</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/25/" class="session-link">25 Pipeline divergence and v1.00 data</a>
 </div>
 </div>
 </div>
