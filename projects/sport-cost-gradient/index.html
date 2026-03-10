@@ -1098,10 +1098,10 @@ button#theme-toggle:hover {
   <div class="abstract-area">
     <div class="post-content">
       <h2 id="working-paper">Working Paper</h2>
-<p><strong>Status:</strong> v0.99.4 (March 2026) — accepted with minor conditions, Journal of Sports Economics</p>
+<p><strong>Status:</strong> v1.02 (March 2026) — working paper</p>
 <hr>
 <h2 id="abstract">Abstract</h2>
-<p>Income inequality is associated with reduced Olympic performance in expensive sports but not cheap ones. I classify 41 Olympic sports by personal equipment cost and training facility cost, then estimate a game-level panel covering 71 countries across seven Summer Games (2000–2024) with year-specific economic predictors and lagged performance controls. The aggregate Gini–performance relationship is near zero — a Galton&rsquo;s Problem artifact absorbed by cultural proximity controls. But disaggregation by sport cost reveals a significant interaction: in upper-income countries, inequality increasingly hurts performance as equipment cost rises (β = −0.65, p = 0.016), with a crossover from positive to negative in the region between archery and shooting. The gradient operates through personal equipment cost (a household barrier), not training facility cost (an institutional barrier captured by GDP). Controlling for lagged performance attenuates the coefficient by 25%, indicating the effect is predominantly contemporaneous. A microsimulation calibrated to the same panel reproduces roughly half the individual sport gradient through affordability filtering alone but fails to replicate the team sport gradient — leaving the team sport mechanism unresolved. The findings are consistent with inequality constraining the effective talent pool in expensive individual sports through household cost barriers.</p>
+<p>Income inequality is associated with reduced Olympic performance in expensive sports but not cheap ones. I classify 41 Olympic sports by personal equipment cost and training facility cost, then estimate a game-level panel covering 71 countries across seven Summer Games (2000–2024) with year-specific economic predictors and lagged performance controls. The aggregate Gini–performance relationship is near zero — a Galton&rsquo;s Problem artifact absorbed by cultural proximity controls. But disaggregation by sport cost reveals a significant interaction: in upper-income countries, inequality increasingly hurts performance as equipment cost rises (β = −0.68, p = 0.029), with a crossover from positive to negative in the region between archery and shooting. The gradient operates through personal equipment cost (a household barrier), not training facility cost (an institutional barrier captured by GDP). Controlling for lagged performance attenuates the coefficient by 30%, indicating the effect is predominantly contemporaneous. A forward microsimulation demonstrates that affordability filtering through Dagum-distributed income can recreate the qualitative pattern of the gradient, though at roughly 40% of the empirical magnitude. The findings suggest inequality constrains the effective talent pool in expensive individual sports through household cost barriers.</p>
 
     </div>
     
@@ -1146,7 +1146,7 @@ button#theme-toggle:hover {
         <div class="finding-number">2</div>
         <div class="finding-body">
           <h3 class="finding-title">A Negative Gradient from Cheap to Expensive Sports</h3>
-          <p class="finding-desc">Disaggregating by sport cost reveals what the aggregate hides: in upper-income countries, inequality increasingly hurts performance as personal equipment cost rises (β = −0.65, p = 0.016), with a crossover from positive to negative between archery and shooting.</p>
+          <p class="finding-desc">Disaggregating by sport cost reveals what the aggregate hides: in upper-income countries, inequality increasingly hurts performance as personal equipment cost rises (β = −0.68, p = 0.029), with a crossover from positive to negative between archery and shooting.</p>
         </div>
       </div>
       <div class="finding-viz">
@@ -1185,14 +1185,14 @@ button#theme-toggle:hover {
       <div class="finding-text">
         <div class="finding-number">4</div>
         <div class="finding-body">
-          <h3 class="finding-title">75% Survives Persistence</h3>
-          <p class="finding-desc">Controlling for previous-game performance attenuates the equipment cost gradient by only 25%. The effect is predominantly contemporaneous, not accumulated historical advantage. Persistence itself tracks facility infrastructure cost, not household equipment cost.</p>
+          <h3 class="finding-title">70% Survives Persistence</h3>
+          <p class="finding-desc">Controlling for performance at the previous two Games attenuates the equipment cost gradient by only 30%. The effect is predominantly contemporaneous, not accumulated historical advantage. Persistence itself tracks facility infrastructure cost, not household equipment cost.</p>
         </div>
       </div>
       <div class="finding-viz">
-        <a href="/viz/lag_attenuation.html" target="_blank" class="viz-thumb" title="75% Survives Persistence — click to open interactive">
+        <a href="/viz/lag_attenuation.html" target="_blank" class="viz-thumb" title="70% Survives Persistence — click to open interactive">
           <div class="viz-thumb-frame">
-            <img src="/viz/thumbs/lag_attenuation.png" loading="lazy" alt="75% Survives Persistence">
+            <img src="/viz/thumbs/lag_attenuation.png" loading="lazy" alt="70% Survives Persistence">
           </div>
         </a>
       </div>
@@ -1214,6 +1214,7 @@ button#theme-toggle:hover {
 <h3 id="references">References</h3>
 <ul>
 <li>Bernard &amp; Busse (2004). <a href="https://doi.org/10.1162/003465304774201824">Who wins the Olympic Games: Economic resources and medal totals</a>. <em>Review of Economics and Statistics</em>.</li>
+<li>Cameron, Gelbach &amp; Miller (2008). <a href="https://doi.org/10.1162/rest.90.3.414">Bootstrap-based improvements for inference with clustered errors</a>. <em>Review of Economics and Statistics</em>.</li>
 <li>Geloso &amp; Kufenko (2021). <a href="https://doi.org/10.1017/S1744137420000545">Who are the champions? Inequality, economic freedom and the Olympics</a>. <em>Journal of Institutional Economics</em>.</li>
 <li>Rewilak (2021). <a href="https://doi.org/10.1177/1527002521992833">The (non) determinants of Olympic success</a>. <em>Journal of Sports Economics</em>.</li>
 <li>Berdahl, Uhlmann &amp; Bai (2014). <a href="https://doi.org/10.1016/j.jesp.2014.08.003">Win–win: Female and male athletes from more gender equal nations perform better</a>. <em>Journal of Experimental Social Psychology</em>.</li>
