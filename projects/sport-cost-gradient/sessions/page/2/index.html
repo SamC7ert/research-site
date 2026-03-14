@@ -1097,152 +1097,140 @@ button#theme-toggle:hover {
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: Interactive Visualization F4b Development
+    <h2 class="entry-hint-parent">Session 30: Simulation Deep Dive — Mechanisms and Concentration
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: Interactive Visualization F4b Development Date: 2026-02-24
-Summary Developed and refined interactive React visualization F4b exploring the “U-shape” relationship between equipment costs and inequality’s effect on Olympic success.
-F4b Tabs Country Patterns: Butterfly chart showing U-shape vs monotone countries. Soviet Split: Q3 and Q4 GDP quartiles shown as separate lines with Soviet-legacy breakdowns. Q4 contains zero Soviet-legacy nations. Sport Type: Decomposition by team, duel, and individual sports with original full-sample lines as grey reference curves. Design Decisions Q3 and Q4 shown as separate lines rather than combined. Grey reference curves for full sample with decomposed subsets in color. “Individual non-duel” relabeled as “Individual sports.” Boundary test visualizations deferred to separate F4c component. Principle Clean, focused visualizations preferred over complex multi-purpose interfaces.
+    <p>Summary A systematic investigation of why the simulation reproduces only 40% of the empirical gradient. The empirical gradient (β = −0.68 for individual sports, upper GDP half) is concentrated in two countries: removing the United States and Russia reduces it by 82%. The simulation shows the same concentration pattern, meaning the 40% match is driven by the same outliers rather than a broadly operating mechanism.
+Experiments tested whether the affordability mechanism could be strengthened: different income distribution parameters, subsistence floors, quality curves. None closed the gap substantially. The conclusion shifted from “simulation confirms the mechanism” to “simulation confirms the mechanism is insufficient — institutional channels dominate.”
 ...</p>
   </div>
-  <footer class="entry-footer"><span>45 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: Interactive Visualization F4b Development" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/16/"></a>
+  <footer class="entry-footer"><span title='2026-03-08 00:00:00 +0000 UTC'>March 8, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 30: Simulation Deep Dive — Mechanisms and Concentration" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/30/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: Norway&#39;s Olympic Gold and Silver Medals Across Eight Games
+    <h2 class="entry-hint-parent">Session 28: Pipeline Rebuild, Simulation Prep, Reproduction Setup
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: Norway’s Olympic Gold and Silver Medals Across Eight Games Date: 2026-02-12
-Summary Extensive statistical investigation into whether societal equality predicts Olympic success per capita. Built on GSN Per Capita Cup data aggregating 4 summer plus 4 winter Olympics with standard 6-5-4 scoring. Used proper controls for GDP per capita and sophisticated analyses including Frisch-Waugh-Lovell partial correlations and multiple regression models.
-Key Findings Income equality shows a stronger independent signal than gender equality for predicting Olympic performance, particularly for women, even after controlling for wealth effects. A critical methodological error was discovered: when expanding to test for regional clustering effects (Galton’s Problem), Claude switched from the proper multi-Games GSN dataset to single-Olympics Paris 2024 data without flagging the change. All subsequent analyses of regional heterogeneity, democracy interactions, and communist legacy effects were compromised by this data switch. Outcome Collected all JSX files with embedded datasets. Created a markdown summary to brief a future session on redoing the analysis correctly, particularly focusing on whether regional clustering eliminates the income equality signal when using the methodologically sound 8-Games aggregated data.
+    <p>Summary With data fixes complete, the v1.00 pipeline was rerun from scratch. The simulation methodology document was reviewed and updated. The Stage 2 reproduction folder structure was established — a zero-trust setup with separate full and work folders, where the reproducer sees only the redacted paper and input data.
+The redaction script was built to replace all numerical results with [____] placeholders while preserving methodology text, equations, variable definitions, and the cost classification table. The first redacted paper was produced and verified for leaks.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>60 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: Norway&#39;s Olympic Gold and Silver Medals Across Eight Games" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/01/"></a>
+  <footer class="entry-footer"><span title='2026-03-07 00:00:00 +0000 UTC'>March 7, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 28: Pipeline Rebuild, Simulation Prep, Reproduction Setup" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/28/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: Running Full Analysis with Complete Data
+    <h2 class="entry-hint-parent">Session 27: Data Verification — Olympedia, EFW, Religion
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: Running Full Analysis with Complete Data Date: 2026-02-13
-Summary Complete end-to-end analysis testing two hypotheses about how inequality affects Olympic performance across different sport cost tiers. Built on Geloso &amp; Kufenko (2021) who theorized that income inequality hurts Olympic performance through cost barriers but couldn’t find quality sport-cost data. Created a sport cost classification system categorizing 50 Olympic sports into four tiers (low, medium, high, very high).
-Key Findings Income inequality (Gini) increasingly hurts performance as sport cost rises (β = -0.016, p = 0.03 for Period 1), confirming the Geloso theory. Gender equality (GGI) shows its strongest positive effects in expensive sports (β = 8.258, p = 0.009) — contrary to the original hypothesis that it would uniformly help across all sports through talent pool expansion. Results resolve Kuppens &amp; Pollet’s (2015) critique of Berdahl et al. by showing sport-cost mechanisms survive regional controls where aggregate relationships do not. Outputs Six publication-quality figures, comprehensive regression tables, descriptive statistics, and a complete paper outline.
+    <p>Summary Stage 1 of the reproduction protocol: 50 datapoints sampled from the panel and verified against original sources. Olympedia results matched for most events but revealed systematic errors in French results where doping disqualifications had not been captured by the scraper. The EFW (Economic Freedom of the World) data showed discrepancies for 26 of 71 countries due to a version shift in the Fraser Institute API. Religion shares from Pew Research were based on the 2010 Global Religious Landscape survey alone; for Games spanning 2000–2024, trend interpolation between the 2000 and 2010 waves was implemented. Cuba’s Gini required special handling with World Bank estimates supplemented by academic sources.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>21 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: Running Full Analysis with Complete Data" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/03/"></a>
+  <footer class="entry-footer"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 27: Data Verification — Olympedia, EFW, Religion" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/27/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: Seven-Game Persistence Experiment
+    <h2 class="entry-hint-parent">Session 24: Reproducibility Testing and the Clustering Discovery
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: Seven-Game Persistence Experiment Date: 2026-02-27
-Summary Extended the persistence simulation across all seven Olympic Games (Sydney 2000 through Paris 2024) with game-level event data. Compared four configurations: no persistence, cultural persistence (Game 1 seed), rolling persistence (previous game seed), and combined (both factors with separate weights).
-Calibration Cultural only: γ_c = 1.5 (grid search on cell-level correlation) Rolling only: γ_r = 2.0 Combined: γ_c = 0.7, γ_r = 2.2 Key Results — Individual Sports, Rich Half, Model 4 Config Simulated β Empirical β Gap No persistence −0.74 −7.82 &#43;7.1 Cultural (γ=1.5) −6.58 −7.82 &#43;1.2 Rolling (γ=2.0) −9.00 −7.82 −1.2 Combined −8.82 −7.82 &#43;1.0 Fit Metrics (Cell-Level Correlation) No persistence: r = 0.484 Cultural: r = 0.731 Rolling: r = 0.782 Combined: r = 0.793 Interpretation Rolling persistence dominates the combined model (γ_r » γ_c). The cost gradient reflects both contemporaneous affordability barriers and accumulated competitive capital that correlates with historical wealth and inequality patterns.
+    <p>Summary Designed and executed a blind reproducibility test: the paper was redacted (all numerical results replaced with placeholders), packaged with data files sorted into regression/, simulation/, and other/ directories, and given to independent AI sessions to reproduce the results from specifications alone.
+Gemini (Google) attempted first but fabricated all quantitative results — the primary β came back as −0.024 versus the actual −0.653 (27× underestimate), with all regression coefficients 15–130× too small. Gemini got descriptive statistics right (Spearman ρ, persistence hierarchy, attenuation percentages) because those were readable from the text context. Gemini later honestly acknowledged the fabrication in a Norwegian-language confession.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: Seven-Game Persistence Experiment" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/19/"></a>
+  <footer class="entry-footer"><span title='2026-03-05 00:00:00 +0000 UTC'>March 5, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 24: Reproducibility Testing and the Clustering Discovery" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/24/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: Two-Stage Simulation Model
+    <h2 class="entry-hint-parent">Session 25: Pipeline Divergence and v1.00 Data Preparation
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: Two-Stage Simulation Model Date: 2026-02-25
-Summary Built a forward simulation to test whether contemporaneous economic fundamentals can reproduce the empirical Gini×cost gradient. The model has two stages: Stage 1 allocates athletes to sports via affordability × infrastructure × popularity; Stage 2 determines quality as a function of effective athletes, GDP, cost, and host bonus.
-Key Design Decisions Affordability function: Maps income distribution (via Gini) to the fraction of households that can afford a sport’s annual cost. Tested multiple functional forms. Infrastructure weighting: GDP × log(facility cost) determines national infrastructure capacity per sport. Calibration target: Match empirical rich/poor GDP ratio (~2.57×) in simulated total points. Monte Carlo: 20 simulation runs per configuration to account for stochastic allocation. Results The simulation matches country-level totals reasonably well (r ≈ 0.90) but produces a Gini×cost gradient far smaller than the empirical value — roughly one-tenth to one-fifth of the observed coefficient in the individual sports, upper GDP half specification.
+    <p>Summary Reproducibility test 2 (an independent Claude session given the corrected v0.99.4 redacted paper with country-clustered SEs) produced results close but not matching: primary β = −0.698 (paper: −0.65), p = 0.032 (paper: 0.016), n = 1,882 (paper: 1,944). The gender decomposition hit sport name mapping bugs, and population elasticity required a log-log model form not obvious from the paper text.
+Rather than patching the paper with reproducibility numbers (an approach briefly attempted and then reverted), the decision was to trace the root cause. An exploration of the original pipeline (v0_99_game_level_pipeline.py) versus the reproducibility script revealed three divergence points in sample construction: (1) GDP median calculated from different sources (two-period average from predictors_master.json vs game-level GDP after positive-points filtering), (2) positive-points filter applied at different stages, (3) &gt;= vs &gt; median threshold producing 36 vs 35 upper-GDP countries. These cascade into different regression samples and different coefficients throughout.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: Two-Stage Simulation Model" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/17/"></a>
+  <footer class="entry-footer"><span title='2026-03-05 00:00:00 +0000 UTC'>March 5, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 25: Pipeline Divergence and v1.00 Data Preparation" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/25/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.91 Dataset Rebuild
+    <h2 class="entry-hint-parent">Session 26: v1.00 Pipeline Rerun and Paper Draft
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: v0.91 Dataset Rebuild Date: 2026-02-18
-Summary Rebuilding derived datasets D1 (country × sport × period panel) and D2 (country aggregate) for v0.91. Discovered outdated fields from v0.9 still present — the old “communist” field needed replacement with “soviet_legacy” and China required reclassification.
-Work Done Rebuilt D1 and D2 from source data using updated v1.0a region_classification.json. Applied sport filtering: dropped 6 new sports (BMX Freestyle, Skateboarding, etc.). Created main and robustness sport samples based on game participation thresholds. Aggregated performance using 6-5-4-3-2-1 scoring for places 1–6. Issue Discovered Verification against old D2 revealed point mismatches for several countries, indicating the previous build handled shared medals differently (likely fractional points for tied results). Investigation of original logic initiated.
+    <p>Summary The v1.00 pipeline was rebuilt from the v0.99 scripts with five known fixes applied: time-invariant GDP median split, country-clustered standard errors throughout, log-log population elasticity, two-lag persistence (lag2 computed as second-previous game), and religion as cultural proximity control. The pipeline produced a complete results set for comparison against v0.99.4.
+Results were broadly consistent but several coefficients shifted at the second decimal. The persistence correlation dropped from r = 0.88 to r = 0.87 — the old number had been computed on a different subsample. The paper draft was updated with new values and the methodology section was tightened to specify the exact GDP split procedure.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>34 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.91 Dataset Rebuild" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/07/"></a>
+  <footer class="entry-footer"><span title='2026-03-05 00:00:00 +0000 UTC'>March 5, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 26: v1.00 Pipeline Rerun and Paper Draft" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/26/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.91 Sport Type Decomposition
+    <h2 class="entry-hint-parent">Session 23: Paper Restructuring and the Lag × Facility Discovery
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: v0.91 Sport Type Decomposition Date: 2026-02-19
-Summary Systematic decomposition of the “U-shape” pattern in equipment cost tiers, where Tier 2 (medium-cost) sports showed unexpectedly poor performance. Tested whether this represents a genuine cost mechanism or is driven by confounding factors.
-Key Findings Team sports (all concentrated in Tier 1) were not driving the cost gradient. Duel sports showed no cost sensitivity at all — cultural traditions dominate performance. Individual non-duel sports (timed/measured events like swimming, track, cycling) showed the cleanest cost mechanism. The equipment cost mechanism is robust when properly isolated from confounding sport characteristics. Methodological Insight Sport types operate through different mechanisms: team sports through institutional qualification barriers, duel sports through cultural tradition, and individual sports through household cost constraints. Proper decomposition is essential for isolating cost effects.
+    <p>Summary Major restructuring of the paper from v0.99.2 through v0.99.3. The narrative was rebuilt around a single game-level panel throughout, replacing the earlier structure that toggled between two-period and game-level analyses. Six discussion points were resolved: aggregate puzzle rewritten with game-level data, team sports kept as separate dynamics with no claimed mechanism, simulation as standalone section, two-period results demoted to robustness, and p-value shift acknowledged as a non-issue since game-level is now primary.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>60 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.91 Sport Type Decomposition" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/08/"></a>
+  <footer class="entry-footer"><span title='2026-03-04 00:00:00 +0000 UTC'>March 4, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 23: Paper Restructuring and the Lag × Facility Discovery" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/23/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.92 Channel Separation Breakthrough
+    <h2 class="entry-hint-parent">Session 22: Soviet Analysis and Project Journal
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: v0.92 Channel Separation Breakthrough Date: 2026-02-23
-Summary Major analytical breakthrough: discovered two cleanly separated causal mechanisms operating through different cost dimensions.
-The Breakthrough GDP per capita interacts strongly with facility cost (pools, velodromes, golf courses): coefficients &#43;5.8 to &#43;6.6 per facility tier, p=0.006. No interaction with equipment cost (p=0.667–0.899). Gini coefficient interacts with equipment cost (household participation barriers). No interaction with facility cost. When both interactions included simultaneously, Gini gradient attenuates only 8% (from -0.499 to -0.455), confirming separability. Interpretation Two distinct causal pathways: inequality operates through household cost barriers (talented kids from modest families can’t afford expensive sports), while absolute wealth operates through infrastructure provision (poor countries can’t build required facilities).
+    <p>Summary Tested whether Soviet legacy countries show different persistence patterns. Found that the Soviet coefficient is barely absorbed by lag controls (22% attenuation in upper GDP, 4% in lower). Soviet institutional advantage operates through an independent channel, not just sport-specific persistence.
+Identified Soviet countries by GDP half: 10 upper-GDP (mostly EU accession &#43; Russia), 16 lower-GDP (Central Asian republics, Balkans, China). The centralized sport system created patterns that neither market-based development nor accumulated momentum fully explain.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>57 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.92 Channel Separation Breakthrough" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/11/"></a>
+  <footer class="entry-footer"><span title='2026-03-03 00:00:00 +0000 UTC'>March 3, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 22: Soviet Analysis and Project Journal" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/22/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.92 Paper Structure and Sport Decomposition
+    <h2 class="entry-hint-parent">Session 21: Year-Specific Predictors
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: v0.92 Paper Structure and Sport Decomposition Date: 2026-02-21
-Summary Extensive statistical analysis comparing “scoring-only” versus “with-zeros” specifications, followed by creation of a detailed paper outline and structural decisions.
-Key Results Team sports: positive Gini coefficient only in scoring-only samples (driven by USA, Brazil, Argentina); disappears or reverses with zero-scoring countries included. Duel sports: no systematic inequality relationship. Individual sports: confirmed hypothesized cost gradient. Structural Decisions Eight-section paper outline created. Equipment cost tiers removed in favor of continuous specifications. All gender analysis moved to separate Paper 2. “Horse race” jargon replaced with “joint specification.” Title settled: “How Income Distribution and Sports Participation Cost Shape Olympic Performance” Next Steps Planned (v0.92) Period robustness checks, Galton tests on cost gradient, and Tobit estimation.
+    <p>Summary Replaced period-averaged GDP, population, and Gini with year-specific values from the World Bank for each Olympic year. Estonia now shows 9 unique GDP values ($5,872 in 1992 to $49,969 in 2024) instead of a single period average. Pulled data for 71 countries, patched gaps for 6 GDP-missing and 4 Gini-missing countries.
+Key changes: P-values improved (more identifying variation), GDP x facility became significant at 5% (p=.036), attenuation from lag increased to 25%. Simulation comparison weakened to ~28% due to within-country GDP variation the simulation architecture cannot model.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>120 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.92 Paper Structure and Sport Decomposition" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/09/"></a>
+  <footer class="entry-footer"><span title='2026-03-02 00:00:00 +0000 UTC'>March 2, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 21: Year-Specific Predictors" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/21/"></a>
 </article>
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Session: v0.92 Robustness Visualizations
+    <h2 class="entry-hint-parent">Session 20: Game-Level Panel with Persistence
     </h2>
   </header>
   <div class="entry-content">
-    <p>Session: v0.92 Robustness Visualizations Date: 2026-02-23
-Summary Completed visualizations for v0.92 robustness analyses after a previous session was cut off.
-Visualizations Created (F7 — Three-Tab Interactive) Period Stability: Coefficient plots with confidence intervals comparing P1 (2000–2008) vs P2 (2012–2024), with toggles between full and upper samples. Cost gradient appears consistently across time periods. Galton Tab: Horizontal bars showing 8 of 10 regions exhibit negative gradients. Latin America is the notable positive exception. Tobit Tab: Compares three estimation approaches (scoring-only OLS, Tobit with zeros, with-zeros OLS). All methods confirm the negative gradient. Full Transcript Human v0.92 final visualization. We couldnt make the visualization for what was done before we were cut off. Only the one shown. I want one on two period robustness and galton robustness. Look through if there are other new things in v0.92 that is worth visualizing.
+    <p>Summary Built the game-level panel dataset (71 countries x 41 sports x 9 Games) with lagged Olympic points as persistence control. Scraped Barcelona 1992 and Atlanta 1996 as lag seeds. Ran 8-analysis pipeline with clustered standard errors: baseline gradient, lag-controlled gradient, stepwise decomposition, four-way interaction, facility channel, team sports, gender decomposition, and simulation comparison.
+Key result: 75% of the Gini x cost gradient survives persistence control. The coefficient attenuates from -0.875 (p=.008) to -0.653 (p=.016) when lagged points are added. The lag coefficient itself is massive (beta = 5.83, p &lt; .001), confirming persistence is real — but the cost mechanism is primarily contemporaneous.
 ...</p>
   </div>
-  <footer class="entry-footer"><span>3 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session: v0.92 Robustness Visualizations" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/12/"></a>
+  <footer class="entry-footer"><span title='2026-03-01 00:00:00 +0000 UTC'>March 1, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 20: Game-Level Panel with Persistence" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/20/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

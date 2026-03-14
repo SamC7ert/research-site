@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>Research Journal | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 25 sessions with an AI research assistant.">
+<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.">
 <meta name="author" content="Sam C. Syvertsen">
 <link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
@@ -1035,12 +1035,12 @@ button#theme-toggle:hover {
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
   <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Research Journal">
-  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 25 sessions with an AI research assistant.">
+  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Research Journal">
-<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 25 sessions with an AI research assistant.">
+<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.">
 
 
 <script type="application/ld+json">
@@ -1091,9 +1091,9 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>25 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>29 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
-    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 25 sessions with an AI research assistant.</p>
+    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.</p>
   </header>
   <div class="post-content story-flow">
     <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
@@ -1617,6 +1617,121 @@ button#theme-toggle:hover {
 <div class="panel-section-label">Sessions</div>
 <div class="version-sessions">
 <a href="/projects/sport-cost-gradient/sessions/25/" class="session-link">25 Pipeline divergence and v1.00 data</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="fifty-datapoints-three-broken-sources">Fifty datapoints, three broken sources</h2>
+<p>The v1.00 pipeline rerun produced results immediately — but were the inputs correct? A Stage 1 data verification sampled 50 datapoints from the panel, stratified across all data types, and checked each against the original source. Olympedia matched perfectly for most events but revealed systematic errors in French results — doping disqualifications that the scraper had not captured. The EFW (Economic Freedom) data had shifted between API versions: 26 of 71 countries showed discrepancies because our panel used an older Fraser Institute release. Religion shares from Pew Research were based on the 2010 survey alone; for Games spanning 2000–2024, interpolation from the 2000 and 2010 waves was needed. Cuba&rsquo;s Gini required special handling — official statistics are unreliable, so World Bank estimates supplemented with academic sources were used.</p>
+<p>Each fix required rebuilding the affected portion of the panel and rerunning the pipeline. The data audit took longer than any analytical session — and changed several coefficients at the second decimal. The religion attenuation percentages shifted, the EFW interaction lost its borderline significance entirely, and the Soviet-legacy coefficient moved. None of this changed the headline finding, but it changed the paper&rsquo;s ability to survive scrutiny.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v1.00</span>
+<span class="version-title">Data Audit and Pipeline Rebuild</span>
+</div>
+<div class="panel-section-label">Key findings</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">50 datapoints verified against source</span>
+<span class="session-link" style="cursor:default">France: doping disqualifications missed</span>
+<span class="session-link" style="cursor:default">EFW: 26/71 countries shifted</span>
+<span class="session-link" style="cursor:default">Religion: interpolation from 2 surveys</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/26/" class="session-link">26 v1.00 pipeline rerun</a>
+<a href="/projects/sport-cost-gradient/sessions/27/" class="session-link">27 Data verification</a>
+<a href="/projects/sport-cost-gradient/sessions/28/" class="session-link">28 Pipeline rebuild</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="the-simulation-cannot-explain-the-concentration">The simulation cannot explain the concentration</h2>
+<p>The simulation had always been the weakest link. It claimed to reproduce 40% of the empirical gradient through an affordability filtering mechanism — households below a cost threshold cannot participate, and inequality shifts that threshold. But 40% of what? Session 30 tore the simulation apart.</p>
+<p>The empirical gradient (β = −0.68 for individual sports in the upper GDP half) is concentrated in two countries: removing the United States and Russia reduces it by 82%. The simulation showed the same concentration — the same countries drove both the empirical and the simulated coefficients. This was not independent confirmation; it was the same signal appearing twice.</p>
+<p>A 1,000-run parameter search across the simulation&rsquo;s 13-dimensional space confirmed what targeted experiments had suggested: the affordability mechanism is too weak to produce the observed gradient magnitude. The mechanism is real — it produces the correct sign at every level of aggregation — but the gap between simulated and empirical magnitudes reflects institutional channels (coaching ecosystems, federation strategy, commercial sport revenue) that the simulation&rsquo;s architecture does not capture. The honest conclusion shifted from &ldquo;the simulation confirms the mechanism&rdquo; to &ldquo;the simulation confirms the mechanism is insufficient.&rdquo;</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v1.01–v1.03</span>
+<span class="version-title">Simulation Reckoning</span>
+</div>
+<div class="panel-section-label">Key numbers</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">US + Russia removal: −82% gradient</span>
+<span class="session-link" style="cursor:default">Sim reproduces ~40% of gradient</span>
+<span class="session-link" style="cursor:default">1,000-run parameter search</span>
+<span class="session-link" style="cursor:default">5 countries drive 80% of gap</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/30/" class="session-link">30 Simulation deep dive</a>
+<a href="/projects/sport-cost-gradient/sessions/31/" class="session-link">31 Simulation optimization</a>
+<a href="/projects/sport-cost-gradient/sessions/32/" class="session-link">32 Parameter search</a>
+<a href="/projects/sport-cost-gradient/sessions/35/" class="session-link">35 Outlier analysis and mechanism gap</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="eight-revisions-one-paper">Eight revisions, one paper</h2>
+<p>The paper went through revisions r1.1 to r1.8 during v1.03. The simulation section was rewritten to lead with the concentration finding rather than the 40% match. Section headers were changed from neutral labels to claims the section defends. The abstract was cut twice. A Gemini (Google) review caught missing prior art references and a structural issue in the discussion. A LaTeX rendering pipeline was built in parallel, with a separate session handling typesetting while this session handled content.</p>
+<p>Each revision addressed feedback from a different source — the human researcher&rsquo;s re-readings, Gemini&rsquo;s methodological comments, and the blind reproduction failures. The paper&rsquo;s tone shifted from confident to careful: &ldquo;the gradient reflects concentrated institutional specialization and sport culture, not the broad household affordability mechanism hypothesised in the literature.&rdquo;</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v1.03</span>
+<span class="version-title">Paper Revisions r1.1–r1.8</span>
+</div>
+<div class="panel-section-label">Revision sources</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">Human re-reading: r1.1–r1.5</span>
+<span class="session-link" style="cursor:default">Gemini review: r1.6</span>
+<span class="session-link" style="cursor:default">Blind reproduction: r1.7–r1.8</span>
+<span class="session-link" style="cursor:default">8 revisions, 3 feedback sources</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/33/" class="session-link">33 v1.01 results and rewrite</a>
+<a href="/projects/sport-cost-gradient/sessions/34/" class="session-link">34 LaTeX and discussion</a>
+<a href="/projects/sport-cost-gradient/sessions/36/" class="session-link">36 Paper r1.1–r1.3</a>
+<a href="/projects/sport-cost-gradient/sessions/37/" class="session-link">37 Paper r1.4–r1.5</a>
+<a href="/projects/sport-cost-gradient/sessions/38/" class="session-link">38 r1.6 and Gemini feedback</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="the-reproducer-that-broke-the-paper">The reproducer that broke the paper</h2>
+<p>The blind reproduction protocol matured into the project&rsquo;s most effective quality control tool. A separate Claude instance received only the redacted paper (all numerical results replaced with blanks) and the input data, then built the full analytical pipeline from the methods description alone. Round 1 failed on the GDP split definition — already fixed in v1.00. Round 2 achieved 92% pass rate but exposed five specification ambiguities: the paper said &ldquo;F-test&rdquo; without specifying cluster-robust, described mean reversion without stating the sample scope, omitted lag controls from the two-period description, did not specify gender-specific lags, and listed only two of eight controls in the population elasticity specification.</p>
+<p>Each failure required the same diagnostic: read what the paper says, read what both pipelines do, determine which specification is correct, then fix the paper text. The cluster-robust Wald test (F(9,70) = 4.53) replaced the standard F-test (F(9,478) = 42.65) — still highly significant, but the correct inference given 71 country clusters. The mean reversion test moved to the full nine-game panel, strengthening from +0.08 (p = 0.047) to +0.18 (p &lt; 0.001). Round 3 is running now.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v1.03</span>
+<span class="version-title">Blind Reproduction Protocol</span>
+</div>
+<div class="panel-section-label">Round 2 results</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">55/60 checks pass (92%)</span>
+<span class="session-link" style="cursor:default">5 underspecifications found</span>
+<span class="session-link" style="cursor:default">F-test: 42.65 → 4.53 (cluster-robust)</span>
+<span class="session-link" style="cursor:default">Mean reversion: full 9-game panel</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/29/" class="session-link">29 Stage 2 reproduction</a>
+<a href="/projects/sport-cost-gradient/sessions/39/" class="session-link">39 Pre-review polish and QA/QC</a>
 </div>
 </div>
 </div>
