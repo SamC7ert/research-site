@@ -1011,6 +1011,35 @@ button#theme-toggle:hover {
 }
 
  
+.authors-note {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--secondary);
+}
+
+.authors-note p {
+  margin: 0 0 0.8rem;
+}
+
+.authors-note p:last-child {
+  margin-bottom: 0;
+}
+
+.authors-note-heading {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  opacity: 0.7;
+  margin: 0 0 0.8rem;
+}
+
+ 
 .dark .project-card .status-active {
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -1098,10 +1127,10 @@ button#theme-toggle:hover {
   <div class="abstract-area">
     <div class="post-content">
       <h2 id="working-paper">Working Paper</h2>
-<p><strong>Status:</strong> v1.03 (March 2026) — working paper</p>
+<p><strong>Status:</strong> v1.04 (March 2026) — working paper</p>
 <hr>
 <h2 id="abstract">Abstract</h2>
-<p>The sports economics literature hypothesizes that income inequality restricts Olympic talent in expensive sports by pricing out potential athletes from lower-income households. I test this affordability hypothesis using a novel two-dimensional cost classification—personal equipment cost and training facility cost—for 41 Olympic sports, estimating a game-level panel covering 71 countries across seven Summer Games (2000–2024) with year-specific economic predictors and lagged performance controls. The aggregate Gini–performance relationship is near zero—a Galton&rsquo;s Problem artifact absorbed by cultural proximity controls. But disaggregation by sport cost reveals a significant interaction: in upper-income countries, inequality increasingly hurts performance as equipment cost rises (β = −0.68*), with a crossover from positive to negative in the region between archery and shooting. The gradient operates through personal equipment cost, not training facility cost (which is captured by GDP), and is predominantly contemporaneous—controlling for lagged performance attenuates the coefficient by only 30%. However, the gradient is concentrated: removing the United States and Russia reduces the individual sport gradient by 82%. The gradient is robust across specifications, time periods, genders, and decomposition methods, but its magnitude is driven by two nations&rsquo; institutional specialization rather than household cost barriers operating broadly across countries. A forward microsimulation confirms that affordability filtering alone is insufficient.</p>
+<p>The sports economics literature hypothesizes that income inequality restricts Olympic talent in expensive sports by pricing out potential athletes from lower-income households. I test this affordability hypothesis using a novel two-dimensional cost classification—personal equipment cost and training facility cost—for 41 Olympic sports, estimating a game-level panel covering 71 countries across seven Summer Games (2000–2024) with year-specific economic predictors and lagged performance controls. The aggregate Gini–performance relationship is near zero—a Galton&rsquo;s Problem artifact absorbed by cultural proximity controls. But disaggregation by sport cost reveals a significant interaction: in upper-income countries, inequality increasingly hurts performance as equipment cost rises (β = −0.68*), with a crossover from positive to negative in the region between archery and shooting. The gradient operates through personal equipment cost, not training facility cost (which is captured by GDP), and is predominantly contemporaneous—controlling for lagged performance attenuates the coefficient by only 30%. However, the gradient is concentrated: removing the United States alone reduces the individual sport gradient by 67%. The gradient is robust across specifications, time periods, genders, and decomposition methods. A forward microsimulation reproduces 74% of the empirical gradient, and matches the gradient almost exactly when the United States is excluded — the remaining gap is attributable to the US college athletics system, a multi-billion dollar institutional pipeline with no parallel elsewhere.</p>
 
     </div>
     
@@ -1125,14 +1154,14 @@ button#theme-toggle:hover {
       <div class="finding-text">
         <div class="finding-number">1</div>
         <div class="finding-body">
-          <h3 class="finding-title">Aggregate Gini Is Zero</h3>
-          <p class="finding-desc">The overall relationship between income inequality and Olympic performance is near zero — a Galton&rsquo;s Problem artifact absorbed by cultural proximity controls. The apparent effect disappears once religious composition accounts for shared sporting traditions.</p>
+          <h3 class="finding-title">First Sport-Cost Classification</h3>
+          <p class="finding-desc">A two-dimensional cost classification — personal equipment cost and training facility cost — for 41 Olympic sports, benchmarked to Central European youth training markets. No prior Olympic study has combined a formal cost measure with inequality in interaction models.</p>
         </div>
       </div>
       <div class="finding-viz">
-        <a href="/viz/galton_diagnostic.html" target="_blank" class="viz-thumb" title="Aggregate Gini Is Zero — click to open interactive">
+        <a href="/viz/cost_classification.html" target="_blank" class="viz-thumb" title="First Sport-Cost Classification — click to open interactive">
           <div class="viz-thumb-frame">
-            <img src="/viz/thumbs/galton_diagnostic.png" loading="lazy" alt="Aggregate Gini Is Zero">
+            <img src="/viz/thumbs/cost_classification.png" loading="lazy" alt="First Sport-Cost Classification">
           </div>
         </a>
       </div>
@@ -1146,7 +1175,7 @@ button#theme-toggle:hover {
         <div class="finding-number">2</div>
         <div class="finding-body">
           <h3 class="finding-title">A Negative Gradient from Cheap to Expensive Sports</h3>
-          <p class="finding-desc">Disaggregating by sport cost reveals what the aggregate hides: in upper-income countries, inequality increasingly hurts performance as personal equipment cost rises (β = −0.68, p = 0.029), with a crossover from positive to negative between archery and shooting.</p>
+          <p class="finding-desc">Disaggregating by sport cost reveals what the aggregate hides: in upper-income countries, inequality increasingly hurts performance as personal equipment cost rises (β = −0.68*), with a crossover from positive to negative between archery and shooting.</p>
         </div>
       </div>
       <div class="finding-viz">
@@ -1193,6 +1222,26 @@ button#theme-toggle:hover {
         <a href="/viz/lag_attenuation.html" target="_blank" class="viz-thumb" title="70% Survives Persistence — click to open interactive">
           <div class="viz-thumb-frame">
             <img src="/viz/thumbs/lag_attenuation.png" loading="lazy" alt="70% Survives Persistence">
+          </div>
+        </a>
+      </div>
+    </div>
+    
+    
+    
+    
+    <div class="finding-row">
+      <div class="finding-text">
+        <div class="finding-number">5</div>
+        <div class="finding-body">
+          <h3 class="finding-title">The Mechanism Works — One Country Amplifies It</h3>
+          <p class="finding-desc">Removing the United States alone reduces the individual sport gradient by 67%. A forward microsimulation reproduces 74% of the empirical gradient, and matches it almost exactly when the US is excluded — the remaining gap is attributable to the US college athletics system, a multi-billion dollar institutional pipeline with no parallel elsewhere.</p>
+        </div>
+      </div>
+      <div class="finding-viz">
+        <a href="/viz/sim_affordability.html" target="_blank" class="viz-thumb" title="The Mechanism Works — One Country Amplifies It — click to open interactive">
+          <div class="viz-thumb-frame">
+            <img src="/viz/thumbs/sim_affordability.png" loading="lazy" alt="The Mechanism Works — One Country Amplifies It">
           </div>
         </a>
       </div>

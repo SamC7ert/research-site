@@ -1011,6 +1011,35 @@ button#theme-toggle:hover {
 }
 
  
+.authors-note {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--secondary);
+}
+
+.authors-note p {
+  margin: 0 0 0.8rem;
+}
+
+.authors-note p:last-child {
+  margin-bottom: 0;
+}
+
+.authors-note-heading {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  opacity: 0.7;
+  margin: 0 0 0.8rem;
+}
+
+ 
 .dark .project-card .status-active {
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -1091,12 +1120,21 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>29 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>32 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
     <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.</p>
   </header>
   <div class="post-content story-flow">
-    <p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
+    <div class="authors-note">
+<p class="authors-note-heading">Author's note</p>
+<p>This journal tells the detailed story of how the paper came to be. It is also the story of a cowork between me and Claude.</p>
+<p>Although I have worked with IT since the mid-1970s, it has only occasionally been my main job — but I can get genuinely excited working with it. I felt that excitement when I transitioned from punched cards to an online terminal in 1976. I sometimes felt it when programming and your project slowly transforms into doing what you want it to do. This project has been like that.</p>
+<p>For half a year I have worked with vibecoding, building things that would not have been possible in any reasonable timeframe. Doing viberesearch with Claude extends what I can do, and it suits the curious, exploratory style I love. What if? What if? I can be the director and Claude is the competent statistician. Claude also provides advice on journals, prior art, and methodology. I am responsible for the paper, so I use "I" there. When describing the process, "we" is appropriate.</p>
+<p>A few things I have learned along the way. One, working with Cowork is immensely beneficial. It cuts perhaps 25% of the time by eliminating file uploads and downloads. It also helps you maintain a structured file library. Two, have strong QC. I have used blind sessions throughout — to check the data input, to check that the data plus the methodology in the paper is enough to recreate the numbers. This catches errors and underspecification. Three, Claude is bad at Word. It takes a long time and results are crappy. We work in Markdown and then convert to .tex to .pdf. Not ideal, because sometimes you want something you can edit directly, but it works. Four, I have had great use of another AI — Gemini — as reviewer, giving it different personas. "You are a reviewer at JSE." "You are a language consultant." "You are an adverse reviewer finding three reasons to reject."</p>
+<p>The process has been as I like it: thinking you are close to finished, just one more thing to check — but then you find something that changes your conclusion and makes you need to do more work. And then it repeats. The conclusion has changed while doing the work, and I suppose that is how research should work.</p>
+<p>Even with AI it is considerable work. Over four weeks we have exchanged 2,000 messages and close to 200,000 words. The question that matters to me is not whether anyone could have done this, but whether the paper contributes something to advancing knowledge about the subject — which, apart from being fun, is what matters.</p>
+</div>
+<p>This research did not begin with a hypothesis. It began with a question about Norway.</p>
 <div class="story-row">
 <div class="story-text">
 <h2 id="why-does-norway-win-so-many-golds">Why does Norway win so many golds?</h2>
@@ -1713,7 +1751,7 @@ button#theme-toggle:hover {
 <div class="story-text">
 <h2 id="the-reproducer-that-broke-the-paper">The reproducer that broke the paper</h2>
 <p>The blind reproduction protocol matured into the project&rsquo;s most effective quality control tool. A separate Claude instance received only the redacted paper (all numerical results replaced with blanks) and the input data, then built the full analytical pipeline from the methods description alone. Round 1 failed on the GDP split definition — already fixed in v1.00. Round 2 achieved 92% pass rate but exposed five specification ambiguities: the paper said &ldquo;F-test&rdquo; without specifying cluster-robust, described mean reversion without stating the sample scope, omitted lag controls from the two-period description, did not specify gender-specific lags, and listed only two of eight controls in the population elasticity specification.</p>
-<p>Each failure required the same diagnostic: read what the paper says, read what both pipelines do, determine which specification is correct, then fix the paper text. The cluster-robust Wald test (F(9,70) = 4.53) replaced the standard F-test (F(9,478) = 42.65) — still highly significant, but the correct inference given 71 country clusters. The mean reversion test moved to the full nine-game panel, strengthening from +0.08 (p = 0.047) to +0.18 (p &lt; 0.001). Round 3 is running now.</p>
+<p>Each failure required the same diagnostic: read what the paper says, read what both pipelines do, determine which specification is correct, then fix the paper text. The cluster-robust Wald test (F(9,70) = 4.53) replaced the standard F-test (F(9,478) = 42.65) — still highly significant, but the correct inference given 71 country clusters. The mean reversion test moved to the full nine-game panel, strengthening from +0.08 (p = 0.047) to +0.18 (p &lt; 0.001). Round 3 found three more underspecifications: the F-test model included region intercepts the paper omits, the mean reversion sample scope was still ambiguous, and gender-specific positive-points filtering was not stated. All three were fixed in r1.8.</p>
 </div>
 <div class="story-panel">
 <div class="version-block">
@@ -1728,6 +1766,13 @@ button#theme-toggle:hover {
 <span class="session-link" style="cursor:default">F-test: 42.65 → 4.53 (cluster-robust)</span>
 <span class="session-link" style="cursor:default">Mean reversion: full 9-game panel</span>
 </div>
+<div class="panel-section-label">Round 3 results</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">3 more underspecifications found</span>
+<span class="session-link" style="cursor:default">F-test model: no region intercepts</span>
+<span class="session-link" style="cursor:default">Gender: gender-specific positive filter</span>
+<span class="session-link" style="cursor:default">All fixed in r1.8</span>
+</div>
 <div class="panel-section-label">Sessions</div>
 <div class="version-sessions">
 <a href="/projects/sport-cost-gradient/sessions/29/" class="session-link">29 Stage 2 reproduction</a>
@@ -1740,7 +1785,7 @@ button#theme-toggle:hover {
 <h2 id="what-this-project-found">What this project found</h2>
 <p>Income inequality does not predict Olympic performance in the aggregate — but this null conceals a systematic gradient. In individual sports, inequality increasingly hurts performance as personal equipment cost rises, with a crossover at approximately €2,200. A separate, independent channel runs through national wealth and facility infrastructure. The two mechanisms operate through completely different cost dimensions with near-zero mutual attenuation.</p>
 <p>The finding is robust across time, regions, estimation methods, cost measurement approaches, Mundlak correction, host-effect controls, and persistence controls. It provides the first empirical test of the cost-barrier mechanism that Geloso and Kufenko theorised but could not evaluate. Their own aggregate finding — that inequality hurts medals per capita — turns out to be a specification artefact driven by incorrect population scaling, not by a genuine inequality–performance relationship.</p>
-<p>A game-level panel with lagged Olympic points as controls confirms that 75% of the cost gradient survives persistence — the mechanism is primarily contemporaneous, not just accumulated historical advantage. A simulation exercise shows that known economic channels (affordability, infrastructure, quality) explain roughly 28% of the gradient; the remainder likely reflects ecosystem effects (coaching networks, club cultures, competitive pipelines) that the simulation&rsquo;s architecture does not yet capture. Former Soviet countries show institutional persistence patterns that are largely independent of sport-specific momentum, suggesting that centralised sport investment created a distinct developmental pathway.</p>
+<p>A game-level panel with lagged Olympic points as controls confirms that 70% of the cost gradient survives persistence — the mechanism is primarily contemporaneous, not just accumulated historical advantage. However, the gradient is concentrated: removing the United States and Russia reduces it by 82%. A forward microsimulation based on household income filtering reproduces only 40% of the empirical gradient — and the same countries drive both the empirical and simulated coefficients. The cost gradient is a real empirical regularity, but it reflects concentrated institutional specialization and sport culture, not the broad household affordability mechanism hypothesized in the literature.</p>
 <p>The Mundlak correction confirms that the within-country, cross-sport component of the gradient is genuine and not absorbed by country-level time averages. The cost gradient identifies off variation <em>within</em> countries — the same country performs differently across cheap and expensive sports — which is what gives it structural robustness that aggregate approaches lack.</p>
 
   </div>

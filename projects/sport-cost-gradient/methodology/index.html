@@ -1011,6 +1011,35 @@ button#theme-toggle:hover {
 }
 
  
+.authors-note {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.5rem 0;
+  margin-bottom: 2rem;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--secondary);
+}
+
+.authors-note p {
+  margin: 0 0 0.8rem;
+}
+
+.authors-note p:last-child {
+  margin-bottom: 0;
+}
+
+.authors-note-heading {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--secondary);
+  opacity: 0.7;
+  margin: 0 0 0.8rem;
+}
+
+ 
 .dark .project-card .status-active {
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -1095,7 +1124,7 @@ button#theme-toggle:hover {
   </div>
 </header>
 <div class="post-content"><h2 id="motivation">Motivation<a hidden class="anchor" aria-hidden="true" href="#motivation">#</a></h2>
-<p>The simulation models the talent pipeline from population to quality distribution through allocation mechanics (Layer 1), GDP-linked training quality (Layer 2), and game-to-game persistence (Layer 3). The central empirical question is whether these mechanisms can jointly reproduce the patterns observed in the data — specifically, the Gini × ln(equipment cost) interaction gradient, the GDP–performance relationship, and the persistence effect — or whether the observed Gini × cost gradient requires mechanisms beyond those we have modelled.</p>
+<p>The simulation models the talent pipeline from population to quality distribution through affordability filtering (Layer 1), GDP-linked training quality (Layer 2), and game-to-game persistence via experience points (Layer 3). The central empirical question is whether these mechanisms can jointly reproduce the patterns observed in the data — specifically, the Gini x ln(equipment cost) interaction gradient, the GDP-performance relationship, and the persistence effect — or whether the observed Gini x cost gradient requires mechanisms beyond those we have modelled.</p>
 <p>This is not a curve-fitting exercise. It is a test of theoretical sufficiency. The empirical regression coefficients are the observations; the simulation is the proposed theory. We ask: does this theory, with its mechanistic structure, have the capacity to produce these observations under any parameterisation? If it does, the model is sufficient. If it does not, we have established the limits of the model and quantified what fraction of the observed patterns it can explain.</p>
 <h2 id="target-observations">Target Observations<a hidden class="anchor" aria-hidden="true" href="#target-observations">#</a></h2>
 <p>The calibration targets are the regression coefficients from the paper&rsquo;s primary specification, estimated on empirical data. The regression specification applied to simulated data is identical to the one applied to empirical data: OLS with HC1 robust standard errors, sport and game fixed effects, Soviet dummy, religion controls, and the points &gt; 0 filter. (Note: the simulation evaluation uses HC1 rather than country-clustered standard errors, since calibration targets are point estimates — the choice of variance estimator does not affect the betas.)</p>
@@ -1119,12 +1148,12 @@ button#theme-toggle:hover {
       <tr>
           <td>ln(GDP)</td>
           <td>ind, upper GDP</td>
-          <td>GDP → performance (quality + allocation)</td>
+          <td>GDP -&gt; performance (quality + allocation)</td>
       </tr>
       <tr>
           <td>ln(Pop)</td>
           <td>ind, upper GDP</td>
-          <td>Population scale → talent pool</td>
+          <td>Population scale -&gt; talent pool</td>
       </tr>
       <tr>
           <td>ln(GDP)</td>
@@ -1149,7 +1178,7 @@ button#theme-toggle:hover {
   </tbody>
 </table>
 <p>These seven targets anchor the simulation&rsquo;s macrostructure. A simulation that gets these wrong is not a credible representation of Olympic performance, regardless of what it says about inequality.</p>
-<h3 id="tier-2-the-question-gini--equipment-cost-interaction">Tier 2: The Question (Gini × equipment cost interaction)<a hidden class="anchor" aria-hidden="true" href="#tier-2-the-question-gini--equipment-cost-interaction">#</a></h3>
+<h3 id="tier-2-the-question-gini-x-equipment-cost-interaction">Tier 2: The Question (Gini x equipment cost interaction)<a hidden class="anchor" aria-hidden="true" href="#tier-2-the-question-gini-x-equipment-cost-interaction">#</a></h3>
 <p>These coefficients are what we seek to explain:</p>
 <table>
   <thead>
@@ -1160,168 +1189,182 @@ button#theme-toggle:hover {
   </thead>
   <tbody>
       <tr>
-          <td>Gini × ln(equip)</td>
+          <td>Gini x ln(equip)</td>
           <td>ind, upper GDP</td>
       </tr>
       <tr>
-          <td>Gini × ln(equip)</td>
+          <td>Gini x ln(equip)</td>
           <td>ind, all countries</td>
       </tr>
       <tr>
-          <td>Gini × ln(equip)</td>
+          <td>Gini x ln(equip)</td>
           <td>all sports, all countries</td>
       </tr>
       <tr>
-          <td>Gini × ln(equip)</td>
+          <td>Gini x ln(equip)</td>
           <td>ind, upper GDP, with lag</td>
       </tr>
   </tbody>
 </table>
-<p>The Tier 2 targets are not constraints — they are the dependent variable of the exercise. The question is: within the region of parameter space where Tier 1 targets are satisfied, what is the strongest Gini × ln(equip) gradient the model can achieve?</p>
+<p>The Tier 2 targets are not constraints — they are the dependent variable of the exercise. The question is: within the region of parameter space where Tier 1 targets are satisfied, what is the strongest Gini x ln(equip) gradient the model can achieve?</p>
 <h2 id="model-architecture">Model Architecture<a hidden class="anchor" aria-hidden="true" href="#model-architecture">#</a></h2>
-<h3 id="stage-1-allocation">Stage 1: Allocation<a hidden class="anchor" aria-hidden="true" href="#stage-1-allocation">#</a></h3>
-<p>For each country-sport-period cell, compute the expected athlete pool:</p>
-<pre tabindex="0"><code>raw_pool = population × YOUTH_SHARE
-pool_alpha = raw_pool ^ ALPHA                          (population elasticity)
-affordability = 1 - Φ((ln(min_income) - μ) / σ)       (lognormal CDF)
-    where min_income = SUB + equip_cost × RATIO
-    μ = ln(gdp_pc) - (gini/100)²
-    σ = gini / 100
-infrastructure = 1 / (1 + exp(-INFRA_SENS × (gdp_pc / (THRESHOLD × infra_cost_M) - 1)))
-sport_weight = affordability × infrastructure × popularity_weight
+<h3 id="stage-1-affordability-filtering-and-allocation">Stage 1: Affordability Filtering and Allocation<a hidden class="anchor" aria-hidden="true" href="#stage-1-affordability-filtering-and-allocation">#</a></h3>
+<p>For each country-sport-period cell, compute the participant pool. The simulation begins by identifying the share of the youth population that can afford each sport, using a Dagum income distribution parameterised from GDP and Gini.</p>
+<p>The Dagum distribution captures heavy-tailed upper incomes characteristic of unequal societies more accurately than the lognormal. It is parameterised as:</p>
+<pre tabindex="0"><code>a = 1 / (gini / 100)          (shape parameter from Gini)
+b = gdp / M(a)                (scale parameter, where M(a) is the Dagum mean factor)
+</code></pre><p>The mean factor M(a) ensures that the distribution&rsquo;s mean equals GDP per capita:</p>
+<pre tabindex="0"><code>M(a) = Gamma(1 + 1/a) * Gamma(1 - 1/a) / Gamma(1)   for a &gt; 1
+</code></pre><p>A household&rsquo;s effective cost threshold combines a subsistence floor and sport equipment cost:</p>
+<pre tabindex="0"><code>T_min = S + R_eff * c_min
+</code></pre><p>where S is the subsistence parameter, R_eff = R / disc_share (R is the cost ratio, disc_share is the fraction of household income available for sport), and c_min is the cheapest sport&rsquo;s equipment cost. Households whose income falls below T_min are excluded from the talent pool. The survival fraction is:</p>
+<pre tabindex="0"><code>survival = 1 / (1 + (T_min / b)^a)
+</code></pre><p>The base participant pool is:</p>
+<pre tabindex="0"><code>N_part = Y * pi_c * survival
+</code></pre><p>where Y = population * YOUTH_SHARE (0.15), and pi_c is the cultural participation factor (reduced by religion penalty).</p>
+<p>For each sport, a continuous affordability preference is computed from the Dagum survival function at that sport&rsquo;s cost level, combined with infrastructure access, popularity feedback from previous games, and wealth skewness:</p>
+<pre tabindex="0"><code>weight_s = affordability_s * infrastructure_s * popularity_s * wealth_factor_s
 </code></pre><p>Sport weights are normalised across all sports for each country-period. The effective athlete count is:</p>
-<pre tabindex="0"><code>N_eff = pool_alpha × sport_weight × (1 - drain) × (1 - religion_penalty)
-</code></pre><p>Where <code>drain</code> is the fraction of talent lost to non-Olympic sports (cricket, American football, etc.), and <code>religion_penalty</code> captures systematic underperformance:</p>
-<pre tabindex="0"><code>religion_penalty = min(0.5, REL_WEIGHT_MUSLIM × pct_muslim
-                            + REL_WEIGHT_HINDU × pct_hindu
-                            + REL_WEIGHT_BUDDHIST × pct_buddhist)
-</code></pre><h3 id="stage-2-competition">Stage 2: Competition<a hidden class="anchor" aria-hidden="true" href="#stage-2-competition">#</a></h3>
-<p>For each sport-period, compute competitive quality per country:</p>
-<pre tabindex="0"><code>quality = ln(N_eff) + BETA × ln(gdp_pc) × ln(non_equip_cost) + HOST_BONUS × is_host
-</code></pre><p>Where <code>non_equip_cost = coaching + competition + facility_access</code> (everything except household equipment).</p>
-<p>Each country sends 3 athletes per event. Performance is drawn from a t-distribution:</p>
-<pre tabindex="0"><code>performance = quality + SIGMA × t(df=DF_T)
-</code></pre><p>Top 6 across all countries score 6-5-4-3-2-1 per event. Points aggregated across events per sport, then across sports per country. Multiple Monte Carlo runs averaged for stability.</p>
-<h3 id="stage-3-persistence">Stage 3: Persistence<a hidden class="anchor" aria-hidden="true" href="#stage-3-persistence">#</a></h3>
-<p>For the game-by-game simulation (Sydney 2000 → Paris 2024), a persistence term is added:</p>
-<pre tabindex="0"><code>quality += γ × ln(1 + previous_points_in_same_sport)
-</code></pre><p>Three configurations to test:</p>
-<ul>
-<li><strong>Cultural:</strong> Seed = Sydney 2000 empirical results, frozen for all subsequent games.</li>
-<li><strong>Rolling:</strong> Seed = previous game&rsquo;s empirical results, updated each game.</li>
-<li><strong>Combined:</strong> Both terms with separate γ values.</li>
-</ul>
+<pre tabindex="0"><code>N_eff = N_part * normalised_weight * (1 - drain)
+</code></pre><p>where drain is the fraction of talent lost to non-Olympic sports (cricket, American football, etc.).</p>
+<p>Quality from talent pool size follows an extreme-value elasticity:</p>
+<pre tabindex="0"><code>q_L1 = alpha * ln(N_eff)
+</code></pre><p>Infrastructure access uses a logistic function of GDP relative to facility cost:</p>
+<pre tabindex="0"><code>infrastructure = 1 / (1 + exp(-kappa * (gdp / (tau * facility_cost) - 1)))
+</code></pre><h3 id="stage-2-gdp-quality-adjustment">Stage 2: GDP Quality Adjustment<a hidden class="anchor" aria-hidden="true" href="#stage-2-gdp-quality-adjustment">#</a></h3>
+<p>A GDP-mediated training channel adds quality for countries that can fund expensive training:</p>
+<pre tabindex="0"><code>q_L2 = q_L1 + beta * ln(gdp) * ln(non_equip_cost)
+</code></pre><p>where non_equip_cost = coaching + competition + facility access (everything except household equipment cost).</p>
+<h3 id="stage-3-experience-based-persistence">Stage 3: Experience-Based Persistence<a hidden class="anchor" aria-hidden="true" href="#stage-3-experience-based-persistence">#</a></h3>
+<p>For the game-by-game simulation (1984 -&gt; 2024), a persistence term is added based on experience points from previous games:</p>
+<pre tabindex="0"><code>q_L3 = q_L2 + gamma * ln(1 + exp_{t-1}) + LAG2_DECAY * gamma * ln(1 + exp_{t-2})
+</code></pre><p>where LAG2_DECAY = 0.68 (fixed from the empirical lag2/lag1 ratio).</p>
+<p>Experience points are derived from the top 30 positions in each simulated game, using a scoring system that awards points from rank 1 (highest) through rank 30 (lowest). Relying only on the simulated top-six finishers for feedback would concentrate results excessively, so the lag operates on this broader experience measure. Scoring for the regression (the dependent variable) remains top-6 only, using the 6-5-4-3-2-1 scale.</p>
+<p>The simulation is seeded with empirical results for 1984-1992. From 1996 onward, the simulation generates its own results and feeds them forward.</p>
+<h3 id="stage-4-competition">Stage 4: Competition<a hidden class="anchor" aria-hidden="true" href="#stage-4-competition">#</a></h3>
+<p>Each country sends 3 athletes per event. Performance is drawn from a Gumbel extreme-value distribution:</p>
+<pre tabindex="0"><code>performance = quality + sigma * Gumbel(0, 1)
+</code></pre><p>Between-games noise is added to quality before the tournament:</p>
+<pre tabindex="0"><code>quality += Normal(0, noise_sd)
+</code></pre><p>Top 6 across all countries score 6-5-4-3-2-1 per event. Top 30 positions generate experience points for the persistence mechanism. Points are aggregated across events per sport, then across sports per country. 100 Monte Carlo runs are averaged for stability in the final evaluation.</p>
+<h2 id="free-parameters">Free Parameters<a hidden class="anchor" aria-hidden="true" href="#free-parameters">#</a></h2>
+<p>The model has 10 free parameters optimised during calibration:</p>
+<table>
+  <thead>
+      <tr>
+          <th>Parameter</th>
+          <th>Symbol</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Persistence strength</td>
+          <td>gamma</td>
+          <td>Weight on lagged experience</td>
+      </tr>
+      <tr>
+          <td>Tournament noise</td>
+          <td>sigma</td>
+          <td>Gumbel scale in competition</td>
+      </tr>
+      <tr>
+          <td>GDP quality</td>
+          <td>beta</td>
+          <td>GDP x non-equip cost interaction</td>
+      </tr>
+      <tr>
+          <td>Talent pool elasticity</td>
+          <td>alpha</td>
+          <td>Extreme-value elasticity on pool size</td>
+      </tr>
+      <tr>
+          <td>Subsistence floor</td>
+          <td>S</td>
+          <td>Minimum income before sport spending</td>
+      </tr>
+      <tr>
+          <td>Cost ratio</td>
+          <td>R</td>
+          <td>Equipment cost multiplier for threshold</td>
+      </tr>
+      <tr>
+          <td>Wealth skewness</td>
+          <td>delta</td>
+          <td>Extra weight for rich countries in expensive sports</td>
+      </tr>
+      <tr>
+          <td>Between-games noise</td>
+          <td>noise_sd</td>
+          <td>Quality noise across simulation runs</td>
+      </tr>
+      <tr>
+          <td>Discretionary share</td>
+          <td>disc_share</td>
+          <td>Fraction of household income available for sport</td>
+      </tr>
+  </tbody>
+</table>
+<p>Fixed structural parameters include infrastructure sensitivity (kappa = 5.0), infrastructure threshold (tau = 50.0), football popularity weight (5.0), popularity feedback (0.5), religion weights, host bonus (1.0), athletes per event (3), and lag2 decay ratio (0.68).</p>
 <h2 id="calibration-procedure">Calibration Procedure<a hidden class="anchor" aria-hidden="true" href="#calibration-procedure">#</a></h2>
-<p>The calibration is structured in three phases, each building on the previous.</p>
-<h3 id="phase-a-anchor-the-macrostructure">Phase A: Anchor the Macrostructure<a hidden class="anchor" aria-hidden="true" href="#phase-a-anchor-the-macrostructure">#</a></h3>
-<p><strong>Purpose:</strong> Find the region of parameter space where the model reproduces persistence, GDP, and population effects.</p>
-<p><strong>Method:</strong> Latin Hypercube Sampling across 500 points in the four parameters that directly control the Tier 1 targets:</p>
+<h3 id="phase-a-latin-hypercube-exploration">Phase A: Latin Hypercube Exploration<a hidden class="anchor" aria-hidden="true" href="#phase-a-latin-hypercube-exploration">#</a></h3>
+<p>500-point Latin Hypercube Sampling across the 10 free parameters identifies promising regions of parameter space. Each sample point is evaluated with 10 simulation seeds. Points are scored by a weighted loss function combining Tier 1 and Tier 2 target deviations, with the Gini x ln(equip) target weighted 3x.</p>
+<h3 id="phase-b-cma-es-optimisation">Phase B: CMA-ES Optimisation<a hidden class="anchor" aria-hidden="true" href="#phase-b-cma-es-optimisation">#</a></h3>
+<p>The Covariance Matrix Adaptation Evolution Strategy (CMA-ES) refines the best candidates from Phase A. CMA-ES is a derivative-free optimiser well-suited to noisy objective functions. Three optimisation modes are run:</p>
+<ul>
+<li>Mode 1: Minimise loss function (balanced improvement)</li>
+<li>Mode 2: Maximise Gini gradient strength (keep loss below starting value)</li>
+<li>Mode 3: Minimise loss (keep Gini gradient at least as strong as starting value)</li>
+</ul>
+<p>Mode 3 consistently produces the best candidates — it prevents the optimiser from trading Gini gradient strength for better fit on other targets.</p>
+<p>Multiple rounds of CMA-ES are run with progressively adjusted parameter bounds as bound-hitting patterns emerge. Each generation&rsquo;s results are saved incrementally.</p>
+<h3 id="phase-c-100-seed-validation">Phase C: 100-Seed Validation<a hidden class="anchor" aria-hidden="true" href="#phase-c-100-seed-validation">#</a></h3>
+<p>The best CMA-ES candidates are validated with 100 independent simulation seeds to ensure stability and guard against flukes from the 10-seed CMA evaluation. Per-seed statistics (mean, SD, SE, 95% CI) are computed for all targets.</p>
+<h2 id="best-candidate-v104">Best Candidate (v1.04)<a hidden class="anchor" aria-hidden="true" href="#best-candidate-v104">#</a></h2>
+<p>The final parameter set (CMA-ES round 2, mode 3, generation 11) evaluated across 100 seeds:</p>
 <table>
   <thead>
       <tr>
-          <th>Parameter</th>
-          <th>Range</th>
-          <th>Controls</th>
+          <th>Metric</th>
+          <th>Simulated</th>
+          <th>Empirical</th>
+          <th>Error</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td>γ (persistence)</td>
-          <td>[0.3, 4.0]</td>
-          <td>ln(lag) coefficient</td>
+          <td>Gini x ln(equip), with lag</td>
+          <td>-0.50</td>
+          <td>-0.68</td>
+          <td>26%</td>
       </tr>
       <tr>
-          <td>σ (tournament noise)</td>
-          <td>[0.15, 0.55]</td>
-          <td>All coefficient magnitudes (signal-to-noise)</td>
+          <td>ln(GDP)</td>
+          <td>5.53</td>
+          <td>5.19</td>
+          <td>7%</td>
       </tr>
       <tr>
-          <td>β (GDP quality)</td>
-          <td>[0.005, 0.06]</td>
-          <td>ln(GDP) coefficient</td>
+          <td>ln(Pop)</td>
+          <td>0.74</td>
+          <td>0.94</td>
+          <td>-21%</td>
       </tr>
       <tr>
-          <td>α (extreme value elasticity)</td>
-          <td>[0.25, 0.60]</td>
-          <td>ln(Pop) coefficient and overall scale</td>
+          <td>ln(lag1)</td>
+          <td>5.01</td>
+          <td>4.20</td>
+          <td>19%</td>
+      </tr>
+      <tr>
+          <td>N (observations)</td>
+          <td>1650</td>
+          <td>1998</td>
+          <td>-17%</td>
       </tr>
   </tbody>
 </table>
-<p>All other parameters are held at structurally motivated defaults. Each sample point is evaluated with a single simulation run. The feasible region is defined as all parameter combinations where every Tier 1 target is within ±30% of its empirical value.</p>
-<h3 id="phase-b-maximise-the-gini--cost-gradient">Phase B: Maximise the Gini × Cost Gradient<a hidden class="anchor" aria-hidden="true" href="#phase-b-maximise-the-gini--cost-gradient">#</a></h3>
-<p><strong>Purpose:</strong> Within the anchor region from Phase A, sweep the remaining allocation parameters to find the strongest achievable Gini × ln(equip) gradient.</p>
-<p><strong>Method:</strong> Take the top 5 anchor parameter sets from Phase A. For each, run 300 Latin Hypercube samples across 9 allocation parameters:</p>
-<table>
-  <thead>
-      <tr>
-          <th>Parameter</th>
-          <th>Range</th>
-          <th>Role</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>wealth_skew (δ)</td>
-          <td>[0.0, 0.5]</td>
-          <td>Most direct Gini × cost lever</td>
-      </tr>
-      <tr>
-          <td>alpha (α)</td>
-          <td>[0.30, 0.55]</td>
-          <td>Extreme value elasticity</td>
-      </tr>
-      <tr>
-          <td>pi0 (π₀)</td>
-          <td>[0.005, 0.06]</td>
-          <td>Base participation rate</td>
-      </tr>
-      <tr>
-          <td>lam (λ)</td>
-          <td>[0.3, 1.5]</td>
-          <td>Religion scale</td>
-      </tr>
-      <tr>
-          <td>subsistence (S)</td>
-          <td>[1000, 12000]</td>
-          <td>Affordability threshold</td>
-      </tr>
-      <tr>
-          <td>cost_ratio (R)</td>
-          <td>[2, 20]</td>
-          <td>Cost multiplier</td>
-      </tr>
-      <tr>
-          <td>beta (β)</td>
-          <td>[0.02, 0.08]</td>
-          <td>GDP quality strength</td>
-      </tr>
-      <tr>
-          <td>pop_feedback (ψ)</td>
-          <td>[0.1, 2.0]</td>
-          <td>Popularity feedback</td>
-      </tr>
-      <tr>
-          <td>football_pop (φ_F)</td>
-          <td>[2, 12]</td>
-          <td>Football popularity</td>
-      </tr>
-  </tbody>
-</table>
-<p>This produces 1,500 parameter states (5 anchors × 300 samples), each evaluated with a single simulation. Results are ranked by a combined objective that penalises Tier 1 violations while prioritising Tier 2 closeness.</p>
-<h3 id="phase-c-evaluation-with-confidence-intervals">Phase C: Evaluation with Confidence Intervals<a hidden class="anchor" aria-hidden="true" href="#phase-c-evaluation-with-confidence-intervals">#</a></h3>
-<p><strong>Purpose:</strong> Produce publication-quality estimates at the best parameter states.</p>
-<p><strong>Method:</strong> Take the top 5 parameter sets from Phase B. Run 20 independent simulations each (different random seeds). Report mean, standard deviation, and 95% confidence intervals for all target coefficients.</p>
-<h2 id="model-comparison">Model Comparison<a hidden class="anchor" aria-hidden="true" href="#model-comparison">#</a></h2>
-<p>The calibration is conducted for three model specifications:</p>
-<p><strong>Model A — Allocation only (Layer 1):</strong></p>
-<p>$$q_{c,s,g} = \alpha \cdot \ln(N_{c,s,g}^{\text{drain}})$$</p>
-<p><strong>Model B — Allocation + GDP quality (Layers 1+2):</strong></p>
-<p>$$q_{c,s,g} = \alpha \cdot \ln(N_{c,s,g}^{\text{drain}}) + \beta \cdot \ln(\text{GDP}_c) \cdot \ln(\text{non-equip}_s)$$</p>
-<p><strong>Model C — Full model (Layers 1+2+3):</strong></p>
-<p>$$q_{c,s,g} = \alpha \cdot \ln(N_{c,s,g}^{\text{drain}}) + \beta \cdot \ln(\text{GDP}_c) \cdot \ln(\text{non-equip}<em>s) + \gamma \cdot \ln(1 + \text{pts}</em>{c,s,g-1})$$</p>
-<h2 id="pareto-surface-analysis">Pareto Surface Analysis<a hidden class="anchor" aria-hidden="true" href="#pareto-surface-analysis">#</a></h2>
-<p>With multiple target moments, there is no single &ldquo;best&rdquo; parameterisation unless the model can match all targets simultaneously. The calibration maps the Pareto frontier — the set of parameterisations where no target can be improved without worsening another.</p>
-<p>If the empirical observation vector lies inside the Pareto surface, the model is sufficient. If it lies outside, the model faces structural trade-offs. The shape of the frontier reveals the nature of the deficiency.</p>
+<p>The simulation reproduces 74% of the empirical Gini x equipment cost gradient. All 100 seeds produce a negative gradient (p = 0.01). Gradient decomposition shows the simulation matches the empirical gradient almost exactly when the United States is excluded (simulated -0.19 vs empirical -0.22, gap 0.03).</p>
 
 
 </div>
