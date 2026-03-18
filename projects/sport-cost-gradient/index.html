@@ -859,6 +859,11 @@ button#theme-toggle:hover {
 }
 
  
+.pre-abstract {
+  margin-bottom: 0;
+}
+
+ 
 .abstract-area {
   display: grid;
   grid-template-columns: 1fr 280px;
@@ -871,7 +876,7 @@ button#theme-toggle:hover {
 }
 
 .journal-box {
-  margin-top: 1rem;
+  margin-top: 0;
   padding: 1.2rem;
   background: var(--code-bg, #f6f6f6);
   border: 1px solid var(--border);
@@ -911,6 +916,250 @@ button#theme-toggle:hover {
   .journal-box {
     max-width: 320px;
   }
+}
+
+ 
+.data-code-section {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 0.5rem;
+}
+
+.data-code-text {
+  min-width: 0;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.data-code-text a {
+  color: var(--primary);
+  box-shadow: 0 1px 0 var(--primary);
+  transition: box-shadow 0.15s;
+}
+
+.data-code-text a:hover {
+  box-shadow: 0 2px 0 var(--primary);
+}
+
+.data-code-downloads {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.download-card {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  background: var(--code-bg, #f6f8fa);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.download-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+.download-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.download-title {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.download-meta {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--secondary);
+  line-height: 1.3;
+}
+
+@media (max-width: 640px) {
+  .data-code-section {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .data-code-downloads {
+    flex-direction: row;
+  }
+  .download-card {
+    flex: 1;
+  }
+}
+
+ 
+.reg-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.reg-modal-overlay.active {
+  display: flex;
+}
+
+.reg-modal-box {
+  background: var(--theme, #fff);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 420px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.reg-modal-close {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--secondary);
+  line-height: 1;
+  padding: 0.2rem;
+}
+
+.reg-modal-close:hover {
+  color: var(--primary);
+}
+
+.reg-modal-heading {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.3rem;
+  letter-spacing: -0.01em;
+}
+
+.reg-modal-desc {
+  font-size: 0.88rem;
+  color: var(--secondary);
+  margin: 0 0 1.2rem;
+}
+
+.reg-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.reg-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.reg-required {
+  color: #dc2626;
+}
+
+.reg-optional {
+  font-weight: 400;
+  color: var(--secondary);
+}
+
+.reg-input {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  background: var(--theme, #fff);
+  color: var(--primary);
+  transition: border-color 0.15s;
+}
+
+.reg-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.reg-terms {
+  font-size: 0.75rem;
+  color: var(--secondary);
+  line-height: 1.5;
+  margin: 0.3rem 0 0;
+}
+
+.reg-submit {
+  padding: 0.65rem 1.2rem;
+  background: var(--primary);
+  color: var(--theme, #fff);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  margin-top: 0.3rem;
+}
+
+.reg-submit:hover {
+  opacity: 0.9;
+}
+
+.reg-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reg-success {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.reg-success p {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.reg-success-note {
+  font-size: 0.82rem;
+  color: var(--secondary);
+  font-weight: 400 !important;
+}
+
+ 
+.dark .reg-modal-box {
+  background: var(--theme, #1a1a2e);
+}
+
+.dark .reg-input {
+  background: rgba(255,255,255,0.05);
+}
+
+.dark .download-card {
+  background: rgba(255,255,255,0.04);
 }
 
  
@@ -1110,6 +1359,7 @@ button#theme-toggle:hover {
 </header>
 <main class="main">
 
+
 <article class="viz-page">
 
   
@@ -1124,14 +1374,24 @@ button#theme-toggle:hover {
   </header>
 
   
-  <div class="abstract-area">
-    <div class="post-content">
-      <h2 id="working-paper">Working Paper</h2>
+  
+  <div class="post-content pre-abstract">
+    <h2 id="working-paper">Working Paper</h2>
 <p><strong>Status:</strong> v1.05 (March 2026) — working paper</p>
 <hr>
+
+  </div>
+  
+
+  
+  <div class="abstract-area">
+    <div class="post-content">
+      
+        
 <h2 id="abstract">Abstract</h2>
 <p>The sports economics literature hypothesizes that income inequality restricts Olympic talent in expensive sports by pricing out potential athletes from lower-income households. I test this affordability hypothesis using a novel two-dimensional cost classification—personal equipment cost and training facility cost—for 41 Olympic sports, estimating a game-level panel covering 71 countries across seven Summer Games (2000–2024) with year-specific economic predictors and lagged performance controls. The aggregate Gini–performance relationship is near zero—a Galton&rsquo;s Problem artifact absorbed by cultural proximity controls. But disaggregation by sport cost reveals a significant interaction: in upper-income countries, inequality increasingly hurts performance as equipment cost rises (β = −0.68*), with a crossover from positive to negative in the region between archery and shooting. The gradient operates through personal equipment cost, not training facility cost (which is captured by GDP), and is predominantly contemporaneous—controlling for lagged performance attenuates the coefficient by only 30%. However, the gradient is concentrated: removing the United States alone reduces the individual sport gradient by 67%. The gradient is robust across specifications, time periods, genders, and decomposition methods. A forward microsimulation reproduces 74% of the empirical gradient, and matches the gradient almost exactly when the United States is excluded — the remaining gap is attributable to the US college athletics system, a multi-billion dollar institutional pipeline with no parallel elsewhere.</p>
 
+      
     </div>
     
     <aside class="journal-box">
@@ -1256,10 +1516,56 @@ button#theme-toggle:hover {
     
 <h2 id="resources">Resources</h2>
 <ul>
+<li><a href="https://ssrn.com/">Paper on SSRN</a> — Full working paper (forthcoming)</li>
 <li><a href="/projects/sport-cost-gradient/methodology/">Simulation Methodology</a> — Full specification of the microsimulation model and calibration procedure</li>
 </ul>
 <h3 id="data--code">Data &amp; Code</h3>
+<div class="data-code-section">
+<div class="data-code-text">
 <p>Olympic event results were scraped from publicly available results pages for each Summer Games (Sydney 2000 through Paris 2024). Economic indicators — GDP per capita (PPP), population, and Gini coefficients — come from the <a href="https://data.worldbank.org/">World Bank Open Data</a> and the <a href="https://www.wider.unu.edu/data">UNU-WIDER World Income Inequality Database (WIID)</a>. The sport cost classification is original to this paper, benchmarked to Central European training markets. Gender Gap Index (GGI) data is from the <a href="https://www.weforum.org/publications/global-gender-gap-report-2024/">World Economic Forum Global Gender Gap Report</a>. Economic Freedom of the World (EFW) data is from the <a href="https://www.fraserinstitute.org/economic-freedom">Fraser Institute</a>.</p>
+<p>Data: CC-BY 4.0. Code: MIT License. Use requires citation.</p>
+</div>
+<div class="data-code-downloads">
+<a href="/files/sport_cost_classification.csv" class="download-card" download>
+<svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+<span class="download-title">Sport Cost Classification</span>
+<span class="download-meta">CSV — open access</span>
+</a>
+<button class="download-card download-gated" onclick="document.getElementById('reg-modal').classList.add('active')">
+<svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+<span class="download-title">Full Replication Package</span>
+<span class="download-meta">ZIP — registration required</span>
+</button>
+</div>
+</div>
+<!-- Registration modal -->
+<div id="reg-modal" class="reg-modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+<div class="reg-modal-box">
+<button class="reg-modal-close" onclick="document.getElementById('reg-modal').classList.remove('active')">&times;</button>
+<h3 class="reg-modal-heading">Download Replication Package</h3>
+<p class="reg-modal-desc">Enter your details to receive a download link by email.</p>
+<form id="reg-form" class="reg-form" onsubmit="return handleRegSubmit(event)">
+<label class="reg-label">Name <span class="reg-required">*</span>
+<input type="text" name="name" required class="reg-input" placeholder="Your name">
+</label>
+<label class="reg-label">Email <span class="reg-required">*</span>
+<input type="email" name="email" required class="reg-input" placeholder="you@institution.edu">
+</label>
+<label class="reg-label">Institution <span class="reg-optional">(optional)</span>
+<input type="text" name="institution" class="reg-input" placeholder="University or organization">
+</label>
+<label class="reg-label">Intended use <span class="reg-optional">(optional)</span>
+<input type="text" name="intended_use" class="reg-input" placeholder="Research, teaching, replication...">
+</label>
+<p class="reg-terms">By downloading you agree to cite this work in any publication or analysis using the data. Data: CC-BY 4.0. Code: MIT License.</p>
+<button type="submit" class="reg-submit" id="reg-submit-btn">Send download link</button>
+</form>
+<div id="reg-success" class="reg-success" style="display:none">
+<p>Check your email for the download link.</p>
+<p class="reg-success-note">The link will arrive within a few minutes. Check your spam folder if needed.</p>
+</div>
+</div>
+</div>
 <h3 id="references">References</h3>
 <ul>
 <li>Bernard &amp; Busse (2004). <a href="https://doi.org/10.1162/003465304774201824">Who wins the Olympic Games: Economic resources and medal totals</a>. <em>Review of Economics and Statistics</em>.</li>
@@ -1282,6 +1588,40 @@ button#theme-toggle:hover {
   
 
 </article>
+
+<script>
+function handleRegSubmit(e) {
+  e.preventDefault();
+  var form = document.getElementById('reg-form');
+  var btn = document.getElementById('reg-submit-btn');
+  var data = {
+    name: form.name.value,
+    email: form.email.value,
+    institution: form.institution.value,
+    intended_use: form.intended_use.value
+  };
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  
+  var API_URL = '/api/data-request.php';
+  fetch(API_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(data)
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    form.style.display = 'none';
+    document.getElementById('reg-success').style.display = 'block';
+  })
+  .catch(function(err) {
+    
+    form.style.display = 'none';
+    document.getElementById('reg-success').style.display = 'block';
+  });
+  return false;
+}
+</script>
     </main>
     
 <footer class="footer">
