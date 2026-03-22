@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>Research Journal | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.">
+<meta name="description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 44 sessions with an AI research assistant.">
 <meta name="author" content="Sam C. Syvertsen">
 <link rel="canonical" href="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
@@ -1313,12 +1313,12 @@ button#theme-toggle:hover {
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/blog/">
   <meta property="og:site_name" content="Sam C. Syvertsen">
   <meta property="og:title" content="Research Journal">
-  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.">
+  <meta property="og:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 44 sessions with an AI research assistant.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Research Journal">
-<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.">
+<meta name="twitter:description" content="From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 44 sessions with an AI research assistant.">
 
 
 <script type="application/ld+json">
@@ -1369,9 +1369,9 @@ button#theme-toggle:hover {
   <header class="post-header">
     <h1 class="post-title">Research Journal</h1>
     <div class="post-meta">
-      <span>32 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
+      <span>35 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span>
     </div>
-    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 39 sessions with an AI research assistant.</p>
+    <p class="post-description">From a question about Norway&#39;s gold medals to a two-channel theory of inequality and sport cost — told through 44 sessions with an AI research assistant.</p>
   </header>
   <div class="post-content story-flow">
     <div class="authors-note">
@@ -2030,11 +2030,89 @@ button#theme-toggle:hover {
 </div>
 </div>
 </div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="the-simulation-gets-a-second-chance">The simulation gets a second chance</h2>
+<p>The v1.03 simulation had been declared insufficient — reproducing only 40% of the empirical gradient. But the Stage 3 blind reproduction attempt revealed the assessment itself was flawed. A reproducer session, working only from the methodology document, produced a gradient 10x too weak (−0.045 vs the production −0.484). Running both scripts in parallel uncovered three bugs in the reproducer&rsquo;s code: facility costs entered in millions instead of raw EUR, raw lag points instead of ln(1+lag), and a missing second lag term. But the exercise also exposed three ambiguities in the methodology document that made these errors possible.</p>
+<p>With the methodology tightened and a redesigned simulator — experience points feeding back from the top 30 positions (not just top 6), and cost-based pool selection making the affordability filter structurally coherent — the simulation jumped from 40% to 74% of the empirical gradient. All 100 seeds produced negative gradients (p = 0.01). The conclusion changed for the second time: from &ldquo;mechanism is very weak&rdquo; to &ldquo;mechanism works well outside the United States.&rdquo;</p>
+<p>The key evidence: removing the US from both the empirical and simulated panels reduces the gradient gap from 0.22 to 0.03. The affordability mechanism explains virtually all of the cost gradient outside the US. The remaining US-specific amplification pointed toward institutional channels the simulation cannot model.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v1.04–v1.05</span>
+<span class="version-title">Cost Pool Model and Concentration</span>
+</div>
+<div class="panel-section-label">Key numbers</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">Sim gradient: −0.50 (74% of empirical)</span>
+<span class="session-link" style="cursor:default">100/100 seeds negative, p = 0.01</span>
+<span class="session-link" style="cursor:default">w/o USA gap: 0.22 → 0.03</span>
+<span class="session-link" style="cursor:default">Stage 2: 85% → 94% pass rate</span>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/40/" class="session-link">40 Cost pool calibration</a>
+<a href="/projects/sport-cost-gradient/sessions/41/" class="session-link">41 US concentration analysis</a>
+<a href="/projects/sport-cost-gradient/sessions/42/" class="session-link">42 Stage 2 reproduction round 1</a>
+<a href="/projects/sport-cost-gradient/sessions/43/" class="session-link">43 Stage 2 reproduction round 2</a>
+</div>
+</div>
+</div>
+</div>
+<div class="story-row">
+<div class="story-text">
+<h2 id="its-not-a-cost-story--its-a-swimming-story">It&rsquo;s not a cost story — it&rsquo;s a swimming story</h2>
+<p>If the US amplifies the gradient through institutional channels, which institutions and which sports? The natural hypothesis was that NCAA college athletics — 196,000 student-athletes, $4B+ in scholarships — would produce broad overperformance in cheap-to-mid-range sports. The data told a different story.</p>
+<p>Computing the US empirical-vs-simulated gap for every sport revealed that the NCAA aggregate is almost exactly matched: 3,556 empirical points vs 3,570 simulated (gap: −14). The overestimation is entirely in non-NCAA sports (−645 gap). And the gap shows zero correlation with equipment cost in every subset tested (NCAA: r = 0.05; all individual: r = −0.08). The US effect is sport-specific, not cost-systematic.</p>
+<p>One sport dominates: swimming. The US earns 1,200 empirical points vs 835 simulated — a gap of +366, larger than most sports&rsquo; total points. NCAA swimming is the world&rsquo;s deepest collegiate programme in individual sports, with approximately 25,000 college swimmers across approximately 600 programmes. At the Paris 2024 Olympics, 78 NCAA student-athletes or alumni medalled, including 14 from non-US countries.</p>
+<p>The slope analysis exposed a Simpson&rsquo;s paradox. Within NCAA sports, the slope of US points vs equipment cost is −18. Within non-NCAA sports, it is +16. But the combined slope is −70 — far more extreme than either group. This happens because the groups are separated on both axes: NCAA sports cluster at cheap-to-mid cost with enormous point totals (swimming 1,200, track 803), while non-NCAA sports spread across the full cost range with much smaller totals. The regression sees &ldquo;massive points at mid-cost, small points at high-cost&rdquo; and fits a steep negative line, even though neither group individually slopes that way.</p>
+<p>The college system creates the gradient not through a cost mechanism but through a composition effect. The US invested institutionally in specific cheap-to-mid individual sports — swimming above all — producing outsized performance there, while performing normally in expensive non-college sports. That asymmetric pattern, combined with high inequality, IS the gradient.</p>
+</div>
+<div class="story-panel">
+<div class="version-block">
+<div class="version-header">
+<span class="version-tag">v1.06</span>
+<span class="version-title">NCAA Decomposition</span>
+</div>
+<div class="panel-section-label">Key numbers</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">NCAA gap: −14 (matched)</span>
+<span class="session-link" style="cursor:default">Non-NCAA gap: −645 (overestimated)</span>
+<span class="session-link" style="cursor:default">Swimming alone: +366</span>
+<span class="session-link" style="cursor:default">Gap vs cost correlation: r = 0.05</span>
+</div>
+<div class="panel-section-label">Simpson's paradox</div>
+<div class="version-sessions">
+<span class="session-link" style="cursor:default">NCAA slope: −18</span>
+<span class="session-link" style="cursor:default">Non-NCAA slope: +16</span>
+<span class="session-link" style="cursor:default">Combined slope: −70</span>
+<span class="session-link" style="cursor:default">Composition, not cost mechanism</span>
+</div>
+<div class="panel-section-label">Visualizations</div>
+<div class="version-viz-grid">
+<a href="/viz/us_sim_scatter.html" target="_blank" class="viz-thumb" title="US Empirical vs Simulated Scatter — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/us_sim_scatter.png" loading="lazy"></div>
+<div class="viz-thumb-label">US Emp vs Sim Scatter</div>
+</a>
+<a href="/viz/us_sim_comparison.html" target="_blank" class="viz-thumb" title="US Gap by Sport — click to open interactive">
+<div class="viz-thumb-frame"><img src="/viz/thumbs/us_sim_comparison.png" loading="lazy"></div>
+<div class="viz-thumb-label">US Gap by Sport</div>
+</a>
+</div>
+<div class="panel-section-label">Sessions</div>
+<div class="version-sessions">
+<a href="/projects/sport-cost-gradient/sessions/44/" class="session-link">44 NCAA decomposition</a>
+</div>
+</div>
+</div>
+</div>
 <hr>
 <h2 id="what-this-project-found">What this project found</h2>
 <p>Income inequality does not predict Olympic performance in the aggregate — but this null conceals a systematic gradient. In individual sports, inequality increasingly hurts performance as personal equipment cost rises, with a crossover at approximately €2,200. A separate, independent channel runs through national wealth and facility infrastructure. The two mechanisms operate through completely different cost dimensions with near-zero mutual attenuation.</p>
 <p>The finding is robust across time, regions, estimation methods, cost measurement approaches, Mundlak correction, host-effect controls, and persistence controls. It provides the first empirical test of the cost-barrier mechanism that Geloso and Kufenko theorised but could not evaluate. Their own aggregate finding — that inequality hurts medals per capita — turns out to be a specification artefact driven by incorrect population scaling, not by a genuine inequality–performance relationship.</p>
-<p>A game-level panel with lagged Olympic points as controls confirms that 70% of the cost gradient survives persistence — the mechanism is primarily contemporaneous, not just accumulated historical advantage. However, the gradient is concentrated: removing the United States and Russia reduces it by 82%. A forward microsimulation based on household income filtering reproduces only 40% of the empirical gradient — and the same countries drive both the empirical and simulated coefficients. The cost gradient is a real empirical regularity, but it reflects concentrated institutional specialization and sport culture, not the broad household affordability mechanism hypothesized in the literature.</p>
+<p>A game-level panel with lagged Olympic points as controls confirms that 70% of the cost gradient survives persistence — the mechanism is primarily contemporaneous, not just accumulated historical advantage. A forward microsimulation based on household income filtering reproduces 74% of the empirical gradient, with all 100 seeds producing negative coefficients (p = 0.01). Removing the United States from both the empirical and simulated panels reduces the gap between them from 0.22 to 0.03 — the affordability mechanism accounts for virtually all of the gradient outside the US.</p>
+<p>The US amplification is not a cost story. It is a swimming story. NCAA swimming — the world&rsquo;s deepest collegiate programme in individual sports — produces a single-sport gap of +366 points (1,200 empirical vs 835 simulated). The NCAA aggregate is matched; the simulation overestimates the US in non-NCAA sports by 645 points. A Simpson&rsquo;s paradox creates the steep combined slope: NCAA sports cluster at cheap-to-mid cost with high point totals, non-NCAA sports spread across the full cost range with lower totals. Neither group individually shows a steep negative cost gradient, but the between-group level difference does.</p>
 <p>The Mundlak correction confirms that the within-country, cross-sport component of the gradient is genuine and not absorbed by country-level time averages. The cost gradient identifies off variation <em>within</em> countries — the same country performs differently across cheap and expensive sports — which is what gives it structural robustness that aggregate approaches lack.</p>
 
   </div>

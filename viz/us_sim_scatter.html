@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US Points by Sport: Empirical vs Simulated</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body, #root { width: 100%; height: 100%; background-color: white; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/recharts@2/umd/Recharts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+    <script type="text/babel">
+const { useState, useMemo } = React;
+const { ScatterChart, Scatter, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, ReferenceLine } = Recharts;
+const font = "'Libre Franklin','Helvetica Neue',sans-serif";
+
+const DATA = [
+  { sport: "Trampoline", equip: 200, type: "individual", ncaa: false, emp: 2, sim: 7.5 },
+  { sport: "Wrestling", equip: 250, type: "duel", ncaa: true, emp: 214, sim: 388.4 },
+  { sport: "Volleyball", equip: 300, type: "team", ncaa: false, emp: 45, sim: 12.3 },
+  { sport: "Judo", equip: 300, type: "duel", ncaa: false, emp: 30.5, sim: 84.3 },
+  { sport: "Beach Volleyball", equip: 300, type: "team", ncaa: false, emp: 56.5, sim: 50.9 },
+  { sport: "Diving", equip: 300, type: "individual", ncaa: true, emp: 90, sim: 180.1 },
+  { sport: "Rugby Sevens", equip: 350, type: "team", ncaa: false, emp: 4, sim: 2 },
+  { sport: "Handball", equip: 350, type: "team", ncaa: false, emp: 0, sim: 19.5 },
+  { sport: "Taekwondo", equip: 350, type: "duel", ncaa: false, emp: 53.5, sim: 82.2 },
+  { sport: "Artistic Gymnastics", equip: 400, type: "individual", ncaa: true, emp: 322, sim: 283.3 },
+  { sport: "Table Tennis", equip: 400, type: "duel", ncaa: false, emp: 2.2, sim: 26.6 },
+  { sport: "Weightlifting", equip: 400, type: "individual", ncaa: false, emp: 53, sim: 96 },
+  { sport: "Water Polo", equip: 400, type: "team", ncaa: false, emp: 44, sim: 22.2 },
+  { sport: "Basketball", equip: 400, type: "team", ncaa: false, emp: 92, sim: 60.9 },
+  { sport: "Boxing", equip: 400, type: "duel", ncaa: false, emp: 85.8, sim: 262.9 },
+  { sport: "Artistic Swimming", equip: 500, type: "team", ncaa: false, emp: 22, sim: 47 },
+  { sport: "Badminton", equip: 500, type: "duel", ncaa: false, emp: 0.8, sim: 9.2 },
+  { sport: "Football", equip: 600, type: "team", ncaa: false, emp: 36, sim: 31.8 },
+  { sport: "Rhythmic Gym.", equip: 600, type: "individual", ncaa: false, emp: 0, sim: 0.6 },
+  { sport: "Hockey", equip: 600, type: "team", ncaa: false, emp: 0, sim: 12.2 },
+  { sport: "Athletics Track", equip: 650, type: "individual", ncaa: true, emp: 803, sim: 729.2 },
+  { sport: "Baseball/Softball", equip: 700, type: "team", ncaa: false, emp: 32, sim: 40.5 },
+  { sport: "Fencing", equip: 700, type: "duel", ncaa: true, emp: 133, sim: 60.1 },
+  { sport: "Swimming", equip: 800, type: "individual", ncaa: true, emp: 1200.5, sim: 834.8 },
+  { sport: "Canoe Sprint", equip: 800, type: "individual", ncaa: false, emp: 13, sim: 124 },
+  { sport: "Marathon Swim", equip: 800, type: "individual", ncaa: false, emp: 10, sim: 4.5 },
+  { sport: "Athletics Field", equip: 800, type: "individual", ncaa: true, emp: 332.5, sim: 422.9 },
+  { sport: "Tennis", equip: 1000, type: "duel", ncaa: true, emp: 100.2, sim: 111.5 },
+  { sport: "Rowing", equip: 1000, type: "individual", ncaa: true, emp: 138, sim: 316 },
+  { sport: "Mod. Pentathlon", equip: 1000, type: "individual", ncaa: false, emp: 12, sim: 12.8 },
+  { sport: "Golf", equip: 1000, type: "individual", ncaa: true, emp: 25, sim: 4.4 },
+  { sport: "Canoe Slalom", equip: 1200, type: "individual", ncaa: false, emp: 15, sim: 72.7 },
+  { sport: "Archery", equip: 1200, type: "individual", ncaa: false, emp: 55.5, sim: 83.8 },
+  { sport: "Shooting", equip: 1800, type: "individual", ncaa: true, emp: 198, sim: 239.2 },
+  { sport: "BMX Racing", equip: 2000, type: "individual", ncaa: false, emp: 36, sim: 8.4 },
+  { sport: "Equestrian", equip: 2000, type: "individual", ncaa: false, emp: 102.5, sim: 120.3 },
+  { sport: "Track Cycling", equip: 2000, type: "individual", ncaa: false, emp: 64, sim: 135.8 },
+  { sport: "Mountain Biking", equip: 3500, type: "individual", ncaa: false, emp: 9, sim: 27.9 },
+  { sport: "Triathlon", equip: 3500, type: "individual", ncaa: false, emp: 35, sim: 13.3 },
+  { sport: "Sailing", equip: 4000, type: "individual", ncaa: false, emp: 69, sim: 171.2 },
+  { sport: "Road Cycling", equip: 4000, type: "individual", ncaa: false, emp: 66, sim: 47.9 },
+];
+
+const SHAPES = { individual: "circle", team: "square", duel: "cross" };
+const NCAA_OPTS = ["all", "NCAA", "non-NCAA"];
+
+function linReg(pts) {
+  if (pts.length < 2) return null;
+  const n = pts.length;
+  const sx = pts.reduce((s, p) => s + p.x, 0);
+  const sy = pts.reduce((s, p) => s + p.y, 0);
+  const sxx = pts.reduce((s, p) => s + p.x * p.x, 0);
+  const sxy = pts.reduce((s, p) => s + p.x * p.y, 0);
+  const slope = (n * sxy - sx * sy) / (n * sxx - sx * sx);
+  const intercept = (sy - slope * sx) / n;
+  return { slope, intercept };
+}
+
+const CustomShape = ({ cx, cy, type, fill, stroke }) => {
+  if (type === "circle") return <circle cx={cx} cy={cy} r={5} fill={fill} stroke={stroke} strokeWidth={1.5} opacity={0.8} />;
+  if (type === "square") return <rect x={cx - 4} y={cy - 4} width={8} height={8} fill={fill} stroke={stroke} strokeWidth={1.5} opacity={0.8} />;
+  return <g>
+    <line x1={cx - 4} y1={cy - 4} x2={cx + 4} y2={cy + 4} stroke={fill} strokeWidth={2.5} />
+    <line x1={cx - 4} y1={cy + 4} x2={cx + 4} y2={cy - 4} stroke={fill} strokeWidth={2.5} />
+  </g>;
+};
+
+const CustomDot = (props) => {
+  const { cx, cy, payload, dataKey } = props;
+  if (!cx || !cy) return null;
+  const fill = dataKey === "emp" ? "#2563eb" : "#f97316";
+  const stroke = payload.ncaa ? "#000" : "none";
+  return <CustomShape cx={cx} cy={cy} type={SHAPES[payload.type]} fill={fill} stroke={stroke} />;
+};
+
+const CustomTooltip = ({ active, payload }) => {
+  if (!active || !payload || !payload[0]) return null;
+  const d = payload[0].payload;
+  return (
+    <div style={{ background: "white", border: "1px solid #ccc", borderRadius: 4, padding: "6px 10px", fontSize: 12, boxShadow: "0 1px 4px rgba(0,0,0,0.1)" }}>
+      <div style={{ fontWeight: 600 }}>{d.sport}</div>
+      <div>Equipment: €{d.equip}</div>
+      <div>Type: {d.type}{d.ncaa ? " (NCAA)" : ""}</div>
+      <div style={{ color: "#2563eb" }}>Empirical: {d.emp}</div>
+      <div style={{ color: "#f97316" }}>Simulated: {Math.round(d.sim)}</div>
+      <div style={{ color: d.emp - d.sim > 0 ? "#16a34a" : "#dc2626" }}>
+        Gap: {d.emp - d.sim > 0 ? "+" : ""}{Math.round(d.emp - d.sim)}
+      </div>
+    </div>
+  );
+};
+
+function App() {
+  const [ncaaFilter, setNcaaFilter] = useState("all");
+
+  const filtered = useMemo(() => {
+    let d = DATA;
+    if (ncaaFilter === "NCAA") d = d.filter((r) => r.ncaa);
+    if (ncaaFilter === "non-NCAA") d = d.filter((r) => !r.ncaa);
+    return d;
+  }, [ncaaFilter]);
+
+  const indFiltered = filtered.filter((d) => d.type === "individual" && d.emp > 0);
+
+  const empLine = useMemo(() => {
+    const pts = indFiltered.map((d) => ({ x: Math.log(d.equip), y: d.emp }));
+    return linReg(pts);
+  }, [indFiltered]);
+
+  const simLine = useMemo(() => {
+    const pts = indFiltered.map((d) => ({ x: Math.log(d.equip), y: d.sim }));
+    return linReg(pts);
+  }, [indFiltered]);
+
+  const xMin = Math.log(180);
+  const xMax = Math.log(5000);
+  const empLineData = empLine
+    ? [{ x: Math.exp(xMin), y: empLine.intercept + empLine.slope * xMin },
+       { x: Math.exp(xMax), y: empLine.intercept + empLine.slope * xMax }]
+    : [];
+  const simLineData = simLine
+    ? [{ x: Math.exp(xMin), y: simLine.intercept + simLine.slope * xMin },
+       { x: Math.exp(xMax), y: simLine.intercept + simLine.slope * xMax }]
+    : [];
+
+  const totals = useMemo(() => {
+    const emp = filtered.reduce((s, r) => s + r.emp, 0);
+    const sim = filtered.reduce((s, r) => s + r.sim, 0);
+    return { emp: Math.round(emp), sim: Math.round(sim), gap: Math.round(emp - sim), n: filtered.length };
+  }, [filtered]);
+
+  const empData = filtered.filter((d) => d.emp > 0).map((d) => ({ ...d, x: d.equip, y: d.emp }));
+  const simData = filtered.filter((d) => d.sim > 0).map((d) => ({ ...d, x: d.equip, y: d.sim }));
+
+  const btnStyle = (active) => ({
+    padding: "4px 10px", border: "none", borderRadius: 3, fontSize: 11, cursor: "pointer", fontFamily: "inherit",
+    background: active ? "#1a1a2e" : "#f0f0f0", color: active ? "white" : "#555"
+  });
+
+  return (
+    <div style={{ fontFamily: font, maxWidth: 860, margin: "0 auto", padding: "18px 14px", color: "#1a1a2e", background: "#fefefe" }}>
+      <div style={{ borderBottom: "2px solid #1a1a2e", paddingBottom: 7, marginBottom: 14 }}>
+        <h2 style={{ fontSize: 16, margin: 0, fontWeight: 700, letterSpacing: "-0.3px" }}>
+          US Points by Sport: Empirical vs Simulated
+        </h2>
+        <p style={{ fontSize: 11, color: "#666", margin: "3px 0 0", lineHeight: 1.5 }}>
+          X: equipment cost (log scale). Y: total Olympic points 2000–2024.
+          Shapes: ● individual, ■ team, ✕ duel.
+          Black outline = NCAA sport. Lines fit through individual sports only.
+        </p>
+      </div>
+
+      <div style={{ display: "flex", gap: 12, marginBottom: 14, alignItems: "end", flexWrap: "wrap" }}>
+        <div>
+          <div style={{ fontSize: 10, color: "#888", marginBottom: 3 }}>Filter</div>
+          <div style={{ display: "flex", gap: 3 }}>
+            {NCAA_OPTS.map((t) => (
+              <button key={t} onClick={() => setNcaaFilter(t)} style={btnStyle(ncaaFilter === t)}>{t}</button>
+            ))}
+          </div>
+        </div>
+        <div style={{ background: "#f8f8f5", borderRadius: 4, padding: "5px 14px", display: "flex", gap: 18, fontSize: 12 }}>
+          <span>N: <strong>{totals.n}</strong></span>
+          <span>Emp: <strong style={{ color: "#2563eb" }}>{totals.emp}</strong></span>
+          <span>Sim: <strong style={{ color: "#f97316" }}>{totals.sim}</strong></span>
+          <span>Gap: <strong style={{ color: totals.gap > 0 ? "#16a34a" : "#dc2626" }}>{totals.gap > 0 ? "+" : ""}{totals.gap}</strong></span>
+        </div>
+      </div>
+
+      <div style={{ height: 500 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ScatterChart margin={{ left: 20, right: 20, top: 10, bottom: 30 }}>
+            <XAxis
+              type="number" dataKey="x" scale="log" domain={[180, 5000]}
+              ticks={[200, 400, 800, 1500, 3000]}
+              tickFormatter={(v) => `€${v}`}
+              label={{ value: "Equipment cost (EUR, log scale)", position: "bottom", offset: 10, fontSize: 12 }}
+            />
+            <YAxis
+              type="number" dataKey="y"
+              label={{ value: "Total Olympic points (2000–2024)", angle: -90, position: "insideLeft", offset: -5, fontSize: 12 }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Scatter name="Empirical" data={empData} dataKey="y"
+              shape={(props) => <CustomDot {...props} dataKey="emp" />} />
+            <Scatter name="Simulated" data={simData} dataKey="y"
+              shape={(props) => <CustomDot {...props} dataKey="sim" />} />
+            {empLineData.length === 2 && (
+              <Scatter name="Emp fit" data={empLineData} dataKey="y" line={{ stroke: "#2563eb", strokeWidth: 2, strokeDasharray: "6 3" }} shape={() => null} legendType="none" />
+            )}
+            {simLineData.length === 2 && (
+              <Scatter name="Sim fit" data={simLineData} dataKey="y" line={{ stroke: "#f97316", strokeWidth: 2, strokeDasharray: "6 3" }} shape={() => null} legendType="none" />
+            )}
+          </ScatterChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div style={{ marginTop: 8, display: "flex", gap: 18, fontSize: 10, color: "#888" }}>
+        <span><span style={{ display: "inline-block", width: 24, borderTop: "2px dashed #2563eb", verticalAlign: "middle", marginRight: 4 }}></span> Empirical fit (individual)</span>
+        <span><span style={{ display: "inline-block", width: 24, borderTop: "2px dashed #f97316", verticalAlign: "middle", marginRight: 4 }}></span> Simulated fit (individual)</span>
+        <span>Blue = empirical, orange = simulated</span>
+      </div>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+    </script>
+</body>
+</html>

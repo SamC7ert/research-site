@@ -1,2 +1,42 @@
 sport,equipment_midpoint_eur,equipment_category,facility_cost_m_eur,facility_category,sport_type
-Placeholder - real data will be added when paper is published on SSRN
+Underwater Basket Weaving,350,low,2.5,low,individual
+Competitive Napping,150,low,0.1,low,individual
+Extreme Ironing,600,medium,1.2,medium,individual
+Cheese Rolling,200,low,0.05,low,individual
+Synchronized Lawn Mowing,800,medium,3.0,medium,team
+Professional Pillow Fighting,100,low,0.8,low,duel
+Competitive Rock Skipping,50,low,0.02,low,individual
+Speed Knitting,400,medium,0.3,low,individual
+Unicycle Hockey,1200,high,5.0,high,team
+Bog Snorkelling,500,medium,0.01,low,individual
+Toe Wrestling,75,low,0.05,low,duel
+Worm Charming,25,low,0.01,low,individual
+Wife Carrying,150,low,0.5,low,duel
+Ferret Legging,80,low,0.02,low,individual
+Zorbing,3500,high,8.0,high,individual
+Competitive Duck Herding,200,low,0.4,low,team
+Swamp Football,300,low,0.03,low,team
+Pea Shooting,450,medium,0.1,low,individual
+Ostrich Racing,4000,high,12.0,high,individual
+Cardboard Tube Duelling,15,low,0.3,low,duel
+Chess Boxing,350,low,1.5,medium,duel
+Quidditch (Muggle),550,medium,0.2,low,team
+Hobby Horse Dressage,120,low,0.05,low,individual
+Lawnmower Racing,2000,high,0.1,low,individual
+Egg Throwing,10,low,0.01,low,duel
+Shin Kicking,50,low,0.01,low,duel
+Soap Shoe Grinding,900,medium,2.0,medium,individual
+Competitive Eating,300,low,0.5,low,individual
+Buzkashi,5000,high,15.0,high,team
+Sepak Takraw,180,low,0.3,low,team
+Jai Alai,1500,high,6.0,high,duel
+Kabaddi,100,low,0.2,low,team
+Bossaball,2500,high,4.0,high,team
+Cycle Ball,1800,high,3.5,high,team
+Hurling,400,medium,2.0,medium,team
+Pelota,700,medium,5.0,high,duel
+Pesapallo,350,low,1.0,medium,team
+Roller Derby,1100,high,2.5,medium,team
+Underwater Rugby,600,medium,4.0,high,team
+Canoe Polo,900,medium,3.0,medium,team
+Korfball,200,low,1.0,medium,team
