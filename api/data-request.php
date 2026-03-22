@@ -99,10 +99,20 @@ $headers .= "X-Mailer: PHP/" . phpversion();
 
 $sent = mail($email, $subject, $body, $headers);
 
+// Send notification copy to research@syvertsen.com
+$notify_subject = "Download request: {$name}";
+$notify_body = "New replication package download request:\n\n"
+    . "Name: {$name}\n"
+    . "Email: {$email}\n"
+    . "Institution: {$institution}\n"
+    . "Intended use: {$intended_use}\n"
+    . "Time: " . date('Y-m-d H:i:s') . "\n"
+    . "IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . "\n";
+mail($FROM_EMAIL, $notify_subject, $notify_body, $headers);
+
 if ($sent) {
     echo json_encode(['success' => true, 'message' => 'Download link sent']);
 } else {
-    // Log the failure but still respond — the log has the request
     error_log("Failed to send download email to {$email}");
     http_response_code(500);
     echo json_encode(['error' => 'Failed to send email. Please try again or contact research@syvertsen.com']);
