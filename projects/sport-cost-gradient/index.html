@@ -1400,7 +1400,7 @@ button#theme-toggle:hover {
     
     <aside class="journal-box">
       <h3 class="journal-box-heading">Research Journal</h3>
-      <p class="journal-box-text">Follow how this research developed across 39 working sessions — from first regression to reproducibility testing.</p>
+      <p class="journal-box-text">Follow how this research developed across 44 working sessions — from first regression to reproducibility testing.</p>
       <a href="/projects/sport-cost-gradient/blog/" class="journal-box-link">Read the journal &rarr;</a>
     </aside>
     
@@ -1419,7 +1419,7 @@ button#theme-toggle:hover {
         <div class="finding-number">1</div>
         <div class="finding-body">
           <h3 class="finding-title">First Sport-Cost Classification</h3>
-          <p class="finding-desc">A two-dimensional cost classification — personal equipment cost and training facility cost — for 41 Olympic sports, benchmarked to Central European youth training markets. No prior Olympic study has combined a formal cost measure with inequality in interaction models.</p>
+          <p class="finding-desc">A two-dimensional cost classification — personal equipment cost and training facility cost — for 41 Olympic sports, benchmarked to Central European youth training markets. Equipment cost ranges from €200 (trampoline) to €4,000 (sailing), a 20-fold spread. No prior Olympic study has combined a formal cost measure with inequality in interaction models. The classification was built from German sports club data and cross-validated against two independent sources (Spearman ρ = 0.89).</p>
         </div>
       </div>
       <div class="finding-viz">
@@ -1439,7 +1439,7 @@ button#theme-toggle:hover {
         <div class="finding-number">2</div>
         <div class="finding-body">
           <h3 class="finding-title">A Negative Gradient from Cheap to Expensive Sports</h3>
-          <p class="finding-desc">Disaggregating by sport cost reveals what the aggregate hides: in upper-income countries, inequality increasingly hurts performance as personal equipment cost rises (β = −0.68*), with a crossover from positive to negative between archery and shooting.</p>
+          <p class="finding-desc">Disaggregating by sport cost reveals what the aggregate hides: the overall Gini-performance relationship is near zero, a Galton&rsquo;s Problem artifact absorbed by cultural proximity controls. Yet in upper-income countries, inequality increasingly hurts individual sport performance as personal equipment cost rises (β = −0.68, p = 0.029), with a crossover from positive to negative at approximately €3,000 — between athletics and swimming at the cheap end and cycling and sailing at the expensive end. The gradient is robust across time periods, genders, and decomposition methods.</p>
         </div>
       </div>
       <div class="finding-viz">
@@ -1459,7 +1459,7 @@ button#theme-toggle:hover {
         <div class="finding-number">3</div>
         <div class="finding-body">
           <h3 class="finding-title">Two Independent Channels</h3>
-          <p class="finding-desc">The cost gradient decomposes into two near-orthogonal channels. Gini interacts with personal equipment cost (a household barrier), while GDP interacts with training facility cost (an institutional barrier). Cross-terms are null — the channels operate independently.</p>
+          <p class="finding-desc">The cost gradient decomposes into two near-orthogonal channels. Gini interacts with personal equipment cost (β = −0.70*, a household barrier), while GDP interacts with training facility cost (β = +0.81*, an institutional barrier). The GDP × equipment cross-term is null — the channels operate independently. This separation means inequality restricts access where households bear the cost, while national wealth builds infrastructure where public investment dominates.</p>
         </div>
       </div>
       <div class="finding-viz">
@@ -1479,7 +1479,7 @@ button#theme-toggle:hover {
         <div class="finding-number">4</div>
         <div class="finding-body">
           <h3 class="finding-title">70% Survives Persistence</h3>
-          <p class="finding-desc">Controlling for performance at the previous two Games attenuates the equipment cost gradient by only 30%. The effect is predominantly contemporaneous, not accumulated historical advantage. Persistence itself tracks facility infrastructure cost, not household equipment cost.</p>
+          <p class="finding-desc">Controlling for performance at the previous two Games attenuates the equipment cost gradient by only 30% in the upper GDP half (from −0.97 to −0.68). The effect is predominantly contemporaneous, not accumulated historical advantage. Persistence itself tracks facility infrastructure cost, not household equipment cost — consistent with the two-channel separation. Among the control variables, ln(GDP) attenuates 97% and ln(population) 75%, confirming that the Gini gradient captures a distinct channel not explained by wealth or scale.</p>
         </div>
       </div>
       <div class="finding-viz">
@@ -1499,13 +1499,13 @@ button#theme-toggle:hover {
         <div class="finding-number">5</div>
         <div class="finding-body">
           <h3 class="finding-title">The Mechanism Works — One Country Amplifies It</h3>
-          <p class="finding-desc">Removing the United States alone reduces the individual sport gradient by 67%. A forward microsimulation reproduces 74% of the empirical gradient, and matches it almost exactly when the US is excluded — the remaining gap is attributable to the US college athletics system, a multi-billion dollar institutional pipeline with no parallel elsewhere.</p>
+          <p class="finding-desc">A forward microsimulation based on Dagum income distributions and sport-specific affordability thresholds reproduces 71% of the empirical gradient (simulated −0.48 vs empirical −0.68). Removing the United States alone reduces the empirical gradient by 67% (to −0.22), and closes 85% of the gap between simulation and data. The remaining US overperformance traces to NCAA college athletics — a $4 billion institutional pipeline with 196,000 student-athletes and no parallel elsewhere. Swimming alone accounts for +366 points of US overperformance relative to the simulation.</p>
         </div>
       </div>
       <div class="finding-viz">
-        <a href="/viz/sim_affordability.html" target="_blank" class="viz-thumb" title="The Mechanism Works — One Country Amplifies It — click to open interactive">
+        <a href="/viz/us_sim_scatter.html" target="_blank" class="viz-thumb" title="The Mechanism Works — One Country Amplifies It — click to open interactive">
           <div class="viz-thumb-frame">
-            <img src="/viz/thumbs/sim_affordability.png" loading="lazy" alt="The Mechanism Works — One Country Amplifies It">
+            <img src="/viz/thumbs/us_sim_scatter.png" loading="lazy" alt="The Mechanism Works — One Country Amplifies It">
           </div>
         </a>
       </div>

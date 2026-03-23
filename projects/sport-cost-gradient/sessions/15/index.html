@@ -5,11 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Session: v0.93–v0.95 Paper Refinement and Analysis Plan | Sam C. Syvertsen</title>
+<title>Session 15: v0.93-v0.95 Paper Refinement | Sam C. Syvertsen</title>
 <meta name="keywords" content="">
-<meta name="description" content="Session: v0.93–v0.95 Paper Refinement and Analysis Plan
-Date: 2026-02-24
-Summary
+<meta name="description" content="Summary
 Refined Paper 1 structure and created comprehensive handover documents for v0.95 analysis. Established that the research contribution is the first empirical validation of cost-based mechanisms that Geloso &amp; Kufenko theorized but couldn&rsquo;t test.
 Structural Decisions
 
@@ -1327,14 +1325,13 @@ button#theme-toggle:hover {
 </style>
 <meta property="og:url" content="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/15/">
   <meta property="og:site_name" content="Sam C. Syvertsen">
-  <meta property="og:title" content="Session: v0.93–v0.95 Paper Refinement and Analysis Plan">
-  <meta property="og:description" content="Session: v0.93–v0.95 Paper Refinement and Analysis Plan Date: 2026-02-24
-Summary Refined Paper 1 structure and created comprehensive handover documents for v0.95 analysis. Established that the research contribution is the first empirical validation of cost-based mechanisms that Geloso &amp; Kufenko theorized but couldn’t test.
+  <meta property="og:title" content="Session 15: v0.93-v0.95 Paper Refinement">
+  <meta property="og:description" content="Summary Refined Paper 1 structure and created comprehensive handover documents for v0.95 analysis. Established that the research contribution is the first empirical validation of cost-based mechanisms that Geloso &amp; Kufenko theorized but couldn’t test.
 Structural Decisions Equipment cost tiers replaced with continuous specifications. All gender analysis moved to Paper 2. “Horse race” terminology replaced with “joint specification.” Key Finding Confirmed Two cleanly separated channels: GDP per capita interacts with facility infrastructure costs while Gini interacts with personal equipment costs in individual sports. The gradient is concentrated in upper-income countries.">
   <meta property="og:locale" content="en-us">
   <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Session: v0.93–v0.95 Paper Refinement and Analysis Plan">
+<meta name="twitter:title" content="Session 15: v0.93-v0.95 Paper Refinement">
 <meta name="twitter:description" content="Research on Olympic performance, sport cost inequality, and the Gini coefficient">
 
 
@@ -1364,7 +1361,7 @@ Structural Decisions Equipment cost tiers replaced with continuous specification
     {
       "@type": "ListItem",
       "position":  4 ,
-      "name": "Session: v0.93–v0.95 Paper Refinement and Analysis Plan",
+      "name": "Session 15: v0.93-v0.95 Paper Refinement",
       "item": "https://research.syvertsen.com/projects/sport-cost-gradient/sessions/15/"
     }
   ]
@@ -1389,12 +1386,10 @@ Structural Decisions Equipment cost tiers replaced with continuous specification
 <main class="main"> 
 <header class="page-header"><div class="breadcrumbs"><a href="https://research.syvertsen.com/">Home</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/">Research Projects</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/">Income Inequality, Sport Cost, and Olympic Performance</a>&nbsp;»&nbsp;<a href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/">Session Transcripts</a></div>
   <h1>
-    Session: v0.93–v0.95 Paper Refinement and Analysis Plan
+    Session 15: v0.93-v0.95 Paper Refinement
   </h1>
 </header>
-<div class="post-content"><h2 id="session-v093v095-paper-refinement-and-analysis-plan">Session: v0.93–v0.95 Paper Refinement and Analysis Plan<a hidden class="anchor" aria-hidden="true" href="#session-v093v095-paper-refinement-and-analysis-plan">#</a></h2>
-<p><strong>Date:</strong> 2026-02-24</p>
-<h3 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h3>
+<div class="post-content"><h2 id="summary">Summary<a hidden class="anchor" aria-hidden="true" href="#summary">#</a></h2>
 <p>Refined Paper 1 structure and created comprehensive handover documents for v0.95 analysis. Established that the research contribution is the first empirical validation of cost-based mechanisms that Geloso &amp; Kufenko theorized but couldn&rsquo;t test.</p>
 <h3 id="structural-decisions">Structural Decisions<a hidden class="anchor" aria-hidden="true" href="#structural-decisions">#</a></h3>
 <ul>
@@ -1408,7 +1403,7 @@ Structural Decisions Equipment cost tiers replaced with continuous specification
 <p>Incorporates findings from facility cost upgrade, comprehensive robustness testing across different samples and time periods. Visualization concepts developed for research blog, with Sport-Cost Gradient Explorer identified as essential.</p>
 <hr>
 <h2 id="full-transcript">Full Transcript<a hidden class="anchor" aria-hidden="true" href="#full-transcript">#</a></h2>
-<h3 id="human">Human<a hidden class="anchor" aria-hidden="true" href="#human">#</a></h3>
+<h3 id="sam">Sam<a hidden class="anchor" aria-hidden="true" href="#sam">#</a></h3>
 <p>v0.93 Running analysis. After running v0.92 we dived deeper into sports cost. We also changed approach looking at interaction btw sports cost, GDP/cap and Gini. That is performance in GDP/cap vs sport cost, not only vs GINi. Read and see if you understand, summarize</p>
 <hr>
 <h3 id="claude">Claude<a hidden class="anchor" aria-hidden="true" href="#claude">#</a></h3>
@@ -1434,13 +1429,13 @@ da`]*</p>
 <p>The cost classification JSON exists (v0.93.5, 47 sports), the paper draft is updated with the two-channel framing, and the decision document is thorough. What remains: rerunning the full regression pipeline with the new cost data (the current paper numbers still use v0.92 costs for most results), rebuilding all cost-dependent outputs (per-sport scatter, tier interactions, Tobit, period robustness), and the residual/case-study analysis for cost socialisation.</p>
 <p>The analytical structure is now: aggregate null (Galton&rsquo;s Problem) → sport-type decomposition (individual/duel/team) → two-channel cost decomposition (Gini×household cost + GDP×facility cost) → robustness battery. The two-channel finding strengthens the paper considerably for JIE because it moves beyond &ldquo;inequality hurts in expensive sports&rdquo; to &ldquo;inequality and wealth operate through distinct institutional layers captured by distinct cost dimensions.&rdquo;</p>
 <hr>
-<h3 id="human-1">Human<a hidden class="anchor" aria-hidden="true" href="#human-1">#</a></h3>
+<h3 id="sam-1">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-1">#</a></h3>
 <p>Let us do the analysis. Would you benefit in havving the v0.92 Py scripts</p>
 <hr>
 <h3 id="claude-1">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-1">#</a></h3>
 <p>Yes, that would help. The v0.92 pipeline has your specific data loading patterns, variable construction, clustering approach, and the technical quirks (manual dummies, GGI .get() handling, Tobit optimization sequence). Faster to adapt working code than rebuild from the paper description.</p>
 <hr>
-<h3 id="human-2">Human<a hidden class="anchor" aria-hidden="true" href="#human-2">#</a></h3>
+<h3 id="sam-2">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-2">#</a></h3>
 <p>Before we run it all, maybe compare a few main stats to see effect of cost change?</p>
 <hr>
 <h3 id="claude-2">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-2">#</a></h3>
@@ -1471,7 +1466,7 @@ da`]*</p>
 <p><strong>Facility tiers: perfectly stable</strong> — identical coefficients, as expected since facility tier definitions didn&rsquo;t change.</p>
 <p>The story holds on the main specification (continuous interaction, individual sports), but the tier-based and two-stage WLS results are weaker with the compressed cost range. The continuous model becomes even more important as the primary specification. Want to proceed with the full pipeline rerun, or adjust anything first?</p>
 <hr>
-<h3 id="human-3">Human<a hidden class="anchor" aria-hidden="true" href="#human-3">#</a></h3>
+<h3 id="sam-3">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-3">#</a></h3>
 <p>If you adjust the tier definition to make more sense, will that change the results.</p>
 <hr>
 <h3 id="claude-3">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-3">#</a></h3>
@@ -1489,7 +1484,7 @@ impor`]*</p>
 <p><strong>Bottom line:</strong> Tier-based analysis was a useful heuristic for v0.92&rsquo;s wide cost range but is the wrong tool for v0.93&rsquo;s compressed range. The continuous specification (Gini × ln(total_cost)) is now unambiguously the primary specification. Report the tier results as a secondary check, note that the compressed cost range limits power, but the continuous interaction doesn&rsquo;t have this problem.</p>
 <p>The tier sensitivity table could still go in the paper as robustness — it shows the direction is robust to any reasonable boundary — but the headline should be the continuous interaction. Want to proceed with the full pipeline rerun using continuous cost as the primary spec?</p>
 <hr>
-<h3 id="human-4">Human<a hidden class="anchor" aria-hidden="true" href="#human-4">#</a></h3>
+<h3 id="sam-4">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-4">#</a></h3>
 <p>What happens when you exclude the two outliers? Sailing and equestrian</p>
 <hr>
 <h3 id="claude-4">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-4">#</a></h3>
@@ -1503,7 +1498,7 @@ impor`]*</p>
 <p><strong>WLS two-stage is dead either way</strong> — slope ≈ 0, R²≈ 0 with or without them. The per-sport betas are too noisy relative to the compressed v0.93 cost range for a second-stage regression to find anything.</p>
 <p>The practical implication: the v0.93 continuous interaction result (p=0.054–0.075) is not driven by these two outliers in the full sample, but the upper-GDP result is somewhat dependent on Sailing providing cost variation at the top end. This is worth flagging as a robustness note — the gradient lives in the middle of the distribution, not in extreme sports. It also argues for keeping both sports in rather than excluding them.</p>
 <hr>
-<h3 id="human-5">Human<a hidden class="anchor" aria-hidden="true" href="#human-5">#</a></h3>
+<h3 id="sam-5">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-5">#</a></h3>
 <p>What about gini results after gdp effect of cost of facility.</p>
 <hr>
 <h3 id="claude-5">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-5">#</a></h3>
@@ -1542,7 +1537,7 @@ impor`]*</p>
 <p><strong>The practical implication for the paper:</strong> The cleanest specification for the two-channel test uses equipment-only cost for the Gini interaction and facility tier for the GDP interaction. Total household cost muddies the separation because it contains facility access costs. This actually makes conceptual sense — equipment cost is the purest measure of what falls on the household, while facility tier captures the institutional/infrastructure barrier.</p>
 <p>Want me to build this into the full pipeline as the primary two-channel specification?</p>
 <hr>
-<h3 id="human-6">Human<a hidden class="anchor" aria-hidden="true" href="#human-6">#</a></h3>
+<h3 id="sam-6">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-6">#</a></h3>
 <p>One could argue that facility acces is already included in facility cost, look at total minus facility access</p>
 <hr>
 <h3 id="claude-6">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-6">#</a></h3>
@@ -1583,7 +1578,7 @@ impor`]*</p>
 <p><strong>E+C+Co (no facility) is the natural &ldquo;household barrier&rdquo; measure</strong> — it&rsquo;s what falls on the family regardless of infrastructure. And it&rsquo;s actually the strongest standalone result in the upper half (β=−2.63, p=0.026). Equipment-only is cleanest in the horse race but arguably too narrow conceptually — coaching costs are a real household barrier too.</p>
 <p>For the paper, I&rsquo;d suggest E+C+Co as the primary Gini interaction variable, with equipment-only as robustness showing zero confounding. The argument writes itself: facility access costs are captured by the facility tier dimension (GDP channel), while equipment + coaching + competition costs are the pure household barrier (Gini channel).</p>
 <hr>
-<h3 id="human-7">Human<a hidden class="anchor" aria-hidden="true" href="#human-7">#</a></h3>
+<h3 id="sam-7">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-7">#</a></h3>
 <p>It is actually not that clean, but we leave it there until we right, facility cost is a household barrier if paid by household, but probably once built the households only pay running costs?</p>
 <hr>
 <h3 id="claude-7">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-7">#</a></h3>
@@ -1592,7 +1587,7 @@ impor`]*</p>
 <p>The honest position for the paper is probably: equipment-only gives the cleanest separation and zero confounding, E+C+Co is the broader household measure and still works well (especially upper half), total cost includes some double-counting with facility tier. Report all three, let the reader see the gradient. Don&rsquo;t overclaim clean separation on the total measure.</p>
 <p>Park it for the writing phase. Shall we move to the full pipeline rerun?</p>
 <hr>
-<h3 id="human-8">Human<a hidden class="anchor" aria-hidden="true" href="#human-8">#</a></h3>
+<h3 id="sam-8">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-8">#</a></h3>
 <p>Yes do.</p>
 <hr>
 <h3 id="claude-8">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-8">#</a></h3>
@@ -1616,7 +1611,7 @@ from scipy import stats, opti`]*</p>
 <p><strong>Two-stage WLS is dead.</strong> The compressed cost range means per-sport betas can&rsquo;t recover a slope in the second stage. Single-stage continuous interaction is now unambiguously the primary specification. The tier-based analysis also weakened (p≈0.06 at best). Both are consequences of the cost compression — not a problem with the findings, just means the continuous model is the right tool.</p>
 <p><strong>Tobit confirms</strong> everything for the full sample (all p&lt;0.001) but only converges without sport FE, same as v0.92.</p>
 <hr>
-<h3 id="human-9">Human<a hidden class="anchor" aria-hidden="true" href="#human-9">#</a></h3>
+<h3 id="sam-9">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-9">#</a></h3>
 <p>I think, very interesting results. One possible explanation is that the other components than equipment is sponsored and thus has less effect on results</p>
 <hr>
 <h3 id="claude-9">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-9">#</a></h3>
@@ -1625,7 +1620,7 @@ from scipy import stats, opti`]*</p>
 <p>This also explains why total cost attenuates 30% in the horse race but equipment doesn&rsquo;t attenuate at all — the facility access and coaching components are capturing variation that belongs to the GDP/institutional channel, not the inequality/household channel.</p>
 <p>For the paper, this could be a clean paragraph in the Discussion. The four-component decomposition was built for measurement accuracy, but it also reveals which cost component drives the inequality mechanism: the one component that can&rsquo;t be socialised away. That&rsquo;s a nice result — it wasn&rsquo;t designed to test this, it fell out of the analysis.</p>
 <hr>
-<h3 id="human-10">Human<a hidden class="anchor" aria-hidden="true" href="#human-10">#</a></h3>
+<h3 id="sam-10">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-10">#</a></h3>
 <p>I am wondering a little now about the setup of the paper. It is possible we should do the first part only on GDP/capita. And introduce both Gini and GGi in second part?</p>
 <hr>
 <h3 id="claude-10">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-10">#</a></h3>
@@ -1636,7 +1631,7 @@ from scipy import stats, opti`]*</p>
 <p>I&rsquo;d keep the current structure. The Gini story is the paper&rsquo;s contribution. GDP × facility tier is the supporting evidence that validates the two-dimensional cost classification as capturing distinct channels. If you pull GDP out into its own paper, the Gini paper loses its strongest robustness result (the horse race showing zero confounding). And you&rsquo;d need GGI results in hand before committing to a structure that depends on them.</p>
 <p>But if the GGI results turn out to also interact with equipment cost and not facility cost, then you&rsquo;d have a genuinely elegant Part 2: &ldquo;both distributional variables operate through the same household cost channel, while absolute wealth operates through the infrastructure channel.&rdquo; At that point, a combined Gini+GGI paper with GDP as the contrast could work. Worth revisiting once you have the GGI numbers.</p>
 <hr>
-<h3 id="human-11">Human<a hidden class="anchor" aria-hidden="true" href="#human-11">#</a></h3>
+<h3 id="sam-11">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-11">#</a></h3>
 <p>Let us run the GGI part also now before we conclude. The setup could be the same as for Gini. Then after you have returned and reported. We could eventually look at Gini/GGI interaction</p>
 <hr>
 <h3 id="claude-11">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-11">#</a></h3>
@@ -1664,7 +1659,7 @@ from scipy import stats, opti`]*</p>
 <p><strong>Bottom line for paper structure:</strong> GGI has a real cost gradient but it operates more cleanly on total points than on women-specific points. It partially overlaps with Gini in the upper half. In the full sample, all three channels — Gini×equipment, GGI×equipment, GDP×facility — are jointly identifiable. This supports the restructured paper idea where GDP × facility is established first, then both distributional variables are introduced together against the household cost dimension.</p>
 <p>Want to look at the GGI-Gini interaction more closely, or move to paper restructuring?</p>
 <hr>
-<h3 id="human-12">Human<a hidden class="anchor" aria-hidden="true" href="#human-12">#</a></h3>
+<h3 id="sam-12">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-12">#</a></h3>
 <p>Have we looked at Gini separate for men and women?</p>
 <hr>
 <h3 id="claude-13">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-13">#</a></h3>
@@ -1687,7 +1682,7 @@ impor`]*</p>
 <p><strong>Cross-referencing with GGI results:</strong> GGI × cost works on total points (p=0.003) but not women&rsquo;s points (p=0.111). Gini × cost works on both total and women&rsquo;s points. So income inequality has a direct gendered effect through cost barriers, while gender equality operates more broadly (both genders benefit from gender-equal societies in expensive sports). Different mechanisms entirely.</p>
 <p>This is worth a section in the paper. Do you want to dig into the Gini/GGI interaction now, or are you ready to think about paper structure?</p>
 <hr>
-<h3 id="human-13">Human<a hidden class="anchor" aria-hidden="true" href="#human-13">#</a></h3>
+<h3 id="sam-13">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-13">#</a></h3>
 <p>I think we should finish this and also look at gdp effect per gender?</p>
 <hr>
 <h3 id="claude-14">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-14">#</a></h3>
@@ -1763,7 +1758,7 @@ impor`]*</p>
 <p><strong>GGI with Gini control:</strong> In the upper half, GGI × equip on men survives the Gini control (β=+28.1, p=0.039) while Gini × equip on women survives the GGI control (β=−1.607, p=0.010). They&rsquo;re identifying different things.</p>
 <p>This is a genuinely interesting finding. The three channels have gendered signatures: GDP × facility helps men more, Gini × equipment hurts women more, and GGI × equipment helps men (counterintuitively). Want to think about paper structure now?</p>
 <hr>
-<h3 id="human-14">Human<a hidden class="anchor" aria-hidden="true" href="#human-14">#</a></h3>
+<h3 id="sam-14">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-14">#</a></h3>
 <p>Yes.</p>
 <hr>
 <h3 id="claude-15">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-15">#</a></h3>
@@ -1796,7 +1791,7 @@ impor`]*</p>
 <p>Target journal implications: Journal of International Economics might want just the Gini story. A broader paper fits better in Journal of Sports Economics, European Economic Review, or even World Development where the development-as-capabilities angle would resonate.</p>
 <p>What&rsquo;s your instinct — single integrated paper or keep them separate?</p>
 <hr>
-<h3 id="human-15">Human<a hidden class="anchor" aria-hidden="true" href="#human-15">#</a></h3>
+<h3 id="sam-15">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-15">#</a></h3>
 <p>Is it two papers?</p>
 <hr>
 <h3 id="claude-16">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-16">#</a></h3>
@@ -1818,7 +1813,7 @@ impor`]*</p>
 <p>Paper 1 is nearly written. Paper 2 needs the GGI results fleshed out and the joint model as its centrepiece. Paper 2 can cite Paper 1 for the cost classification and the Gini baseline, then extend to the gender dimensions.</p>
 <p>The alternative is one paper with the three-channel table as the climax. But that&rsquo;s a lot to ask a reviewer to digest, and you get two publications instead of one from essentially the same dataset.</p>
 <hr>
-<h3 id="human-16">Human<a hidden class="anchor" aria-hidden="true" href="#human-16">#</a></h3>
+<h3 id="sam-16">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-16">#</a></h3>
 <p>I think the first paper has a lot about how we have defined the cost. And we test what works as household barriers. If we could find data on how the other costs are socialized in a semiobjective sense we could even check the mechanism?</p>
 <hr>
 <h3 id="claude-17">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-17">#</a></h3>
@@ -1831,7 +1826,7 @@ impor`]*</p>
 <p>This could be a section in Paper 1 or even a standalone extension. But it&rsquo;s probably more realistic as a few case studies — Norway vs USA, Germany vs UK — showing the subsidy wedge in concrete numbers for a few sports, then linking back to the regression results. Section 7.2 in the current draft already gestures at this with the cost socialisation discussion.</p>
 <p>Do you want to try sourcing some of this data now, or flag it as future work and focus on getting Paper 1 into shape?</p>
 <hr>
-<h3 id="human-17">Human<a hidden class="anchor" aria-hidden="true" href="#human-17">#</a></h3>
+<h3 id="sam-17">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-17">#</a></h3>
 <p>I think if we could dive into the outliers on both sides in the non-equipment diagrams and show a large difference in subsidizing it would be strong indication?</p>
 <hr>
 <h3 id="claude-18">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-18">#</a></h3>
@@ -1843,7 +1838,7 @@ impor`]*</p>
 from scipy import stats
 impor`]*</p>
 <hr>
-<h3 id="human-18">Human<a hidden class="anchor" aria-hidden="true" href="#human-18">#</a></h3>
+<h3 id="sam-18">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-18">#</a></h3>
 <p>I was thinking more about countries. Which countries are better and worse than what should be expected?</p>
 <hr>
 <h3 id="claude-19">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-19">#</a></h3>
@@ -1883,7 +1878,7 @@ import statsmodels.api as sm
 <p>The Norway finding is unexpected and interesting. Norway&rsquo;s Verein system heavily subsidises participation but their high-performance funding in expensive individual sports may be less targeted than the UK/NZ/Korea model. The breddeidrett (mass participation) philosophy may not translate into elite results in expensive sports as efficiently as the targeted systems.</p>
 <p>This can&rsquo;t prove the subsidisation mechanism — you&rsquo;d need actual spending data — but the pattern is consistent. The countries known for targeted high-performance investment in expensive sports are on the right side, the countries with privatised or mass-participation models are on the left. That&rsquo;s a strong qualitative case study for the Discussion section, even without formal subsidisation data.</p>
 <hr>
-<h3 id="human-19">Human<a hidden class="anchor" aria-hidden="true" href="#human-19">#</a></h3>
+<h3 id="sam-19">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-19">#</a></h3>
 <p>I thought more about the total points. There I guess Norway is one of the top performers, perhaps targetting expensive sports with subsidies are just not smart?</p>
 <hr>
 <h3 id="claude-20">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-20">#</a></h3>
@@ -1896,7 +1891,7 @@ import statsmodels.api as sm
 <p>This reframes the paper&rsquo;s discussion section. The Gini gradient isn&rsquo;t just saying &ldquo;inequality hurts in expensive sports&rdquo; — it&rsquo;s saying that <em>you don&rsquo;t need targeted subsidies if your society is equal enough</em>. The broad participation base that comes from low inequality naturally feeds into expensive sports too, because families can afford equipment across the range. Countries with high inequality need targeted programmes to compensate, and those programmes work (UK, Australia) but they&rsquo;re treating the symptom rather than the cause.</p>
 <p>That&rsquo;s a much more interesting policy implication than &ldquo;subsidise expensive sports.&rdquo;</p>
 <hr>
-<h3 id="human-20">Human<a hidden class="anchor" aria-hidden="true" href="#human-20">#</a></h3>
+<h3 id="sam-20">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-20">#</a></h3>
 <p>I am not sure of the explanation, and unsure where we go from here. But a small table of overperformers/underperformers total/low/higg cost team/duel/individual is interesting. Feel we have enough for 1 paper before we go to gini/GGI. Can you check what is earlier published on this?</p>
 <hr>
 <h3 id="claude-21">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-21">#</a></h3>
@@ -1927,7 +1922,7 @@ import statsmodels.api as sm
 <p>Your paper&rsquo;s positioning is clear: Geloso &amp; Kufenko showed inequality matters conditionally (on economic freedom). You show it matters conditionally on <em>sport cost</em> — and that this resolves their aggregate finding by identifying the mechanism (household barriers in expensive sports). The two-channel separation (GDP × facilities vs Gini × equipment) is a clean theoretical contribution that nobody has attempted. The Grechyna &amp; Grechyn chess-tennis result is supporting evidence from a completely different methodology.</p>
 <p>The paper has enough for a strong single contribution without GGI. The GGI and gender decomposition can be Paper 2.</p>
 <hr>
-<h3 id="human-21">Human<a hidden class="anchor" aria-hidden="true" href="#human-21">#</a></h3>
+<h3 id="sam-21">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-21">#</a></h3>
 <p>Ok. First let us update the draft paper to v0.94. Then I want to discuss if we should give the facility cost and update also?</p>
 <hr>
 <h3 id="claude-23">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-23">#</a></h3>
@@ -1956,7 +1951,7 @@ import statsmodels.api as sm
 <p>The question is whether to elevate it to a co-equal finding. Arguments for: the two-channel separation is genuinely novel and a clean result (near-zero mutual attenuation). Arguments against: &ldquo;rich countries have better facilities&rdquo; is not surprising on its own; it only becomes interesting as a foil for the Gini result. And the GDP × facility tier interaction, while significant for all sports, is weaker within individual sports alone (the facility tier range is narrower there).</p>
 <p>My read: keep it as currently structured — essential supporting evidence for the Gini story, not an independent headline. The paper title stays focused on inequality. The two-channel separation goes in the robustness section as the key identification argument. If a referee wants more on it, that&rsquo;s easy to expand. What do you think?</p>
 <hr>
-<h3 id="human-22">Human<a hidden class="anchor" aria-hidden="true" href="#human-22">#</a></h3>
+<h3 id="sam-22">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-22">#</a></h3>
 <p>need source for this: Countries KNOWN for targeted high-performance investment in expensive sports (Great Britain, New Zealand, South Korea). Do we know that:(Norway, Denmark) achieve comparable per-capita performance without targeted investment</p>
 <hr>
 <h3 id="claude-26">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-26">#</a></h3>
@@ -1996,7 +1991,7 @@ import statsmodels.api as sm
 <p><strong>Not sourceable:</strong> That Denmark has a comparable model. Drop Denmark from the claim.</p>
 <p>Want me to revise Section 7.3 with proper citations now?</p>
 <hr>
-<h3 id="human-23">Human<a hidden class="anchor" aria-hidden="true" href="#human-23">#</a></h3>
+<h3 id="sam-23">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-23">#</a></h3>
 <p>What I still does not see is documentation that UK et al targets expensive sports</p>
 <hr>
 <h3 id="claude-28">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-28">#</a></h3>
@@ -2014,7 +2009,7 @@ import statsmodels.api as sm
 <p>I think the fix is to rewrite Section 7.3 as descriptive case studies rather than a mechanism claim. Present the residual table, note the funding structures as context, and let the reader draw the connection. Flag the sport-by-sport funding data gap as a limitation and opportunity for future work.</p>
 <p>Want me to draft the revised section?</p>
 <hr>
-<h3 id="human-24">Human<a hidden class="anchor" aria-hidden="true" href="#human-24">#</a></h3>
+<h3 id="sam-24">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-24">#</a></h3>
 <p>I know without source that Norway also have programs giving potential goldwinners support. What you are implicating is that in expensive sports some countries give more. I see no compelling evidence for that in the sources?</p>
 <hr>
 <h3 id="claude-29">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-29">#</a></h3>
@@ -2024,7 +2019,7 @@ import statsmodels.api as sm
 <p>The Norway &ldquo;breddeidrett&rdquo; story is well-sourced as a youth participation philosophy. The claim that this translates into specific expensive-sport underperformance relative to a targeted system is our inference, not sourced fact.</p>
 <p>I&rsquo;d strip Section 7.3 down to: here&rsquo;s the residual table, here&rsquo;s that it&rsquo;s orthogonal to our predictors, here are some possible explanations including funding model differences — flagged as speculative — and here&rsquo;s what data you&rsquo;d need to test it (sport-by-sport public funding allocation across countries).</p>
 <hr>
-<h3 id="human-25">Human<a hidden class="anchor" aria-hidden="true" href="#human-25">#</a></h3>
+<h3 id="sam-25">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-25">#</a></h3>
 <p>It could also perhaps more probable be sponsor opportunities?</p>
 <hr>
 <h3 id="claude-30">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-30">#</a></h3>
@@ -2034,7 +2029,7 @@ import statsmodels.api as sm
 <p>But we can&rsquo;t test any of this either. We don&rsquo;t have sport-by-sport sponsorship data across countries.</p>
 <p>The honest move is to present the residual table as a descriptive finding, acknowledge it&rsquo;s orthogonal to our model predictors, list candidate explanations — sport funding allocation, private sponsorship structures, historical tradition, geographic advantage — without privileging any of them, and note the data requirements for testing each. No storytelling beyond what the data supports.</p>
 <hr>
-<h3 id="human-26">Human<a hidden class="anchor" aria-hidden="true" href="#human-26">#</a></h3>
+<h3 id="sam-26">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-26">#</a></h3>
 <p>Then you would have countries with a large sponsor market (rich, large) do relatively better in expensive sports?</p>
 <hr>
 <h3 id="claude-31">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-31">#</a></h3>
@@ -2043,7 +2038,7 @@ import statsmodels.api as sm
 <p>The residual table is a nice descriptive finding. It shows country-level heterogeneity that&rsquo;s orthogonal to our model. Full stop. We should present it as that and resist the temptation to tell a causal story. The paper&rsquo;s causal contribution is the Gini × equipment cost gradient and the two-channel separation. The residuals are supplementary — they show there&rsquo;s unexplained variance that future work with sport-level funding data could address.</p>
 <p>Want me to revise Section 7.3 to just present the table cleanly with a brief &ldquo;future work&rdquo; paragraph, dropping all the interpretive narrative about targeting versus egalitarianism?</p>
 <hr>
-<h3 id="human-27">Human<a hidden class="anchor" aria-hidden="true" href="#human-27">#</a></h3>
+<h3 id="sam-27">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-27">#</a></h3>
 <p>I think so. Take a look through if you have written similar unverifiable statements elsewhere also.</p>
 <hr>
 <h3 id="claude-32">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-32">#</a></h3>
@@ -2082,7 +2077,7 @@ import statsmodels.api as sm
 <p><strong>Conclusion</strong>: Removed targeting/egalitarian policy claim.</p>
 <p><strong>Outline note</strong>: Updated to match.</p>
 <hr>
-<h3 id="human-28">Human<a hidden class="anchor" aria-hidden="true" href="#human-28">#</a></h3>
+<h3 id="sam-28">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-28">#</a></h3>
 <p>First present latest version. Then look at</p>
 <p>&ldquo;Of 2,179 events, 73 had unknown gender; 72 were inferred from event names and 1 (Tornado sailing) classified as Mixed. Gender distribution: 1,144 Men, 948 Women, 87 Mixed.&rdquo; Is there any event you are unsure of, if not drop sentence.</p>
 <p>Is these the statistics the other papers are also using_</p>
@@ -2128,7 +2123,7 @@ import statsmodels.api as sm
 <p>What we should check: the tier <em>boundaries</em> (€0.5M / €2M / €10M) are somewhat arbitrary. Section 6.1 tests equipment tier boundary sensitivity but I don&rsquo;t see equivalent sensitivity testing for facility tier boundaries. That&rsquo;s a gap — but the solution is to add a robustness check, not to drop the variable.</p>
 <p>Shall I make these three edits now?</p>
 <hr>
-<h3 id="human-29">Human<a hidden class="anchor" aria-hidden="true" href="#human-29">#</a></h3>
+<h3 id="sam-29">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-29">#</a></h3>
 <p>Yes</p>
 <hr>
 <h3 id="claude-36">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-36">#</a></h3>
@@ -2146,7 +2141,7 @@ import statsmodels.api as sm
 </li>
 </ol>
 <hr>
-<h3 id="human-30">Human<a hidden class="anchor" aria-hidden="true" href="#human-30">#</a></h3>
+<h3 id="sam-30">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-30">#</a></h3>
 <p>6.1 I am uncomfortable with the tiers in cost, they should at least be revisited after we changed the table. We dont use the results, we do a single stage estimation_</p>
 <hr>
 <h3 id="claude-37">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-37">#</a></h3>
@@ -2183,7 +2178,7 @@ import statsmodels.api as sm
 </ul>
 <p>This also means the old &ldquo;Table 5: Tier boundary sensitivity&rdquo; can be repurposed as a comparison of continuous vs tier-based results for both dimensions, which is a more useful robustness check.</p>
 <hr>
-<h3 id="human-31">Human<a hidden class="anchor" aria-hidden="true" href="#human-31">#</a></h3>
+<h3 id="sam-31">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-31">#</a></h3>
 <p>But we should revisit the boundaries. Are there naturakl gaps in the numbers. T3 now only has two members</p>
 <hr>
 <h3 id="claude-38">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-38">#</a></h3>
@@ -2204,7 +2199,7 @@ import statsmodels.api as sm
 </ol>
 <p>Should I flag this in the draft as a decision pending the cost table rebuild, rather than trying to fix tier boundaries now with the old numbers?</p>
 <hr>
-<h3 id="human-32">Human<a hidden class="anchor" aria-hidden="true" href="#human-32">#</a></h3>
+<h3 id="sam-32">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-32">#</a></h3>
 <p>I see no point in using tiers at all in household cost. We should possibly also go through facility cost to get the kind of welldocumented costs we have for household costs</p>
 <hr>
 <h3 id="claude-39">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-39">#</a></h3>
@@ -2229,7 +2224,7 @@ import statsmodels.api as sm
 </ol>
 <p>The paper now has a clean structure: both cost dimensions should be continuous, equipment already is, facility needs upgrading. The existing facility tier results are reported as-is but acknowledged as preliminary pending the continuous specification.</p>
 <hr>
-<h3 id="human-33">Human<a hidden class="anchor" aria-hidden="true" href="#human-33">#</a></h3>
+<h3 id="sam-33">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-33">#</a></h3>
 <p>You talk a lot about horse race, is it normal to use that throughout a paper. Seems like jargon to me, ok to use once. What is alternative words_</p>
 <hr>
 <h3 id="claude-40">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-40">#</a></h3>
@@ -2243,7 +2238,7 @@ import statsmodels.api as sm
 <p>I&rsquo;d introduce it once as &ldquo;a joint specification testing both interactions simultaneously (sometimes called a &lsquo;horse race&rsquo;)&rdquo; and then just say &ldquo;joint specification&rdquo; or &ldquo;when both are included&rdquo; throughout.</p>
 <p>Done. All three instances replaced with &ldquo;joint specification&rdquo; / &ldquo;joint.&rdquo;</p>
 <hr>
-<h3 id="human-34">Human<a hidden class="anchor" aria-hidden="true" href="#human-34">#</a></h3>
+<h3 id="sam-34">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-34">#</a></h3>
 <p>In individual sports, more unequal countries outperform in cheap sports and underperform in expensive sports.</p>
 <p>that is in individual sports and relative to GDP_</p>
 <hr>
@@ -2257,13 +2252,13 @@ import statsmodels.api as sm
 <p>Line 340 is the main one that&rsquo;s imprecise. Lines 19, 362, 402 use &ldquo;overperform&rdquo; in the residual context where &ldquo;relative to the model&rdquo; is implicit/stated. Line 344 uses &ldquo;underperform&rdquo; in a hypothetical illustration which is fine.</p>
 <p>Fixed. Now reads: &ldquo;controlling for GDP, population, and other fundamentals, more unequal countries perform better than predicted in cheap sports and worse than predicted in expensive sports.&rdquo; Makes explicit that this is relative to the model, not absolute performance.</p>
 <hr>
-<h3 id="human-35">Human<a hidden class="anchor" aria-hidden="true" href="#human-35">#</a></h3>
+<h3 id="sam-35">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-35">#</a></h3>
 <p>determines whether countries can build the infrastructure some sports req. Delete can</p>
 <hr>
 <h3 id="claude-42">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-42">#</a></h3>
 <p>Done.</p>
 <hr>
-<h3 id="human-36">Human<a hidden class="anchor" aria-hidden="true" href="#human-36">#</a></h3>
+<h3 id="sam-36">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-36">#</a></h3>
 <p>For the overall. I thought you meant we saved all gender analysis for paper 2. Also on gdp and Gini. That wil make it more interesting.</p>
 <hr>
 <h3 id="claude-43">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-43">#</a></h3>
@@ -2285,7 +2280,7 @@ import statsmodels.api as sm
 <p>That&rsquo;s actually a better Paper 2 — it has both GGI and gender-decomposed Gini/GDP, giving it more substance.</p>
 <p>Shall I strip Sections 5.4 and 7.2 from the draft and move the gender content to a Paper 2 notes section at the end?</p>
 <hr>
-<h3 id="human-37">Human<a hidden class="anchor" aria-hidden="true" href="#human-37">#</a></h3>
+<h3 id="sam-37">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-37">#</a></h3>
 <p>Yes. Should we now rename and make 2 drafts. Let us do draft for article 2 as well.</p>
 <hr>
 <h3 id="claude-44">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-44">#</a></h3>
@@ -2311,7 +2306,7 @@ import statsmodels.api as sm
 <p><strong>Paper 2 (v0.1)</strong>: &ldquo;Gender, Inequality, and the Cost of Olympic Success&rdquo; — skeleton draft. Contains the gender decomposition tables and discussion moved from Paper 1 (Section 3), plus a framework for GGI × cost interactions (Section 4, marked TO BE COMPUTED). The GGI work is the new content that makes this a standalone paper rather than just a gender appendix.</p>
 <p>Paper 2&rsquo;s structure: (1) gender decomposition of Gini gradient, (2) gender decomposition of GDP × facility gradient, (3) GGI × cost interactions (new), (4) three-way Gini × cost × GGI (new). Sections 3 and 4 are what makes this publishable separately — the GGI interaction tests whether gender equality independently moderates the cost barrier, which is the parallel move to what Paper 1 did for income inequality.</p>
 <hr>
-<h3 id="human-38">Human<a hidden class="anchor" aria-hidden="true" href="#human-38">#</a></h3>
+<h3 id="sam-38">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-38">#</a></h3>
 <p>Now, I think it is time to move to a new session. Actually two, one for rebuilding the facility costs with better sources etc. But first as with the cost, what is the definition on the infrastructure we are looking at. With household cost it was youth entering the pipeline, is it the same here_</p>
 <hr>
 <h3 id="claude-45">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-45">#</a></h3>
@@ -2328,7 +2323,7 @@ import statsmodels.api as sm
 </ul>
 <p>Per-athlete would be more theoretically correct (a pool serving 200 swimmers is cheaper per athlete than a canoe slalom course serving 20), but harder to estimate and introduces assumptions about utilisation. Construction-only is simpler but ignores that some facilities are cheap to build and expensive to run (pools: heating, water treatment).</p>
 <hr>
-<h3 id="human-39">Human<a hidden class="anchor" aria-hidden="true" href="#human-39">#</a></h3>
+<h3 id="sam-39">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-39">#</a></h3>
 <p>I am not sure, I would argue that to get talent you need the pipeline but to win medals you need top of the line facilities, not everywhere but you need it_ What was in the original classification *that works well(</p>
 <hr>
 <h3 id="claude-46">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-46">#</a></h3>
@@ -2342,13 +2337,13 @@ import statsmodels.api as sm
 <p>I&rsquo;d say: keep the definition as <strong>the minimum facility a country needs to develop Olympic-competitive athletes in the sport</strong>, which is the elite training facility, not the entry-level pipeline facility. Make it explicit that this differs from the equipment cost definition by design — equipment measures the household entry barrier, facility measures the national infrastructure barrier. They&rsquo;re meant to capture different levels.</p>
 <p>Does that match your thinking?</p>
 <hr>
-<h3 id="human-40">Human<a hidden class="anchor" aria-hidden="true" href="#human-40">#</a></h3>
+<h3 id="sam-40">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-40">#</a></h3>
 <p>Yes. Can you make a handover doc to facility cost sourcing session.</p>
 <hr>
 <h3 id="claude-47">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-47">#</a></h3>
 <p>Covers: definition (elite training facility, not pipeline, not competition venue), benchmark (Central Europe), what to estimate per sport, current tier assignments, all 41 sports listed by type, sourcing strategy, output format (JSON with continuous estimates), and how it feeds into the regressions.</p>
 <hr>
-<h3 id="human-41">Human<a hidden class="anchor" aria-hidden="true" href="#human-41">#</a></h3>
+<h3 id="sam-41">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-41">#</a></h3>
 <p>Now, I want eventually to have a blog journalling the journey including transcripts of the session. But importantly also visualization from each stage. I will develop that in a separate session. Can you 1. suggest some visualizations that capture results and make a handover and 2 collect the data you output from gender analysis after the main analysis (not yet downloded) so I can download&amp;upload</p>
 <hr>
 <h3 id="claude-48">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-48">#</a></h3>
@@ -2359,10 +2354,10 @@ import statsmodels.api as sm
 <p>The gender analysis was done within the v0.92 session and the results are in the paper draft numbers, but I don&rsquo;t see evidence of separate gender-specific data files being saved to outputs for download. The gender regression results (the Table 4b numbers) were computed during that session and written into the draft text, but the underlying data files (gender-disaggregated D1 panel, per-sport gender betas, etc.) likely weren&rsquo;t exported as standalone files.</p>
 <p>Let me check the transcript for more detail:</p>
 <hr>
-<h3 id="human-42">Human<a hidden class="anchor" aria-hidden="true" href="#human-42">#</a></h3>
+<h3 id="sam-42">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-42">#</a></h3>
 <p>It was this from this session</p>
 <hr>
-<h3 id="human-43">Human<a hidden class="anchor" aria-hidden="true" href="#human-43">#</a></h3>
+<h3 id="sam-43">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-43">#</a></h3>
 <p>A lot to digest. Let me lay out the pattern across all three channels and both genders.
 GDP × facility tier by gender: The stepped GDP gradient (richer countries dominate in facility-intensive sports) is stronger for men than women. Men&rsquo;s FT4 β=+8.31 (p=0.051), women&rsquo;s FT4 β=+4.59 (p=0.278). In all sports, the men&rsquo;s gradient is much clearer (FT3 p=0.008, FT4 p=0.010 vs women&rsquo;s FT3 p=0.685, FT4 p=0.083). GDP buys facilities that benefit men&rsquo;s sport more — probably because men&rsquo;s sport infrastructure has had more investment historically.
 GDP × ln(equipment) — the &ldquo;wrong&rdquo; channel: GDP interacts with equipment cost in the full sample (β=+5.94, p=0.018 individual) but goes to zero in the upper half (β=+3.84, p=0.575). This confirms equipment cost is not the GDP channel — it only appears in the full sample because poor countries can&rsquo;t afford any sport, creating an artefact. The facility tier interaction is the real GDP mechanism.
@@ -2382,7 +2377,7 @@ This is a genuinely interesting finding. The three channels have gendered signat
 <p><strong>handover_blog_visualizations.md</strong> — Seven visualization concepts: aggregate puzzle, cost gradient scatter, two-channel heatmap, gender surprise, country residuals, research timeline, and sport cost explorer. Each with description of what it shows and what data it needs.</p>
 <p>On the data collection question: I don&rsquo;t think separate gender-specific data files were ever exported from the v0.92 session — the gender regression results went straight into the paper draft text. The underlying D1 panel with gender-disaggregated points (points_men, points_women) would need to be regenerated from the events master in a future analysis session. The numbers themselves are preserved in the reference document I just created and in the paper drafts.</p>
 <hr>
-<h3 id="human-44">Human<a hidden class="anchor" aria-hidden="true" href="#human-44">#</a></h3>
+<h3 id="sam-44">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-44">#</a></h3>
 <p>Is the analysis to be done in v0.95 clear enough_</p>
 <hr>
 <h3 id="claude-51">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-51">#</a></h3>
@@ -2391,14 +2386,14 @@ This is a genuinely interesting finding. The three channels have gendered signat
 <p>The main thing that was unclear: v0.95 isn&rsquo;t just about facility costs. The equipment cost midpoints changed during the v0.93/v0.94 sourcing work, so <strong>all regressions using ln(equipment_cost) need rerunning</strong>. The headline p-values could shift.</p>
 <p>The plan lays out four phases: data rebuild with updated costs, rerun all Paper 1 regressions, compare to v0.92, update the draft numbers. Facility cost upgrade to continuous is explicitly deferred to a later version (after the facility sourcing session).</p>
 <hr>
-<h3 id="human-45">Human<a hidden class="anchor" aria-hidden="true" href="#human-45">#</a></h3>
+<h3 id="sam-45">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-45">#</a></h3>
 <p>should it not compare to 0.94</p>
 <hr>
 <h3 id="claude-52">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-52">#</a></h3>
 <p>Yes — v0.92 was the last full analysis run, but the paper draft is v0.94 (now v0.95). The numbers in the current draft are from v0.92. So the comparison should be: rerun with updated costs, compare new results to the numbers currently in the v0.95 draft (which are the v0.92 numbers).</p>
 <p>Fixed. The comparison baseline is now the v0.95 draft (which carries the v0.92 analysis numbers).</p>
 <hr>
-<h3 id="human-46">Human<a hidden class="anchor" aria-hidden="true" href="#human-46">#</a></h3>
+<h3 id="sam-46">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-46">#</a></h3>
 <p>here is the 0.93 numbers- Is these not more recent?</p>
 <hr>
 <h3 id="claude-53">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-53">#</a></h3>
@@ -2410,7 +2405,7 @@ This is a genuinely interesting finding. The three channels have gendered signat
 <p>Fixed. The draft has v0.93 numbers, not v0.92.</p>
 <p>Important question added at the bottom: <strong>did any equipment cost midpoints actually change between v0.93 and v0.94?</strong> The v0.94 sessions were mostly about sourcing verification, paper structure, and facility cost discussions. If the equipment midpoints didn&rsquo;t change, the v0.93 regression numbers are still valid and a full rerun is only needed after the facility cost upgrade produces continuous estimates. Worth checking before spinning up an analysis session.</p>
 <hr>
-<h3 id="human-47">Human<a hidden class="anchor" aria-hidden="true" href="#human-47">#</a></h3>
+<h3 id="sam-47">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-47">#</a></h3>
 <p>I think maybe we bumped to 0.95 there are no 0.94 analysis. I planned to do the facility cost analysis as part of 0.95. I think I do that as 0.94. Uodate facility costs and compare as version 0.94. Then rerun full analysis 0.95-</p>
 <hr>
 <h3 id="claude-54">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-54">#</a></h3>
@@ -2430,7 +2425,7 @@ This is a genuinely interesting finding. The three channels have gendered signat
 </ul>
 <p>The paper draft header now notes it has v0.93 analysis numbers pending the v0.95 rerun.</p>
 <hr>
-<h3 id="human-48">Human<a hidden class="anchor" aria-hidden="true" href="#human-48">#</a></h3>
+<h3 id="sam-48">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-48">#</a></h3>
 <p>I keep you as a critical reviewer. Any comments to 0.94?</p>
 <hr>
 <h3 id="claude-55">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-55">#</a></h3>
@@ -2465,7 +2460,7 @@ This is a genuinely interesting finding. The three channels have gendered signat
 <hr>
 <p><strong>Bottom line</strong>: The v0.94 upgrade is directionally correct and improves channel separation. But the facility costs need proper sourcing before publication (which is what the handover session is for). The mass point at €25M and the pre-commitment question should be addressed in the paper. And the full-sample Gini × facility losing significance needs honest reporting.</p>
 <hr>
-<h3 id="human-49">Human<a hidden class="anchor" aria-hidden="true" href="#human-49">#</a></h3>
+<h3 id="sam-49">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-49">#</a></h3>
 <p>missed one document which answers some q</p>
 <hr>
 <h3 id="claude-56">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-56">#</a></h3>
@@ -2497,7 +2492,7 @@ This is a genuinely interesting finding. The three channels have gendered signat
 <p>The Diving note is honest and useful — &ldquo;may be controversial.&rdquo; The Canoe Slalom leverage point warning is good practice. The geographic constraint note (sailing needs coastline) is a real limitation worth mentioning in the paper.</p>
 <p>The distribution has a natural gap between Tier 3 and Tier 4: Track Cycling at €15M, then nothing until Shooting at €4M. That&rsquo;s a clean break. The Tier 1/2 boundary is less clean — continuous specification handles this better than tiers.</p>
 <hr>
-<h3 id="human-50">Human<a hidden class="anchor" aria-hidden="true" href="#human-50">#</a></h3>
+<h3 id="sam-50">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-50">#</a></h3>
 <p>I resisted the precommitment all through although 0.94 tempted me&hellip;.</p>
 <hr>
 <h3 id="claude-57">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-57">#</a></h3>
@@ -2512,7 +2507,7 @@ This is a genuinely interesting finding. The three channels have gendered signat
 <p>That means the numbers to put in the paper are from the marginal-cost specification, not the max-component one. Do we actually have those regression results? The v0.94 summary only shows the max-component version compared to v0.93 ordinal. We&rsquo;d need a third column: v0.94 marginal (using the classification document&rsquo;s own estimates including Marathon Swimming at €0.05M).</p>
 <p>Or was the v0.94 session run with both?</p>
 <hr>
-<h3 id="human-51">Human<a hidden class="anchor" aria-hidden="true" href="#human-51">#</a></h3>
+<h3 id="sam-51">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-51">#</a></h3>
 <p>should now be fixed</p>
 <hr>
 <h3 id="claude-58">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-58">#</a></h3>
@@ -2528,7 +2523,7 @@ This is a genuinely interesting finding. The three channels have gendered signat
 <p><strong>The standalone GDP × ln(facility) at p=0.166 for all sports</strong> — the summary now suggests presenting continuous in the horse race and tier-specific in the appendix. That&rsquo;s the right call. The threshold at Tier 4 is real — the jump from €4M (Shooting) to €15M (Track Cycling) to €20–25M is where the GDP separation happens.</p>
 <p><strong>One substantive question</strong>: the Gini × facility interaction is positive (+0.55, p=0.025 upper half). The paper interprets this as &ldquo;inequality also affects facility access.&rdquo; But positive means more unequal countries do <em>better</em> in facility-intensive sports, controlling for GDP. That&rsquo;s the opposite of what you&rsquo;d expect if inequality restricts facility access. Is this being driven by a few specific countries? China and Russia are both relatively unequal and have massive state sport infrastructure investment. Worth a brief note on what&rsquo;s driving this sign.</p>
 <hr>
-<h3 id="human-52">Human<a hidden class="anchor" aria-hidden="true" href="#human-52">#</a></h3>
+<h3 id="sam-52">Sam<a hidden class="anchor" aria-hidden="true" href="#sam-52">#</a></h3>
 <p>I think this is a question for the 0.95 run. Could you update the handover document with the new info?</p>
 <hr>
 <h3 id="claude-59">Claude<a hidden class="anchor" aria-hidden="true" href="#claude-59">#</a></h3>
