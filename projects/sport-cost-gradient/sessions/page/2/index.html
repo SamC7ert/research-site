@@ -1379,6 +1379,76 @@ button#theme-toggle:hover {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 33: v1.01 Results and Paper Rewrite
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary The v1.01 pipeline results were integrated into the paper. The abstract was cut twice — first removing excess simulation detail, then tightening the framing to lead with the concentration finding. The simulation section was restructured to present the 40% magnitude honestly: it reproduces the qualitative gradient but the same five countries drive both the empirical and simulated coefficients.
+Key editorial decisions: “partial existence proof” was dropped as overclaiming, team sports presented as having distinct dynamics without a claimed mechanism, and the conclusion was rewritten to emphasize concentration over the affordability hypothesis.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-10 00:00:00 +0000 UTC'>March 10, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 33: v1.01 Results and Paper Rewrite" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/33/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 34: LaTeX Formatting, Headers, Discussion Rewrite
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Coordination with a parallel LaTeX rendering session. Section headers were changed from neutral labels (“Gender decomposition”) to claims the section defends (“The gradient operates on both genders”). The discussion section was compressed — three paragraphs on persistence reduced to two, the Matthew effect reference was relocated, and repeated material from earlier sections was removed.
+Author information, significance conventions, and figure/table placement were finalized. The paper’s academic style was standardized to APA conventions.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-10 00:00:00 +0000 UTC'>March 10, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 34: LaTeX Formatting, Headers, Discussion Rewrite" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/34/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 31: Paper Revision and Simulation Optimization
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Paper methodology sections were revised for precision. The simulation underwent an optimization run: 1,000 Latin Hypercube samples across the 13-parameter space, with Phase A (allocation) and Phase B (quality) calibrated sequentially. The best-fit parameters were identified and verified with 20-seed averaging to control for stochastic noise.
+Key finding: the simulation’s Gini sensitivity is fundamentally limited by the model architecture — affordability filtering alone cannot produce gradients of the empirical magnitude because the income distribution’s tail behavior dominates over the cost threshold mechanism.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-09 00:00:00 +0000 UTC'>March 9, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 31: Paper Revision and Simulation Optimization" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/31/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 32: Simulation Parameter Search and Calibration
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Extended parameter search with stricter convergence criteria. Phase 1 explored the Latin Hypercube space; Phase 2 refined promising regions with Nelder-Mead optimization; Phase 3 verified the top candidates with multi-seed runs. The optimization landscape showed a broad plateau — many parameter combinations produced similar fit quality, suggesting the model structure rather than specific parameters is the binding constraint.
+The final calibrated simulation was documented with all parameters, seeds, and intermediate outputs for the Stage 3 reproduction test.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-09 00:00:00 +0000 UTC'>March 9, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 32: Simulation Parameter Search and Calibration" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/32/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 29: Stage 2 Reproduction, Figures, Gemini Review
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Stage 2 blind reproduction was run: an independent Claude session received the redacted paper and data, built a pipeline from scratch, and filled in all blanked values. The first round identified specification gaps. Figures and tables were regenerated for the paper.
+The paper was uploaded to Gemini (Google) for independent review of prior art coverage, methodology, statistical rigor, and narrative framing. Gemini identified several missing references and suggested structural improvements to the discussion section. These were incorporated into subsequent revisions.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-08 00:00:00 +0000 UTC'>March 8, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 29: Stage 2 Reproduction, Figures, Gemini Review" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/29/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Session 30: Simulation Deep Dive — Mechanisms and Concentration
     </h2>
   </header>
@@ -1444,75 +1514,6 @@ Rather than patching the paper with reproducibility numbers (an approach briefly
   </div>
   <footer class="entry-footer"><span title='2026-03-05 00:00:00 +0000 UTC'>March 5, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session 25: Pipeline Divergence and v1.00 Data Preparation" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/25/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 26: v1.00 Pipeline Rerun and Paper Draft
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary The v1.00 pipeline was rebuilt from the v0.99 scripts with five known fixes applied: time-invariant GDP median split, country-clustered standard errors throughout, log-log population elasticity, two-lag persistence (lag2 computed as second-previous game), and religion as cultural proximity control. The pipeline produced a complete results set for comparison against v0.99.4.
-Results were broadly consistent but several coefficients shifted at the second decimal. The persistence correlation dropped from r = 0.88 to r = 0.87 — the old number had been computed on a different subsample. The paper draft was updated with new values and the methodology section was tightened to specify the exact GDP split procedure.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-05 00:00:00 +0000 UTC'>March 5, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 26: v1.00 Pipeline Rerun and Paper Draft" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/26/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 23: Paper Restructuring and the Lag × Facility Discovery
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Major restructuring of the paper from v0.99.2 through v0.99.3. The narrative was rebuilt around a single game-level panel throughout, replacing the earlier structure that toggled between two-period and game-level analyses. Six discussion points were resolved: aggregate puzzle rewritten with game-level data, team sports kept as separate dynamics with no claimed mechanism, simulation as standalone section, two-period results demoted to robustness, and p-value shift acknowledged as a non-issue since game-level is now primary.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-04 00:00:00 +0000 UTC'>March 4, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 23: Paper Restructuring and the Lag × Facility Discovery" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/23/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 22: Soviet Analysis and Project Journal
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Tested whether Soviet legacy countries show different persistence patterns. Found that the Soviet coefficient is barely absorbed by lag controls (22% attenuation in upper GDP, 4% in lower). Soviet institutional advantage operates through an independent channel, not just sport-specific persistence.
-Identified Soviet countries by GDP half: 10 upper-GDP (mostly EU accession &#43; Russia), 16 lower-GDP (Central Asian republics, Balkans, China). The centralized sport system created patterns that neither market-based development nor accumulated momentum fully explain.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-03 00:00:00 +0000 UTC'>March 3, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 22: Soviet Analysis and Project Journal" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/22/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 21: Year-Specific Predictors
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Replaced period-averaged GDP, population, and Gini with year-specific values from the World Bank for each Olympic year. Estonia now shows 9 unique GDP values ($5,872 in 1992 to $49,969 in 2024) instead of a single period average. Pulled data for 71 countries, patched gaps for 6 GDP-missing and 4 Gini-missing countries.
-Key changes: P-values improved (more identifying variation), GDP x facility became significant at 5% (p=.036), attenuation from lag increased to 25%. Simulation comparison weakened to ~28% due to within-country GDP variation the simulation architecture cannot model.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-02 00:00:00 +0000 UTC'>March 2, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 21: Year-Specific Predictors" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/21/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 20: Game-Level Panel with Persistence
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Built the game-level panel dataset (71 countries x 41 sports x 9 Games) with lagged Olympic points as persistence control. Scraped Barcelona 1992 and Atlanta 1996 as lag seeds. Ran 8-analysis pipeline with clustered standard errors: baseline gradient, lag-controlled gradient, stepwise decomposition, four-way interaction, facility channel, team sports, gender decomposition, and simulation comparison.
-Key result: 75% of the Gini x cost gradient survives persistence control. The coefficient attenuates from -0.875 (p=.008) to -0.653 (p=.016) when lagged points are added. The lag coefficient itself is massive (beta = 5.83, p &lt; .001), confirming persistence is real — but the cost mechanism is primarily contemporaneous.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-01 00:00:00 +0000 UTC'>March 1, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 20: Game-Level Panel with Persistence" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/20/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

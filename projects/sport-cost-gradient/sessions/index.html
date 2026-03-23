@@ -1379,6 +1379,76 @@ button#theme-toggle:hover {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 44: NCAA Decomposition and Simpson&#39;s Paradox
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary This session filled a placeholder in the paper by computing the US empirical-vs-simulated gap by sport, broken down by NCAA status. The result overturned the original framing: the data does not show a clean “US overperforms in cheap sports” pattern. Instead, the US overperforms the simulation in one sport (swimming, &#43;366 points) and underperforms across most non-NCAA sports (-645 aggregate). The NCAA aggregate is almost exactly matched (-14).
+A Simpson’s Paradox was discovered: within each NCAA/non-NCAA group, the slope of US points vs equipment cost is positive or flat, but pooling across groups produces a negative slope. The between-group difference (NCAA sports are cheaper on average and the US dominates them) creates the appearance of a cost gradient that does not exist within groups.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-20 00:00:00 +0000 UTC'>March 20, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 44: NCAA Decomposition and Simpson&#39;s Paradox" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/44/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 42: Stage 2 Reproduction Round 1
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Stage 2 blind reproduction: a fresh Claude instance received the redacted paper (all numerical results blanked) and input data, then rebuilt the analytical pipeline from the methods description alone. A comparison script checked 101 values against answer keys.
+Round 1 result: 86 pass, 15 fail (85.1%). The 15 failures traced to 6 root causes: gender lag computation order (5 failures), two-period aggregation differences (4), cost classification field name fallbacks (3), persistence sample definition (1), two-way clustering bucket crossing (1), and Gini-population correlation base sample (1).
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-16 00:00:00 +0000 UTC'>March 16, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 42: Stage 2 Reproduction Round 1" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/42/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 43: Stage 2 Reproduction Round 2
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Second blind reproduction round using the corrected v1.04.1 redacted paper. Result: 94 pass, 8 fail (93.7%, adjusting for one comparison script bug).
+Round 1 fixes were fully effective: gender failures dropped from 5 to 0, two-period from 4 to 0, two-way clustering from 1 to 0. Remaining failures were: persistence sample (reproducer error, included non-individual sports), cost classification (41 vs 47 sports, reproducer matched all common sports), Tobit convergence (statsmodels vs custom MLE), and Gini-population correlation (population vs ln(population)).
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-16 00:00:00 +0000 UTC'>March 16, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 43: Stage 2 Reproduction Round 2" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/43/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 40: v1.04 Cost Pool Model and Calibration
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary The v1.03 stage 3 verification revealed that the old simulation had been assessed wrongly: it failed to reproduce the concentration pattern and used a feedback mechanism (raw top-6 points) that did not match how Olympic performance propagates. This led to a redesigned simulator with two key changes: experience points (positions 1-30 feed back, not just top 6) and cost-based pool selection making the affordability filter structurally coherent.
+CMA-ES optimization in r2 mode 3 with 100-seed validation produced the final parameter set. The improved simulation reproduced 74% of the empirical gradient (simulated -0.50 vs empirical -0.68), with all 100 seeds negative (p = 0.01).
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-15 00:00:00 +0000 UTC'>March 15, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 40: v1.04 Cost Pool Model and Calibration" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/40/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 41: US Concentration Analysis and Paper Rewrite
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary With the cost pool model calibrated, this session analyzed the concentration of the empirical gradient. Removing the United States alone reduced the simulation-empirical gap by 87% (from 0.22 to 0.03 in the upper GDP half). The affordability mechanism explains virtually all of the gradient outside the US.
+The US contributes 0.46 to the empirical gradient. The simulation accounts for 0.27 (the affordability part). The remaining 0.19 is attributable to institutional channels, primarily the NCAA college athletics system ($4B&#43; in scholarships, 196,000 student-athletes). Sport-level comparison showed the US earns &#43;163 more points than the simulation predicts in NCAA sports and -612 fewer in non-NCAA sports.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-15 00:00:00 +0000 UTC'>March 15, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 41: US Concentration Analysis and Paper Rewrite" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/41/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Session 39: Pre-Review Polish, r1.7, QA/QC, Transcript Cleanup
     </h2>
   </header>
@@ -1445,76 +1515,6 @@ Cross-references between sections were audited. The two-period results were posi
   </div>
   <footer class="entry-footer"><span title='2026-03-11 00:00:00 +0000 UTC'>March 11, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session 36: Paper r1.1–r1.3, FE in Simulation" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/36/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 33: v1.01 Results and Paper Rewrite
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary The v1.01 pipeline results were integrated into the paper. The abstract was cut twice — first removing excess simulation detail, then tightening the framing to lead with the concentration finding. The simulation section was restructured to present the 40% magnitude honestly: it reproduces the qualitative gradient but the same five countries drive both the empirical and simulated coefficients.
-Key editorial decisions: “partial existence proof” was dropped as overclaiming, team sports presented as having distinct dynamics without a claimed mechanism, and the conclusion was rewritten to emphasize concentration over the affordability hypothesis.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-10 00:00:00 +0000 UTC'>March 10, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 33: v1.01 Results and Paper Rewrite" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/33/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 34: LaTeX Formatting, Headers, Discussion Rewrite
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Coordination with a parallel LaTeX rendering session. Section headers were changed from neutral labels (“Gender decomposition”) to claims the section defends (“The gradient operates on both genders”). The discussion section was compressed — three paragraphs on persistence reduced to two, the Matthew effect reference was relocated, and repeated material from earlier sections was removed.
-Author information, significance conventions, and figure/table placement were finalized. The paper’s academic style was standardized to APA conventions.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-10 00:00:00 +0000 UTC'>March 10, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 34: LaTeX Formatting, Headers, Discussion Rewrite" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/34/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 31: Paper Revision and Simulation Optimization
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Paper methodology sections were revised for precision. The simulation underwent an optimization run: 1,000 Latin Hypercube samples across the 13-parameter space, with Phase A (allocation) and Phase B (quality) calibrated sequentially. The best-fit parameters were identified and verified with 20-seed averaging to control for stochastic noise.
-Key finding: the simulation’s Gini sensitivity is fundamentally limited by the model architecture — affordability filtering alone cannot produce gradients of the empirical magnitude because the income distribution’s tail behavior dominates over the cost threshold mechanism.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-09 00:00:00 +0000 UTC'>March 9, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 31: Paper Revision and Simulation Optimization" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/31/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 32: Simulation Parameter Search and Calibration
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Extended parameter search with stricter convergence criteria. Phase 1 explored the Latin Hypercube space; Phase 2 refined promising regions with Nelder-Mead optimization; Phase 3 verified the top candidates with multi-seed runs. The optimization landscape showed a broad plateau — many parameter combinations produced similar fit quality, suggesting the model structure rather than specific parameters is the binding constraint.
-The final calibrated simulation was documented with all parameters, seeds, and intermediate outputs for the Stage 3 reproduction test.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-09 00:00:00 +0000 UTC'>March 9, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 32: Simulation Parameter Search and Calibration" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/32/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 29: Stage 2 Reproduction, Figures, Gemini Review
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Stage 2 blind reproduction was run: an independent Claude session received the redacted paper and data, built a pipeline from scratch, and filled in all blanked values. The first round identified specification gaps. Figures and tables were regenerated for the paper.
-The paper was uploaded to Gemini (Google) for independent review of prior art coverage, methodology, statistical rigor, and narrative framing. Gemini identified several missing references and suggested structural improvements to the discussion section. These were incorporated into subsequent revisions.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-08 00:00:00 +0000 UTC'>March 8, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 29: Stage 2 Reproduction, Figures, Gemini Review" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/29/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
