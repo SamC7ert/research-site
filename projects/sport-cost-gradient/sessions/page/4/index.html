@@ -1379,6 +1379,63 @@ button#theme-toggle:hover {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 18: Affordability Curves and Persistence
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Tested five different affordability curve shapes (linear, moderate convex, strong convex, lognormal standard, lognormal fat-tail) to see whether the functional form of the income-to-participation mapping could close the gap between simulated and empirical Gini×cost gradients. None succeeded. Then introduced rolling persistence from previous Olympic Games, which closed the gap almost completely.
+Affordability Curves Tested Baseline (linear): Affordability = (1 − Gini) × income share above cost threshold Moderate convex (√): Square-root transformation of affordability Strong convex (^0.3): Power-law with exponent 0.3 Lognormal standard: Full lognormal income distribution, standard σ Lognormal fat-tail (1.5σ): Fatter tails to amplify inequality effects Key Finding All five curves produced simulated gradients that were 6–19% of the empirical value. The contemporaneous affordability mechanism is real but too weak to explain the data alone.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-02-26 00:00:00 +0000 UTC'>February 26, 2026</span>&nbsp;·&nbsp;<span>164 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 18: Affordability Curves and Persistence" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/18/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 17: Two-Stage Simulation Model
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Built a forward simulation to test whether contemporaneous economic fundamentals can reproduce the empirical Gini×cost gradient. The model has two stages: Stage 1 allocates athletes to sports via affordability × infrastructure × popularity; Stage 2 determines quality as a function of effective athletes, GDP, cost, and host bonus.
+Key Design Decisions Affordability function: Maps income distribution (via Gini) to the fraction of households that can afford a sport’s annual cost. Tested multiple functional forms. Infrastructure weighting: GDP × log(facility cost) determines national infrastructure capacity per sport. Calibration target: Match empirical rich/poor GDP ratio (~2.57×) in simulated total points. Monte Carlo: 20 simulation runs per configuration to account for stochastic allocation. Results The simulation matches country-level totals reasonably well (r ≈ 0.90) but produces a Gini×cost gradient far smaller than the empirical value — roughly one-tenth to one-fifth of the observed coefficient in the individual sports, upper GDP half specification.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-02-25 00:00:00 +0000 UTC'>February 25, 2026</span>&nbsp;·&nbsp;<span>21 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 17: Two-Stage Simulation Model" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/17/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 14: v0.94 Facility Cost Estimates
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Transitioned facility cost classifications from ordinal tiers (1–4) to continuous cost estimates in euros sourced from Central European construction data. Addressed three problematic pool-dependent sports (Marathon Swimming, Triathlon, Modern Pentathlon).
+Methodological Decision When Claude suggested testing different specifications first, Sam firmly rejected: “we cannot test first, that is cheating.” Classification decisions must be made before running regressions.
+Max-Component Principle Pool-dependent sports reclassified from marginal costs (€50K–€800K) to €25M reflecting swimming pool infrastructure dependence.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-02-24 00:00:00 +0000 UTC'>February 24, 2026</span>&nbsp;·&nbsp;<span>61 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 14: v0.94 Facility Cost Estimates" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/14/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 15: v0.93-v0.95 Paper Refinement
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Refined Paper 1 structure and created comprehensive handover documents for v0.95 analysis. Established that the research contribution is the first empirical validation of cost-based mechanisms that Geloso &amp; Kufenko theorized but couldn’t test.
+Structural Decisions Equipment cost tiers replaced with continuous specifications. All gender analysis moved to Paper 2. “Horse race” terminology replaced with “joint specification.” Key Finding Confirmed Two cleanly separated channels: GDP per capita interacts with facility infrastructure costs while Gini interacts with personal equipment costs in individual sports. The gradient is concentrated in upper-income countries.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-02-24 00:00:00 +0000 UTC'>February 24, 2026</span>&nbsp;·&nbsp;<span>85 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 15: v0.93-v0.95 Paper Refinement" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/15/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Session 16: Interactive Visualization F4b
     </h2>
   </header>
@@ -1460,62 +1517,6 @@ Key Results Team sports: positive Gini coefficient only in scoring-only samples 
   </div>
   <footer class="entry-footer"><span title='2026-02-21 00:00:00 +0000 UTC'>February 21, 2026</span>&nbsp;·&nbsp;<span>120 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session 09: v0.92 Paper Structure and Decomposition" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/09/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 08: v0.91 Sport Type Decomposition
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Systematic decomposition of the “U-shape” pattern in equipment cost tiers, where Tier 2 (medium-cost) sports showed unexpectedly poor performance. Tested whether this represents a genuine cost mechanism or is driven by confounding factors.
-Key Findings Team sports (all concentrated in Tier 1) were not driving the cost gradient. Duel sports showed no cost sensitivity at all — cultural traditions dominate performance. Individual non-duel sports (timed/measured events like swimming, track, cycling) showed the cleanest cost mechanism. The equipment cost mechanism is robust when properly isolated from confounding sport characteristics. Methodological Insight Sport types operate through different mechanisms: team sports through institutional qualification barriers, duel sports through cultural tradition, and individual sports through household cost constraints. Proper decomposition is essential for isolating cost effects.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-02-19 00:00:00 +0000 UTC'>February 19, 2026</span>&nbsp;·&nbsp;<span>60 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 08: v0.91 Sport Type Decomposition" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/08/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 06: Data Consolidation and AIN Athletes
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Consolidated and verified multiple datasets for statistical analysis. Main tasks: merging Olympic event results from seven Summer Games into a master file, resolving NOC code inconsistencies.
-Data Issues Resolved ROC athletes (Tokyo 2020): Russian Olympic Committee athletes mapped to Russia. AIN athletes (Paris 2024): Scraping Olympedia.org athlete profiles identified all 13 Individual Neutral Athletes as either Russian or Belarusian nationals, with detailed source documentation. Predictors dataset: 95 corrections to GDP, population, Gini, and GGGI data verified against World Bank and World Economic Forum primary sources. Datasets Prepared Olympic event results (7 Games, verified) Country predictors (71 countries, two periods) Sport cost classifications (47 sports, facility and equipment tiers) Regional classifications Comprehensive metadata documenting sources, methods, and corrections Full Transcript Sam I have read some articles pushing percentage participation in organized sports as an explanation with Norway having 93 pct and US much less. Is that stastics available. Is there any research on that?
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-02-18 00:00:00 +0000 UTC'>February 18, 2026</span>&nbsp;·&nbsp;<span>162 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 06: Data Consolidation and AIN Athletes" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/06/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 07: v0.91 Dataset Rebuild
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Rebuilding derived datasets D1 (country × sport × period panel) and D2 (country aggregate) for v0.91. Discovered outdated fields from v0.9 still present — the old “communist” field needed replacement with “soviet_legacy” and China required reclassification.
-Work Done Rebuilt D1 and D2 from source data using updated v1.0a region_classification.json. Applied sport filtering: dropped 6 new sports (BMX Freestyle, Skateboarding, etc.). Created main and robustness sport samples based on game participation thresholds. Aggregated performance using 6-5-4-3-2-1 scoring for places 1–6. Issue Discovered Verification against old D2 revealed point mismatches for several countries, indicating the previous build handled shared medals differently (likely fractional points for tied results). Investigation of original logic initiated.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-02-18 00:00:00 +0000 UTC'>February 18, 2026</span>&nbsp;·&nbsp;<span>34 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 07: v0.91 Dataset Rebuild" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/07/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 03: Full Analysis with Complete Data
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Complete end-to-end analysis testing two hypotheses about how inequality affects Olympic performance across different sport cost tiers. Built on Geloso &amp; Kufenko (2021) who theorized that income inequality hurts Olympic performance through cost barriers but couldn’t find quality sport-cost data. Created a sport cost classification system categorizing 50 Olympic sports into four tiers (low, medium, high, very high).
-Key Findings Income inequality (Gini) increasingly hurts performance as sport cost rises (β = -0.016, p = 0.03 for Period 1), confirming the Geloso theory. Gender equality (GGI) shows its strongest positive effects in expensive sports (β = 8.258, p = 0.009) — contrary to the original hypothesis that it would uniformly help across all sports through talent pool expansion. Results resolve Kuppens &amp; Pollet’s (2015) critique of Berdahl et al. by showing sport-cost mechanisms survive regional controls where aggregate relationships do not. Outputs Six publication-quality figures, comprehensive regression tables, descriptive statistics, and a complete paper outline.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-02-13 00:00:00 +0000 UTC'>February 13, 2026</span>&nbsp;·&nbsp;<span>21 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 03: Full Analysis with Complete Data" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/03/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

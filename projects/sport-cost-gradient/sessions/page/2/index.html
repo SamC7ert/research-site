@@ -1379,6 +1379,62 @@ button#theme-toggle:hover {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 38: Final r1.6, Gemini Feedback, Reproduction Prep
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Paper revision r1.6 incorporating Gemini’s feedback. The redaction script was refined — significance stars stripped from placeholders, the figure caption’s α value caught as a leak. The Stage 2 reproduction protocol was updated with structured JSON output requirements for automated comparison.
+The prompt for the blind reproducer was drafted and reviewed. The session also standardized all 27 project transcripts to a consistent format: unified speaker labels, tool-call blocks removed, internal paths cleaned.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-13 00:00:00 +0000 UTC'>March 13, 2026</span>&nbsp;·&nbsp;<span>99 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 38: Final r1.6, Gemini Feedback, Reproduction Prep" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/38/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 37: Paper r1.4–r1.5, Section-by-Section Review
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Line-by-line review of the full paper. Section 4.1 clarified what “tournament premium” means. Section 2.2 heading changed from “predictors” to “indicators.” The persistence discussion was verified to use full-sample numbers where appropriate. The bold/italic emphasis policy was established: no emphasis in body text, italics only for journal names in references.
+Religion’s role was clarified — it captures cultural proximity to European sporting traditions, not a causal mechanism. The Soviet-legacy dummy’s attenuation under lag controls was noted as evidence that it reflects inherited institutional advantage rather than an ongoing structural channel.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-12 00:00:00 +0000 UTC'>March 12, 2026</span>&nbsp;·&nbsp;<span>122 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 37: Paper r1.4–r1.5, Section-by-Section Review" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/37/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 35: v1.03 Simulation, Outlier Analysis, Mechanism Gap
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary The v1.03 simulation was run with the final calibrated parameters. Detailed outlier analysis: Turkey, Germany, and Bahrain drive most of the gap between simulated and empirical gradients on the simulation side. The simulation misallocates these countries’ athletes — placing Turkish athletes into expensive sports where Turkey scores zero empirically, and inflating German combat sport points far beyond observed performance.
+Removing the top five outlier countries from both regressions collapses the gap from 0.40 to 0.08 — the affordability mechanism explains most of the residual signal, but the absolute magnitudes are small. The paper conclusion was revised: the cost gradient is a real empirical regularity driven by concentrated institutional specialization, not by household cost barriers operating broadly.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-11 00:00:00 +0000 UTC'>March 11, 2026</span>&nbsp;·&nbsp;<span>223 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 35: v1.03 Simulation, Outlier Analysis, Mechanism Gap" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/35/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Session 36: Paper r1.1–r1.3, FE in Simulation
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Summary Three paper revisions addressing structural issues. The simulation methodology description was rewritten — two layers (quality distribution construction, then Gumbel tournament) explained step by step. Fixed effects and the Soviet-legacy dummy were clarified as not entering the simulation’s generative model but appearing in the regression run on simulated data.
+Cross-references between sections were audited. The two-period results were positioned correctly as robustness rather than primary evidence. Figure and table numbering was aligned with the LaTeX rendering session’s expectations.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-11 00:00:00 +0000 UTC'>March 11, 2026</span>&nbsp;·&nbsp;<span>99 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
+  <a class="entry-link" aria-label="post link to Session 36: Paper r1.1–r1.3, FE in Simulation" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/36/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Session 33: v1.01 Results and Paper Rewrite
     </h2>
   </header>
@@ -1459,61 +1515,6 @@ Experiments tested whether the affordability mechanism could be strengthened: di
   </div>
   <footer class="entry-footer"><span title='2026-03-08 00:00:00 +0000 UTC'>March 8, 2026</span>&nbsp;·&nbsp;<span>119 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
   <a class="entry-link" aria-label="post link to Session 30: Simulation Deep Dive — Mechanisms and Concentration" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/30/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 28: Pipeline Rebuild, Simulation Prep, Reproduction Setup
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary With data fixes complete, the v1.00 pipeline was rerun from scratch. The simulation methodology document was reviewed and updated. The Stage 2 reproduction folder structure was established — a zero-trust setup with separate full and work folders, where the reproducer sees only the redacted paper and input data.
-The redaction script was built to replace all numerical results with [____] placeholders while preserving methodology text, equations, variable definitions, and the cost classification table. The first redacted paper was produced and verified for leaks.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-07 00:00:00 +0000 UTC'>March 7, 2026</span>&nbsp;·&nbsp;<span>56 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 28: Pipeline Rebuild, Simulation Prep, Reproduction Setup" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/28/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 27: Data Verification — Olympedia, EFW, Religion
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Stage 1 of the reproduction protocol: 50 datapoints sampled from the panel and verified against original sources. Olympedia results matched for most events but revealed systematic errors in French results where doping disqualifications had not been captured by the scraper. The EFW (Economic Freedom of the World) data showed discrepancies for 26 of 71 countries due to a version shift in the Fraser Institute API. Religion shares from Pew Research were based on the 2010 Global Religious Landscape survey alone; for Games spanning 2000–2024, trend interpolation between the 2000 and 2010 waves was implemented. Cuba’s Gini required special handling with World Bank estimates supplemented by academic sources.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-06 00:00:00 +0000 UTC'>March 6, 2026</span>&nbsp;·&nbsp;<span>106 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 27: Data Verification — Olympedia, EFW, Religion" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/27/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 24: Reproducibility Testing and the Clustering Discovery
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Designed and executed a blind reproducibility test: the paper was redacted (all numerical results replaced with placeholders), packaged with data files sorted into regression/, simulation/, and other/ directories, and given to independent AI sessions to reproduce the results from specifications alone.
-Gemini (Google) attempted first but fabricated all quantitative results — the primary β came back as −0.024 versus the actual −0.653 (27× underestimate), with all regression coefficients 15–130× too small. Gemini got descriptive statistics right (Spearman ρ, persistence hierarchy, attenuation percentages) because those were readable from the text context. Gemini later honestly acknowledged the fabrication in a Norwegian-language confession.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-05 00:00:00 +0000 UTC'>March 5, 2026</span>&nbsp;·&nbsp;<span>27 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 24: Reproducibility Testing and the Clustering Discovery" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/24/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Session 25: Pipeline Divergence and v1.00 Data Preparation
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Summary Reproducibility test 2 (an independent Claude session given the corrected v0.99.4 redacted paper with country-clustered SEs) produced results close but not matching: primary β = −0.698 (paper: −0.65), p = 0.032 (paper: 0.016), n = 1,882 (paper: 1,944). The gender decomposition hit sport name mapping bugs, and population elasticity required a log-log model form not obvious from the paper text.
-Rather than patching the paper with reproducibility numbers (an approach briefly attempted and then reverted), the decision was to trace the root cause. An exploration of the original pipeline (v0_99_game_level_pipeline.py) versus the reproducibility script revealed three divergence points in sample construction: (1) GDP median calculated from different sources (two-period average from predictors_master.json vs game-level GDP after positive-points filtering), (2) positive-points filter applied at different stages, (3) &gt;= vs &gt; median threshold producing 36 vs 35 upper-GDP countries. These cascade into different regression samples and different coefficients throughout.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-05 00:00:00 +0000 UTC'>March 5, 2026</span>&nbsp;·&nbsp;<span>15 min</span>&nbsp;·&nbsp;<span>Sam C. Syvertsen</span></footer>
-  <a class="entry-link" aria-label="post link to Session 25: Pipeline Divergence and v1.00 Data Preparation" href="https://research.syvertsen.com/projects/sport-cost-gradient/sessions/25/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
